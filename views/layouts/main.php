@@ -156,9 +156,9 @@ AppAsset::register($this);
                         <?= Html::a('<i class="fa fa-money"></i> Caixa', ['caixa/index']) ?>
 
                     </li>
-                    <li>
-                        <?= Html::a('<i class="fa fa-fw fa-table"></i> Loja', ['loja/index']) ?>
-                    </li>
+                <!--     <li>
+                        <?php // Html::a('<i class="fa fa-fw fa-table"></i> Loja', ['loja/index']) ?>
+                    </li> -->
                     <li>
                         <?= Html::a('<i class="fa fa-truck"></i> Fornecedor', ['fornecedor/index']) ?>
 

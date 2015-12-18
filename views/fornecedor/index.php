@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\FornecedorSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Fornecedors');
+$this->title = Yii::t('app', 'Fornecedor');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="fornecedor-index">
@@ -16,22 +16,23 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Fornecedor'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create {model}',
+        ['model'=>Yii::t('app','Fornecedor')]), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+        ['class' => 'yii\grid\SerialColumn'],
 
-            'cnpj',
-            'nome',
-            'endereco',
-            'idFornecedor',
+        'cnpj',
+        'nome',
+        'endereco',
+       //  'idFornecedor',
 
-            ['class' => 'yii\grid\ActionColumn'],
+        ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); ?>
+        ]); ?>
 
-</div>
+    </div>

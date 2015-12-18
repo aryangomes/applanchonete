@@ -45,7 +45,7 @@ class Despesa extends \yii\db\ActiveRecord
         return [
         'iddespesa' => Yii::t('app', 'Iddespesa'),
         'nomedespesa' => Yii::t('app', 'Despesa'),
-        'valordespesa' => Yii::t('app', 'Valor Despesa'),
+        'valordespesa' => Yii::t('app', 'Valor da Despesa'),
         'situacaopagamento' => Yii::t('app', 'Situação pagamento'),
         'datavencimento' => Yii::t('app', 'Data de vencimento'),
         ];

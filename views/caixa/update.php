@@ -6,18 +6,18 @@ use yii\helpers\Html;
 /* @var $model app\models\Caixa */
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
-    'modelClass' => 'Caixa',
-]) . ' ' . $model->idcaixa;
+	'modelClass' => 'Caixa',
+	]) ;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Caixas'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->idcaixa, 'url' => ['view', 'id' => $model->idcaixa]];
+$this->params['breadcrumbs'][] = ['label' => 'Caixa', 'url' => ['view', 'id' => $model->idcaixa]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="caixa-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+	<h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+	<?= $this->render('_form', [
+		'model' => $model,
+		]) ?>
 
-</div>
+	</div>

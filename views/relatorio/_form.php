@@ -19,7 +19,7 @@ use kartik\datecontrol\DateControl;
 
    <?= $form->field($model, 'tipo')->dropDownList([
     'Compras'=>'Compras',
-    'Despesas'=>'Não Despesas',
+    'Despesas'=>'Despesas',
     'Faturamento'=>'Faturamento',
     'Estoque'=>'Estoque',
     'Saída de produtos'=>'Saída de produtos',
@@ -58,7 +58,7 @@ use kartik\datecontrol\DateControl;
     <?=  $form->field($model, 'usuario_id')->dropDownList([1=>'Usuario 1',2=>'Usuario 2'], ['prompt'=>'Selecione o usuário'])  ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

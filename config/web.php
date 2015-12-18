@@ -6,6 +6,7 @@ $config = [
 'id' => 'basic',
 'layout' => 'main',
     //'layout' => 'login',
+'language'=>'pt-BR',
 'basePath' => dirname(__DIR__),
 'bootstrap' => ['log'],
 'components' => [
@@ -41,6 +42,14 @@ $config = [
 ],
 ],
 'db' => require(__DIR__ . '/db.php'),
+'i18n'=>[
+'translations'=>[
+'app*'=>[
+'class'=> 'yii\i18n\PhpMessageSource',
+],
+],
+],
+
 ],
 'modules' => [
 'datecontrol' =>  [

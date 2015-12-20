@@ -57,4 +57,11 @@ class Fornecedor extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Compra::className(), ['fornecedor_idFornecedor' => 'idFornecedor']);
     }
+
+    public function getNomeFornecedor($idFornecedor)
+    {
+        return Fornecedor::find('nome')->where(['idFornecedor'=>$idFornecedor])->one();
+
+       // return $this->find('nome')->where(['idFornecedor'=>$idFornecedor])->all();
+    }
 }

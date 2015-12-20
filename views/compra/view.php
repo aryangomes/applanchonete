@@ -2,13 +2,17 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use app\models\Fornecedor;
 /* @var $this yii\web\View */
 /* @var $model app\models\Compra */
 
-$this->title = $model->datacompra;
+$this->title = 'Compra do dia '.$model->datacompra;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Compras'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$fornecedor = new Fornecedor();
+$fornecedor = $fornecedor::getNomeFornecedor($model->fornecedor_idFornecedor);
+
 ?>
 <div class="compra-view">
 
@@ -32,6 +36,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'totalcompra',
             //'idcompra',
           //  'fornecedor_idFornecedor',
+            [
+            ' format'=>'text',
+            'label'=>'Fornecedor',
+            'value'=> $fornecedor->nome,
+            ],
             ],
             ]) ?>
 

@@ -8,8 +8,16 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\bootstrap\Dropdown;
-
+use yii\helpers\ArrayHelper;
+use app\models\Loja;
+use yii\helpers\Url;
 AppAsset::register($this);
+
+
+
+$loja = 
+Loja::find()->all();
+$nomeLoja = $loja[0]->nome;
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -41,6 +49,7 @@ AppAsset::register($this);
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
+                <li><a href="<?= Url::toRoute(['/loja/view', 'id'=>$nomeLoja])  ?>"><?= $nomeLoja ?> </a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
                     <ul class="dropdown-menu message-dropdown">

@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use app\models\Fornecedor;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\CompraSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -30,7 +30,20 @@ $this->params['breadcrumbs'][] = $this->title;
         'totalcompra',
       //  'idcompra',
        // 'fornecedor_idFornecedor',
+        [
+       // 'attribute'=>'fornecedor_idFornecedor',
+        'format'=>'text',
+        'label'=>'Fornecedor',
+        'value'=> function($model){
+                //'format'=>'html';
+                //return '<img src="" /> ';
+            $fornecedor = new Fornecedor();
+            $fornecedor = $fornecedor::getNomeFornecedor($model->fornecedor_idFornecedor);
 
+            return $fornecedor->nome;
+        }
+
+        ],
         ['class' => 'yii\grid\ActionColumn'],
         ],
         ]); ?>

@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Compra;
+use app\models\Fornecedor;
 use app\models\CompraSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -17,12 +18,12 @@ class CompraController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+        'delete' => ['post'],
+        ],
+        ],
         ];
     }
 
@@ -38,7 +39,7 @@ class CompraController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
+            ]);
     }
 
     /**
@@ -50,7 +51,7 @@ class CompraController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
-        ]);
+            ]);
     }
 
     /**
@@ -67,7 +68,7 @@ class CompraController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
-            ]);
+                ]);
         }
     }
 
@@ -86,7 +87,7 @@ class CompraController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
-            ]);
+                ]);
         }
     }
 

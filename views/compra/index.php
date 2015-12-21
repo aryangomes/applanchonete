@@ -26,7 +26,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
 
-        'datacompra:date',
+
+        [
+        'attribute'=>'datacompra',
+        'format'=>'text',
+       // 'label'=>'Fornecedor',
+        'value'=> function($model){
+            $formatter = \Yii::$app->formatter;
+            return $formatter->asDate($model->datacompra, 'dd/MM/yyyy');
+        }
+
+        ],
         'totalcompra',
       //  'idcompra',
        // 'fornecedor_idFornecedor',

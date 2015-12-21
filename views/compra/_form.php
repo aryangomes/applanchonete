@@ -8,12 +8,7 @@ use app\models\Fornecedor;
 /* @var $this yii\web\View */
 /* @var $model app\models\Compra */
 /* @var $form yii\widgets\ActiveForm */
-
-$fornecedores=Fornecedor::find()->all();
-
-use yii\helpers\ArrayHelper;
-
-$listadefornecedores=ArrayHelper::map($fornecedores,'idFornecedor','nome');
+use kartik\widgets\Select2;
 
 ?>
 
@@ -42,7 +37,13 @@ $listadefornecedores=ArrayHelper::map($fornecedores,'idFornecedor','nome');
 		]
 		]); ?>
 
-		<?= $form->field($model, 'fornecedor_idFornecedor')->dropDownList($listadefornecedores, ['prompt'=>'Selecione o fornecedor']) ?>
+	<?= $form->field($model, 'fornecedor_idFornecedor')->widget(Select2::classname(), [
+		'data' => $fornecedores,
+		'options' => ['placeholder' => 'Selecione o fornecedore'],
+		'pluginOptions' => [
+		'allowClear' => true
+		],
+		]); ?>
 
 		<div class="form-group">
 			<?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

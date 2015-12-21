@@ -9,7 +9,7 @@ use app\models\CompraSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\helpers\ArrayHelper;
 /**
  * CompraController implements the CRUD actions for Compra model.
  */
@@ -49,8 +49,16 @@ class CompraController extends Controller
      */
     public function actionView($id)
     {
+        $compra = new Compra();
+        $idFornecedor = $compra::find('fornecedor_idFornecedor')->where(['idcompra'=>$id])->one();
+        $fornecedor = new Fornecedor();
+        //var_dump($id);
+       // var_dump($idFornecedor->fornecedor_idFornecedor);
+        $fornecedor = $fornecedor::getNomeFornecedor($idFornecedor->fornecedor_idFornecedor);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'fornecedor'=>$fornecedor,
             ]);
     }
 
@@ -61,16 +69,21 @@ class CompraController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Compra();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idcompra]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-                ]);
-        }
+      $fornecedores= ArrayHelper::map(
+        Fornecedor::find()->all(), 
+        'idFornecedor','nome');
+      $model = new Compra();
+
+      if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['view', 'id' => $model->idcompra]);
+    } else {
+        return $this->render('create', [
+            'model' => $model,
+            'fornecedores'=>$fornecedores,
+            ]);
     }
+}
 
     /**
      * Updates an existing Compra model.
@@ -80,16 +93,20 @@ class CompraController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+     $fornecedores= ArrayHelper::map(
+        Fornecedor::find()->all(), 
+        'idFornecedor','nome');
+     $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idcompra]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                ]);
-        }
+     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['view', 'id' => $model->idcompra]);
+    } else {
+        return $this->render('update', [
+            'model' => $model,
+            'fornecedores'=>$fornecedores,
+            ]);
     }
+}
 
     /**
      * Deletes an existing Compra model.

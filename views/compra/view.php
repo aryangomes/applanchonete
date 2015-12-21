@@ -5,7 +5,7 @@ use yii\widgets\DetailView;
 use app\models\Fornecedor;
 /* @var $this yii\web\View */
 /* @var $model app\models\Compra */
-$formatter = \Yii::$app->formatter;
+
 $this->title = 'Compra do dia '.  
 $formatter->asDate($model->datacompra, 'dd/MM/yyyy');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Compras'), 'url' => ['index']];
@@ -31,7 +31,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-            'datacompra:date',
+            [
+            'attribute'=>'datacompra',
+            'format'=>'text',
+            'value'=>
+            $formatter->asDate($model->datacompra, 'dd/MM/yyyy')
+            
+            ],
             'totalcompra',
             //'idcompra',
           //  'fornecedor_idFornecedor',

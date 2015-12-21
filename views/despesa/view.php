@@ -40,7 +40,13 @@ $this->params['breadcrumbs'][] = $this->title;
             
 
             ],
-            'datavencimento:date',
+            [
+            'attribute'=>'datavencimento',
+            'format'=>'text',
+            'value'=>
+            $formatter->asDate($model->datavencimento, 'dd/MM/yyyy')
+            
+            ],
             ],
             ]) ?>
 

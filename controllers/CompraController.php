@@ -55,10 +55,11 @@ class CompraController extends Controller
         //var_dump($id);
        // var_dump($idFornecedor->fornecedor_idFornecedor);
         $fornecedor = $fornecedor::getNomeFornecedor($idFornecedor->fornecedor_idFornecedor);
-
+        $formatter = \Yii::$app->formatter;
         return $this->render('view', [
             'model' => $this->findModel($id),
             'fornecedor'=>$fornecedor,
+            'formatter'=>$formatter,
             ]);
     }
 

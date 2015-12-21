@@ -39,7 +39,16 @@ $this->params['breadcrumbs'][] = $this->title;
         }
 
         ],
-        'datavencimento:date',
+        [
+        'attribute'=>'datavencimento',
+        'format'=>'text',
+        
+        'value'=> function($model){
+            $formatter = \Yii::$app->formatter;
+            return $formatter->asDate($model->datavencimento, 'dd/MM/yyyy');
+        }
+
+        ],
 
         ['class' => 'yii\grid\ActionColumn'],
         ],

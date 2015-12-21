@@ -17,7 +17,19 @@ AppAsset::register($this);
 
 $loja = 
 Loja::find()->all();
-$nomeLoja = $loja[0]->nome;
+
+if (count($loja) > 0) {
+
+
+    foreach ($loja as $l) {
+     $nomeLoja = $l->nome;
+     $url =Url::toRoute(['/loja/view', 'id'=>$nomeLoja]);
+ }
+
+}else{
+   $nomeLoja = 'Cadastre sua loja';
+   $url =Url::toRoute(['/loja/create']);
+}
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -49,7 +61,7 @@ $nomeLoja = $loja[0]->nome;
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
-                <li><a href="<?= Url::toRoute(['/loja/view', 'id'=>$nomeLoja])  ?>"><?= $nomeLoja ?> </a></li>
+                <li><a href="<?= $url  ?>"><?= $nomeLoja ?> </a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
                     <ul class="dropdown-menu message-dropdown">

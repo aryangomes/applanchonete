@@ -11,24 +11,29 @@ use yii\bootstrap\Dropdown;
 use yii\helpers\ArrayHelper;
 use app\models\Loja;
 use app\models\Despesa;
+use app\models\Caixa;
 use yii\helpers\Url;
 AppAsset::register($this);
 
 $formatter = \Yii::$app->formatter;
+$caixa = new Caixa();
+$caixa = $caixa::find('*')->one();
+
 $despesa = new Despesa();
 $despesasNaoPagas = $despesa::find('*')->where('situacaopagamento=0')->all();
+$valorDespesas = $despesa::find('*')->where('situacaopagamento=0')->sum('valordespesa');
 
 $loja = Loja::find()->all();
 
 if (count($loja) > 0) {
     foreach ($loja as $l) {
-       $nomeLoja = $l->nome;
-       $url =Url::toRoute(['/loja/view', 'id'=>$nomeLoja]);
-   }
+     $nomeLoja = $l->nome;
+     $url =Url::toRoute(['/loja/view', 'id'=>$nomeLoja]);
+ }
 
 }else{
- $nomeLoja = 'Cadastre sua loja';
- $url =Url::toRoute(['/loja/create']);
+   $nomeLoja = 'Cadastre sua loja';
+   $url =Url::toRoute(['/loja/create']);
 }
 
 ?>
@@ -64,7 +69,8 @@ if (count($loja) > 0) {
             <ul class="nav navbar-right top-nav">
                 <li><a href="<?= $url  ?>"><?= $nomeLoja ?> </a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> 
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-envelope"></i> 
                         <?php
                         if (count($despesasNaoPagas) > 0) {
                             ?> <span class="label label-danger">
@@ -107,67 +113,76 @@ if (count($loja) > 0) {
 
             </li>
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
-                <ul class="dropdown-menu alert-dropdown">
-                    <li>
-                        <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
-                    </li>
-                    <li>
-                        <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
-                    </li>
-                    <li>
-                        <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
-                    </li>
-                    <li>
-                        <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
-                    </li>
-                    <li>
-                        <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
-                    </li>
-                    <li>
-                        <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">View All</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-        <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
-        <div class="collapse navbar-collapse navbar-ex1-collapse ">
-            <ul class="nav navbar-nav side-nav">
-                <li class="active">
-                    <?= Html::a('<i class="fa fa-fw fa-home"></i> Home', ['site/index']) ?>
+                    <?php
+                    if ($caixa->valoremcaixa < $valorDespesas) {
 
-                </li>
-                <li>
-                    <?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Despesas', ['despesa/index']) ?>
 
-                </li>
-                <li>
-                    <?= Html::a('<i class="fa fa-money"></i> Caixa', ['caixa/index']) ?>
+                        ?>
+                        <i class="fa fa-bell"></i>
+                        <span class="label label-danger">
+                           !
+                       </span>
+                       <b class="caret"></b></a>
+                       <ul class="dropdown-menu alert-dropdown">
 
-                </li>
+
+                           <li>
+                              &nbsp; Há um déficit no caixa </li>
+                              <?php     
+                          } else {
+                            ?>
+                            <i class="fa fa-bell"></i>
+                            
+                            <b class="caret"></b></a>
+                            <ul class="dropdown-menu alert-dropdown">
+                                <li>
+                                    &nbsp; Não há alertas  </li>
+                                    <?php
+
+                                }?>
+
+
+
+
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+
+                    <div class="collapse navbar-collapse navbar-ex1-collapse ">
+                        <ul class="nav navbar-nav side-nav">
+                            <li class="active">
+                                <?= Html::a('<i class="fa fa-fw fa-home"></i> Home', ['site/index']) ?>
+
+                            </li>
+                            <li>
+                                <?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Despesas', ['despesa/index']) ?>
+
+                            </li>
+                            <li>
+                                <?= Html::a('<i class="fa fa-money"></i> Caixa', ['caixa/index']) ?>
+
+                            </li>
                 <!--     <li>
                         <?php // Html::a('<i class="fa fa-fw fa-table"></i> Loja', ['loja/index']) ?>
                     </li> -->

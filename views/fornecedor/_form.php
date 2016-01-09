@@ -2,7 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\widgets\MaskedInput
+use yii\widgets\MaskedInput;
+use yii\helpers\BaseHtml;
 /* @var $this yii\web\View */
 /* @var $model app\models\Fornecedor */
 /* @var $form yii\widgets\ActiveForm */
@@ -11,11 +12,12 @@ use yii\widgets\MaskedInput
 <div class="fornecedor-form">
 
 	<?php $form = ActiveForm::begin(); ?>
-
+	<?= Html::activeLabel($model, BaseHtml::getAttributeName('cnpj')) ?>
 	<?php // $form->field($model, 'cnpj')->textInput();
 
 	echo MaskedInput::widget([
 		'model'=>$model,
+		
 		'attribute' => 'cnpj',
 		'mask'=>'99.999.999/9999-99',
 		]);

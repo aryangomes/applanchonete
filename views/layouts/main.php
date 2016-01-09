@@ -27,13 +27,13 @@ $loja = Loja::find()->all();
 
 if (count($loja) > 0) {
     foreach ($loja as $l) {
-     $nomeLoja = $l->nome;
-     $url =Url::toRoute(['/loja/view', 'id'=>$nomeLoja]);
- }
+       $nomeLoja = $l->nome;
+       $url =Url::toRoute(['/loja/view', 'id'=>$nomeLoja]);
+   }
 
 }else{
-   $nomeLoja = 'Cadastre sua loja';
-   $url =Url::toRoute(['/loja/create']);
+ $nomeLoja = 'Cadastre sua loja';
+ $url =Url::toRoute(['/loja/create']);
 }
 
 ?>
@@ -95,7 +95,7 @@ if (count($loja) > 0) {
 
                             
                             <li >
-                                <a href="<?= Url::toRoute(['/despesa/index']) ?>">Todas as despesas não pagas</a>
+                                <a href="<?= Url::toRoute(['/despesa/index']) ?>">Todas as despesas</a>
                             </li>
                         </ul>
                         <?php
@@ -116,73 +116,75 @@ if (count($loja) > 0) {
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
                     <?php
-                    if ($caixa->valoremcaixa < $valorDespesas) {
+                    if(isset($caixa)){
+                        if ($caixa->valoremcaixa < $valorDespesas ) {
 
 
-                        ?>
-                        <i class="fa fa-bell"></i>
-                        <span class="label label-danger">
-                           !
-                       </span>
-                       <b class="caret"></b></a>
-                       <ul class="dropdown-menu alert-dropdown">
-
-
-                           <li>
-                              &nbsp; Há um déficit no caixa </li>
-                              <?php     
-                          } else {
                             ?>
                             <i class="fa fa-bell"></i>
-                            
-                            <b class="caret"></b></a>
-                            <ul class="dropdown-menu alert-dropdown">
-                                <li>
-                                    &nbsp; Não há alertas  </li>
-                                    <?php
-
-                                }?>
+                            <span class="label label-danger">
+                             !
+                         </span>
+                         <b class="caret"></b></a>
+                         <ul class="dropdown-menu alert-dropdown">
 
 
+                             <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
+                             </li>
+                             <?php  
+                         }   
+                     } else {
+                        ?>
+                        <i class="fa fa-bell"></i>
+
+                        <b class="caret"></b></a>
+                        <ul class="dropdown-menu alert-dropdown">
+                            <li>
+                                &nbsp; Não há alertas  </li>
+                                <?php
+
+                            }?>
 
 
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 
-                    <div class="collapse navbar-collapse navbar-ex1-collapse ">
-                        <ul class="nav navbar-nav side-nav">
-                            <li class="active">
-                                <?= Html::a('<i class="fa fa-fw fa-home"></i> Home', ['site/index']) ?>
 
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
                             </li>
                             <li>
-                                <?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Despesas', ['despesa/index']) ?>
-
+                                <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
                             </li>
                             <li>
-                                <?= Html::a('<i class="fa fa-money"></i> Caixa', ['caixa/index']) ?>
-
+                                <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
                             </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+
+                <div class="collapse navbar-collapse navbar-ex1-collapse ">
+                    <ul class="nav navbar-nav side-nav">
+                        <li class="active">
+                            <?= Html::a('<i class="fa fa-fw fa-home"></i> Home', ['site/index']) ?>
+
+                        </li>
+                        <li>
+                            <?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Despesas', ['despesa/index']) ?>
+
+                        </li>
+                        <li>
+                            <?= Html::a('<i class="fa fa-money"></i> Caixa', ['caixa/index']) ?>
+
+                        </li>
                 <!--     <li>
                         <?php // Html::a('<i class="fa fa-fw fa-table"></i> Loja', ['loja/index']) ?>
                     </li> -->

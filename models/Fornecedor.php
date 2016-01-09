@@ -43,9 +43,9 @@ class Fornecedor extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-        'cnpj' => Yii::t('app', 'CNPJ'),
-        'nome' => Yii::t('app', 'Nome'),
-        'endereco' => Yii::t('app', 'Endereço'),
+        'cnpj' => Yii::t('app', 'CNPJ do Fornecedor'),
+        'nome' => Yii::t('app', 'Nome do Fornecedor'),
+        'endereco' => Yii::t('app', 'Endereço do Fornecedor'),
         'idFornecedor' => Yii::t('app', 'Id Fornecedor'),
         ];
     }

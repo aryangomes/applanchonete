@@ -151,40 +151,41 @@ if (count($loja) > 0) {
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-
-                <div class="collapse navbar-collapse navbar-ex1-collapse ">
-                    <ul class="nav navbar-nav side-nav">
-                        <li class="active">
-                            <?= Html::a('<i class="fa fa-fw fa-home"></i> Home', ['site/index']) ?>
-
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> 
+                            <?= Yii::$app->user->displayName ?><b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="<?= Url::toRoute('/user/logout')?>" data-method='POST'><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                                </li>
+                            </ul>
                         </li>
-                        <li>
-                            <?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Despesas', ['despesa/index']) ?>
+                    </ul>
+                    <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 
-                        </li>
-                        <li>
-                            <?= Html::a('<i class="fa fa-money"></i> Caixa', ['caixa/index']) ?>
+                    <div class="collapse navbar-collapse navbar-ex1-collapse ">
+                        <ul class="nav navbar-nav side-nav">
+                            <li class="active">
+                                <?= Html::a('<i class="fa fa-fw fa-home"></i> Home', ['site/index']) ?>
 
-                        </li>
+                            </li>
+                            <li>
+                                <?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Despesas', ['despesa/index']) ?>
+
+                            </li>
+                            <li>
+                                <?= Html::a('<i class="fa fa-money"></i> Caixa', ['caixa/index']) ?>
+
+                            </li>
                 <!--     <li>
                         <?php // Html::a('<i class="fa fa-fw fa-table"></i> Loja', ['loja/index']) ?>
                     </li> -->

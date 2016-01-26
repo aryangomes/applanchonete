@@ -17,59 +17,82 @@ $config = [
 'cache' => [
 'class' => 'yii\caching\FileCache',
 ],
-'user' => [
+/*'user' => [
 'identityClass' => 'app\models\User',
 'enableAutoLogin' => true,
+],*/
+'user' => [
+'class' => 'amnah\yii2\user\components\User',
 ],
 
 'errorHandler' => [
 'errorAction' => 'site/error',
 ],
-'mailer' => [
+/*'mailer' => [
 'class' => 'yii\swiftmailer\Mailer',
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
 'useFileTransport' => true,
-],
-'log' => [
-'traceLevel' => YII_DEBUG ? 3 : 0,
-'targets' => [
-[
-'class' => 'yii\log\FileTarget',
-'levels' => ['error', 'warning'],
-],
-],
-],
-'db' => require(__DIR__ . '/db.php'),
-'i18n'=>[
-'translations'=>[
-'app*'=>[
-'class'=> 'yii\i18n\PhpMessageSource',
-],
-],
-],
+],*/
+'mailer' => [
+'class' => 'yii\swiftmailer\Mailer',
+'useFileTransport' => true,
+'messageConfig' => [
+                'from' => ['admin@website.com' => 'Admin'], // this is needed for sending emails
+                'charset' => 'UTF-8',
+                ]
+                ],
+                'log' => [
+                'traceLevel' => YII_DEBUG ? 3 : 0,
+                'targets' => [
+                [
+                'class' => 'yii\log\FileTarget',
+                'levels' => ['error', 'warning'],
+                ],
+                ],
+                ],
+                'db' => require(__DIR__ . '/db.php'),
+                'urlManager' =>[
+                'enablePrettyUrl'=>true,
+                'showScriptName'=>false,
+                'enableStrictParsing'=>false,
+                'rules'=>[
 
-],
-'modules' => [
-'datecontrol' =>  [
-'class' => '\kartik\datecontrol\Module'
-]
-],
-'params' => $params,
-];
+                ],
+                ],
+                'i18n'=>[
+                'translations'=>[
+                'app*'=>[
+                'class'=> 'yii\i18n\PhpMessageSource',
+                ],
+                ],
+                ],
 
-if (YII_ENV_DEV) {
+                ],
+                'modules' => [
+                'datecontrol' =>  [
+                'class' => '\kartik\datecontrol\Module'
+                ],
+                'user' => [
+                'class' => 'amnah\yii2\user\Module',
+            // set custom module properties here ...
+                ],
+                ],
+                'params' => $params,
+                ];
+
+                if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
-    $config['bootstrap'][] = 'debug';
-    $config['modules']['debug'] = [
-    'class' => 'yii\debug\Module',
-    ];
+                    $config['bootstrap'][] = 'debug';
+                    $config['modules']['debug'] = [
+                    'class' => 'yii\debug\Module',
+                    ];
 
-    $config['bootstrap'][] = 'gii';
-    $config['modules']['gii'] = [
-    'class' => 'yii\gii\Module',
-    ];
-}
+                    $config['bootstrap'][] = 'gii';
+                    $config['modules']['gii'] = [
+                    'class' => 'yii\gii\Module',
+                    ];
+                }
 
-return $config;
+                return $config;

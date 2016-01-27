@@ -50,142 +50,144 @@ if (count($loja) > 0) {
 </head>
 <body>
     <?php $this->beginBody() ?>
+    <?php if (!\Yii::$app->user->isGuest) {
 
-    <div id="wrapper">
+        ?>
+        <div id="wrapper">
 
-        <!-- Navigation -->
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <?= Html::a('Sigir', ['site/index'], ['class' => 'navbar-brand']) ?>
-            </div>
-            <!-- Top Menu Items -->
-            <ul class="nav navbar-right top-nav">
-                <li><a href="<?= $url  ?>"><?= $nomeLoja ?> </a></li>
+            <!-- Navigation -->
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <?= Html::a('Sigir', ['/'], ['class' => 'navbar-brand']) ?>
+                </div>
+                <!-- Top Menu Items -->
+                <ul class="nav navbar-right top-nav">
+                    <li><a href="<?= $url  ?>"><?= $nomeLoja ?> </a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-envelope"></i> 
+                            <?php
+                            if (count($despesasNaoPagas) > 0) {
+                                ?> <span class="label label-danger">
+                                <?= count($despesasNaoPagas) ?>
+
+                            </span>
+                            <b class="caret"></b></a>
+                            <ul class="dropdown-menu message-dropdown">
+                                <?php 
+                                foreach ($despesasNaoPagas as  $despesa) {
+
+
+                                    ?>
+                                    <li >
+                                        <a href="<?= Url::toRoute(['/despesa/view', 'id'=>$despesa->iddespesa]) ?>"><?= 'Despesa: '.$despesa->nomedespesa .
+                                        '(Data Vencimento: ' . $formatter->asDate( $despesa->datavencimento,'dd/MM/yyyy') . ') ' ?></a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <?php 
+                                }
+                                ?>
+
+
+                                <li >
+                                    <a href="<?= Url::toRoute(['/despesa/index']) ?>">Todas as despesas</a>
+                                </li>
+                            </ul>
+                            <?php
+                        }else{
+                            ?>
+                            <b class="caret"></b></a>
+                            <ul class="dropdown-menu message-dropdown">
+                              <li >
+                                Não há despesas para serem pagas
+                            </li>
+                        </ul>
+                        <?php 
+                    }
+                    ?>
+
+                </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-envelope"></i> 
-                        <?php
-                        if (count($despesasNaoPagas) > 0) {
-                            ?> <span class="label label-danger">
-                            <?= count($despesasNaoPagas) ?>
 
-                        </span>
-                        <b class="caret"></b></a>
-                        <ul class="dropdown-menu message-dropdown">
-                            <?php 
-                            foreach ($despesasNaoPagas as  $despesa) {
+                        <?php
+                        if(isset($caixa)){
+                            if ($caixa->valoremcaixa < $valorDespesas ) {
 
 
                                 ?>
-                                <li >
-                                    <a href="<?= Url::toRoute(['/despesa/view', 'id'=>$despesa->iddespesa]) ?>"><?= 'Despesa: '.$despesa->nomedespesa .
-                                    '(Data Vencimento: ' . $formatter->asDate( $despesa->datavencimento,'dd/MM/yyyy') . ') ' ?></a>
-                                </li>
-                                <li class="divider"></li>
-                                <?php 
-                            }
-                            ?>
-
-                            
-                            <li >
-                                <a href="<?= Url::toRoute(['/despesa/index']) ?>">Todas as despesas</a>
-                            </li>
-                        </ul>
-                        <?php
-                    }else{
-                        ?>
-                        <b class="caret"></b></a>
-                        <ul class="dropdown-menu message-dropdown">
-                          <li >
-                            Não há despesas para serem pagas
-                        </li>
-                    </ul>
-                    <?php 
-                }
-                ?>
-
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-
-                    <?php
-                    if(isset($caixa)){
-                        if ($caixa->valoremcaixa < $valorDespesas ) {
+                                <i class="fa fa-bell"></i>
+                                <span class="label label-danger">
+                                 !
+                             </span>
+                             <b class="caret"></b></a>
+                             <ul class="dropdown-menu alert-dropdown">
 
 
+                                 <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
+                                 </li>
+                                 <?php  
+                             }   
+                         } else {
                             ?>
                             <i class="fa fa-bell"></i>
-                            <span class="label label-danger">
-                             !
-                         </span>
-                         <b class="caret"></b></a>
-                         <ul class="dropdown-menu alert-dropdown">
 
-
-                             <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
-                             </li>
-                             <?php  
-                         }   
-                     } else {
-                        ?>
-                        <i class="fa fa-bell"></i>
-
-                        <b class="caret"></b></a>
-                        <ul class="dropdown-menu alert-dropdown">
-                            <li>
-                                &nbsp; Não há alertas  </li>
-                                <?php
-
-                            }?>
-
-
-
-
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> 
-                            <?= Yii::$app->user->displayName ?><b class="caret"></b></a>
-                            <ul class="dropdown-menu">
+                            <b class="caret"></b></a>
+                            <ul class="dropdown-menu alert-dropdown">
                                 <li>
-                                    <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="<?= Url::toRoute('/user/logout')?>" data-method='POST'><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                                </li>
+                                    &nbsp; Não há alertas  </li>
+                                    <?php
+
+                                }?>
+
+
+
+
                             </ul>
                         </li>
-                    </ul>
-                    <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-
-                    <div class="collapse navbar-collapse navbar-ex1-collapse ">
-                        <ul class="nav navbar-nav side-nav">
-                            <li class="active">
-                                <?= Html::a('<i class="fa fa-fw fa-home"></i> Home', ['site/index']) ?>
-
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> 
+                                <?= Yii::$app->user->displayName ?><b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="<?= Url::toRoute('/user/logout')?>" data-method='POST'><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li>
-                                <?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Despesas', ['despesa/index']) ?>
+                        </ul>
+                        <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 
-                            </li>
-                            <li>
-                                <?= Html::a('<i class="fa fa-money"></i> Caixa', ['caixa/index']) ?>
+                        <div class="collapse navbar-collapse navbar-ex1-collapse ">
+                            <ul class="nav navbar-nav side-nav">
+                                <li class="active">
+                                    <?= Html::a('<i class="fa fa-fw fa-home"></i> Home', ['site/index']) ?>
 
-                            </li>
+                                </li>
+                                <li>
+                                    <?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Despesas', ['despesa/index']) ?>
+
+                                </li>
+                                <li>
+                                    <?= Html::a('<i class="fa fa-money"></i> Caixa', ['caixa/index']) ?>
+
+                                </li>
                 <!--     <li>
                         <?php // Html::a('<i class="fa fa-fw fa-table"></i> Loja', ['loja/index']) ?>
                     </li> -->
@@ -208,57 +210,61 @@ if (count($loja) > 0) {
             <!-- /.navbar-collapse -->
         </nav>
 
+        <?php
 
-        <div id="page-wrapper">
+    }
 
-            <div class="container-fluid">
+    ?>
+    <div id="page-wrapper">
 
-                <!-- Page Heading -->
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <?=
+                    Breadcrumbs::widget([
+                        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                        ])
+                        ?>
+
+                    </div>
+                </div>
+                <!-- /.row -->
+                <!-- conteudo das págians-->
                 <div class="row">
                     <div class="col-lg-12">
-
-                        <?=
-                        Breadcrumbs::widget([
-                            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                            ])
-                            ?>
-
-                        </div>
+                        <?= $content ?>
                     </div>
-                    <!-- /.row -->
-                    <!-- conteudo das págians-->
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <?= $content ?>
-                        </div>
+                </div>
+                <footer class="footer" >
+                    <div class="container">
+                        <p class="pull-left">&copy; Sigir <?= date('Y') ?></p>
+
+                        <p class="pull-right"><?= Yii::powered() ?></p> 
                     </div>
-                    <footer class="footer" >
-                        <div class="container">
-                            <p class="pull-left">&copy; Sigir <?= date('Y') ?></p>
-
-                            <p class="pull-right"><?= Yii::powered() ?></p> 
-                        </div>
-                    </footer>
-                    <!-- /.row -->
-                </div>         
-                <!-- /.container-fluid -->
-            </div>
-            <!-- /#page-wrapper -->
-
+                </footer>
+                <!-- /.row -->
+            </div>         
+            <!-- /.container-fluid -->
         </div>
-        <!-- /#wrapper -->
+        <!-- /#page-wrapper -->
 
-        <?=
+    </div>
+    <!-- /#wrapper -->
+
+    <?=
         //<!-- jQuery -->
-        $this->registerJsFile('@web/admin/js/jquery.js');
-        $this->registerJsFile('@web/admin/js/bootstrap.min.js');
+    $this->registerJsFile('@web/admin/js/jquery.js');
+    $this->registerJsFile('@web/admin/js/bootstrap.min.js');
         //<!-- Morris Charts JavaScript -->
-        $this->registerJsFile('@web/admin/js/plugins/morris/raphael.min.js');
-        $this->registerJsFile('@web/admin/js/plugins/morris/morris.min.js');
-        $this->registerJsFile('@web/admin/js/plugins/morris/morris-data.js');
-        ?>
+    $this->registerJsFile('@web/admin/js/plugins/morris/raphael.min.js');
+    $this->registerJsFile('@web/admin/js/plugins/morris/morris.min.js');
+    $this->registerJsFile('@web/admin/js/plugins/morris/morris-data.js');
+    ?>
 
-        <?php $this->endBody() ?>
-    </body>
-    </html>
-    <?php $this->endPage() ?>
+    <?php $this->endBody() ?>
+</body>
+</html>
+<?php $this->endPage() ?>

@@ -8,7 +8,7 @@ use app\models\FornecedorSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use \yii\filters\AccessControl;
 /**
  * FornecedorController implements the CRUD actions for Fornecedor model.
  */
@@ -17,12 +17,21 @@ class FornecedorController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
+        'access' =>[
+        'class' => AccessControl::classname(),
+        'only'=> ['create','update','view','delete','index'],
+        'rules'=> [
+        ['allow'=>true,
+        'roles' => ['funcionario'],
+        ],
+        ]
+        ],
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+        'delete' => ['post'],
+        ],
+        ],
         ];
     }
 
@@ -38,7 +47,7 @@ class FornecedorController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
+            ]);
     }
 
     /**
@@ -50,7 +59,7 @@ class FornecedorController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
-        ]);
+            ]);
     }
 
     /**
@@ -67,7 +76,7 @@ class FornecedorController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
-            ]);
+                ]);
         }
     }
 
@@ -86,7 +95,7 @@ class FornecedorController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
-            ]);
+                ]);
         }
     }
 

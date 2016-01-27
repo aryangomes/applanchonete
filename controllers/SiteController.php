@@ -49,7 +49,7 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-     
+
 
         //return $this->render('index');
       return $this->actionLogin();
@@ -60,6 +60,8 @@ class SiteController extends Controller
     if (!\Yii::$app->user->isGuest) {
         return $this->render('index');
             //return $this->goHome();
+    }else{
+        $this->redirect('user/login');
     }
 
     $model = new LoginForm();

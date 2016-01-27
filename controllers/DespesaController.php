@@ -8,7 +8,7 @@ use app\models\DespesaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use \yii\filters\AccessControl;
 /**
  * DespesaController implements the CRUD actions for Despesa model.
  */
@@ -17,6 +17,15 @@ class DespesaController extends Controller
     public function behaviors()
     {
         return [
+        'access' =>[
+        'class' => AccessControl::classname(),
+        'only'=> ['create','update','view','delete','index'],
+        'rules'=> [
+        ['allow'=>true,
+        'roles' => ['gerente'],
+        ],
+        ]
+        ],
         'verbs' => [
         'class' => VerbFilter::className(),
         'actions' => [

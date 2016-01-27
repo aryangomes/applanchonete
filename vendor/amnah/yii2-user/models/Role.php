@@ -31,6 +31,8 @@ class Role extends ActiveRecord
     /**
      * @var \amnah\yii2\user\Module
      */
+
+    
     public $module;
 
     /**
@@ -49,9 +51,9 @@ class Role extends ActiveRecord
     public function rules()
     {
         $rules = [
-            [['name'], 'required'],
-            [['name'], 'string', 'max' => 255],
-            [['can_admin'], 'integer'],
+        [['name'], 'required'],
+        [['name'], 'string', 'max' => 255],
+        [['can_admin'], 'integer'],
         ];
 
         // add can_ rules
@@ -71,11 +73,11 @@ class Role extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('user', 'ID'),
-            'name' => Yii::t('user', 'Name'),
-            'created_at' => Yii::t('user', 'Created At'),
-            'updated_at' => Yii::t('user', 'Updated At'),
-            'can_admin' => Yii::t('user', 'Can Admin'),
+        'id' => Yii::t('user', 'ID'),
+        'name' => Yii::t('user', 'Name'),
+        'created_at' => Yii::t('user', 'Created At'),
+        'updated_at' => Yii::t('user', 'Updated At'),
+        'can_admin' => Yii::t('user', 'Can Admin'),
         ];
     }
 
@@ -85,12 +87,12 @@ class Role extends ActiveRecord
     public function behaviors()
     {
         return [
-            'timestamp' => [
-                'class' => 'yii\behaviors\TimestampBehavior',
-                'value' => function ($event) {
-                    return gmdate("Y-m-d H:i:s");
-                },
-            ],
+        'timestamp' => [
+        'class' => 'yii\behaviors\TimestampBehavior',
+        'value' => function ($event) {
+            return gmdate("Y-m-d H:i:s");
+        },
+        ],
         ];
     }
 

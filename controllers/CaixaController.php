@@ -8,7 +8,7 @@ use app\models\CaixaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use \yii\filters\AccessControl;
 
 /**
  * CaixaController implements the CRUD actions for Caixa model.
@@ -18,6 +18,15 @@ class CaixaController extends Controller
     public function behaviors()
     {
         return [
+        'access' =>[
+        'class' => AccessControl::classname(),
+        'only'=> ['create','update','view','delete','index'],
+        'rules'=> [
+        ['allow'=>true,
+        'roles' => ['gerente'],
+        ],
+        ]
+        ],
         'verbs' => [
         'class' => VerbFilter::className(),
         'actions' => [

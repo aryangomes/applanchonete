@@ -1,7 +1,7 @@
 <?php
 
 namespace app\controllers;
-
+use yii\web\HttpException;
 use Yii;
 use app\models\Compra;
 use app\models\Fornecedor;
@@ -10,6 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use \yii\filters\AccessControl;
 /**
  * CompraController implements the CRUD actions for Compra model.
  */
@@ -18,6 +19,15 @@ class CompraController extends Controller
     public function behaviors()
     {
         return [
+        'access' =>[
+        'class' => AccessControl::classname(),
+        'only'=> ['create','update','view','delete','index'],
+        'rules'=> [
+        ['allow'=>true,
+        'roles' => ['gerente'],
+        ],
+        ]
+        ],
         'verbs' => [
         'class' => VerbFilter::className(),
         'actions' => [
@@ -33,6 +43,7 @@ class CompraController extends Controller
      */
     public function actionIndex()
     {
+
         $searchModel = new CompraSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -40,6 +51,8 @@ class CompraController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             ]);
+
+        
     }
 
     /**
@@ -94,12 +107,12 @@ class CompraController extends Controller
      */
     public function actionUpdate($id)
     {
-     $fornecedores= ArrayHelper::map(
+       $fornecedores= ArrayHelper::map(
         Fornecedor::find()->all(), 
         'idFornecedor','nome');
-     $model = $this->findModel($id);
+       $model = $this->findModel($id);
 
-     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+       if ($model->load(Yii::$app->request->post()) && $model->save()) {
         return $this->redirect(['view', 'id' => $model->idcompra]);
     } else {
         return $this->render('update', [

@@ -26,8 +26,8 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'role_id', 'status'], 'integer'],
-            [['email', 'username', 'password', 'auth_key', 'access_token', 'logged_in_ip', 'logged_in_at', 'created_ip', 'created_at', 'updated_at', 'banned_at', 'banned_reason', 'profile.full_name'], 'safe'],
+        [['id', 'role_id', 'status'], 'integer'],
+        [['email', 'username', 'password', 'auth_key', 'access_token', 'logged_in_ip', 'logged_in_at', 'created_ip', 'created_at', 'updated_at', 'banned_at', 'banned_reason', 'profile.full_name'], 'safe'],
         ];
     }
 
@@ -72,17 +72,19 @@ class UserSearch extends User
             $query->from(['profile' => $profileTable]);
         }]);
 
+       // $query->join('INNER JOIN', 'auth_item','role_id = type');
+
         // create data provider
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-        ]);
+            ]);
 
         // enable sorting for the related columns
         $addSortAttributes = ["profile.full_name"];
         foreach ($addSortAttributes as $addSortAttribute) {
             $dataProvider->sort->attributes[$addSortAttribute] = [
-                'asc' => [$addSortAttribute => SORT_ASC],
-                'desc' => [$addSortAttribute => SORT_DESC],
+            'asc' => [$addSortAttribute => SORT_ASC],
+            'desc' => [$addSortAttribute => SORT_DESC],
             ];
         }
 
@@ -94,21 +96,21 @@ class UserSearch extends User
             "{$userTable}.id" => $this->id,
             'role_id' => $this->role_id,
             'status' => $this->status,
-        ]);
+            ]);
 
         $query->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'password', $this->password])
-            ->andFilterWhere(['like', 'auth_key', $this->auth_key])
-            ->andFilterWhere(['like', 'access_token', $this->access_token])
-            ->andFilterWhere(['like', 'logged_in_ip', $this->logged_in_ip])
-            ->andFilterWhere(['like', 'created_ip', $this->created_ip])
-            ->andFilterWhere(['like', 'banned_reason', $this->banned_reason])
-            ->andFilterWhere(['like', 'logged_in_at', $this->logged_in_at])
-            ->andFilterWhere(['like', "{$userTable}.created_at", $this->created_at])
-            ->andFilterWhere(['like', "{$userTable}.updated_at", $this->updated_at])
-            ->andFilterWhere(['like', 'banned_at', $this->banned_at])
-            ->andFilterWhere(['like', "profile.full_name", $this->getAttribute('profile.full_name')]);
+        ->andFilterWhere(['like', 'username', $this->username])
+        ->andFilterWhere(['like', 'password', $this->password])
+        ->andFilterWhere(['like', 'auth_key', $this->auth_key])
+        ->andFilterWhere(['like', 'access_token', $this->access_token])
+        ->andFilterWhere(['like', 'logged_in_ip', $this->logged_in_ip])
+        ->andFilterWhere(['like', 'created_ip', $this->created_ip])
+        ->andFilterWhere(['like', 'banned_reason', $this->banned_reason])
+        ->andFilterWhere(['like', 'logged_in_at', $this->logged_in_at])
+        ->andFilterWhere(['like', "{$userTable}.created_at", $this->created_at])
+        ->andFilterWhere(['like', "{$userTable}.updated_at", $this->updated_at])
+        ->andFilterWhere(['like', 'banned_at', $this->banned_at])
+        ->andFilterWhere(['like', "profile.full_name", $this->getAttribute('profile.full_name')]);
 
         return $dataProvider;
     }

@@ -23,31 +23,38 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php if ($flash = Yii::$app->session->getFlash("Register-success")): ?>
 
-        <div class="alert alert-success">
-            <p><?= $flash ?></p>
-        </div>
+    <div class="alert alert-success">
+        <p><?= $flash ?></p>
+    </div>
 
-    <?php else: ?>
+<?php else: ?>
 
-        <?php $form = ActiveForm::begin([
-            'id' => 'register-form',
-            'options' => ['class' => 'form-horizontal'],
-            'fieldConfig' => [
-                'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-7\">{error}</div>",
-                'labelOptions' => ['class' => 'col-lg-2 control-label'],
-            ],
-            'enableAjaxValidation' => true,
+    <?php $form = ActiveForm::begin([
+        'id' => 'register-form',
+        'options' => ['class' => 'form-horizontal'],
+        'fieldConfig' => [
+        'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-7\">{error}</div>",
+        'labelOptions' => ['class' => 'col-lg-2 control-label'],
+        ],
+        'enableAjaxValidation' => true,
         ]); ?>
 
         <?php if ($module->requireEmail): ?>
-            <?= $form->field($user, 'email') ?>
-        <?php endif; ?>
+        <?= $form->field($user, 'email') ?>
+    <?php endif; ?>
 
-        <?php if ($module->requireUsername): ?>
-            <?= $form->field($user, 'username') ?>
-        <?php endif; ?>
+    <?php if ($module->requireUsername): ?>
+    <?= $form->field($user, 'username') ?>
+<?php endif; ?>
 
-        <?= $form->field($user, 'newPassword')->passwordInput() ?>
+<?= $form->field($user, 'newPassword')->passwordInput() ?>
+
+
+<?php // $form->field($user, 'role_id')->dropDownList($permissoes, ['prompt'=>'Escolha o tipo de usuário'])  ?>
+
+
+<?= $form->field($user, 'role_id')->checkboxList($permissoes)  ?>
+
 
         <?php /* uncomment if you want to add profile fields here
         <?= $form->field($profile, 'full_name') ?>
@@ -65,9 +72,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php ActiveForm::end(); ?>
 
         <?php if (Yii::$app->get("authClientCollection", false)): ?>
-            <div class="col-lg-offset-2 col-lg-10">
-                <?= yii\authclient\widgets\AuthChoice::widget([
-                    'baseAuthUrl' => ['/user/auth/login']
+        <div class="col-lg-offset-2 col-lg-10">
+            <?= yii\authclient\widgets\AuthChoice::widget([
+                'baseAuthUrl' => ['/user/auth/login']
                 ]) ?>
             </div>
         <?php endif; ?>

@@ -31,7 +31,7 @@ class Fornecedor extends \yii\db\ActiveRecord
     {
         return [
         [['cnpj', 'nome'], 'required'],
-        [['cnpj'], 'string', 'max' => 14],
+        [['cnpj'], 'string', 'max' => 18],
         [['nome', 'endereco'], 'string', 'max' => 100],
         [['cnpj'], 'unique']
         ];

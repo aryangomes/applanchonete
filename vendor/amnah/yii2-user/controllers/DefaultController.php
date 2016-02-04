@@ -8,7 +8,8 @@ use yii\web\Response;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
-
+use app\models\AuthItem;
+use yii\helpers\ArrayHelper;
 /**
  * Default controller for User module
  */
@@ -26,32 +27,32 @@ class DefaultController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['index', 'confirm', 'resend', 'logout'],
-                        'allow' => true,
-                        'roles' => ['?', '@'],
-                    ],
-                    [
-                        'actions' => ['account', 'profile', 'resend-change', 'cancel'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                    [
-                        'actions' => ['login', 'register', 'forgot', 'reset', 'login-email', 'login-callback'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
+        'access' => [
+        'class' => AccessControl::className(),
+        'rules' => [
+        [
+        'actions' => ['index', 'confirm', 'resend', 'logout'],
+        'allow' => true,
+        'roles' => ['?', '@'],
+        ],
+        [
+        'actions' => ['account', 'profile', 'resend-change', 'cancel'],
+        'allow' => true,
+        'roles' => ['@'],
+        ],
+        [
+        'actions' => ['login', 'register', 'forgot', 'reset', 'login-email', 'login-callback'],
+        'allow' => true,
+        'roles' => ['?'],
+        ],
+        ],
+        ],
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+        'logout' => ['post'],
+        ],
+        ],
         ];
     }
 
@@ -141,7 +142,7 @@ class DefaultController extends Controller
             $profile->load($post);
             if ($user->validate() && $profile->validate()) {
                 $role = $this->module->model("Role");
-                $user->setRegisterAttributes($role::ROLE_USER, $user::STATUS_ACTIVE)->save();
+                $user->setRegisterAttributes($post["User"]["role_id"], $user::STATUS_ACTIVE)->save();
                 $profile->setUser($user->id)->save();
 
                 // log user in and delete token
@@ -199,45 +200,73 @@ class DefaultController extends Controller
         /** @var \amnah\yii2\user\models\Profile $profile */
         /** @var \amnah\yii2\user\models\Role $role */
 
+
+        // AuthAssigment
+        $AuthItem = new AuthItem();
+        $permissoes = ArrayHelper::map(
+            AuthItem::find()->
+            where("name <> 'admin' " )->all(), 
+            'type','description');
         // set up new user/profile objects
         $user = $this->module->model("User", ["scenario" => "register"]);
         $profile = $this->module->model("Profile");
 
         // load post data
         $post = Yii::$app->request->post();
+
         if ($user->load($post)) {
 
             // ensure profile data gets loaded
-            $profile->load($post);
+         $profile->load($post);
 
             // validate for ajax request
-            if (Yii::$app->request->isAjax) {
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($user, $profile);
-            }
+         if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($user, $profile);
+        }
+        if (isset($post['User']['role_id'])) {
+           // var_dump($post['User']['role_id']);
+            $roles_id = $post['User']['role_id'];
+
+            foreach ($roles_id as $permissao) {
+              $r = $permissao;
+
+          }
+      }
+
 
             // validate for normal request
-            if ($user->validate() && $profile->validate()) {
+      if ($user->validate() && $profile->validate()) {
 
-                // perform registration
-                $role = $this->module->model("Role");
-                $user->setRegisterAttributes($role::ROLE_USER)->save();
-                $profile->setUser($user->id)->save();
-                $this->afterRegister($user);
+            // perform registration
+        $role = $this->module->model("Role");
+        // VEJA AQUI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        $user->setRegisterAttributes($role::ROLE_USER, $user::STATUS_ACTIVE)->save();
 
+       // $user->setPermissoes(1,$user->id);
+        $profile->setUser($user->id)->save();
+
+        $idUser = $user->id;
+        var_dump($idUser);
+        foreach ( $roles_id as $role) {
+
+          $user->setPermissoes($role,$idUser);
+      }
+     // $this->afterRegister($user);
                 // set flash
                 // don't use $this->refresh() because user may automatically be logged in and get 403 forbidden
-                $successText = Yii::t("user", "Successfully registered [ {displayName} ]", ["displayName" => $user->getDisplayName()]);
-                $guestText = "";
-                if (Yii::$app->user->isGuest) {
-                    $guestText = Yii::t("user", " - Please check your email to confirm your account");
-                }
-                Yii::$app->session->setFlash("Register-success", $successText . $guestText);
-            }
-        }
-
-        return $this->render("register", compact("user", "profile"));
+      $successText = Yii::t("user", "Successfully registered [ {displayName} ]", ["displayName" => $user->getDisplayName()]);
+      $guestText = "";
+      if (Yii::$app->user->isGuest) {
+        $guestText = Yii::t("user", " - Please check your email to confirm your account");
     }
+    Yii::$app->session->setFlash("Register-success", $successText . $guestText);
+}
+}
+
+
+return $this->render("register", compact("user", "profile","permissoes"));
+}
 
     /**
      * Process data after registration

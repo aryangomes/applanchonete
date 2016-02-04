@@ -10,7 +10,8 @@ use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\models\AuthItem;
+use yii\helpers\ArrayHelper;
 /**
  * AdminController implements the CRUD actions for User model.
  */
@@ -42,12 +43,12 @@ class AdminController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+        'delete' => ['post'],
+        ],
+        ],
         ];
     }
 
@@ -73,7 +74,7 @@ class AdminController extends Controller
     {
         return $this->render('view', [
             'user' => $this->findModel($id),
-        ]);
+            ]);
     }
 
     /**
@@ -109,6 +110,11 @@ class AdminController extends Controller
      */
     public function actionUpdate($id)
     {
+
+        $authitem = new AuthItem();
+        $permissoes = ArrayHelper::map(
+            AuthItem::find()->all(), 
+            'type','description');
         // set up user and profile
         $user = $this->findModel($id);
         $user->setScenario("admin");
@@ -123,7 +129,7 @@ class AdminController extends Controller
         }
 
         // render
-        return $this->render('update', compact('user', 'profile'));
+        return $this->render('update', compact('user', 'profile','permissoes'));
     }
 
     /**

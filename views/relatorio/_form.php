@@ -54,8 +54,7 @@ use kartik\datecontrol\DateControl;
     'displayFormat' => 'dd/MM/yyyy',
     'language'=>'pt',
     ]); ?>
-
-    <?=  $form->field($model, 'usuario_id')->dropDownList([1=>'Usuario 1',2=>'Usuario 2'], ['prompt'=>'Selecione o usuário'])  ?>
+    <?= $form->field($model, 'usuario_id' )->hiddenInput(['value'=>Yii::$app->user->getId()])->label(false); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

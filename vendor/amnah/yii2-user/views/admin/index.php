@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use app\models\AuthItem;
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
@@ -28,27 +28,31 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Yii::t('user', 'Create {modelClass}', [
           'modelClass' => 'User',
-        ]), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+          ]), ['create'], ['class' => 'btn btn-success']) ?>
+      </p>
 
-    <?php \yii\widgets\Pjax::begin(); ?>
-    <?= GridView::widget([
+      <?php \yii\widgets\Pjax::begin(); ?>
+      <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+        ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            [
-                'attribute' => 'role_id',
-                'label' => Yii::t('user', 'Role'),
-                'filter' => $role::dropdown(),
+        'id',
+        [
+        'attribute' => 'role_id',
+        'label' => Yii::t('user', 'Role'),
+               /* 'filter' => $role::dropdown(),
                 'value' => function($model, $index, $dataColumn) use ($role) {
                     $roleDropdown = $role::dropdown();
                     return $roleDropdown[$model->role_id];
-                },
-            ],
-            [
+                },*/
+                'value' => function($data) {
+                    $authitem = new AuthItem();
+                    return $authitem->getDescription($data->role_id)->description;
+                }
+                ],
+                [
                 'attribute' => 'status',
                 'label' => Yii::t('user', 'Status'),
                 'filter' => $user::statusDropdown(),
@@ -56,10 +60,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     $statusDropdown = $user::statusDropdown();
                     return $statusDropdown[$model->status];
                 },
-            ],
-            'email:email',
-            'profile.full_name',
-            'created_at',
+                ],
+                'email:email',
+                'profile.full_name',
+                'created_at',
+
             // 'username',
             // 'password',
             // 'auth_key',
@@ -71,9 +76,9 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'banned_at',
             // 'banned_reason',
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-    <?php \yii\widgets\Pjax::end(); ?>
+                ['class' => 'yii\grid\ActionColumn'],
+                ],
+                ]); ?>
+                <?php \yii\widgets\Pjax::end(); ?>
 
-</div>
+            </div>

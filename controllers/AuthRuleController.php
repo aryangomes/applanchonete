@@ -3,17 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Caixa;
-use app\models\CaixaSearch;
+use app\models\AuthRule;
+use app\models\AuthRuleSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\filters\AccessControl;
-
 /**
- * CaixaController implements the CRUD actions for Caixa model.
+ * AuthRuleController implements the CRUD actions for AuthRule model.
  */
-class CaixaController extends Controller
+class AuthRuleController extends Controller
 {
     public function behaviors()
     {
@@ -23,9 +22,8 @@ class CaixaController extends Controller
         'only'=> ['create','update','view','delete','index'],
         'rules'=> [
         ['allow'=>true,
-        'roles' => ['gerente'],
+        'roles' => ['admin'],
         ],
-        
         ]
         ],
         'verbs' => [
@@ -38,31 +36,23 @@ class CaixaController extends Controller
     }
 
     /**
-     * Lists all Caixa models.
+     * Lists all AuthRule models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $caixa = new Caixa();
-        $caixas = Caixa::find()->all();
-       // var_dump($caixas[0]->idcaixa);
-        if (count($caixas) > 0) {
-            return $this->redirect(['view', 'id'=>$caixas[0]->idcaixa]);
-        }else{
+        $searchModel = new AuthRuleSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-            $searchModel = new CaixaSearch();
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-            return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-                ]);
-        }
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            ]);
     }
 
     /**
-     * Displays a single Caixa model.
-     * @param integer $id
+     * Displays a single AuthRule model.
+     * @param string $id
      * @return mixed
      */
     public function actionView($id)
@@ -73,35 +63,27 @@ class CaixaController extends Controller
     }
 
     /**
-     * Creates a new Caixa model.
+     * Creates a new AuthRule model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
-    { $caixa = new Caixa();
-        $caixas = Caixa::find()->all();
+    {
+        $model = new AuthRule();
 
-        if (count($caixas) == 0) {
-         
-            $model = new Caixa();
-
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->idcaixa]);
-            } else {
-                return $this->render('create', [
-                    'model' => $model,
-                    ]);
-            }
-        }else{
-         return $this->redirect(['view', 'id'=>$caixas[0]->idcaixa]);
-
-     }
- }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->name]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+                ]);
+        }
+    }
 
     /**
-     * Updates an existing Caixa model.
+     * Updates an existing AuthRule model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * @param string $id
      * @return mixed
      */
     public function actionUpdate($id)
@@ -109,7 +91,7 @@ class CaixaController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idcaixa]);
+            return $this->redirect(['view', 'id' => $model->name]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -118,9 +100,9 @@ class CaixaController extends Controller
     }
 
     /**
-     * Deletes an existing Caixa model.
+     * Deletes an existing AuthRule model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param string $id
      * @return mixed
      */
     public function actionDelete($id)
@@ -131,15 +113,15 @@ class CaixaController extends Controller
     }
 
     /**
-     * Finds the Caixa model based on its primary key value.
+     * Finds the AuthRule model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Caixa the loaded model
+     * @param string $id
+     * @return AuthRule the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Caixa::findOne($id)) !== null) {
+        if (($model = AuthRule::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -3,17 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Fornecedor;
-use app\models\FornecedorSearch;
+use app\models\AuthItemChild;
+use app\models\AuthItemChildSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\filters\AccessControl;
-use yii\web\ForbiddenHttpException;
 /**
- * FornecedorController implements the CRUD actions for Fornecedor model.
+ * AuthItemChildController implements the CRUD actions for AuthItemChild model.
  */
-class FornecedorController extends Controller
+class AuthItemChildController extends Controller
 {
     public function behaviors()
     {
@@ -23,7 +22,7 @@ class FornecedorController extends Controller
         'only'=> ['create','update','view','delete','index'],
         'rules'=> [
         ['allow'=>true,
-       // 'roles' => ['funcionario'],
+        'roles' => ['admin'],
         ],
         ]
         ],
@@ -36,16 +35,13 @@ class FornecedorController extends Controller
         ];
     }
 
-
-    
-
     /**
-     * Lists all Fornecedor models.
+     * Lists all AuthItemChild models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new FornecedorSearch();
+        $searchModel = new AuthItemChildSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -55,51 +51,49 @@ class FornecedorController extends Controller
     }
 
     /**
-     * Displays a single Fornecedor model.
-     * @param integer $id
+     * Displays a single AuthItemChild model.
+     * @param string $parent
+     * @param string $child
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($parent, $child)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($parent, $child),
             ]);
     }
 
     /**
-     * Creates a new Fornecedor model.
+     * Creates a new AuthItemChild model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        if (Yii::$app->user->can("create-fornecedor")) {
-            $model = new Fornecedor();
-
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->idFornecedor]);
-            } else {
-                return $this->render('create', [
-                    'model' => $model,
-                    ]);
-            }
-        }else{
-          throw new ForbiddenHttpException("Forbidden access");
-      }
-  }
-
-    /**
-     * Updates an existing Fornecedor model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
+        $model = new AuthItemChild();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idFornecedor]);
+            return $this->redirect(['view', 'parent' => $model->parent, 'child' => $model->child]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+                ]);
+        }
+    }
+
+    /**
+     * Updates an existing AuthItemChild model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param string $parent
+     * @param string $child
+     * @return mixed
+     */
+    public function actionUpdate($parent, $child)
+    {
+        $model = $this->findModel($parent, $child);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'parent' => $model->parent, 'child' => $model->child]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -108,28 +102,30 @@ class FornecedorController extends Controller
     }
 
     /**
-     * Deletes an existing Fornecedor model.
+     * Deletes an existing AuthItemChild model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param string $parent
+     * @param string $child
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete($parent, $child)
     {
-        $this->findModel($id)->delete();
+        $this->findModel($parent, $child)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Fornecedor model based on its primary key value.
+     * Finds the AuthItemChild model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Fornecedor the loaded model
+     * @param string $parent
+     * @param string $child
+     * @return AuthItemChild the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($parent, $child)
     {
-        if (($model = Fornecedor::findOne($id)) !== null) {
+        if (($model = AuthItemChild::findOne(['parent' => $parent, 'child' => $child])) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -14,6 +14,7 @@ use yii\widgets\ActiveForm;
 
 $module = $this->context->module;
 $role = $module->model("Role");
+
 ?>
 
 <div class="user-form">
@@ -28,7 +29,7 @@ $role = $module->model("Role");
 
     <?= $form->field($profile, 'full_name'); ?>
 
-    <?= $form->field($user, 'role_id')->dropDownList($role::dropdown()); ?>
+    <?= $form->field($user, 'role_id')->dropDownList($permissoes); ?>
 
     <?= $form->field($user, 'status')->dropDownList($user::statusDropdown()); ?>
 

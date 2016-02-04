@@ -206,7 +206,7 @@ class DefaultController extends Controller
         $permissoes = ArrayHelper::map(
             AuthItem::find()->
             where("name <> 'admin' " )->all(), 
-            'type','description');
+            'name','description');
         // set up new user/profile objects
         $user = $this->module->model("User", ["scenario" => "register"]);
         $profile = $this->module->model("Profile");
@@ -226,42 +226,38 @@ class DefaultController extends Controller
         }
         if (isset($post['User']['role_id'])) {
            // var_dump($post['User']['role_id']);
-            $roles_id = $post['User']['role_id'];
+            $roles = $post['User']['role_id'];
 
-            foreach ($roles_id as $permissao) {
-              $r = $permissao;
-
-          }
-      }
+        }
 
 
             // validate for normal request
-      if ($user->validate() && $profile->validate()) {
+        if ($user->validate() && $profile->validate()) {
 
             // perform registration
-        $role = $this->module->model("Role");
+            $role = $this->module->model("Role");
         // VEJA AQUI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        $user->setRegisterAttributes($role::ROLE_USER, $user::STATUS_ACTIVE)->save();
+            $user->setRegisterAttributes($role::ROLE_USER, $user::STATUS_ACTIVE)->save();
 
        // $user->setPermissoes(1,$user->id);
-        $profile->setUser($user->id)->save();
+            $profile->setUser($user->id)->save();
 
-        $idUser = $user->id;
-        var_dump($idUser);
-        foreach ( $roles_id as $role) {
+            $idUser = $user->id;
+            var_dump($idUser);
+            foreach ( $roles as $role) {
 
-          $user->setPermissoes($role,$idUser);
-      }
+              $user->setPermissoes($role,$idUser);
+          }
      // $this->afterRegister($user);
                 // set flash
                 // don't use $this->refresh() because user may automatically be logged in and get 403 forbidden
-      $successText = Yii::t("user", "Successfully registered [ {displayName} ]", ["displayName" => $user->getDisplayName()]);
-      $guestText = "";
-      if (Yii::$app->user->isGuest) {
-        $guestText = Yii::t("user", " - Please check your email to confirm your account");
+          $successText = Yii::t("user", "Successfully registered [ {displayName} ]", ["displayName" => $user->getDisplayName()]);
+          $guestText = "";
+          if (Yii::$app->user->isGuest) {
+            $guestText = Yii::t("user", " - Please check your email to confirm your account");
+        }
+        Yii::$app->session->setFlash("Register-success", $successText . $guestText);
     }
-    Yii::$app->session->setFlash("Register-success", $successText . $guestText);
-}
 }
 
 

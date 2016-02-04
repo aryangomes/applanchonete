@@ -351,21 +351,21 @@ class User extends ActiveRecord implements IdentityInterface
         return $this;
     }
 
-    public function setPermissoes($roleId, $userId)
+    public function setPermissoes($role, $userId)
     {
       /*  $auth_assignment = new AuthAssignment();
         $auth_assignment->item_name = 'create-fornecedor';
         $auth_assignment->user_id = $userId;
         $auth_assignment->save();*/
         $authItem = new AuthItem();
-        $name = $authItem->getPermissao($roleId)->name;
+        
 
 
         Yii::$app->db->createCommand(
             "INSERT INTO auth_assignment
             (item_name, user_id ) 
             VALUES (:item, :iduser)", [
-            ':item' => $name,
+            ':item' => $role,
             ':iduser'=> $userId,
             ])->execute();
     }

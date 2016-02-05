@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use kartik\widgets\Select2;
 /**
  * @var yii\web\View $this
  * @var yii\widgets\ActiveForm $form
@@ -53,8 +53,19 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php // $form->field($user, 'role_id')->dropDownList($permissoes, ['prompt'=>'Escolha o tipo de usuário'])  ?>
 
 
-<?= $form->field($user, 'role_id')->checkboxList($permissoes)  ?>
+<?php
 
+
+ // $form->field($user, 'role_id')->checkboxList($permissoes)  ?>
+
+ <?= $form->field($user, 'role_id')->widget(Select2::classname(), [
+    'data' => $permissoes,
+    'options' => ['placeholder' => 'Selecione as permissões'],
+    'pluginOptions' => [
+    'allowClear' => true,
+    'multiple'=>true,
+    ],
+    ]);  ?>
 
         <?php /* uncomment if you want to add profile fields here
         <?= $form->field($profile, 'full_name') ?>

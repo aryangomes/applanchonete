@@ -358,8 +358,26 @@ class User extends ActiveRecord implements IdentityInterface
         $auth_assignment->user_id = $userId;
         $auth_assignment->save();*/
         $authItem = new AuthItem();
-        
 
+
+
+        Yii::$app->db->createCommand(
+            "INSERT INTO auth_assignment
+            (item_name, user_id ) 
+            VALUES (:item, :iduser)", [
+            ':item' => $role,
+            ':iduser'=> $userId,
+            ])->execute();
+    }
+
+    public function alterarPermissoes($role, $userId)
+    {
+      /*  $auth_assignment = new AuthAssignment();
+        $auth_assignment->item_name = 'create-fornecedor';
+        $auth_assignment->user_id = $userId;
+        $auth_assignment->save();*/
+        $authItem = new AuthItem();
+        
 
         Yii::$app->db->createCommand(
             "INSERT INTO auth_assignment

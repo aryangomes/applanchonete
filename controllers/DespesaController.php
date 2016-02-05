@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 /**
  * DespesaController implements the CRUD actions for Despesa model.
  */
@@ -22,7 +23,7 @@ class DespesaController extends Controller
         'only'=> ['create','update','view','delete','index'],
         'rules'=> [
         ['allow'=>true,
-        'roles' => ['gerente'],
+      //  'roles' => ['gerente'],
         ],
         ]
         ],
@@ -57,12 +58,12 @@ class DespesaController extends Controller
      */
     public function actionView($id)
     {
-     $formatter = \Yii::$app->formatter;
-     return $this->render('view', [
+       $formatter = \Yii::$app->formatter;
+       return $this->render('view', [
         'model' => $this->findModel($id),
         'formatter'=>$formatter,
         ]);
- }
+   }
 
     /**
      * Creates a new Despesa model.
@@ -71,6 +72,7 @@ class DespesaController extends Controller
      */
     public function actionCreate()
     {
+       if (Yii::$app->user->can("create-despesa")) {
         $model = new Despesa();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -80,7 +82,10 @@ class DespesaController extends Controller
                 'model' => $model,
                 ]);
         }
-    }
+    }else{
+      throw new ForbiddenHttpException("Forbidden access");
+  }
+}
 
     /**
      * Updates an existing Despesa model.

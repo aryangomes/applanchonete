@@ -114,7 +114,12 @@ class AdminController extends Controller
         $authitem = new AuthItem();
         $permissoes = ArrayHelper::map(
             AuthItem::find()->all(), 
-            'type','description');
+            'name','description');
+
+        $permissoesUser = ArrayHelper::map(
+            AuthItem::find()->innerJoin('auth_assignment',
+                'item_name = name')->where(['user_id'=>$id])->all(), 
+            'name','description');
         // set up user and profile
         $user = $this->findModel($id);
         $user->setScenario("admin");
@@ -123,13 +128,29 @@ class AdminController extends Controller
         // load post data and validate
         $post = Yii::$app->request->post();
         if ($user->load($post) && $user->validate() && $profile->load($post) && $profile->validate()) {
-            $user->save(false);
+            if (isset($post['roles'])) {
+               // var_dump($post['roles']);
+                $roles = $post['roles'];
+            }
+
+            Yii::$app->db->createCommand(
+                "DELETE from auth_assignment WHERE 
+                user_id = :iduser ", [
+                
+                ':iduser'=> $user->id,
+                ])->execute();
+            foreach ( $roles as $role) {
+
+                $user->alterarPermissoes($role,$user->id);
+            }
+
+          /*  $user->save(false);
             $profile->setUser($user->id)->save(false);
-            return $this->redirect(['view', 'id' => $user->id]);
+            return $this->redirect(['view', 'id' => $user->id]);*/
         }
 
         // render
-        return $this->render('update', compact('user', 'profile','permissoes'));
+        return $this->render('update', compact('user', 'profile','permissoes','permissoesUser'));
     }
 
     /**

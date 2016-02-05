@@ -22,7 +22,8 @@
         "kartik-v/yii2-widgets": "*",
         "kartik-v/yii2-datecontrol": "@dev",
         "kartik-v/yii2-field-range": "*",
-        "amnah/yii2-user": " 4.0"
+        "amnah/yii2-user": " 4.0",
+        "kartik-v/yii2-widget-select2": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

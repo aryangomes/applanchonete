@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use kartik\widgets\Select2;
 /**
  * @var yii\web\View $this
  * @var amnah\yii2\user\Module $module
@@ -18,6 +18,8 @@ $role = $module->model("Role");
 ?>
 
 <div class="user-form">
+    <?php //var_dump($permissoesUser) ?>
+
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -29,7 +31,50 @@ $role = $module->model("Role");
 
     <?= $form->field($profile, 'full_name'); ?>
 
-    <?= $form->field($user, 'role_id')->dropDownList($permissoes); ?>
+    <?php // $form->field($user, 'role_id')->dropDownList($permissoes); ?>
+
+    <?php 
+    $inic = array();
+    foreach ($permissoesUser as $key => $value) {
+        array_push($inic, $key);
+    }
+
+    ?>
+
+    <?php /*$form->field($user, 'role_id')->widget(Select2::classname(), [
+
+        'data' => $permissoes,
+
+        //'attribute'=>$permissoesUser,
+        'value'=>$inic,
+      //  'options' => ['placeholder' => 'Selecione as permissões'],
+        'pluginOptions' => [
+
+        'allowClear' => true,
+        'multiple'=>true,
+        ],
+        ]); */ ?>
+
+<?php
+
+
+echo Select2::widget([
+    'name'=>'roles',
+
+    'data' => $permissoes,
+
+        //'attribute'=>$permissoesUser,
+    'value'=>$inic,
+      //  'options' => ['placeholder' => 'Selecione as permissões'],
+    'pluginOptions' => [
+
+    'allowClear' => true,
+    'multiple'=>true,
+    ],
+    ]);
+
+
+    ?>
 
     <?= $form->field($user, 'status')->dropDownList($user::statusDropdown()); ?>
 

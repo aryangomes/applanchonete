@@ -217,10 +217,10 @@ class DefaultController extends Controller
         if ($user->load($post)) {
 
             // ensure profile data gets loaded
-         $profile->load($post);
+           $profile->load($post);
 
             // validate for ajax request
-         if (Yii::$app->request->isAjax) {
+           if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($user, $profile);
         }
@@ -243,7 +243,7 @@ class DefaultController extends Controller
             $profile->setUser($user->id)->save();
 
             $idUser = $user->id;
-            var_dump($idUser);
+           // var_dump($idUser);
             foreach ( $roles as $role) {
 
               $user->setPermissoes($role,$idUser);

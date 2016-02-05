@@ -166,40 +166,27 @@ $.fn.alert.Constructor = Alert
 
 
  $(document).ready(function(){
-   console.log('teste');
-   var a = $("input[name~='User[role_id][]'").val();
-   for (var i = 10; i >= 0; i--) {
-    console.log($("input[name~='User[role_id][]'").val());
-  };
-  /*$("[value='3']").click(function(){
-
-     $("[value='3']")
-   console.log($("[value='3']").val());
 
 
- });*/
+   $("[value='despesa']").click(function(){
 
- $("[value='despesa']").click(function(){
+    if ( $(this).is(':checked')) {
 
-  if ( $(this).is(':checked')) {
+      $("[value='create-despesa']").prop("checked",true);
+      $("[value='index-despesa']").prop("checked",true);
+      $("[value='update-despesa']").prop("checked",true);
+      $("[value='delete-despesa']").prop("checked",true);
+    }
+    else{
 
-    $("[value='create-despesa']").prop("checked",true);
-    $("[value='index-despesa']").prop("checked",true);
-    $("[value='update-despesa']").prop("checked",true);
-    $("[value='delete-despesa']").prop("checked",true);
-  }
-  else{
+     $("[value='create-despesa']").prop("checked",false);
+     $("[value='index-despesa']").prop("checked",false);
+     $("[value='update-despesa']").prop("checked",false);
+     $("[value='delete-despesa']").prop("checked",false);
+   }
+ });
 
-   $("[value='create-despesa']").prop("checked",false);
-   $("[value='index-despesa']").prop("checked",false);
-   $("[value='update-despesa']").prop("checked",false);
-   $("[value='delete-despesa']").prop("checked",false);
- }
-});
- if(a == 8)  {
-  console.log('true');
-}
-});
+ });
 
  !function ($) {
 

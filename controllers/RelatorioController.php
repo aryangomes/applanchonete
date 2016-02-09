@@ -22,7 +22,7 @@ class RelatorioController extends Controller
         'only'=> ['create','update','view','delete','index'],
         'rules'=> [
         ['allow'=>true,
-        'roles' => ['gerente'],
+        'roles' => ['relatorio'],
         ],
         ]
         ],
@@ -41,14 +41,19 @@ class RelatorioController extends Controller
      */
     public function actionIndex()
     {
+     if (Yii::$app->user->can("index-relatorio") ||
+        Yii::$app->user->can("relatorio") ) {
         $searchModel = new RelatorioSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            ]);
-    }
+    return $this->render('index', [
+        'searchModel' => $searchModel,
+        'dataProvider' => $dataProvider,
+        ]);
+}else{
+    throw new ForbiddenHttpException("Acesso negado!");
+}
+}
 
     /**
      * Displays a single Relatorio model.
@@ -57,10 +62,15 @@ class RelatorioController extends Controller
      */
     public function actionView($id)
     {
+       if (Yii::$app->user->can("view-relatorio") ||
+        Yii::$app->user->can("relatorio") ) {
         return $this->render('view', [
             'model' => $this->findModel($id),
             ]);
-    }
+}else{
+    throw new ForbiddenHttpException("Acesso negado!");
+}
+}
 
     /**
      * Creates a new Relatorio model.
@@ -69,16 +79,21 @@ class RelatorioController extends Controller
      */
     public function actionCreate()
     {
+       if (Yii::$app->user->can("create-relatorio") ||
+        Yii::$app->user->can("relatorio") ) {
         $model = new Relatorio();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idrelatorio]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-                ]);
-        }
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['view', 'id' => $model->idrelatorio]);
+    } else {
+        return $this->render('create', [
+            'model' => $model,
+            ]);
     }
+}else{
+    throw new ForbiddenHttpException("Acesso negado!");
+}
+}
 
     /**
      * Updates an existing Relatorio model.
@@ -88,16 +103,21 @@ class RelatorioController extends Controller
      */
     public function actionUpdate($id)
     {
+       if (Yii::$app->user->can("update-relatorio") ||
+        Yii::$app->user->can("relatorio") ) {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idrelatorio]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                ]);
-        }
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['view', 'id' => $model->idrelatorio]);
+    } else {
+        return $this->render('update', [
+            'model' => $model,
+            ]);
     }
+}else{
+    throw new ForbiddenHttpException("Acesso negado!");
+}
+}
 
     /**
      * Deletes an existing Relatorio model.
@@ -107,10 +127,15 @@ class RelatorioController extends Controller
      */
     public function actionDelete($id)
     {
+      if (Yii::$app->user->can("delete-relatorio") ||
+        Yii::$app->user->can("relatorio") ) {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
-    }
+    return $this->redirect(['index']);
+}else{
+    throw new ForbiddenHttpException("Acesso negado!");
+}
+}
 
     /**
      * Finds the Relatorio model based on its primary key value.

@@ -23,7 +23,7 @@ class FornecedorController extends Controller
         'only'=> ['create','update','view','delete','index'],
         'rules'=> [
         ['allow'=>true,
-       // 'roles' => ['funcionario'],
+        'roles' => ['fornecedor'],
         ],
         ]
         ],
@@ -45,14 +45,19 @@ class FornecedorController extends Controller
      */
     public function actionIndex()
     {
+       if (Yii::$app->user->can("index-fornecedor") ||
+        Yii::$app->user->can("fornecedor") ) {
         $searchModel = new FornecedorSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            ]);
-    }
+    return $this->render('index', [
+        'searchModel' => $searchModel,
+        'dataProvider' => $dataProvider,
+        ]);
+}else{
+    throw new ForbiddenHttpException("Acesso negado!");
+}
+}
 
     /**
      * Displays a single Fornecedor model.
@@ -60,11 +65,18 @@ class FornecedorController extends Controller
      * @return mixed
      */
     public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-            ]);
+    { 
+        if (Yii::$app->user->can("view-fornecedor") ||
+            Yii::$app->user->can("fornecedor") ) {
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+                ]);
+
+    }else{
+        throw new ForbiddenHttpException("Acesso negado!");
     }
+}
+}
 
     /**
      * Creates a new Fornecedor model.
@@ -73,20 +85,21 @@ class FornecedorController extends Controller
      */
     public function actionCreate()
     {
-        if (Yii::$app->user->can("create-fornecedor")) {
+        if (Yii::$app->user->can("create-fornecedor") ||
+            Yii::$app->user->can("fornecedor") ) {
             $model = new Fornecedor();
 
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->idFornecedor]);
-            } else {
-                return $this->render('create', [
-                    'model' => $model,
-                    ]);
-            }
-        }else{
-          throw new ForbiddenHttpException("Forbidden access");
-      }
-  }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->idFornecedor]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+                ]);
+        }
+    }else{
+        throw new ForbiddenHttpException("Acesso negado!");
+    }
+}
 
     /**
      * Updates an existing Fornecedor model.
@@ -96,16 +109,23 @@ class FornecedorController extends Controller
      */
     public function actionUpdate($id)
     {
+
+     if (Yii::$app->user->can("update-fornecedor") ||
+        Yii::$app->user->can("fornecedor") ) {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idFornecedor]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                ]);
-        }
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['view', 'id' => $model->idFornecedor]);
+    } else {
+        return $this->render('update', [
+            'model' => $model,
+            ]);
     }
+
+}else{
+    throw new ForbiddenHttpException("Acesso negado!");
+}
+}
 
     /**
      * Deletes an existing Fornecedor model.
@@ -115,10 +135,18 @@ class FornecedorController extends Controller
      */
     public function actionDelete($id)
     {
+
+
+     if (Yii::$app->user->can("delete-fornecedor") ||
+        Yii::$app->user->can("fornecedor") ) {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
-    }
+    return $this->redirect(['index']);
+
+}else{
+    throw new ForbiddenHttpException("Acesso negado!");
+}
+}
 
     /**
      * Finds the Fornecedor model based on its primary key value.

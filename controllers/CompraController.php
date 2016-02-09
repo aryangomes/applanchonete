@@ -24,7 +24,7 @@ class CompraController extends Controller
         'only'=> ['create','update','view','delete','index'],
         'rules'=> [
         ['allow'=>true,
-        'roles' => ['gerente'],
+        'roles' => ['compra'],
         ],
         ]
         ],
@@ -43,8 +43,9 @@ class CompraController extends Controller
      */
     public function actionIndex()
     {
-
-        $searchModel = new CompraSearch();
+        if (Yii::$app->user->can("index-compra") ||
+            Yii::$app->user->can("compra") ) {
+            $searchModel = new CompraSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -52,8 +53,10 @@ class CompraController extends Controller
             'dataProvider' => $dataProvider,
             ]);
 
-        
+    }else{
+        throw new ForbiddenHttpException("Acesso negado!");
     }
+}
 
     /**
      * Displays a single Compra model.
@@ -62,19 +65,25 @@ class CompraController extends Controller
      */
     public function actionView($id)
     {
+     if (Yii::$app->user->can("view-compra") ||
+        Yii::$app->user->can("compra") ) {
         $compra = new Compra();
-        $idFornecedor = $compra::find('fornecedor_idFornecedor')->where(['idcompra'=>$id])->one();
-        $fornecedor = new Fornecedor();
+    $idFornecedor = $compra::find('fornecedor_idFornecedor')->where(['idcompra'=>$id])->one();
+    $fornecedor = new Fornecedor();
         //var_dump($id);
        // var_dump($idFornecedor->fornecedor_idFornecedor);
-        $fornecedor = $fornecedor::getNomeFornecedor($idFornecedor->fornecedor_idFornecedor);
-        $formatter = \Yii::$app->formatter;
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-            'fornecedor'=>$fornecedor,
-            'formatter'=>$formatter,
-            ]);
-    }
+    $fornecedor = $fornecedor::getNomeFornecedor($idFornecedor->fornecedor_idFornecedor);
+    $formatter = \Yii::$app->formatter;
+    return $this->render('view', [
+        'model' => $this->findModel($id),
+        'fornecedor'=>$fornecedor,
+        'formatter'=>$formatter,
+        ]);
+
+}else{
+    throw new ForbiddenHttpException("Acesso negado!");
+}
+}
 
     /**
      * Creates a new Compra model.
@@ -83,10 +92,11 @@ class CompraController extends Controller
      */
     public function actionCreate()
     {
-
-      $fornecedores= ArrayHelper::map(
-        Fornecedor::find()->all(), 
-        'idFornecedor','nome');
+        if (Yii::$app->user->can("create-compra") ||
+            Yii::$app->user->can("compra") ) {
+          $fornecedores= ArrayHelper::map(
+            Fornecedor::find()->all(), 
+            'idFornecedor','nome');
       $model = new Compra();
 
       if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -97,6 +107,9 @@ class CompraController extends Controller
             'fornecedores'=>$fornecedores,
             ]);
     }
+}else{
+    throw new ForbiddenHttpException("Acesso negado!");
+}
 }
 
     /**
@@ -107,12 +120,14 @@ class CompraController extends Controller
      */
     public function actionUpdate($id)
     {
-       $fornecedores= ArrayHelper::map(
-        Fornecedor::find()->all(), 
-        'idFornecedor','nome');
-       $model = $this->findModel($id);
+      if (Yii::$app->user->can("update-compra") ||
+        Yii::$app->user->can("compra") ) {
+         $fornecedores= ArrayHelper::map(
+            Fornecedor::find()->all(), 
+            'idFornecedor','nome');
+     $model = $this->findModel($id);
 
-       if ($model->load(Yii::$app->request->post()) && $model->save()) {
+     if ($model->load(Yii::$app->request->post()) && $model->save()) {
         return $this->redirect(['view', 'id' => $model->idcompra]);
     } else {
         return $this->render('update', [
@@ -120,6 +135,9 @@ class CompraController extends Controller
             'fornecedores'=>$fornecedores,
             ]);
     }
+}else{
+    throw new ForbiddenHttpException("Acesso negado!");
+}
 }
 
     /**
@@ -130,10 +148,15 @@ class CompraController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if (Yii::$app->user->can("delete-compra") ||
+            Yii::$app->user->can("compra") ) {
+            $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }else{
+        throw new ForbiddenHttpException("Acesso negado!");
     }
+}
 
     /**
      * Finds the Compra model based on its primary key value.

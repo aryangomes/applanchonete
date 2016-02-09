@@ -23,7 +23,7 @@ class DespesaController extends Controller
         'only'=> ['create','update','view','delete','index'],
         'rules'=> [
         ['allow'=>true,
-      //  'roles' => ['gerente'],
+        'roles' => ['despesa'],
         ],
         ]
         ],
@@ -42,14 +42,19 @@ class DespesaController extends Controller
      */
     public function actionIndex()
     {
+      if (Yii::$app->user->can("index-despesa") ||
+        Yii::$app->user->can("despesa") ) {
         $searchModel = new DespesaSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            ]);
-    }
+    return $this->render('index', [
+        'searchModel' => $searchModel,
+        'dataProvider' => $dataProvider,
+        ]);
+}else{
+    throw new ForbiddenHttpException("Acesso negado!");
+}
+}
 
     /**
      * Displays a single Despesa model.
@@ -58,12 +63,17 @@ class DespesaController extends Controller
      */
     public function actionView($id)
     {
-       $formatter = \Yii::$app->formatter;
+        if (Yii::$app->user->can("view-despesa") ||
+            Yii::$app->user->can("despesa") ) {
+           $formatter = \Yii::$app->formatter;
        return $this->render('view', [
         'model' => $this->findModel($id),
         'formatter'=>$formatter,
         ]);
-   }
+   }else{
+    throw new ForbiddenHttpException("Acesso negado!");
+}
+}
 
     /**
      * Creates a new Despesa model.
@@ -72,8 +82,10 @@ class DespesaController extends Controller
      */
     public function actionCreate()
     {
-       if (Yii::$app->user->can("create-despesa")) {
-        $model = new Despesa();
+
+        if (Yii::$app->user->can("create-despesa") ||
+            Yii::$app->user->can("despesa") ) {
+            $model = new Despesa();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->iddespesa]);
@@ -83,8 +95,8 @@ class DespesaController extends Controller
                 ]);
         }
     }else{
-      throw new ForbiddenHttpException("Forbidden access");
-  }
+        throw new ForbiddenHttpException("Acesso negado!");
+    }
 }
 
     /**
@@ -95,16 +107,21 @@ class DespesaController extends Controller
      */
     public function actionUpdate($id)
     {
+     if (Yii::$app->user->can("update-despesa") ||
+        Yii::$app->user->can("despesa") ) {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->iddespesa]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                ]);
-        }
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['view', 'id' => $model->iddespesa]);
+    } else {
+        return $this->render('update', [
+            'model' => $model,
+            ]);
     }
+}else{
+    throw new ForbiddenHttpException("Acesso negado!");
+}
+}
 
     /**
      * Deletes an existing Despesa model.
@@ -114,10 +131,15 @@ class DespesaController extends Controller
      */
     public function actionDelete($id)
     {
+       if (Yii::$app->user->can("delete-despesa") ||
+        Yii::$app->user->can("despesa") ) {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
-    }
+    return $this->redirect(['index']);
+}else{
+    throw new ForbiddenHttpException("Acesso negado!");
+}
+}
 
     /**
      * Finds the Despesa model based on its primary key value.

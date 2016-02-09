@@ -23,7 +23,7 @@ class CaixaController extends Controller
         'only'=> ['create','update','view','delete','index'],
         'rules'=> [
         ['allow'=>true,
-        'roles' => ['gerente'],
+        'roles' => ['caixa'],
         ],
         
         ]
@@ -43,8 +43,10 @@ class CaixaController extends Controller
      */
     public function actionIndex()
     {
-        $caixa = new Caixa();
-        $caixas = Caixa::find()->all();
+        if (Yii::$app->user->can("index-caixa") ||
+            Yii::$app->user->can("caixa") ) {
+            $caixa = new Caixa();
+        $caixas = Caixa::find()->where(['user_id'=>Yii::$app->user->getId()])->all();
        // var_dump($caixas[0]->idcaixa);
         if (count($caixas) > 0) {
             return $this->redirect(['view', 'id'=>$caixas[0]->idcaixa]);
@@ -58,7 +60,10 @@ class CaixaController extends Controller
                 'dataProvider' => $dataProvider,
                 ]);
         }
+    }else{
+        throw new ForbiddenHttpException("Acesso negado!");
     }
+}
 
     /**
      * Displays a single Caixa model.
@@ -67,10 +72,16 @@ class CaixaController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-            ]);
+
+        if (Yii::$app->user->can("view-caixa") ||
+            Yii::$app->user->can("caixa") ) {
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+                ]);
+    }else{
+        throw new ForbiddenHttpException("Acesso negado!");
     }
+}
 
     /**
      * Creates a new Caixa model.
@@ -78,25 +89,31 @@ class CaixaController extends Controller
      * @return mixed
      */
     public function actionCreate()
-    { $caixa = new Caixa();
-        $caixas = Caixa::find()->all();
+    {
+     if (Yii::$app->user->can("create-caixa") ||
+        Yii::$app->user->can("caixa") ) {
+         $caixa = new Caixa();
+     $caixas = Caixa::find()->all();
 
-        if (count($caixas) == 0) {
-         
-            $model = new Caixa();
+     if (count($caixas) == 0) {
 
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->idcaixa]);
-            } else {
-                return $this->render('create', [
-                    'model' => $model,
-                    ]);
-            }
-        }else{
-         return $this->redirect(['view', 'id'=>$caixas[0]->idcaixa]);
+        $model = new Caixa();
 
-     }
- }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->idcaixa]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+                ]);
+        }
+    }else{
+       return $this->redirect(['view', 'id'=>$caixas[0]->idcaixa]);
+
+   }
+}else{
+    throw new ForbiddenHttpException("Acesso negado!");
+}
+}
 
     /**
      * Updates an existing Caixa model.
@@ -106,16 +123,21 @@ class CaixaController extends Controller
      */
     public function actionUpdate($id)
     {
+       if (Yii::$app->user->can("update-caixa") ||
+        Yii::$app->user->can("caixa") ) {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idcaixa]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                ]);
-        }
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['view', 'id' => $model->idcaixa]);
+    } else {
+        return $this->render('update', [
+            'model' => $model,
+            ]);
     }
+}else{
+    throw new ForbiddenHttpException("Acesso negado!");
+}
+}
 
     /**
      * Deletes an existing Caixa model.
@@ -125,10 +147,16 @@ class CaixaController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+
+        if (Yii::$app->user->can("delete-caixa") ||
+            Yii::$app->user->can("caixa") ) {
+            $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }else{
+        throw new ForbiddenHttpException("Acesso negado!");
     }
+}
 
     /**
      * Finds the Caixa model based on its primary key value.

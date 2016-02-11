@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 04-Fev-2016 às 21:44
+-- Generation Time: 12-Fev-2016 às 00:41
 -- Versão do servidor: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -63,11 +63,24 @@ CREATE TABLE IF NOT EXISTS `auth_assignment` (
 
 INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('admin', 1, NULL),
-('create-fornecedor', 67, NULL),
-('create-fornecedor', 68, NULL),
-('funcionario', 43, NULL),
-('funcionario', 67, NULL),
-('gerente', 44, NULL);
+('caixa', 84, NULL),
+('compra', 84, NULL),
+('compra', 85, NULL),
+('create-compra', 85, NULL),
+('create-fornecedor', 85, NULL),
+('delete-compra', 85, NULL),
+('delete-fornecedor', 85, NULL),
+('despesa', 84, NULL),
+('fornecedor', 84, NULL),
+('fornecedor', 85, NULL),
+('index-compra', 85, NULL),
+('index-fornecedor', 85, NULL),
+('relatorio', 84, NULL),
+('update-compra', 85, NULL),
+('update-fornecedor', 85, NULL),
+('user', 84, NULL),
+('view-compra', 85, NULL),
+('view-fornecedor', 85, NULL);
 
 -- --------------------------------------------------------
 
@@ -91,9 +104,42 @@ CREATE TABLE IF NOT EXISTS `auth_item` (
 
 INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`) VALUES
 ('admin', 1, 'Admin', NULL, NULL, NULL, NULL),
-('create-fornecedor', 4, 'Criar Fornecedor', NULL, NULL, NULL, NULL),
-('funcionario', 3, 'Funcionário', NULL, NULL, NULL, NULL),
-('gerente', 2, 'Gerente', NULL, NULL, NULL, NULL);
+('caixa', 8, 'Caixa', NULL, NULL, NULL, NULL),
+('compra', 26, 'Compra', NULL, NULL, NULL, NULL),
+('create-caixa', 11, 'Criar Caixa', NULL, NULL, NULL, NULL),
+('create-compra', 29, 'Criar Compra', NULL, NULL, NULL, NULL),
+('create-despesa', 5, 'Criar Despesa', NULL, NULL, NULL, NULL),
+('create-fornecedor', 17, 'Criar Fornecedor', NULL, NULL, NULL, NULL),
+('create-relatorio', 23, 'Criar Relatório', NULL, NULL, NULL, NULL),
+('create-user', 35, 'Criar Usuário', NULL, NULL, NULL, NULL),
+('delete-caixa', 13, 'Deletar Caixa', NULL, NULL, NULL, NULL),
+('delete-compra', 31, 'Deletar Compra', NULL, NULL, NULL, NULL),
+('delete-despesa', 7, 'Deletar Despesa', NULL, NULL, NULL, NULL),
+('delete-fornecedor', 19, 'Deletar Fornecedor', NULL, NULL, NULL, NULL),
+('delete-relatorio', 25, 'Deletar Relatório', NULL, NULL, NULL, NULL),
+('delete-user', 37, 'Deletar Usuário', NULL, NULL, NULL, NULL),
+('despesa', 2, 'Despesa', NULL, NULL, NULL, NULL),
+('fornecedor', 14, 'Fornecedor', NULL, NULL, NULL, NULL),
+('index-caixa', 9, 'Listar Caixas', NULL, NULL, NULL, NULL),
+('index-compra', 27, 'Listar Compras', NULL, NULL, NULL, NULL),
+('index-despesa', 3, 'Listar Despesas', NULL, NULL, NULL, NULL),
+('index-fornecedor', 15, 'Listar Fornecedores', NULL, NULL, NULL, NULL),
+('index-relatorio', 21, 'Listar Relatórios', NULL, NULL, NULL, NULL),
+('index-user', 33, 'Listar Usuários', NULL, NULL, NULL, NULL),
+('relatorio', 20, 'Relatório', NULL, NULL, NULL, NULL),
+('update-caixa', 12, 'Editar Caixa', NULL, NULL, NULL, NULL),
+('update-compra', 30, 'Editar Compra', NULL, NULL, NULL, NULL),
+('update-despesa', 6, 'Editar Despesa', NULL, NULL, NULL, NULL),
+('update-fornecedor', 18, 'Editar Fornecedor', NULL, NULL, NULL, NULL),
+('update-relatorio', 24, 'Editar Relatório', NULL, NULL, NULL, NULL),
+('update-user', 36, 'Editar Usuário', NULL, NULL, NULL, NULL),
+('user', 32, 'Usuário', NULL, NULL, NULL, NULL),
+('view-caixa', 10, 'Visualizar Caixa', NULL, NULL, NULL, NULL),
+('view-compra', 28, 'Visualizar Compra', NULL, NULL, NULL, NULL),
+('view-despesa', 4, 'Visualizar Despesa', NULL, NULL, NULL, NULL),
+('view-fornecedor', 16, 'Visualizar Fornecedor', NULL, NULL, NULL, NULL),
+('view-relatorio', 22, 'Visualizar Relatório', NULL, NULL, NULL, NULL),
+('view-user', 34, 'Visualizar Usuário', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -111,7 +157,37 @@ CREATE TABLE IF NOT EXISTS `auth_item_child` (
 --
 
 INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
-('gerente', 'funcionario');
+('caixa', 'create-caixa'),
+('compra', 'create-compra'),
+('despesa', 'create-despesa'),
+('fornecedor', 'create-fornecedor'),
+('relatorio', 'create-relatorio'),
+('user', 'create-user'),
+('caixa', 'delete-caixa'),
+('compra', 'delete-compra'),
+('despesa', 'delete-despesa'),
+('fornecedor', 'delete-fornecedor'),
+('relatorio', 'delete-relatorio'),
+('user', 'delete-user'),
+('caixa', 'index-caixa'),
+('compra', 'index-compra'),
+('despesa', 'index-despesa'),
+('fornecedor', 'index-fornecedor'),
+('relatorio', 'index-relatorio'),
+('user', 'index-user'),
+('caixa', 'update-caixa'),
+('compra', 'update-compra'),
+('despesa', 'update-despesa'),
+('fornecedor', 'update-fornecedor'),
+('relatorio', 'update-relatorio'),
+('user', 'update-user'),
+('admin', 'user'),
+('caixa', 'view-caixa'),
+('compra', 'view-compra'),
+('despesa', 'view-despesa'),
+('fornecedor', 'view-fornecedor'),
+('relatorio', 'view-relatorio'),
+('user', 'view-user');
 
 -- --------------------------------------------------------
 
@@ -136,15 +212,16 @@ CREATE TABLE IF NOT EXISTS `caixa` (
   `idcaixa` int(11) NOT NULL,
   `valorapurado` float NOT NULL,
   `valoremcaixa` double NOT NULL,
-  `valorlucro` float NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `valorlucro` float NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `caixa`
 --
 
-INSERT INTO `caixa` (`idcaixa`, `valorapurado`, `valoremcaixa`, `valorlucro`) VALUES
-(1, 0.02, 0.02, 0.02);
+INSERT INTO `caixa` (`idcaixa`, `valorapurado`, `valoremcaixa`, `valorlucro`, `user_id`) VALUES
+(4, 0.22, 0.22, 0.22, 84);
 
 -- --------------------------------------------------------
 
@@ -207,7 +284,7 @@ CREATE TABLE IF NOT EXISTS `compra` (
   `totalcompra` float DEFAULT NULL,
   `idcompra` int(11) NOT NULL,
   `fornecedor_idFornecedor` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `compra`
@@ -215,7 +292,8 @@ CREATE TABLE IF NOT EXISTS `compra` (
 
 INSERT INTO `compra` (`datacompra`, `totalcompra`, `idcompra`, `fornecedor_idFornecedor`) VALUES
 ('2015-12-05', 0, 5, 1),
-('2016-01-08', 22.22, 6, 1);
+('2016-01-08', 22.22, 6, 1),
+('2016-02-25', 1.23, 7, 1);
 
 -- --------------------------------------------------------
 
@@ -229,7 +307,7 @@ CREATE TABLE IF NOT EXISTS `despesa` (
   `valordespesa` float NOT NULL,
   `situacaopagamento` tinyint(1) NOT NULL,
   `datavencimento` date DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `despesa`
@@ -239,7 +317,8 @@ INSERT INTO `despesa` (`iddespesa`, `nomedespesa`, `valordespesa`, `situacaopaga
 (3, 'Água', 200, 1, '2015-12-30'),
 (4, 'Luz', 123.12, 0, '2015-12-27'),
 (5, 'Gás', 130, 0, '2015-12-31'),
-(6, 'Teste', 2.31, 0, '2016-01-30');
+(6, 'Teste', 2.31, 0, '2016-01-30'),
+(7, 'Teste2', 22.31, 1, '2016-02-25');
 
 -- --------------------------------------------------------
 
@@ -290,7 +369,7 @@ CREATE TABLE IF NOT EXISTS `fornecedor` (
   `nome` varchar(100) NOT NULL,
   `endereco` varchar(100) DEFAULT NULL,
   `idFornecedor` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `fornecedor`
@@ -298,7 +377,8 @@ CREATE TABLE IF NOT EXISTS `fornecedor` (
 
 INSERT INTO `fornecedor` (`cnpj`, `nome`, `endereco`, `idFornecedor`) VALUES
 ('11.111.111/1111-11', 'Supermercado', 'Rua Principal', 1),
-('22.222.222/2222-22', '123', '123', 2);
+('22.222.222/2222-22', '123', '123', 2),
+('33.333.333/3333-33', 'Atacado e Varejo', 'Rua Principal', 3);
 
 -- --------------------------------------------------------
 
@@ -386,16 +466,18 @@ INSERT INTO `itens_produto` (`iditens_produto`, `produto_idProduto`, `insumo_pro
 --
 
 CREATE TABLE IF NOT EXISTS `loja` (
-  `nome` varchar(100) NOT NULL,
-  `endereco` varchar(100) NOT NULL
+  `endereco` varchar(100) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `loja`
 --
 
-INSERT INTO `loja` (`nome`, `endereco`) VALUES
-('Lanchonete', 'Rua');
+INSERT INTO `loja` (`endereco`, `user_id`, `nome`) VALUES
+('Rua Gerente', 44, 'Loja do Gerente'),
+('Rua Central', 84, 'Lanchonete');
 
 -- --------------------------------------------------------
 
@@ -518,7 +600,7 @@ CREATE TABLE IF NOT EXISTS `profile` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `full_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `profile`
@@ -530,8 +612,10 @@ INSERT INTO `profile` (`id`, `user_id`, `created_at`, `updated_at`, `full_name`)
 (3, 3, '2016-01-26 21:02:42', '2016-01-31 04:37:09', ''),
 (33, 43, '2016-02-01 01:00:46', '2016-02-01 04:23:48', ''),
 (34, 44, '2016-02-01 01:01:26', '2016-02-01 01:01:26', NULL),
-(46, 67, '2016-02-04 05:50:08', '2016-02-04 05:50:08', NULL),
-(47, 68, '2016-02-04 05:50:47', '2016-02-04 05:50:47', NULL);
+(59, 80, '2016-02-05 03:30:47', '2016-02-05 05:19:16', ''),
+(61, 82, '2016-02-07 06:20:49', '2016-02-07 06:20:49', NULL),
+(63, 84, '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL),
+(64, 85, '2016-02-10 06:13:27', '2016-02-10 06:13:27', NULL);
 
 -- --------------------------------------------------------
 
@@ -547,14 +631,15 @@ CREATE TABLE IF NOT EXISTS `relatorio` (
   `inicio_intervalo` date DEFAULT NULL,
   `fim_intervalo` date NOT NULL,
   `usuario_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `relatorio`
 --
 
 INSERT INTO `relatorio` (`idrelatorio`, `nome`, `datageracao`, `tipo`, `inicio_intervalo`, `fim_intervalo`, `usuario_id`) VALUES
-(5, 'Relatório 01', '2016-02-01', 'Compras', '2016-01-26', '2016-01-30', 44);
+(5, 'Relatório 01', '2016-02-01', 'Compras', '2016-01-26', '2016-01-30', 44),
+(6, 'Relatório 02', '2016-02-09', 'Faturamento', '2016-02-25', '2016-02-29', 84);
 
 -- --------------------------------------------------------
 
@@ -625,20 +710,22 @@ CREATE TABLE IF NOT EXISTS `user` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `banned_at` timestamp NULL DEFAULT NULL,
   `banned_reason` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `user`
 --
 
 INSERT INTO `user` (`id`, `role_id`, `status`, `email`, `username`, `password`, `auth_key`, `access_token`, `logged_in_ip`, `logged_in_at`, `created_ip`, `created_at`, `updated_at`, `banned_at`, `banned_reason`) VALUES
-(1, 1, 1, 'admin@sigir.com', 'admin', '$2y$13$ZaQ4eZwz1ZevK9oaKksT2uKcUlh1aytLRyqGGUGYJSzNLuBcYJOvO', '4c1Lk1bFV-2gSyrQnXm7661avqoQOC0L', 'W6ELUzLx6Zvva8fQ5NV4nLl8jJInF_BC', '::1', '2016-02-02 05:08:49', NULL, '2016-01-26 02:42:06', '2016-01-28 01:27:25', NULL, NULL),
-(2, 2, 1, 'gerente@sigir.com', 'gerente2', '$2y$13$SVYrr6CicYYdpMnep5LKtO8ak84X8h6tFHYVpR8j7nGupVOvqnpVa', 'VPd_SzxMvyTgZprvDA-tfT4kPW_IYzZD', 'UyNFyd41oMBIiRVurZPZuvt6kgTe98xy', '::1', '2016-02-02 04:18:11', '::1', '2016-01-26 20:58:10', '2016-01-31 01:28:29', NULL, NULL),
+(1, 1, 1, 'admin@sigir.com', 'admin', '$2y$13$ZaQ4eZwz1ZevK9oaKksT2uKcUlh1aytLRyqGGUGYJSzNLuBcYJOvO', '4c1Lk1bFV-2gSyrQnXm7661avqoQOC0L', 'W6ELUzLx6Zvva8fQ5NV4nLl8jJInF_BC', '::1', '2016-02-11 04:58:03', NULL, '2016-01-26 02:42:06', '2016-01-28 01:27:25', NULL, NULL),
+(2, 2, 1, 'gerente@sigir.com', 'gerente2', '$2y$13$SVYrr6CicYYdpMnep5LKtO8ak84X8h6tFHYVpR8j7nGupVOvqnpVa', 'VPd_SzxMvyTgZprvDA-tfT4kPW_IYzZD', 'UyNFyd41oMBIiRVurZPZuvt6kgTe98xy', '::1', '2016-02-07 23:58:31', '::1', '2016-01-26 20:58:10', '2016-01-31 01:28:29', NULL, NULL),
 (3, 3, 1, 'funcionario@sigir.com', 'funcionario', '$2y$13$.gl9ePCdOVOww1C7AZosD.GSsbD6cMERou36tWYrmEN.dtEFkml9i', 't6g9cyhdz2-EKqG3Whb6TC30qNPQ6oU7', 'BAWIuKS9sXShdh2fM3QnwH8ZqdT5mGwv', '::1', '2016-02-02 05:21:59', '::1', '2016-01-26 21:02:42', '2016-01-31 04:37:09', NULL, NULL),
-(43, 3, 1, 'funcionario1@sigir.com', 'funcionario01', '$2y$13$MR/pQJFMZRJZkZj4.xg0qOtdjJK6NMaMo5jF4bVt1tPHf7sjr0QHi', 'JoIVj9p9IWlVklx1TZ00otnbcr-Gmao7', 'hAYvnkL8pFzP6FGMH7eKw7UmisflzyjX', '::1', '2016-02-04 05:52:05', '::1', '2016-02-01 01:00:46', '2016-02-01 04:23:48', NULL, NULL),
-(44, 2, 1, 'gerente1@sigir.com', 'gerente1', '$2y$13$jCqRGs5oDoll/TW66EOxDOmc7u6SmD5p8m.wDLUpScjSFsEcYxUl2', 'c4rPsYI-Q-WNI9GgYyTvbZr_ynwyuAlY', 'nAzvxmIB3bTRTW9d23dn1isBFBr6s7RI', '::1', '2016-02-02 05:23:57', '::1', '2016-02-01 01:01:26', '2016-02-01 02:29:36', NULL, NULL),
-(67, 2, 1, 'teste@teste.com', NULL, '$2y$13$VWoa3kWszYdo5otowH.hA.hqx/0sfcsvtO/2I.91VMhF27r8Sie8m', 'p12DgvBu4ovsn-7rGeB9-7pmQ5YDg9BI', 'OS5nehZg7y4BHOMXY46-wtbYFdCg0soq', '::1', '2016-02-04 05:51:08', '::1', '2016-02-04 05:50:08', '2016-02-04 05:50:08', NULL, NULL),
-(68, 2, 1, 'teste2@teste.com', NULL, '$2y$13$doCHcC1Te.DoKSh4xI.zUu8SIcHwQtotLeUf0.ukMuBlkLv99hUkK', 'boCjW8nSSdu0cWnsFEmF6GkgcflOGiNM', '4Y1H3hkIS675EYLm5pLMxR2Q7QYekqXP', '::1', '2016-02-04 05:51:22', '::1', '2016-02-04 05:50:46', '2016-02-04 05:50:46', NULL, NULL);
+(43, 3, 1, 'funcionario1@sigir.com', 'funcionario01', '$2y$13$MR/pQJFMZRJZkZj4.xg0qOtdjJK6NMaMo5jF4bVt1tPHf7sjr0QHi', 'JoIVj9p9IWlVklx1TZ00otnbcr-Gmao7', 'hAYvnkL8pFzP6FGMH7eKw7UmisflzyjX', '::1', '2016-02-05 03:48:25', '::1', '2016-02-01 01:00:46', '2016-02-01 04:23:48', NULL, NULL),
+(44, 2, 1, 'gerente1@sigir.com', 'gerente', '$2y$13$mujgA7j0OsPxUr0gYAao3OSk1yykiEFfxqXis7m.lzvZ3EWID1jOG', 'c4rPsYI-Q-WNI9GgYyTvbZr_ynwyuAlY', 'nAzvxmIB3bTRTW9d23dn1isBFBr6s7RI', '::1', '2016-02-09 23:37:54', '::1', '2016-02-01 01:01:26', '2016-02-09 07:11:09', NULL, NULL),
+(80, 2, 1, 'teste@teste.com', NULL, '$2y$13$Up2wVYVIsBKk3oij/H/8l.5hPym80.3NTFpGlc97cSJg32EqNGn4y', 'EXAFyYZpG5QVTcGx6yeFrlDOl9OizMuM', 'ZdjGbu9FKlXtF5mYt1A4CcShpkEaTd9i', '::1', '2016-02-08 01:22:20', '::1', '2016-02-05 03:30:47', '2016-02-05 05:19:16', NULL, NULL),
+(82, 2, 1, 'teste2@teste.com', NULL, '$2y$13$6KrBewcu/svAqlpcq/g78OeFsnKQ619plTOHs/P1.KZyAy00oShU.', 'R5jwI6KMVr3GI4Hg8-1KV-EvggHLOAKE', 'CE5r9On9f0JUL4nW-CvnB8YoSEO7IXf8', NULL, NULL, '::1', '2016-02-07 06:20:49', '2016-02-07 06:20:49', NULL, NULL),
+(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-02-11 04:54:50', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
+(85, 2, 1, 'compras@compras.com', 'compras', '$2y$13$fcSVvuFUmhH.3iZ0wTtoZOpkVTt1tjAg2fO2thZog9QwMUIEUUzKu', 'tVH-bh0RpqSA1RgMqIR4rqcKtKiGhvPB', '165xJKTAkwnR1QcUd6wQ-fkU8Q98od2O', '::1', '2016-02-11 05:28:26', '::1', '2016-02-10 06:13:27', '2016-02-10 06:13:54', NULL, NULL);
 
 --
 -- Acionadores `user`
@@ -731,7 +818,7 @@ ALTER TABLE `auth_item`
 -- Indexes for table `auth_item_child`
 --
 ALTER TABLE `auth_item_child`
-  ADD PRIMARY KEY (`parent`,`child`), ADD KEY `child` (`child`);
+  ADD PRIMARY KEY (`parent`,`child`), ADD KEY `auth_item_child_ibfk_2` (`child`);
 
 --
 -- Indexes for table `auth_rule`
@@ -743,7 +830,7 @@ ALTER TABLE `auth_rule`
 -- Indexes for table `caixa`
 --
 ALTER TABLE `caixa`
-  ADD PRIMARY KEY (`idcaixa`);
+  ADD PRIMARY KEY (`idcaixa`), ADD KEY `caixa_ibfk_1` (`user_id`);
 
 --
 -- Indexes for table `cardapio`
@@ -827,7 +914,7 @@ ALTER TABLE `itens_produto`
 -- Indexes for table `loja`
 --
 ALTER TABLE `loja`
-  ADD PRIMARY KEY (`nome`);
+  ADD PRIMARY KEY (`user_id`);
 
 --
 -- Indexes for table `mesa`
@@ -927,7 +1014,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `caixa`
 --
 ALTER TABLE `caixa`
-  MODIFY `idcaixa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `idcaixa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `cardapio`
 --
@@ -947,12 +1034,12 @@ ALTER TABLE `comanda`
 -- AUTO_INCREMENT for table `compra`
 --
 ALTER TABLE `compra`
-  MODIFY `idcompra` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `idcompra` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `despesa`
 --
 ALTER TABLE `despesa`
-  MODIFY `iddespesa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `iddespesa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `estoque`
 --
@@ -962,7 +1049,7 @@ ALTER TABLE `estoque`
 -- AUTO_INCREMENT for table `fornecedor`
 --
 ALTER TABLE `fornecedor`
-  MODIFY `idFornecedor` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `idFornecedor` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `insumo_produto`
 --
@@ -997,12 +1084,12 @@ ALTER TABLE `produtos_compra`
 -- AUTO_INCREMENT for table `profile`
 --
 ALTER TABLE `profile`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=65;
 --
 -- AUTO_INCREMENT for table `relatorio`
 --
 ALTER TABLE `relatorio`
-  MODIFY `idrelatorio` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+  MODIFY `idrelatorio` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `role`
 --
@@ -1022,7 +1109,7 @@ ALTER TABLE `tipopagamento`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=69;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=86;
 --
 -- AUTO_INCREMENT for table `user_auth`
 --
@@ -1047,7 +1134,7 @@ ALTER TABLE `usuario`
 --
 ALTER TABLE `auth_assignment`
 ADD CONSTRAINT `auth_assignment_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `auth_assignment_ibfk_3` FOREIGN KEY (`item_name`) REFERENCES `auth_item` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `auth_assignment_ibfk_3` FOREIGN KEY (`item_name`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `auth_item`
@@ -1059,14 +1146,20 @@ ADD CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rul
 -- Limitadores para a tabela `auth_item_child`
 --
 ALTER TABLE `auth_item_child`
-ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `auth_rule`
 --
 ALTER TABLE `auth_rule`
 ADD CONSTRAINT `auth_rule_ibfk_1` FOREIGN KEY (`name`) REFERENCES `auth_item` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `caixa`
+--
+ALTER TABLE `caixa`
+ADD CONSTRAINT `caixa_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `comanda`
@@ -1119,6 +1212,12 @@ ADD CONSTRAINT `fk_itemPedido_produto10` FOREIGN KEY (`idProduto`) REFERENCES `p
 ALTER TABLE `itens_produto`
 ADD CONSTRAINT `fk_itens_produto_insumo_produto1` FOREIGN KEY (`insumo_produto_idinsumo_produto`) REFERENCES `insumo_produto` (`idinsumo_produto`) ON DELETE NO ACTION ON UPDATE NO ACTION,
 ADD CONSTRAINT `fk_itens_produto_produto1` FOREIGN KEY (`produto_idProduto`) REFERENCES `produto` (`idProduto`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `loja`
+--
+ALTER TABLE `loja`
+ADD CONSTRAINT `loja_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `pagamento`
@@ -1176,12 +1275,6 @@ ADD CONSTRAINT `user_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`i
 --
 ALTER TABLE `user_token`
 ADD CONSTRAINT `user_token_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Limitadores para a tabela `usuario`
---
-ALTER TABLE `usuario`
-ADD CONSTRAINT `fk_usuario_loja1` FOREIGN KEY (`loja_nome`) REFERENCES `loja` (`nome`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -23,17 +23,17 @@ $despesa = new Despesa();
 $despesasNaoPagas = $despesa::find('*')->where('situacaopagamento=0')->all();
 $valorDespesas = $despesa::find('*')->where('situacaopagamento=0')->sum('valordespesa');
 
-$loja = Loja::find()->all();
+$loja = Loja::find()->where(['user_id'=>Yii::$app->user->getId()])->all();
 
 if (count($loja) > 0) {
     foreach ($loja as $l) {
-       $nomeLoja = $l->nome;
-       $url =Url::toRoute(['/loja/view', 'id'=>$nomeLoja]);
-   }
+     $nomeLoja = $l->nome;
+     $url =Url::toRoute(['/loja/view', 'id'=>Yii::$app->user->getId()]);
+ }
 
 }else{
- $nomeLoja = 'Cadastre sua loja';
- $url =Url::toRoute(['/loja/create']);
+   $nomeLoja = 'Cadastre sua loja';
+   $url =Url::toRoute(['/loja/create']);
 }
 
 ?>
@@ -90,11 +90,12 @@ if (count($loja) > 0) {
                                 </li>
                             </ul>
                         </li>
+                        <li><a href="<?= $url  ?>"><?= $nomeLoja ?> </a></li>
+
                         <?php
-                        if (Yii::$app->user->can("gerente")) {
+                        if (Yii::$app->user->can("caixa")) {
 
                             ?>
-                            <li><a href="<?= $url  ?>"><?= $nomeLoja ?> </a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-envelope"></i> 
@@ -150,17 +151,17 @@ if (count($loja) > 0) {
                                         ?>
                                         <i class="fa fa-bell"></i>
                                         <span class="label label-danger">
-                                         !
-                                     </span>
-                                     <b class="caret"></b></a>
-                                     <ul class="dropdown-menu alert-dropdown">
+                                           !
+                                       </span>
+                                       <b class="caret"></b></a>
+                                       <ul class="dropdown-menu alert-dropdown">
 
 
-                                         <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
-                                         </li>
-                                         <?php  
-                                     }   
-                                 } else {
+                                           <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
+                                           </li>
+                                           <?php  
+                                       }   
+                                   } else {
                                     ?>
                                     <i class="fa fa-bell"></i>
 
@@ -170,107 +171,149 @@ if (count($loja) > 0) {
                                             &nbsp; Não há alertas  </li>
                                             <?php
 
-                                        }?>
+                                        }
+
+                                    }?>
 
 
 
 
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> 
-                                        <?= Yii::$app->user->displayName ?><b class="caret"></b></a>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <a href="<?= Url::toRoute('/user/account') ?>"><i class="fa fa-fw fa-user"></i> Profile</a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                                            </li>
-                                            <li class="divider"></li>
-                                            <li>
-                                                <a href="<?= Url::toRoute('/user/logout')?>" data-method='POST'><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                                            </li>
-                                        </ul>
-                                    </li>
                                 </ul>
-                                <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+                            </li>
 
-                                <div class="collapse navbar-collapse navbar-ex1-collapse ">
-                                    <ul class="nav navbar-nav side-nav">
-                                        <li class="active">
-                                            <?= Html::a('<i class="fa fa-fw fa-home"></i> Home', ['/site/index']) ?>
-
+<!-- 
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> 
+                                    <?= Yii::$app->user->displayName ?><b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="<?= Url::toRoute('/user/account') ?>"><i class="fa fa-fw fa-user"></i> Profile</a>
                                         </li>
                                         <li>
-                                            <?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Despesas', ['/despesa/index']) ?>
-
+                                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
                                         </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="<?= Url::toRoute('/user/logout')?>" data-method='POST'><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                                        </li>
+                                    </ul>
+                                </li> -->
+                            </ul>
+
+
+                            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+
+                            <div class="collapse navbar-collapse navbar-ex1-collapse ">
+                                <ul class="nav navbar-nav side-nav">
+                                    <li class="active">
+                                        <?= Html::a('<i class="fa fa-fw fa-home"></i> Home', ['/site/index']) ?>
+
+                                    </li>
+                                    <?php
+                                    if (Yii::$app->user->can("index-despesa") || Yii::$app->user->can("despesa")) {
+
+                                        ?>
+                                        <li>
+                                            <?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Despesas', ['/despesa/index']) ?>
+                                            <?php
+                                        }
+                                        ?>
+                                    </li>
+                                    <?php
+                                    if (Yii::$app->user->can("index-caixa") || Yii::$app->user->can("caixa")) {
+
+                                        ?>
                                         <li>
                                             <?= Html::a('<i class="fa fa-money"></i> Caixa', ['/caixa/index']) ?>
 
                                         </li>
+
+                                        <?php
+                                    }
+                                    ?>
                 <!--     <li>
                         <?php // Html::a('<i class="fa fa-fw fa-table"></i> Loja', ['loja/index']) ?>
                     </li> -->
-                    <li>
-                        <?= Html::a('<i class="fa fa-truck"></i> Fornecedor', ['/fornecedor/index']) ?>
 
-                    </li>
-                    <li>
-                        <?= Html::a('<i class="fa fa-fw fa-desktop"></i> Relatório', ['/relatorio/index']) ?>
+                    <?php
+                    if (Yii::$app->user->can("index-fornecedor") || Yii::$app->user->can("fornecedor")) {
 
-                    </li>
+                        ?>
+                        <li>
+                            <?= Html::a('<i class="fa fa-truck"></i> Fornecedor', ['/fornecedor/index']) ?>
 
-                    <li>
-                        <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/compra/index']) ?>
+                        </li>
 
-                    </li>
+                        <?php
+                    }
+                    ?>
+
+                    <?php
+                    if (Yii::$app->user->can("index-relatorio") || Yii::$app->user->can("relatorio")) {
+
+                        ?>
+                        <li>
+                            <?= Html::a('<i class="fa fa-fw fa-desktop"></i> Relatório', ['/relatorio/index']) ?>
+
+                        </li>
+
+                        <?php
+                    }
+                    ?>
+                    <?php
+                    if (Yii::$app->user->can("index-compra") || Yii::$app->user->can("compra")) {
+
+                        ?>
+                        <li>
+                            <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/compra/index']) ?>
+
+                        </li>
+                        <?php
+                    }
+                    ?>
+
+                    <?php 
+                    if (Yii::$app->user->can("user") || Yii::$app->user->can("admin")) {
+                        ?>
+
+                        <li>
+                            <?= Html::a('<i class="fa fa-users"></i> Usuários', ['/user/admin']) ?>
+
+                        </li>
+
+
+
+                        <?php 
+                    }
+                    ?>
                 </ul>
             </div>
-            <?php 
-        }
-        elseif (Yii::$app->user->can("funcionario")) {
-          ?>
 
-          <div class="collapse navbar-collapse navbar-ex1-collapse ">
-            <ul class="nav navbar-nav side-nav">
+         <!--    <div class="collapse navbar-collapse navbar-ex1-collapse ">
+                <ul class="nav navbar-nav side-nav">
 
-              <li>
-                <?= Html::a('<i class="fa fa-truck"></i> Fornecedor', ['/fornecedor/index']) ?>
+                  <li>
+                    <?= Html::a('<i class="fa fa-truck"></i> Fornecedor', ['/fornecedor/index']) ?>
 
-            </li>
-        </ul>
-    </div>
+                </li>
+            </ul>
+        </div> -->
 
 
-    <?php
-}else{
+        <!--   <div class="collapse navbar-collapse navbar-ex1-collapse "> -->
+
+        <!--  </div> -->
+        <?php
+    }
+
     ?>
-    <div class="collapse navbar-collapse navbar-ex1-collapse ">
-        <ul class="nav navbar-nav side-nav">
 
-          <li>
-            <?= Html::a('<i class="fa fa-users"></i> Usuários', ['/user/admin']) ?>
-
-        </li>
-    </ul>
-</div>
-<?php
-}
-?>
-
-<!-- /.navbar-collapse -->
+    <!-- /.navbar-collapse -->
 </nav>
 
-<?php
-
-}
-
-?>
 <div id="page-wrapper">
 
     <div class="container-fluid">

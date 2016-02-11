@@ -44,7 +44,7 @@ use kartik\widgets\Select2;
 		'allowClear' => true
 		],
 		]); ?>
-
+		
 		<div class="form-group">
 			<?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 		</div>

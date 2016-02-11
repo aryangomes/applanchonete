@@ -18,7 +18,7 @@ class CaixaSearch extends Caixa
     public function rules()
     {
         return [
-            [['idcaixa'], 'integer'],
+            [['idcaixa', 'user_id'], 'integer'],
             [['valorapurado', 'valoremcaixa', 'valorlucro'], 'number'],
         ];
     }
@@ -60,6 +60,7 @@ class CaixaSearch extends Caixa
             'valorapurado' => $this->valorapurado,
             'valoremcaixa' => $this->valoremcaixa,
             'valorlucro' => $this->valorlucro,
+            'user_id' => $this->user_id,
         ]);
 
         return $dataProvider;

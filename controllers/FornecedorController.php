@@ -45,7 +45,7 @@ class FornecedorController extends Controller
      */
     public function actionIndex()
     {
-       if (Yii::$app->user->can("index-fornecedor") ||
+     if (Yii::$app->user->can("index-fornecedor") ||
         Yii::$app->user->can("fornecedor") ) {
         $searchModel = new FornecedorSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -76,7 +76,7 @@ class FornecedorController extends Controller
         throw new ForbiddenHttpException("Acesso negado!");
     }
 }
-}
+
 
     /**
      * Creates a new Fornecedor model.
@@ -110,7 +110,7 @@ class FornecedorController extends Controller
     public function actionUpdate($id)
     {
 
-     if (Yii::$app->user->can("update-fornecedor") ||
+       if (Yii::$app->user->can("update-fornecedor") ||
         Yii::$app->user->can("fornecedor") ) {
         $model = $this->findModel($id);
 
@@ -137,7 +137,7 @@ class FornecedorController extends Controller
     {
 
 
-     if (Yii::$app->user->can("delete-fornecedor") ||
+       if (Yii::$app->user->can("delete-fornecedor") ||
         Yii::$app->user->can("fornecedor") ) {
         $this->findModel($id)->delete();
 

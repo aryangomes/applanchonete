@@ -43,6 +43,7 @@ use kartik\money\MaskMoney;
 		'allowNegative' => false,
 		]
 		]);  ?>
+		<?= $form->field($model, 'user_id' )->hiddenInput(['value'=>Yii::$app->user->getId()])->label(false); ?>
 
 		<div class="form-group">
 			<?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

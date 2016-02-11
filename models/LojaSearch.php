@@ -18,7 +18,8 @@ class LojaSearch extends Loja
     public function rules()
     {
         return [
-            [['nome', 'endereco'], 'safe'],
+        [['nome', 'endereco'], 'safe'],
+        [['user_id'], 'integer'],
         ];
     }
 
@@ -44,7 +45,7 @@ class LojaSearch extends Loja
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-        ]);
+            ]);
 
         $this->load($params);
 
@@ -54,8 +55,12 @@ class LojaSearch extends Loja
             return $dataProvider;
         }
 
+        $query->andFilterWhere([
+            'user_id' => Yii::$app->user->getId(),
+            ]);
+
         $query->andFilterWhere(['like', 'nome', $this->nome])
-            ->andFilterWhere(['like', 'endereco', $this->endereco]);
+        ->andFilterWhere(['like', 'endereco', $this->endereco]);
 
         return $dataProvider;
     }

@@ -7,10 +7,11 @@ use Yii;
 /**
  * This is the model class for table "loja".
  *
- * @property string $nome
  * @property string $endereco
+ * @property integer $user_id
+ * @property string $nome
  *
- * @property Usuario[] $usuarios
+ * @property User $user
  */
 class Loja extends \yii\db\ActiveRecord
 {
@@ -28,8 +29,9 @@ class Loja extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-        [['nome', 'endereco'], 'required'],
-        [['nome', 'endereco'], 'string', 'max' => 100]
+            [['endereco', 'user_id', 'nome'], 'required'],
+            [['user_id'], 'integer'],
+            [['endereco', 'nome'], 'string', 'max' => 100]
         ];
     }
 
@@ -39,16 +41,17 @@ class Loja extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-        'nome' => Yii::t('app', 'Nome'),
-        'endereco' => Yii::t('app', 'Endereço'),
+            'endereco' => Yii::t('app', 'Endereco'),
+            'user_id' => Yii::t('app', 'User ID'),
+            'nome' => Yii::t('app', 'Nome'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUsuarios()
+    public function getUser()
     {
-        return $this->hasMany(Usuario::className(), ['loja_nome' => 'nome']);
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 }

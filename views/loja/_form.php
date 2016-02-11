@@ -15,6 +15,7 @@ use yii\widgets\ActiveForm;
 	<?= $form->field($model, 'nome')->textInput(['maxlength' => true]) ?>
 
 	<?= $form->field($model, 'endereco')->textInput(['maxlength' => true]) ?>
+	<?= $form->field($model, 'user_id' )->hiddenInput(['value'=>Yii::$app->user->getId()])->label(false); ?>
 
 	<div class="form-group">
 		<?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

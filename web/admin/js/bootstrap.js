@@ -165,7 +165,7 @@ $.fn.alert.Constructor = Alert
  * ============================================================ */
 
 
- $(document).ready(function(){
+/* $(document).ready(function(){
 
 
    $("[value='despesa']").click(function(){
@@ -186,9 +186,373 @@ $.fn.alert.Constructor = Alert
    }
  });
 
- });
+}); */
 
- !function ($) {
+
+
+
+$(document).ready(function(){
+
+
+
+  var foo = []; 
+  $("#user-role_id").change(function(){
+    console.log('#user-role_id option:selected: ' +  $("option:selected").map(function(){
+     return this.value 
+   }).get().join(", "));
+
+
+    $('#user-role_id :selected').each(function(i, selected){ 
+      foo.push($(selected).val());
+      foo[i] = $(selected).val(); 
+      console.log( 'foo[i]: ' +  foo[i]);
+      console.log( 'i: ' +  i);
+      console.log( 'selected: ' +  $(selected).val());
+    });
+
+    console.log( foo.length);
+    console.log( ':selected: ' +  $('#user-role_id').val());
+ /*    console.log( $("option:selected").map(function(){
+      return this.value }
+      ).get().join(", "));
+  var opcoes = new array();
+   opcoes = $("option:selected").map(function(){
+    return this.value }
+    ).get().join(", ");
+
+
+var items = [];
+$('option:selected').each(function(){ items.push($(this).val()); });
+var result = items.join(', ');
+console.log('result[length]: ' + result[i]);
+for (var i = 0 ; i < result.length; i++) {
+  console.log('result[i]: ' + result[i]);
+}
+//    alert($(this).find("option:selected").text()+' clicked!');
+
+*/
+var opcaoselecionada ;
+opcaoselecionada =foo[(foo.length - 1)];
+
+
+
+    /*if (opcaoselecionada.val() != null) {
+      console.log('!= null');
+      opcaoselecionada.val(null) ;
+    }else{
+     console.log('== null');
+     opcaoselecionada = $("#user-role_id option:selected");
+   }*/
+   console.log('opcaoselecionada: ' + opcaoselecionada);
+
+
+   switch(opcaoselecionada) {
+    case "despesa":
+   // console.log('despesa cliked1');
+   if ( $("[value='despesa']").is(':selected')) {
+    $("[value='create-despesa']").prop("selected",true);
+    $("[value='index-despesa']").prop("selected",true);
+    $("[value='update-despesa']").prop("selected",true);
+    $("[value='delete-despesa']").prop("selected",true);
+    $("[value='view-despesa']").prop("selected",true);
+  }
+  else{
+
+    $("[value='create-despesa']").prop("selected",false);
+    $("[value='index-despesa']").prop("selected",false);
+    $("[value='update-despesa']").prop("selected",false);
+    $("[value='delete-despesa']").prop("selected",false);
+    $("[value='view-despesa']").prop("selected",false);
+  }
+  break;
+  case "fornecedor":
+
+  if ( $("[value='fornecedor']").is(':selected')) {
+    $("[value='create-fornecedor']").prop("selected",true);
+    $("[value='index-fornecedor']").prop("selected",true);
+    $("[value='update-fornecedor']").prop("selected",true);
+    $("[value='delete-fornecedor']").prop("selected",true);
+    $("[value='view-fornecedor']").prop("selected",true);
+  }
+  else{
+
+    $("[value='create-fornecedor']").prop("selected",false);
+    $("[value='index-fornecedor']").prop("selected",false);
+    $("[value='update-fornecedor']").prop("selected",false);
+    $("[value='delete-fornecedor']").prop("selected",false);
+    $("[value='view-fornecedor']").prop("selected",false);
+  }
+  break;
+
+  case "caixa":
+
+  if ( $("[value='caixa']").is(':selected')) {
+    $("[value='create-caixa']").prop("selected",true);
+    $("[value='index-caixa']").prop("selected",true);
+    $("[value='update-caixa']").prop("selected",true);
+    $("[value='delete-caixa']").prop("selected",true);
+    $("[value='view-caixa']").prop("selected",true);
+  }
+  else{
+
+    $("[value='create-caixa']").prop("selected",false);
+    $("[value='index-caixa']").prop("selected",false);
+    $("[value='update-caixa']").prop("selected",false);
+    $("[value='delete-caixa']").prop("selected",false);
+    $("[value='view-caixa']").prop("selected",false);
+  }
+  break;
+
+
+  case "relatorio":
+  
+  if ( $("[value='relatorio']").is(':selected')) {
+    $("[value='create-relatorio']").prop("selected",true);
+    $("[value='index-relatorio']").prop("selected",true);
+    $("[value='update-relatorio']").prop("selected",true);
+    $("[value='delete-relatorio']").prop("selected",true);
+    $("[value='view-relatorio']").prop("selected",true);
+  }
+  else{
+
+    $("[value='create-relatorio']").prop("selected",false);
+    $("[value='index-relatorio']").prop("selected",false);
+    $("[value='update-relatorio']").prop("selected",false);
+    $("[value='delete-relatorio']").prop("selected",false);
+    $("[value='view-relatorio']").prop("selected",false);
+  }
+  break;
+
+  case "user":
+  
+  if ( $("[value='user']").is(':selected')) {
+    $("[value='create-user']").prop("selected",true);
+    $("[value='index-user']").prop("selected",true);
+    $("[value='update-user']").prop("selected",true);
+    $("[value='delete-user']").prop("selected",true);
+    $("[value='view-user']").prop("selected",true);
+  }
+  else{
+
+    $("[value='create-user']").prop("selected",false);
+    $("[value='index-user']").prop("selected",false);
+    $("[value='update-user']").prop("selected",false);
+    $("[value='delete-user']").prop("selected",false);
+    $("[value='view-user']").prop("selected",false);
+  }
+  break;
+
+  case "compra":
+  
+  if ( $("[value='compra']").is(':selected')) {
+    $("[value='create-compra']").prop("selected",true);
+    $("[value='index-compra']").prop("selected",true);
+    $("[value='update-compra']").prop("selected",true);
+    $("[value='delete-compra']").prop("selected",true);
+    $("[value='view-compra']").prop("selected",true);
+  }
+  else{
+
+    $("[value='create-compra']").prop("selected",false);
+    $("[value='index-compra']").prop("selected",false);
+    $("[value='update-compra']").prop("selected",false);
+    $("[value='delete-compra']").prop("selected",false);
+    $("[value='view-compra']").prop("selected",false);
+  }
+  break;
+
+  default:
+  break;
+}
+
+
+
+});
+
+});
+
+
+$(document).ready(function(){
+
+
+
+  var foo = []; 
+  $("#w1").change(function(){
+    /*console.log('#w1 option:selected: ' +  $("option:selected").map(function(){
+     return this.value 
+   }).get().join(", "));
+*/
+
+$('#w1 :selected').each(function(i, selected){ 
+  foo.push($(selected).val());
+  foo[i] = $(selected).val(); 
+ /* console.log( 'foo[i]: ' +  foo[i]);
+  console.log( 'i: ' +  i);
+  console.log( 'selected: ' +  $(selected).val());*/
+});
+/*
+    console.log( foo.length);
+    console.log( ':selected: ' +  $('#user-role_id').val());
+     console.log( $("option:selected").map(function(){
+      return this.value }
+      ).get().join(", "));
+  var opcoes = new array();
+   opcoes = $("option:selected").map(function(){
+    return this.value }
+    ).get().join(", ");
+
+
+var items = [];
+$('option:selected').each(function(){ items.push($(this).val()); });
+var result = items.join(', ');
+console.log('result[length]: ' + result[i]);
+for (var i = 0 ; i < result.length; i++) {
+  console.log('result[i]: ' + result[i]);
+}
+//    alert($(this).find("option:selected").text()+' clicked!');
+
+*/
+var opcaoselecionada ;
+opcaoselecionada =foo[(foo.length - 1)];
+
+
+
+    /*if (opcaoselecionada.val() != null) {
+      console.log('!= null');
+      opcaoselecionada.val(null) ;
+    }else{
+     console.log('== null');
+     opcaoselecionada = $("#user-role_id option:selected");
+   }*/
+ //  console.log('opcaoselecionada: ' + opcaoselecionada);
+
+
+ switch(opcaoselecionada) {
+  case "despesa":
+   // console.log('despesa cliked1');
+   if ( $("[value='despesa']").is(':selected')) {
+    $("[value='create-despesa']").prop("selected",true);
+    $("[value='index-despesa']").prop("selected",true);
+    $("[value='update-despesa']").prop("selected",true);
+    $("[value='delete-despesa']").prop("selected",true);
+    $("[value='view-despesa']").prop("selected",true);
+  }
+  else{
+
+    $("[value='create-despesa']").prop("selected",false);
+    $("[value='index-despesa']").prop("selected",false);
+    $("[value='update-despesa']").prop("selected",false);
+    $("[value='delete-despesa']").prop("selected",false);
+    $("[value='view-despesa']").prop("selected",false);
+  }
+  break;
+  case "fornecedor":
+
+  if ( $("[value='fornecedor']").is(':selected')) {
+    $("[value='create-fornecedor']").prop("selected",true);
+    $("[value='index-fornecedor']").prop("selected",true);
+    $("[value='update-fornecedor']").prop("selected",true);
+    $("[value='delete-fornecedor']").prop("selected",true);
+    $("[value='view-fornecedor']").prop("selected",true);
+  }
+  else{
+
+    $("[value='create-fornecedor']").prop("selected",false);
+    $("[value='index-fornecedor']").prop("selected",false);
+    $("[value='update-fornecedor']").prop("selected",false);
+    $("[value='delete-fornecedor']").prop("selected",false);
+    $("[value='view-fornecedor']").prop("selected",false);
+  }
+  break;
+
+  case "caixa":
+
+  if ( $("[value='caixa']").is(':selected')) {
+    $("[value='create-caixa']").prop("selected",true);
+    $("[value='index-caixa']").prop("selected",true);
+    $("[value='update-caixa']").prop("selected",true);
+    $("[value='delete-caixa']").prop("selected",true);
+    $("[value='view-caixa']").prop("selected",true);
+  }
+  else{
+
+    $("[value='create-caixa']").prop("selected",false);
+    $("[value='index-caixa']").prop("selected",false);
+    $("[value='update-caixa']").prop("selected",false);
+    $("[value='delete-caixa']").prop("selected",false);
+    $("[value='view-caixa']").prop("selected",false);
+  }
+  break;
+
+
+  case "relatorio":
+  
+  if ( $("[value='relatorio']").is(':selected')) {
+    $("[value='create-relatorio']").prop("selected",true);
+    $("[value='index-relatorio']").prop("selected",true);
+    $("[value='update-relatorio']").prop("selected",true);
+    $("[value='delete-relatorio']").prop("selected",true);
+    $("[value='view-relatorio']").prop("selected",true);
+  }
+  else{
+
+    $("[value='create-relatorio']").prop("selected",false);
+    $("[value='index-relatorio']").prop("selected",false);
+    $("[value='update-relatorio']").prop("selected",false);
+    $("[value='delete-relatorio']").prop("selected",false);
+    $("[value='view-relatorio']").prop("selected",false);
+  }
+  break;
+
+  case "user":
+  
+  if ( $("[value='user']").is(':selected')) {
+    $("[value='create-user']").prop("selected",true);
+    $("[value='index-user']").prop("selected",true);
+    $("[value='update-user']").prop("selected",true);
+    $("[value='delete-user']").prop("selected",true);
+    $("[value='view-user']").prop("selected",true);
+  }
+  else{
+
+    $("[value='create-user']").prop("selected",false);
+    $("[value='index-user']").prop("selected",false);
+    $("[value='update-user']").prop("selected",false);
+    $("[value='delete-user']").prop("selected",false);
+    $("[value='view-user']").prop("selected",false);
+  }
+  break;
+
+  case "compra":
+  
+  if ( $("[value='compra']").is(':selected')) {
+    $("[value='create-compra']").prop("selected",true);
+    $("[value='index-compra']").prop("selected",true);
+    $("[value='update-compra']").prop("selected",true);
+    $("[value='delete-compra']").prop("selected",true);
+    $("[value='view-compra']").prop("selected",true);
+  }
+  else{
+
+    $("[value='create-compra']").prop("selected",false);
+    $("[value='index-compra']").prop("selected",false);
+    $("[value='update-compra']").prop("selected",false);
+    $("[value='delete-compra']").prop("selected",false);
+    $("[value='view-compra']").prop("selected",false);
+  }
+  break;
+
+  default:
+  break;
+}
+
+
+
+});
+
+});
+
+!function ($) {
 
   "use strict"; // jshint ;_;
 

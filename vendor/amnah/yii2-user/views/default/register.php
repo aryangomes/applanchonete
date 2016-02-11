@@ -55,20 +55,101 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 
-
  // $form->field($user, 'role_id')->checkboxList($permissoes)  ?>
 
  <?= $form->field($user, 'role_id')->widget(Select2::classname(), [
     'data' => $permissoes,
+    'size'=>'lg',
+    
     'options' => ['placeholder' => 'Selecione as permissões'],
     'pluginOptions' => [
     'allowClear' => true,
     'multiple'=>true,
-    ],
-    ]);  ?>
 
-        <?php /* uncomment if you want to add profile fields here
-        <?= $form->field($profile, 'full_name') ?>
+    ],
+    'pluginEvents'=>[
+    "select2:select" => "function() {
+     /*
+     console.log('select');
+     var elements = [];
+     $(document).ready(function(){
+
+
+
+
+      var foo = []; 
+
+
+
+      $('#user-role_id :selected').each(function(i, selected){ 
+
+          foo[i] = $(selected).val(); 
+          console.log( 'foo[i]: ' +  foo[i]);
+          console.log( 'i: ' +  i);
+          console.log( 'selected: ' +  $(selected).val());
+      });
+
+console.log( foo.length);
+
+
+var opcaoselecionada ;
+opcaoselecionada =foo[(foo.length - 1)];
+
+
+
+console.log('opcaoselecionada: ' + opcaoselecionada);
+
+
+
+
+switch(opcaoselecionada) {
+    case 'despesa':
+
+    if ( $(\" [value='despesa']\" ).is(':selected')) {
+     console.log('despesa cliked1');
+     $(\" [value='create-despesa']\" ).prop('selected',true);
+     $(\" [value='index-despesa']\" ).prop('selected',true);
+     $(\" [value='update-despesa']\" ).prop('selected',true);
+     $(\" [value='delete-despesa']\" ).prop('selected',true);
+
+ }
+ else{
+  console.log('despesa cliked2');
+  $(\" [value='create-despesa']\" ).prop('selected',false);
+  $(\" [value='index-despesa']\" ).prop('selected',false);
+  $(\" [value='update-despesa']\" ).prop('selected',false);
+  $(\" [value='delete-despesa']\" ).prop('selected',false);
+}
+break;
+case 'fornecedor':
+console.log('fornecedor cliked1');
+if ( $([value='fornecedor']).is(':selected')) {
+    $([value='create-fornecedor']).prop('selected',true);
+    $([value='index-fornecedor']).prop('selected',true);
+    $([value='update-fornecedor']).prop('selected',true);
+    $([value='delete-fornecedor']).prop('selected',true);
+
+}
+else{
+
+    $([value='create-fornecedor']).prop('selected',false);
+    $([value='index-fornecedor']).prop('selected',false);
+    $([value='update-v']).prop('selected',false);
+    $([value='delete-fornecedor']).prop('selected',false);
+}
+break;
+default:
+break;
+}
+});*/
+
+}",
+
+],
+]);  ?>
+
+<?php /* uncomment if you want to add profile fields here
+<?= $form->field($profile, 'full_name') ?>
         */ ?>
 
         <div class="form-group">

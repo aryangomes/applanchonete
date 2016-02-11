@@ -86,7 +86,13 @@ class AdminController extends Controller
     {
         /** @var \amnah\yii2\user\models\User $user */
         /** @var \amnah\yii2\user\models\Profile $profile */
-
+        $authitem = new AuthItem();
+        $permissoes = ArrayHelper::map(
+            AuthItem::find()->all(), 
+            'name','description');
+        $permissoesUser = ArrayHelper::map(
+            AuthItem::find()->all(), 
+            'name','description');
         $user = $this->module->model("User");
         $user->setScenario("admin");
         $profile = $this->module->model("Profile");
@@ -99,7 +105,7 @@ class AdminController extends Controller
         }
 
         // render
-        return $this->render('create', compact('user', 'profile'));
+        return $this->render('create', compact('user', 'profile','permissoes','permissoesUser'));
     }
 
     /**
@@ -113,7 +119,7 @@ class AdminController extends Controller
 
         $authitem = new AuthItem();
         $permissoes = ArrayHelper::map(
-            AuthItem::find()->all(), 
+            AuthItem::find()->orderBy('type ASC')->all(), 
             'name','description');
 
         $permissoesUser = ArrayHelper::map(

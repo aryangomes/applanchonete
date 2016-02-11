@@ -56,7 +56,7 @@ $role = $module->model("Role");
         ]); */ ?>
 
 <?php
-
+echo Html::label('Permissões');
 
 echo Select2::widget([
     'name'=>'roles',
@@ -73,24 +73,24 @@ echo Select2::widget([
     ],
     ]);
 
+echo "</br>";
+?>
 
-    ?>
+<?= $form->field($user, 'status')->dropDownList($user::statusDropdown()); ?>
 
-    <?= $form->field($user, 'status')->dropDownList($user::statusDropdown()); ?>
+<?php // use checkbox for banned_at ?>
+<?php // convert `banned_at` to int so that the checkbox gets set properly ?>
+<?php $user->banned_at = $user->banned_at ? 1 : 0 ?>
+<?= Html::activeLabel($user, 'banned_at', ['label' => Yii::t('user', 'Banned')]); ?>
+<?= Html::activeCheckbox($user, 'banned_at'); ?>
+<?= Html::error($user, 'banned_at'); ?>
 
-    <?php // use checkbox for banned_at ?>
-    <?php // convert `banned_at` to int so that the checkbox gets set properly ?>
-    <?php $user->banned_at = $user->banned_at ? 1 : 0 ?>
-    <?= Html::activeLabel($user, 'banned_at', ['label' => Yii::t('user', 'Banned')]); ?>
-    <?= Html::activeCheckbox($user, 'banned_at'); ?>
-    <?= Html::error($user, 'banned_at'); ?>
+<?= $form->field($user, 'banned_reason'); ?>
 
-    <?= $form->field($user, 'banned_reason'); ?>
+<div class="form-group">
+    <?= Html::submitButton($user->isNewRecord ? Yii::t('user', 'Create') : Yii::t('user', 'Update'), ['class' => $user->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+</div>
 
-    <div class="form-group">
-        <?= Html::submitButton($user->isNewRecord ? Yii::t('user', 'Create') : Yii::t('user', 'Update'), ['class' => $user->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
 
 </div>

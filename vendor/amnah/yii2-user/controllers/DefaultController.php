@@ -205,7 +205,7 @@ class DefaultController extends Controller
         $AuthItem = new AuthItem();
         $permissoes = ArrayHelper::map(
             AuthItem::find()->
-            where("name <> 'admin' " )->all(), 
+            where("name <> 'admin' " )->orderBy('type ASC')->all(), 
             'name','description');
         // set up new user/profile objects
         $user = $this->module->model("User", ["scenario" => "register"]);

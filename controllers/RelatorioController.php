@@ -41,7 +41,7 @@ class RelatorioController extends Controller
      */
     public function actionIndex()
     {
-     if (Yii::$app->user->can("index-relatorio") ||
+       if (Yii::$app->user->can("index-relatorio") ||
         Yii::$app->user->can("relatorio") ) {
         $searchModel = new RelatorioSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -62,7 +62,7 @@ class RelatorioController extends Controller
      */
     public function actionView($id)
     {
-       if (Yii::$app->user->can("view-relatorio") ||
+     if (Yii::$app->user->can("view-relatorio") ||
         Yii::$app->user->can("relatorio") ) {
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -79,7 +79,7 @@ class RelatorioController extends Controller
      */
     public function actionCreate()
     {
-       if (Yii::$app->user->can("create-relatorio") ||
+     if (Yii::$app->user->can("create-relatorio") ||
         Yii::$app->user->can("relatorio") ) {
         $model = new Relatorio();
 
@@ -103,7 +103,7 @@ class RelatorioController extends Controller
      */
     public function actionUpdate($id)
     {
-       if (Yii::$app->user->can("update-relatorio") ||
+     if (Yii::$app->user->can("update-relatorio") ||
         Yii::$app->user->can("relatorio") ) {
         $model = $this->findModel($id);
 

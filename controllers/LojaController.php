@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 /**
  * LojaController implements the CRUD actions for Loja model.
  */
@@ -41,7 +42,7 @@ class LojaController extends Controller
      */
     public function actionIndex()
     {
-       if (Yii::$app->user->can("index-loja") ||
+     if (Yii::$app->user->can("index-loja") ||
         Yii::$app->user->can("loja") ) {
         $searchModel = new LojaSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -62,7 +63,7 @@ class LojaController extends Controller
      */
     public function actionView($id)
     {
-     if (Yii::$app->user->can("view-loja") ||
+       if (Yii::$app->user->can("view-loja") ||
         Yii::$app->user->can("loja") ) {
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -103,7 +104,7 @@ class LojaController extends Controller
      */
     public function actionUpdate($id)
     {
-       if (Yii::$app->user->can("update-loja") ||
+     if (Yii::$app->user->can("update-loja") ||
         Yii::$app->user->can("loja") ) {
         $model = $this->findModel($id);
 

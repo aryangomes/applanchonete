@@ -35,10 +35,12 @@ $role = $module->model("Role");
 
     <?php 
     $inic = array();
-    foreach ($permissoesUser as $key => $value) {
-        array_push($inic, $key);
-    }
+    if (isset($permissoesUser)) {
 
+        foreach ($permissoesUser as $key => $value) {
+            array_push($inic, $key);
+        }
+    }
     ?>
 
     <?php /*$form->field($user, 'role_id')->widget(Select2::classname(), [
@@ -63,7 +65,7 @@ echo Select2::widget([
 
     'data' => $permissoes,
 
-        //'attribute'=>$permissoesUser,
+    'attribute'=>'roles',
     'value'=>$inic,
       //  'options' => ['placeholder' => 'Selecione as permissões'],
     'pluginOptions' => [

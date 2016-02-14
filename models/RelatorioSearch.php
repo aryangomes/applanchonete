@@ -18,8 +18,8 @@ class RelatorioSearch extends Relatorio
     public function rules()
     {
         return [
-            [['idrelatorio', 'usuario_id'], 'integer'],
-            [['nome', 'datageracao', 'tipo', 'inicio_intervalo', 'fim_intervalo'], 'safe'],
+        [['idrelatorio', 'usuario_id'], 'integer'],
+        [['nome', 'datageracao', 'tipo', 'inicio_intervalo', 'fim_intervalo'], 'safe'],
         ];
     }
 
@@ -45,7 +45,7 @@ class RelatorioSearch extends Relatorio
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-        ]);
+            ]);
 
         $this->load($params);
 
@@ -60,11 +60,11 @@ class RelatorioSearch extends Relatorio
             'datageracao' => $this->datageracao,
             'inicio_intervalo' => $this->inicio_intervalo,
             'fim_intervalo' => $this->fim_intervalo,
-            'usuario_id' => $this->usuario_id,
-        ]);
+            'usuario_id' => Yii::$app->user->getId(),
+            ]);
 
         $query->andFilterWhere(['like', 'nome', $this->nome])
-            ->andFilterWhere(['like', 'tipo', $this->tipo]);
+        ->andFilterWhere(['like', 'tipo', $this->tipo]);
 
         return $dataProvider;
     }

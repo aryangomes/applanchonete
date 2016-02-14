@@ -27,13 +27,13 @@ $loja = Loja::find()->where(['user_id'=>Yii::$app->user->getId()])->all();
 
 if (count($loja) > 0) {
     foreach ($loja as $l) {
-     $nomeLoja = $l->nome;
-     $url =Url::toRoute(['/loja/view', 'id'=>Yii::$app->user->getId()]);
- }
+       $nomeLoja = $l->nome;
+       $url =Url::toRoute(['/loja/view', 'id'=>Yii::$app->user->getId()]);
+   }
 
 }else{
-   $nomeLoja = 'Cadastre sua loja';
-   $url =Url::toRoute(['/loja/create']);
+ $nomeLoja = 'Cadastre sua loja';
+ $url =Url::toRoute(['/loja/create']);
 }
 
 ?>
@@ -151,17 +151,17 @@ if (count($loja) > 0) {
                                         ?>
                                         <i class="fa fa-bell"></i>
                                         <span class="label label-danger">
-                                           !
-                                       </span>
-                                       <b class="caret"></b></a>
-                                       <ul class="dropdown-menu alert-dropdown">
+                                         !
+                                     </span>
+                                     <b class="caret"></b></a>
+                                     <ul class="dropdown-menu alert-dropdown">
 
 
-                                           <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
-                                           </li>
-                                           <?php  
-                                       }   
-                                   } else {
+                                         <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
+                                         </li>
+                                         <?php  
+                                     }   
+                                 } else {
                                     ?>
                                     <i class="fa fa-bell"></i>
 
@@ -276,14 +276,29 @@ if (count($loja) > 0) {
                     ?>
 
                     <?php 
-                    if (Yii::$app->user->can("user") || Yii::$app->user->can("admin")) {
+                    if (Yii::$app->user->can("user") || Yii::$app->user->can("admin") 
+                        || Yii::$app->user->can("index-user") ) {
+                            ?>
+
+                        <?php 
+                        if ( Yii::$app->user->can("admin") ) {
+                            ?>
+                            <li>
+                                <?= Html::a('<i class="fa fa-users"></i> Usuários', ['/user/admin']) ?>
+
+                            </li>
+                            <?php 
+                        }else{
+
+                            ?>
+                            <li>
+                                <?= Html::a('<i class="fa fa-users"></i> Usuários', ['/user/']) ?>
+
+                            </li>
+                            <?php
+
+                        }
                         ?>
-
-                        <li>
-                            <?= Html::a('<i class="fa fa-users"></i> Usuários', ['/user/admin']) ?>
-
-                        </li>
-
 
 
                         <?php 

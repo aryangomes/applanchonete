@@ -10,6 +10,10 @@ use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
 use app\models\AuthItem;
 use yii\helpers\ArrayHelper;
+
+
+use yii\web\ForbiddenHttpException;
+
 /**
  * Default controller for User module
  */
@@ -33,7 +37,7 @@ class DefaultController extends Controller
         [
         'actions' => ['index', 'confirm', 'resend', 'logout'],
         'allow' => true,
-        'roles' => ['?', '@'],
+        'roles' => ['?', '@','user'],
         ],
         [
         'actions' => ['account', 'profile', 'resend-change', 'cancel'],
@@ -63,13 +67,31 @@ class DefaultController extends Controller
     {
         if (defined('YII_DEBUG') && YII_DEBUG) {
             $actions = $this->module->getActions();
-            return $this->render('index', ["actions" => $actions]);
-        } elseif (Yii::$app->user->isGuest) {
-            return $this->redirect(["/user/login"]);
-        } else {
-            return $this->redirect(["/user/account"]);
+            if (
+                Yii::$app->user->can("admin") ) {
+
+                return $this->render('index', ["actions" => $actions]);
         }
+        else if (Yii::$app->user->can("index-user") ||
+            Yii::$app->user->can("user")) {
+            $searchModel = $this->module->model("UserSearch");
+        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            ]);
     }
+    else{
+        throw new ForbiddenHttpException("Acesso negado!");
+    }
+
+} elseif (Yii::$app->user->isGuest) {
+    return $this->redirect(["/user/login"]);
+} else {
+    return $this->redirect(["/user/account"]);
+}
+}
 
     /**
      * Display login page
@@ -217,10 +239,10 @@ class DefaultController extends Controller
         if ($user->load($post)) {
 
             // ensure profile data gets loaded
-           $profile->load($post);
+         $profile->load($post);
 
             // validate for ajax request
-           if (Yii::$app->request->isAjax) {
+         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($user, $profile);
         }

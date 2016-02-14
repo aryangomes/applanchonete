@@ -30,7 +30,7 @@ class AdminController extends Controller
     {
         // check for admin permission (`tbl_role.can_admin`)
         // note: check for Yii::$app->user first because it doesn't exist in console commands (throws exception)
-        if (!empty(Yii::$app->user) && !Yii::$app->user->can("admin")) {
+        if (!empty(Yii::$app->user) && !Yii::$app->user->can("admin") && !Yii::$app->user->can("user")) {
             throw new ForbiddenHttpException('You are not allowed to perform this action.');
         }
 
@@ -72,11 +72,15 @@ class AdminController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'user' => $this->findModel($id),
-            ]);
+        if (Yii::$app->user->can("view-user") ||
+            Yii::$app->user->can("user")) {
+            return $this->render('view', [
+                'user' => $this->findModel($id),
+                ]);
+    }else{
+        throw new ForbiddenHttpException("Acesso negado!");
     }
-
+}
     /**
      * Create a new User model. If creation is successful, the browser will
      * be redirected to the 'view' page.
@@ -84,29 +88,66 @@ class AdminController extends Controller
      */
     public function actionCreate()
     {
-        /** @var \amnah\yii2\user\models\User $user */
-        /** @var \amnah\yii2\user\models\Profile $profile */
-        $authitem = new AuthItem();
-        $permissoes = ArrayHelper::map(
-            AuthItem::find()->all(), 
-            'name','description');
-        $permissoesUser = ArrayHelper::map(
-            AuthItem::find()->all(), 
-            'name','description');
-        $user = $this->module->model("User");
-        $user->setScenario("admin");
-        $profile = $this->module->model("Profile");
+       /** @var \amnah\yii2\user\models\User $user */
+       /** @var \amnah\yii2\user\models\Profile $profile */
+       /** @var \amnah\yii2\user\models\Role $role */
 
-        $post = Yii::$app->request->post();
-        if ($user->load($post) && $user->validate() && $profile->load($post) && $profile->validate()) {
-            $user->save(false);
-            $profile->setUser($user->id)->save(false);
-            return $this->redirect(['view', 'id' => $user->id]);
+
+        // AuthAssigment
+       $AuthItem = new AuthItem();
+       $permissoes = ArrayHelper::map(
+        AuthItem::find()->
+        where("name <> 'admin' " )->orderBy('type ASC')->all(), 
+        'name','description');
+       $permissoesUser = null;
+        // set up new user/profile objects
+       $user = $this->module->model("User", ["scenario" => "register"]);
+       $profile = $this->module->model("Profile");
+
+        // load post data
+       $post = Yii::$app->request->post();
+
+       if ($user->load($post)) {
+
+            // ensure profile data gets loaded
+           $profile->load($post);
+
+            // validate for ajax request
+           if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($user, $profile);
+        }
+        if (isset($post['roles'])) {
+           // var_dump($post['User']['role_id']);
+            $roles = $post['roles'];
+
         }
 
-        // render
-        return $this->render('create', compact('user', 'profile','permissoes','permissoesUser'));
-    }
+
+            // validate for normal request
+        if ($user->validate() && $profile->validate()) {
+
+            // perform registration
+            $role = $this->module->model("Role");
+        // VEJA AQUI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            $user->setRegisterAttributes($role::ROLE_USER, $user::STATUS_ACTIVE)->save();
+
+       // $user->setPermissoes(1,$user->id);
+            $profile->setUser($user->id)->save();
+
+            $idUser = $user->id;
+           // var_dump($idUser);
+            foreach ( $roles as $role) {
+
+              $user->setPermissoes($role,$idUser);
+          }
+          return $this->redirect(['view', 'id' => $user->id]);
+      }
+  }
+
+
+  return $this->render("create", compact("user", "profile","permissoes","permissoesUser"));
+}
 
     /**
      * Update an existing User model. If update is successful, the browser
@@ -116,8 +157,9 @@ class AdminController extends Controller
      */
     public function actionUpdate($id)
     {
-
-        $authitem = new AuthItem();
+        if (Yii::$app->user->can("update-user") ||
+            Yii::$app->user->can("user")) {
+            $authitem = new AuthItem();
         $permissoes = ArrayHelper::map(
             AuthItem::find()->orderBy('type ASC')->all(), 
             'name','description');
@@ -142,7 +184,7 @@ class AdminController extends Controller
             Yii::$app->db->createCommand(
                 "DELETE from auth_assignment WHERE 
                 user_id = :iduser ", [
-                
+
                 ':iduser'=> $user->id,
                 ])->execute();
             foreach ( $roles as $role) {
@@ -150,14 +192,17 @@ class AdminController extends Controller
                 $user->alterarPermissoes($role,$user->id);
             }
 
-          /*  $user->save(false);
+            $user->save(false);
             $profile->setUser($user->id)->save(false);
-            return $this->redirect(['view', 'id' => $user->id]);*/
+            return $this->redirect(['view', 'id' => $user->id]);
         }
 
         // render
         return $this->render('update', compact('user', 'profile','permissoes','permissoesUser'));
+    } else{
+        throw new ForbiddenHttpException("Acesso negado!");
     }
+}
 
     /**
      * Delete an existing User model. If deletion is successful, the browser
@@ -167,8 +212,10 @@ class AdminController extends Controller
      */
     public function actionDelete($id)
     {
+        if (Yii::$app->user->can("delete-user") ||
+            Yii::$app->user->can("user")) {
         // delete profile and userTokens first to handle foreign key constraint
-        $user = $this->findModel($id);
+            $user = $this->findModel($id);
         $profile = $user->profile;
         UserToken::deleteAll(['user_id' => $user->id]);
         UserAuth::deleteAll(['user_id' => $user->id]);
@@ -176,7 +223,10 @@ class AdminController extends Controller
         $user->delete();
 
         return $this->redirect(['index']);
+    } else{
+        throw new ForbiddenHttpException("Acesso negado!");
     }
+}
 
     /**
      * Find the User model based on its primary key value.

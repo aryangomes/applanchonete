@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 12-Fev-2016 às 00:41
+-- Generation Time: 15-Fev-2016 às 04:48
 -- Versão do servidor: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -68,19 +68,38 @@ INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('compra', 85, NULL),
 ('create-compra', 85, NULL),
 ('create-fornecedor', 85, NULL),
+('create-fornecedor', 104, NULL),
+('create-relatorio', 108, NULL),
+('create-user', 109, NULL),
 ('delete-compra', 85, NULL),
 ('delete-fornecedor', 85, NULL),
+('delete-fornecedor', 104, NULL),
+('delete-relatorio', 108, NULL),
+('delete-user', 109, NULL),
 ('despesa', 84, NULL),
 ('fornecedor', 84, NULL),
 ('fornecedor', 85, NULL),
+('fornecedor', 104, NULL),
 ('index-compra', 85, NULL),
 ('index-fornecedor', 85, NULL),
+('index-fornecedor', 104, NULL),
+('index-relatorio', 108, NULL),
+('index-user', 109, NULL),
 ('relatorio', 84, NULL),
+('relatorio', 108, NULL),
 ('update-compra', 85, NULL),
 ('update-fornecedor', 85, NULL),
+('update-fornecedor', 104, NULL),
+('update-relatorio', 108, NULL),
+('update-user', 109, NULL),
 ('user', 84, NULL),
+('user', 109, NULL),
 ('view-compra', 85, NULL),
-('view-fornecedor', 85, NULL);
+('view-despesa', 104, NULL),
+('view-fornecedor', 85, NULL),
+('view-fornecedor', 104, NULL),
+('view-relatorio', 108, NULL),
+('view-user', 109, NULL);
 
 -- --------------------------------------------------------
 
@@ -214,14 +233,15 @@ CREATE TABLE IF NOT EXISTS `caixa` (
   `valoremcaixa` double NOT NULL,
   `valorlucro` float NOT NULL,
   `user_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `caixa`
 --
 
 INSERT INTO `caixa` (`idcaixa`, `valorapurado`, `valoremcaixa`, `valorlucro`, `user_id`) VALUES
-(4, 0.22, 0.22, 0.22, 84);
+(4, 0.22, 0.22, 0.22, 84),
+(6, 0.01, 0.02, 0.03, 109);
 
 -- --------------------------------------------------------
 
@@ -284,7 +304,7 @@ CREATE TABLE IF NOT EXISTS `compra` (
   `totalcompra` float DEFAULT NULL,
   `idcompra` int(11) NOT NULL,
   `fornecedor_idFornecedor` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `compra`
@@ -307,7 +327,7 @@ CREATE TABLE IF NOT EXISTS `despesa` (
   `valordespesa` float NOT NULL,
   `situacaopagamento` tinyint(1) NOT NULL,
   `datavencimento` date DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `despesa`
@@ -317,8 +337,7 @@ INSERT INTO `despesa` (`iddespesa`, `nomedespesa`, `valordespesa`, `situacaopaga
 (3, 'Água', 200, 1, '2015-12-30'),
 (4, 'Luz', 123.12, 0, '2015-12-27'),
 (5, 'Gás', 130, 0, '2015-12-31'),
-(6, 'Teste', 2.31, 0, '2016-01-30'),
-(7, 'Teste2', 22.31, 1, '2016-02-25');
+(6, 'Teste', 2.31, 0, '2016-01-30');
 
 -- --------------------------------------------------------
 
@@ -369,7 +388,7 @@ CREATE TABLE IF NOT EXISTS `fornecedor` (
   `nome` varchar(100) NOT NULL,
   `endereco` varchar(100) DEFAULT NULL,
   `idFornecedor` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `fornecedor`
@@ -600,7 +619,7 @@ CREATE TABLE IF NOT EXISTS `profile` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `full_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `profile`
@@ -613,9 +632,11 @@ INSERT INTO `profile` (`id`, `user_id`, `created_at`, `updated_at`, `full_name`)
 (33, 43, '2016-02-01 01:00:46', '2016-02-01 04:23:48', ''),
 (34, 44, '2016-02-01 01:01:26', '2016-02-01 01:01:26', NULL),
 (59, 80, '2016-02-05 03:30:47', '2016-02-05 05:19:16', ''),
-(61, 82, '2016-02-07 06:20:49', '2016-02-07 06:20:49', NULL),
 (63, 84, '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL),
-(64, 85, '2016-02-10 06:13:27', '2016-02-10 06:13:27', NULL);
+(64, 85, '2016-02-10 06:13:27', '2016-02-13 17:20:37', ''),
+(65, 104, '2016-02-14 05:09:25', '2016-02-14 06:02:05', ''),
+(69, 108, '2016-02-14 06:30:37', '2016-02-14 06:30:37', ''),
+(70, 109, '2016-02-14 22:38:19', '2016-02-15 06:34:50', '');
 
 -- --------------------------------------------------------
 
@@ -631,7 +652,7 @@ CREATE TABLE IF NOT EXISTS `relatorio` (
   `inicio_intervalo` date DEFAULT NULL,
   `fim_intervalo` date NOT NULL,
   `usuario_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `relatorio`
@@ -639,7 +660,8 @@ CREATE TABLE IF NOT EXISTS `relatorio` (
 
 INSERT INTO `relatorio` (`idrelatorio`, `nome`, `datageracao`, `tipo`, `inicio_intervalo`, `fim_intervalo`, `usuario_id`) VALUES
 (5, 'Relatório 01', '2016-02-01', 'Compras', '2016-01-26', '2016-01-30', 44),
-(6, 'Relatório 02', '2016-02-09', 'Faturamento', '2016-02-25', '2016-02-29', 84);
+(6, 'Relatório 02', '2016-02-09', 'Faturamento', '2016-02-25', '2016-02-29', 84),
+(7, 'testestesteste', '2016-02-14', NULL, NULL, '2016-02-15', 109);
 
 -- --------------------------------------------------------
 
@@ -710,22 +732,24 @@ CREATE TABLE IF NOT EXISTS `user` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `banned_at` timestamp NULL DEFAULT NULL,
   `banned_reason` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `user`
 --
 
 INSERT INTO `user` (`id`, `role_id`, `status`, `email`, `username`, `password`, `auth_key`, `access_token`, `logged_in_ip`, `logged_in_at`, `created_ip`, `created_at`, `updated_at`, `banned_at`, `banned_reason`) VALUES
-(1, 1, 1, 'admin@sigir.com', 'admin', '$2y$13$ZaQ4eZwz1ZevK9oaKksT2uKcUlh1aytLRyqGGUGYJSzNLuBcYJOvO', '4c1Lk1bFV-2gSyrQnXm7661avqoQOC0L', 'W6ELUzLx6Zvva8fQ5NV4nLl8jJInF_BC', '::1', '2016-02-11 04:58:03', NULL, '2016-01-26 02:42:06', '2016-01-28 01:27:25', NULL, NULL),
+(1, 1, 1, 'admin@sigir.com', 'admin', '$2y$13$ZaQ4eZwz1ZevK9oaKksT2uKcUlh1aytLRyqGGUGYJSzNLuBcYJOvO', '4c1Lk1bFV-2gSyrQnXm7661avqoQOC0L', 'W6ELUzLx6Zvva8fQ5NV4nLl8jJInF_BC', '::1', '2016-02-15 04:45:39', NULL, '2016-01-26 02:42:06', '2016-01-28 01:27:25', NULL, NULL),
 (2, 2, 1, 'gerente@sigir.com', 'gerente2', '$2y$13$SVYrr6CicYYdpMnep5LKtO8ak84X8h6tFHYVpR8j7nGupVOvqnpVa', 'VPd_SzxMvyTgZprvDA-tfT4kPW_IYzZD', 'UyNFyd41oMBIiRVurZPZuvt6kgTe98xy', '::1', '2016-02-07 23:58:31', '::1', '2016-01-26 20:58:10', '2016-01-31 01:28:29', NULL, NULL),
 (3, 3, 1, 'funcionario@sigir.com', 'funcionario', '$2y$13$.gl9ePCdOVOww1C7AZosD.GSsbD6cMERou36tWYrmEN.dtEFkml9i', 't6g9cyhdz2-EKqG3Whb6TC30qNPQ6oU7', 'BAWIuKS9sXShdh2fM3QnwH8ZqdT5mGwv', '::1', '2016-02-02 05:21:59', '::1', '2016-01-26 21:02:42', '2016-01-31 04:37:09', NULL, NULL),
 (43, 3, 1, 'funcionario1@sigir.com', 'funcionario01', '$2y$13$MR/pQJFMZRJZkZj4.xg0qOtdjJK6NMaMo5jF4bVt1tPHf7sjr0QHi', 'JoIVj9p9IWlVklx1TZ00otnbcr-Gmao7', 'hAYvnkL8pFzP6FGMH7eKw7UmisflzyjX', '::1', '2016-02-05 03:48:25', '::1', '2016-02-01 01:00:46', '2016-02-01 04:23:48', NULL, NULL),
 (44, 2, 1, 'gerente1@sigir.com', 'gerente', '$2y$13$mujgA7j0OsPxUr0gYAao3OSk1yykiEFfxqXis7m.lzvZ3EWID1jOG', 'c4rPsYI-Q-WNI9GgYyTvbZr_ynwyuAlY', 'nAzvxmIB3bTRTW9d23dn1isBFBr6s7RI', '::1', '2016-02-09 23:37:54', '::1', '2016-02-01 01:01:26', '2016-02-09 07:11:09', NULL, NULL),
 (80, 2, 1, 'teste@teste.com', NULL, '$2y$13$Up2wVYVIsBKk3oij/H/8l.5hPym80.3NTFpGlc97cSJg32EqNGn4y', 'EXAFyYZpG5QVTcGx6yeFrlDOl9OizMuM', 'ZdjGbu9FKlXtF5mYt1A4CcShpkEaTd9i', '::1', '2016-02-08 01:22:20', '::1', '2016-02-05 03:30:47', '2016-02-05 05:19:16', NULL, NULL),
-(82, 2, 1, 'teste2@teste.com', NULL, '$2y$13$6KrBewcu/svAqlpcq/g78OeFsnKQ619plTOHs/P1.KZyAy00oShU.', 'R5jwI6KMVr3GI4Hg8-1KV-EvggHLOAKE', 'CE5r9On9f0JUL4nW-CvnB8YoSEO7IXf8', NULL, NULL, '::1', '2016-02-07 06:20:49', '2016-02-07 06:20:49', NULL, NULL),
-(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-02-11 04:54:50', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
-(85, 2, 1, 'compras@compras.com', 'compras', '$2y$13$fcSVvuFUmhH.3iZ0wTtoZOpkVTt1tjAg2fO2thZog9QwMUIEUUzKu', 'tVH-bh0RpqSA1RgMqIR4rqcKtKiGhvPB', '165xJKTAkwnR1QcUd6wQ-fkU8Q98od2O', '::1', '2016-02-11 05:28:26', '::1', '2016-02-10 06:13:27', '2016-02-10 06:13:54', NULL, NULL);
+(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-02-15 04:41:34', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
+(85, 2, 1, 'compras@compras.com', 'Compra', '$2y$13$fcSVvuFUmhH.3iZ0wTtoZOpkVTt1tjAg2fO2thZog9QwMUIEUUzKu', 'tVH-bh0RpqSA1RgMqIR4rqcKtKiGhvPB', '165xJKTAkwnR1QcUd6wQ-fkU8Q98od2O', '::1', '2016-02-12 04:37:12', '::1', '2016-02-10 06:13:27', '2016-02-13 17:20:37', NULL, NULL),
+(104, 2, 1, 'teste3@teste.com', 'teste3', '$2y$13$4MrmhHyYwYzQ5uFHtr8rpeUNCgFCZiHR0410sdcJBABbm/zl/1Z..', 'ndzPwraET0uG3RZMtH23_-7IdxZtiRaH', 'nO74vFAzRakvIVNVrrJLrl4CU9718fzh', '::1', '2016-02-14 05:59:05', '::1', '2016-02-14 05:09:25', '2016-02-14 06:02:05', NULL, NULL),
+(108, 2, 1, 'teste4@teste.com', 'teste44', '$2y$13$COZu07CnXAVlfSQJwK6ng.LnOd43dGyN29Tw/FH13Mtoa/zTtlGwy', 'Hs7QEYX6yxldLcpIVPjwNoBNBY5zWDSa', 'Ib_71XRL0h05Yr1STAjJwv9Y3sfJOIW4', '::1', '2016-02-14 06:35:23', '::1', '2016-02-14 06:30:37', '2016-02-14 06:35:48', NULL, NULL),
+(109, 2, 1, 'teste5@teste.com', 'te5te', '$2y$13$kmvcINGlBELnlIkODn5jROZn1j9YaK6gUOgE1d1hLgVRK0Div9ZDC', 'qhwHHhEN3dUbQlbS-KgD0s-FeCaEHWN8', 'bjaxj0OwAYpBgPGkY-8IiQz6078n-lHd', '::1', '2016-02-15 05:36:44', '::1', '2016-02-14 22:38:19', '2016-02-15 06:34:50', NULL, NULL);
 
 --
 -- Acionadores `user`
@@ -1014,7 +1038,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `caixa`
 --
 ALTER TABLE `caixa`
-  MODIFY `idcaixa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `idcaixa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `cardapio`
 --
@@ -1034,12 +1058,12 @@ ALTER TABLE `comanda`
 -- AUTO_INCREMENT for table `compra`
 --
 ALTER TABLE `compra`
-  MODIFY `idcompra` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+  MODIFY `idcompra` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `despesa`
 --
 ALTER TABLE `despesa`
-  MODIFY `iddespesa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+  MODIFY `iddespesa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `estoque`
 --
@@ -1049,7 +1073,7 @@ ALTER TABLE `estoque`
 -- AUTO_INCREMENT for table `fornecedor`
 --
 ALTER TABLE `fornecedor`
-  MODIFY `idFornecedor` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `idFornecedor` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `insumo_produto`
 --
@@ -1084,12 +1108,12 @@ ALTER TABLE `produtos_compra`
 -- AUTO_INCREMENT for table `profile`
 --
 ALTER TABLE `profile`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=65;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=73;
 --
 -- AUTO_INCREMENT for table `relatorio`
 --
 ALTER TABLE `relatorio`
-  MODIFY `idrelatorio` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `idrelatorio` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `role`
 --
@@ -1109,7 +1133,7 @@ ALTER TABLE `tipopagamento`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=86;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=112;
 --
 -- AUTO_INCREMENT for table `user_auth`
 --

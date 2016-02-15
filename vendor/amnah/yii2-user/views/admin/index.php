@@ -52,6 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     /*$authitem = new AuthItem();
                     return $authitem->getDescription($data->role_id)->description;*/
                     return $data->permissoes;
+
                 }
                 ],
                 [

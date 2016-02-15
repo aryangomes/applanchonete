@@ -575,17 +575,23 @@ class User extends ActiveRecord implements IdentityInterface
             $obj = AuthAssignment::find()->where(['user_id'=>$this->id])
             ->all();
             if (!is_null($obj)) {
-                $authitem = new AuthItem();
-                
-                $this->cachePermissoes = $obj;
-                $aux = array();
-                foreach ($obj as $p) {
-                    array_push($aux, 
-                        $authitem->getDescriptionByName($p->item_name)->description
-                        );
-                }
+                if (count($obj) > 0) {
 
-                return join(', ', $aux);
+
+                    $authitem = new AuthItem();
+
+                    $this->cachePermissoes = $obj;
+                    $aux = array();
+                    foreach ($obj as $p) {
+                        array_push($aux, 
+                            $authitem->getDescriptionByName($p->item_name)->description
+                            );
+                    }
+
+                    return join(', ', $aux);
+                }else{
+                    return "Não há permissões cadastradas";
+                }
                 //return $obj;
 
             } else return null;

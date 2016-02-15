@@ -9,7 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\filters\AccessControl;
-
+use yii\web\ForbiddenHttpException;
 /**
  * CaixaController implements the CRUD actions for Caixa model.
  */
@@ -23,7 +23,7 @@ class CaixaController extends Controller
         'only'=> ['create','update','view','delete','index'],
         'rules'=> [
         ['allow'=>true,
-        'roles' => ['caixa'],
+        'roles' => ['caixa','index-caixa'],
         ],
         
         ]
@@ -43,13 +43,13 @@ class CaixaController extends Controller
      */
     public function actionIndex()
     {
+
         if (Yii::$app->user->can("index-caixa") ||
             Yii::$app->user->can("caixa") ) {
-            $caixa = new Caixa();
-        $caixas = Caixa::find()->where(['user_id'=>Yii::$app->user->getId()])->all();
-       // var_dump($caixas[0]->idcaixa);
-        if (count($caixas) > 0) {
-            return $this->redirect(['view', 'id'=>$caixas[0]->idcaixa]);
+            $caixa = Caixa::find()->where(['user_id'=>Yii::$app->user->getId()])->one();
+      //  var_dump($caixa);
+        if (count($caixa) > 0) {
+            return $this->redirect(['view', 'id'=>$caixa->idcaixa]);
         }else{
 
             $searchModel = new CaixaSearch();
@@ -90,12 +90,11 @@ class CaixaController extends Controller
      */
     public function actionCreate()
     {
-     if (Yii::$app->user->can("create-caixa") ||
+       if (Yii::$app->user->can("create-caixa") ||
         Yii::$app->user->can("caixa") ) {
-         $caixa = new Caixa();
-     $caixas = Caixa::find()->all();
+          $caixa = Caixa::find()->where(['user_id'=>Yii::$app->user->getId()])->one();
 
-     if (count($caixas) == 0) {
+      if (count($caixa) == 0) {
 
         $model = new Caixa();
 
@@ -107,9 +106,9 @@ class CaixaController extends Controller
                 ]);
         }
     }else{
-       return $this->redirect(['view', 'id'=>$caixas[0]->idcaixa]);
+        return $this->redirect(['view', 'id'=>$caixas->idcaixa]);
 
-   }
+    }
 }else{
     throw new ForbiddenHttpException("Acesso negado!");
 }
@@ -123,7 +122,7 @@ class CaixaController extends Controller
      */
     public function actionUpdate($id)
     {
-       if (Yii::$app->user->can("update-caixa") ||
+     if (Yii::$app->user->can("update-caixa") ||
         Yii::$app->user->can("caixa") ) {
         $model = $this->findModel($id);
 

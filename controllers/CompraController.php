@@ -11,6 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use \yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 /**
  * CompraController implements the CRUD actions for Compra model.
  */
@@ -24,7 +25,7 @@ class CompraController extends Controller
         'only'=> ['create','update','view','delete','index'],
         'rules'=> [
         ['allow'=>true,
-        'roles' => ['compra'],
+        'roles' => ['compra','index-compra'],
         ],
         ]
         ],

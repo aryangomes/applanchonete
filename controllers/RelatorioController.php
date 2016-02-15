@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 /**
  * RelatorioController implements the CRUD actions for Relatorio model.
  */
@@ -22,7 +23,7 @@ class RelatorioController extends Controller
         'only'=> ['create','update','view','delete','index'],
         'rules'=> [
         ['allow'=>true,
-        'roles' => ['relatorio'],
+        'roles' => ['relatorio','index-relatorio'],
         ],
         ]
         ],

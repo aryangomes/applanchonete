@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)http://localhost/applanchonete/web/despesa/create -->
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-param" content="_csrf">
+    <meta name="csrf-token" content="ZUdhMlg0eFoKMBN2LVM2BToOJws7ZR0RMx8gVTRwCDgvPwoCCHABCg==">
+    <title>Cadastrar Despesa</title>
+    <link href="./Despesas_files/bootstrap.css" rel="stylesheet">
+<link href="http://localhost/applanchonete/web/assets/a095da1d/css/kv-widgets.css" rel="stylesheet">
+<link href="http://localhost/applanchonete/web/assets/3a7f73b9/css/bootstrap-datepicker3.css" rel="stylesheet">
+<link href="http://localhost/applanchonete/web/assets/3a7f73b9/css/datepicker-kv.css" rel="stylesheet">
+<link href="./Despesas_files/site.css" rel="stylesheet">
+<link href="./Despesas_files/bootstrap(1).css" rel="stylesheet">
+<link href="./Despesas_files/sb-admin.css" rel="stylesheet">
+<link href="./Despesas_files/morris.css" rel="stylesheet">
+<link href="./Despesas_files/font-awesome.min.css" rel="stylesheet">
+<script type="text/javascript">var maskMoney_17eeef61 = {"prefix":"R$ ","allowNegative":false,"suffix":"","affixesStay":true,"thousands":".","decimal":",","precision":2,"allowZero":false};
+
+var datecontrol_16621f18 = {"idSave":"despesa-datavencimento","url":"","type":"date","saveFormat":"Y-m-d","dispFormat":"d\/m\/Y","saveTimezone":null,"dispTimezone":null,"asyncRequest":true,"language":"pt","dateSettings":{"days":["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado","Domingo"],"daysShort":["Dom","Seg","Ter","Qua","Qui","Sex","Sáb","Dom"],"months":["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"],"monthsShort":["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"],"meridiem":["AM","PM"]}};
+
+var kvDatepicker_1a53f1df = {"format":"dd\/mm\/yyyy","autoclose":true,"language":"pt"};
+</script><style type="text/css"></style>
+</head>
+<body>
+                <div id="wrapper">
+
+            <!-- Navigation -->
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="http://localhost/applanchonete/web/">Sigir</a>                </div>
+
+                <!-- Top Menu Items -->
+                <ul class="nav navbar-right top-nav">
+
+                    <li class="dropdown">
+                        <a href="http://localhost/applanchonete/web/despesa/create#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> 
+                            teste5<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="http://localhost/applanchonete/web/user/account"><i class="fa fa-fw fa-user"></i> Profile</a>
+                                </li>
+                                <li>
+                                    <a href="http://localhost/applanchonete/web/despesa/create#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                                </li>
+                                <li>
+                                    <a href="http://localhost/applanchonete/web/despesa/create#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="http://localhost/applanchonete/web/user/logout" data-method="POST"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a href="http://localhost/applanchonete/web/loja/create">Cadastre sua loja </a></li>
+
+                        
+
+
+
+                                </ul>
+                            
+
+<!-- 
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> 
+                                    teste5<b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="/applanchonete/web/user/account"><i class="fa fa-fw fa-user"></i> Profile</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="/applanchonete/web/user/logout" data-method='POST'><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                                        </li>
+                                    </ul>
+                                </li> -->
+                            
+
+
+                            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+
+                            <div class="collapse navbar-collapse navbar-ex1-collapse ">
+                                <ul class="nav navbar-nav side-nav">
+                                    <li class="active">
+                                        <a href="http://localhost/applanchonete/web/site/index"><i class="fa fa-fw fa-home"></i> Home</a>
+                                    </li>
+                                                                            <li>
+                                            <a href="http://localhost/applanchonete/web/despesa/index"><i class="glyphicon glyphicon-list-alt"></i> Despesas</a>                                                                                </li>
+                                                                            <li>
+                                            <a href="http://localhost/applanchonete/web/caixa/index"><i class="fa fa-money"></i> Caixa</a>
+                                        </li>
+
+                                                        <!--     <li>
+                                            </li> -->
+
+                                            <li>
+                            <a href="http://localhost/applanchonete/web/fornecedor/index"><i class="fa fa-truck"></i> Fornecedor</a>
+                        </li>
+
+                        
+                                            <li>
+                            <a href="http://localhost/applanchonete/web/relatorio/index"><i class="fa fa-fw fa-desktop"></i> Relatório</a>
+                        </li>
+
+                                                                    <li>
+                            <a href="http://localhost/applanchonete/web/compra/index"><i class="fa fa-shopping-basket"></i> Compras</a>
+                        </li>
+                        
+                    
+                                                    <li>
+                                <a href="http://localhost/applanchonete/web/user"><i class="fa fa-users"></i> Usuários</a>
+                            </li>
+                            
+
+                                        </ul>
+            </div>
+
+         <!--    <div class="collapse navbar-collapse navbar-ex1-collapse ">
+                <ul class="nav navbar-nav side-nav">
+
+                  <li>
+                    <a href="/applanchonete/web/fornecedor/index"><i class="fa fa-truck"></i> Fornecedor</a>
+                </li>
+            </ul>
+        </div> -->
+
+
+        <!--   <div class="collapse navbar-collapse navbar-ex1-collapse "> -->
+
+        <!--  </div> -->
+        
+    <!-- /.navbar-collapse -->
+</nav>
+
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+
+                <ul class="breadcrumb"><li><a href="http://localhost/applanchonete/web/">Página Inicial</a></li>
+<li><a href="http://localhost/applanchonete/web/despesa/index">Despesas</a></li>
+<li class="active">Cadastrar Despesa</li>
+</ul>
+                </div>
+            </div>
+            <!-- /.row -->
+            <!-- conteudo das págians-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="despesa-create">
+
+	<h1>Cadastrar Despesa</h1>
+
+	
+<div class="despesa-form">
+
+	<form id="w0" action="http://localhost/applanchonete/web/despesa/create" method="post">
+<input type="hidden" name="_csrf" value="ZUdhMlg0eFoKMBN2LVM2BToOJws7ZR0RMx8gVTRwCDgvPwoCCHABCg==">
+	<div class="form-group field-despesa-nomedespesa required">
+<label class="control-label" for="despesa-nomedespesa">Despesa</label>
+<input type="text" id="despesa-nomedespesa" class="form-control" name="Despesa[nomedespesa]" maxlength="100">
+
+<div class="help-block"></div>
+</div>
+	<div class="form-group field-despesa-valordespesa required">
+<label class="control-label" for="despesa-valordespesa">Valor da Despesa</label>
+<input type="text" id="despesa-valordespesa-disp" class="form-control" name="despesa-valordespesa-disp"><input type="hidden" id="despesa-valordespesa" name="Despesa[valordespesa]" data-krajee-maskmoney="maskMoney_17eeef61">
+
+<div class="help-block"></div>
+</div>
+		<div class="form-group field-despesa-situacaopagamento required">
+<label class="control-label" for="despesa-situacaopagamento">Situação pagamento</label>
+<select id="despesa-situacaopagamento" class="form-control" name="Despesa[situacaopagamento]">
+<option value="">Selecione a situação de pagamento da despesa</option>
+<option value="1">Pago</option>
+<option value="0">Não Pago</option>
+</select>
+
+<div class="help-block"></div>
+</div>
+		<div class="form-group field-despesa-datavencimento">
+<label class="control-label" for="despesa-datavencimento">Data de vencimento</label>
+<div id="despesa-datavencimento-disp-kvdate" class="input-group date"><span class="input-group-addon kv-date-calendar" title="Select date"><i class="glyphicon glyphicon-calendar"></i></span><span class="input-group-addon kv-date-remove" title="Clear field"><i class="glyphicon glyphicon-remove"></i></span><input type="text" id="despesa-datavencimento-disp" class="form-control" name="datavencimento-despesa-datavencimento" value="" data-krajee-datecontrol="datecontrol_16621f18" data-datepicker-source="despesa-datavencimento-disp-kvdate" data-datepicker-type="2" data-krajee-kvdatepicker="kvDatepicker_1a53f1df"></div><input type="hidden" id="despesa-datavencimento" name="Despesa[datavencimento]">
+
+<div class="help-block"></div>
+</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-success">Criar</button>			</div>
+
+			</form>
+		</div>
+
+	</div>
+                </div>
+            </div>
+            <footer class="footer">
+                <div class="container">
+                    <p class="pull-left">© Sigir 2016</p>
+
+                    <p class="pull-right">Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></p> 
+                </div>
+            </footer>
+            <!-- /.row -->
+        </div>         
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /#page-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+
+<div><div id="yii-debug-toolbar" class="yii-debug-toolbar-bottom hidden-print">
+    <div class="yii-debug-toolbar-block title">
+        <a href="http://localhost/applanchonete/web/debug/default/index">
+            <img width="29" height="30" alt="" src="data:image/png;base64,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">
+            Yii Debugger
+        </a>
+    </div>
+
+            <div class="yii-debug-toolbar-block">
+    <a href="http://localhost/applanchonete/web/debug/default/view?panel=config&amp;tag=56c0e791927e0">
+        Yii
+        <span class="label">2.0.6</span>
+        PHP
+        <span class="label">5.6.8</span>
+    </a>
+</div>
+            <div class="yii-debug-toolbar-block">
+    <a href="http://localhost/applanchonete/web/debug/default/view?panel=request&amp;tag=56c0e791927e0" title="Status code: 200 OK">Status <span class="label label-success">200</span></a>
+    <a href="http://localhost/applanchonete/web/debug/default/view?panel=request&amp;tag=56c0e791927e0" title="Action: app\controllers\DespesaController::actionCreate()">Route <span class="label">despesa/create</span></a>
+</div>            
+
+<div class="yii-debug-toolbar-block">
+    <a href="http://localhost/applanchonete/web/debug/default/view?panel=log&amp;tag=56c0e791927e0" title="Logged 67 messages">Log
+        <span class="label">67</span>
+            </a>
+</div>
+            <div class="yii-debug-toolbar-block">
+    <a href="http://localhost/applanchonete/web/debug/default/view?panel=profiling&amp;tag=56c0e791927e0" title="Total request processing time was 2,331 ms">Time <span class="label label-info">2,331 ms</span></a>
+    <a href="http://localhost/applanchonete/web/debug/default/view?panel=profiling&amp;tag=56c0e791927e0" title="Peak memory consumption">Memory <span class="label label-info">7.2 MB</span></a>
+</div>
+            <div class="yii-debug-toolbar-block">
+    <a href="http://localhost/applanchonete/web/debug/default/view?panel=db&amp;tag=56c0e791927e0" title="Executed 39 database queries which took 103 ms.">
+        DB <span class="label label-info">39</span> <span class="label">103 ms</span>
+    </a>
+</div>
+            <div class="yii-debug-toolbar-block">
+    <a href="http://localhost/applanchonete/web/debug/default/view?panel=assets&amp;tag=56c0e791927e0" title="Number of asset bundles loaded">Asset Bundles <span class="label label-info">11</span></a>
+</div>
+                    <span class="yii-debug-toolbar-toggler" onclick="document.getElementById(&#39;yii-debug-toolbar&#39;).style.display = &#39;none&#39;;
+document.getElementById(&#39;yii-debug-toolbar-min&#39;).style.display = &#39;block&#39;;
+if (window.localStorage) {
+    localStorage.setItem(&#39;yii-debug-toolbar&#39;, &#39;minimized&#39;);
+}">›</span>
+</div>
+<div id="yii-debug-toolbar-min" class="hidden-print">
+    <a href="http://localhost/applanchonete/web/debug/default/view?panel=config&amp;tag=56c0e791927e0" title="Open Yii Debugger" id="yii-debug-toolbar-logo">
+        <img width="29" height="30" alt="" src="data:image/png;base64,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">
+    </a>
+    <span class="yii-debug-toolbar-toggler" onclick="document.getElementById(&#39;yii-debug-toolbar-min&#39;).style.display = &#39;none&#39;;
+document.getElementById(&#39;yii-debug-toolbar&#39;).style.display = &#39;block&#39;;
+if (window.localStorage) {
+    localStorage.setItem(&#39;yii-debug-toolbar&#39;, &#39;maximized&#39;);
+}">‹</span>
+</div>
+</div><style>#yii-debug-toolbar {
+    padding: 0;
+    font: 11px Verdana, Arial, sans-serif;
+    text-align: left;
+    min-height: 40px;
+    overflow: auto;
+    background: rgb(246,246,246);
+    background: -moz-linear-gradient(top,  rgba(237,237,237,1) 0%, rgba(246,246,246,1) 53%, rgba(255,255,255,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(237,237,237,1)), color-stop(53%,rgba(246,246,246,1)), color-stop(100%,rgba(255,255,255,1)));
+    background: -webkit-linear-gradient(top,  rgba(237,237,237,1) 0%,rgba(246,246,246,1) 53%,rgba(255,255,255,1) 100%);
+    background: -o-linear-gradient(top,  rgba(237,237,237,1) 0%,rgba(246,246,246,1) 53%,rgba(255,255,255,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(237,237,237,1) 0%,rgba(246,246,246,1) 53%,rgba(255,255,255,1) 100%);
+    background: linear-gradient(to bottom,  rgba(237,237,237,1) 0%,rgba(246,246,246,1) 53%,rgba(255,255,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededed', endColorstr='#ffffff',GradientType=0 );
+    background: rgb(246,246,246) url(data:image/svg+xml;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAoCAYAAAA/tpB3AAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB94BBQwuINct3v0AAAAjSURBVAjXY3j79u1/JgYGBgYkgpGRkYEYMSpKUGLK+/fvGQAaDAb6F86IsAAAAABJRU5ErkJggg==); /* generated using "cat assets/bg.png | base64" */
+
+    /* ensure debug toolbar text is displayed ltr even on rtl pages */
+    direction: ltr;
+}
+
+.yii-debug-toolbar-top {
+    margin: 0 0 20px 0;
+    border-bottom: 1px solid #e4e4e4;
+}
+
+.yii-debug-toolbar-bottom {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    z-index: 1000000;
+    border-top: 1px solid #ccc;
+}
+
+.yii-debug-toolbar-block {
+    float: left;
+    margin: 0;
+    border-right: 1px solid #e4e4e4;
+    padding: 4px 8px;
+    line-height: 32px;
+    white-space: nowrap;
+}
+
+.yii-debug-toolbar-block a {
+    text-decoration: none;
+    color: black;
+}
+
+.yii-debug-toolbar-block span {
+}
+
+.yii-debug-toolbar-block img {
+    vertical-align: middle;
+}
+
+#yii-debug-toolbar .label {
+    display: inline-block;
+    padding: 2px 4px;
+    font-size: 11.844px;
+    font-weight: normal;
+    line-height: 14px;
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: #999999;
+}
+
+#yii-debug-toolbar .label {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+#yii-debug-toolbar .label:empty {
+    display: none;
+}
+
+#yii-debug-toolbar a.label:hover,
+#yii-debug-toolbar a.label:focus {
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#yii-debug-toolbar .label-important {
+    background-color: #b94a48;
+}
+
+#yii-debug-toolbar .label-important[href] {
+    background-color: #953b39;
+}
+
+#yii-debug-toolbar .label-warning,
+#yii-debug-toolbar .badge-warning {
+    background-color: #f89406;
+}
+
+#yii-debug-toolbar .label-warning[href] {
+    background-color: #c67605;
+}
+
+#yii-debug-toolbar .label-success {
+    background-color: #468847;
+}
+
+#yii-debug-toolbar .label-success[href] {
+    background-color: #356635;
+}
+
+#yii-debug-toolbar .label-info {
+    background-color: #3a87ad;
+}
+
+#yii-debug-toolbar .label-info[href] {
+    background-color: #2d6987;
+}
+
+#yii-debug-toolbar .label-inverse,
+#yii-debug-toolbar .badge-inverse {
+    background-color: #333333;
+}
+
+#yii-debug-toolbar .label-inverse[href],
+#yii-debug-toolbar .badge-inverse[href] {
+    background-color: #1a1a1a;
+}
+
+.yii-debug-toolbar-toggler {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    bottom: 4px;
+    width: 15px;
+    height: 30px;
+    font-size: 25px;
+    font-weight: 100;
+    line-height: 28px;
+    color: #ffffff;
+    text-align: center;
+    background: #666666;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+
+.yii-debug-toolbar-toggler:hover,
+.yii-debug-toolbar-toggler:focus {
+    color: #ffffff;
+    text-decoration: none;
+    opacity: 0.9;
+    filter: alpha(opacity=90);
+}
+
+#yii-debug-toolbar-min {
+    display: none;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    z-index: 1000000;
+    font: 11px Verdana, Arial, sans-serif;
+    text-align: left;
+    width: 63px;
+    height: 38px;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    -webkit-border-top-left-radius: 6px;
+    -moz-border-top-left-radius: 6px;
+    border-top-left-radius: 6px;
+    background: rgb(237,237,237);
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2VkZWRlZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUzJSIgc3RvcC1jb2xvcj0iI2Y2ZjZmNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(top,  rgba(237,237,237,1) 0%, rgba(246,246,246,1) 53%, rgba(255,255,255,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(237,237,237,1)), color-stop(53%,rgba(246,246,246,1)), color-stop(100%,rgba(255,255,255,1)));
+    background: -webkit-linear-gradient(top,  rgba(237,237,237,1) 0%,rgba(246,246,246,1) 53%,rgba(255,255,255,1) 100%);
+    background: -o-linear-gradient(top,  rgba(237,237,237,1) 0%,rgba(246,246,246,1) 53%,rgba(255,255,255,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(237,237,237,1) 0%,rgba(246,246,246,1) 53%,rgba(255,255,255,1) 100%);
+    background: linear-gradient(to bottom,  rgba(237,237,237,1) 0%,rgba(246,246,246,1) 53%,rgba(255,255,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededed', endColorstr='#ffffff',GradientType=0 );
+}
+
+#yii-debug-toolbar-logo {
+    position: fixed;
+    right: 31px;
+    bottom: 4px;
+}
+</style><script>(function () {
+    var ajax = function (url, settings) {
+        var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+        settings = settings || {};
+        xhr.open(settings.method || 'GET', url, true);
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhr.setRequestHeader('Accept', 'text/html');
+        xhr.onreadystatechange = function (state) {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200 && settings.success) {
+                    settings.success(xhr);
+                } else if (xhr.status != 200 && settings.error) {
+                    settings.error(xhr);
+                }
+            }
+        };
+        xhr.send(settings.data || '');
+    };
+
+    var e = document.getElementById('yii-debug-toolbar');
+    if (e) {
+        e.style.display = 'block';
+        var url = e.getAttribute('data-url');
+        ajax(url, {
+            success: function (xhr) {
+                var div = document.createElement('div');
+                div.innerHTML = xhr.responseText;
+                e.parentNode.replaceChild(div, e);
+                if (window.localStorage) {
+                    var pref = localStorage.getItem('yii-debug-toolbar');
+                    if (pref == 'minimized') {
+                        document.getElementById('yii-debug-toolbar').style.display = 'none';
+                        document.getElementById('yii-debug-toolbar-min').style.display = 'block';
+                    }
+                }
+            },
+            error: function (xhr) {
+                e.innerHTML = xhr.responseText;
+            }
+        });
+    }
+})();
+</script><script src="./Despesas_files/jquery.js"></script>
+<script src="./Despesas_files/bootstrap.min.js"></script>
+<script src="./Despesas_files/raphael.min.js"></script>
+<script src="./Despesas_files/morris.min.js"></script>
+<script src="./Despesas_files/morris-data.js"></script>
+<script src="./Despesas_files/jquery(1).js"></script>
+<script src="./Despesas_files/yii.js"></script>
+<script src="http://localhost/applanchonete/web/assets/c60b1dd4/yii.validation.js"></script>
+<script src="http://localhost/applanchonete/web/assets/9f3b0331/js/jquery.maskMoney.js"></script>
+<script src="http://localhost/applanchonete/web/assets/f129e03b/js/php-date-formatter.js"></script>
+<script src="http://localhost/applanchonete/web/assets/e2975c73/js/datecontrol.js"></script>
+<script src="http://localhost/applanchonete/web/assets/3a7f73b9/js/bootstrap-datepicker.js"></script>
+<script src="http://localhost/applanchonete/web/assets/3a7f73b9/js/datepicker-kv.js"></script>
+<script src="http://localhost/applanchonete/web/assets/3a7f73b9/js/locales/bootstrap-datepicker.pt.min.js"></script>
+<script src="http://localhost/applanchonete/web/assets/c60b1dd4/yii.activeForm.js"></script>
+<script src="./Despesas_files/bootstrap.js"></script>
+<script type="text/javascript">jQuery(document).ready(function () {
+jQuery("#despesa-valordespesa-disp").maskMoney(maskMoney_17eeef61);
+
+var val = parseFloat(jQuery("#despesa-valordespesa").val());
+jQuery("#despesa-valordespesa-disp").maskMoney('mask', val);
+jQuery("#despesa-valordespesa-disp").on('change', function () {
+     var numDecimal = jQuery("#despesa-valordespesa-disp").maskMoney('unmasked')[0];
+    jQuery("#despesa-valordespesa").val(numDecimal);
+    jQuery("#despesa-valordespesa").trigger('change');
+});
+jQuery('#despesa-datavencimento-disp').datecontrol(datecontrol_16621f18);
+
+jQuery('#despesa-datavencimento-disp-kvdate').kvDatepicker(kvDatepicker_1a53f1df);
+
+initDPRemove('despesa-datavencimento-disp');
+jQuery('#w0').yiiActiveForm([{"id":"despesa-nomedespesa","name":"nomedespesa","container":".field-despesa-nomedespesa","input":"#despesa-nomedespesa","validate":function (attribute, value, messages, deferred, $form) {yii.validation.required(value, messages, {"message":"\"Despesa\" não pode ficar em branco."});yii.validation.string(value, messages, {"message":"\"Despesa\" deve ser um texto.","max":100,"tooLong":"\"Despesa\" deve conter no máximo 100 caracteres.","skipOnEmpty":1});}},{"id":"despesa-valordespesa","name":"valordespesa","container":".field-despesa-valordespesa","input":"#despesa-valordespesa","validate":function (attribute, value, messages, deferred, $form) {yii.validation.required(value, messages, {"message":"\"Valor da Despesa\" não pode ficar em branco."});yii.validation.number(value, messages, {"pattern":/^\s*[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s*$/,"message":"\u0022Valor da Despesa\u0022 deve ser um número.","skipOnEmpty":1});}},{"id":"despesa-situacaopagamento","name":"situacaopagamento","container":".field-despesa-situacaopagamento","input":"#despesa-situacaopagamento","validate":function (attribute, value, messages, deferred, $form) {yii.validation.required(value, messages, {"message":"\"Situação pagamento\" não pode ficar em branco."});yii.validation.number(value, messages, {"pattern":/^\s*[+-]?\d+\s*$/,"message":"\u0022Situação pagamento\u0022 deve ser um número inteiro.","skipOnEmpty":1});}}], []);
+});</script>
+
+</body></html>

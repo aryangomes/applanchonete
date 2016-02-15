@@ -8,7 +8,7 @@ use yii\widgets\DetailView;
  * @var amnah\yii2\user\models\User $user
  */
 
-$this->title = $user->id;
+$this->title = $user->email;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('user', 'Users'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -21,15 +21,15 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('user', 'Delete'), ['delete', 'id' => $user->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('user', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
+            'confirm' => Yii::t('user', 'Are you sure you want to delete this item?'),
+            'method' => 'post',
             ],
-        ]) ?>
-    </p>
+            ]) ?>
+        </p>
 
-    <?= DetailView::widget([
-        'model' => $user,
-        'attributes' => [
+        <?= DetailView::widget([
+            'model' => $user,
+            'attributes' => [
             'id',
             'role_id',
             'status',
@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at',
             'banned_at',
             'banned_reason',
-        ],
-    ]) ?>
+            ],
+            ]) ?>
 
-</div>
+        </div>

@@ -23,7 +23,7 @@ class DespesaController extends Controller
         'only'=> ['create','update','view','delete','index'],
         'rules'=> [
         ['allow'=>true,
-        'roles' => ['despesa'],
+        'roles' => ['despesa','index-despesa'],
         ],
         ]
         ],

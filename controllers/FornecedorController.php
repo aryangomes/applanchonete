@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
+
 /**
  * FornecedorController implements the CRUD actions for Fornecedor model.
  */
@@ -23,7 +24,7 @@ class FornecedorController extends Controller
         'only'=> ['create','update','view','delete','index'],
         'rules'=> [
         ['allow'=>true,
-        'roles' => ['fornecedor'],
+        'roles' => ['fornecedor','index-fornecedor'],
         ],
         ]
         ],

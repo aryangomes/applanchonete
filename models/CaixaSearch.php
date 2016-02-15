@@ -18,8 +18,8 @@ class CaixaSearch extends Caixa
     public function rules()
     {
         return [
-            [['idcaixa', 'user_id'], 'integer'],
-            [['valorapurado', 'valoremcaixa', 'valorlucro'], 'number'],
+        [['idcaixa', 'user_id'], 'integer'],
+        [['valorapurado', 'valoremcaixa', 'valorlucro'], 'number'],
         ];
     }
 
@@ -45,7 +45,7 @@ class CaixaSearch extends Caixa
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-        ]);
+            ]);
 
         $this->load($params);
 
@@ -60,8 +60,8 @@ class CaixaSearch extends Caixa
             'valorapurado' => $this->valorapurado,
             'valoremcaixa' => $this->valoremcaixa,
             'valorlucro' => $this->valorlucro,
-            'user_id' => $this->user_id,
-        ]);
+            'user_id' => Yii::$app->user->getId(),
+            ]);
 
         return $dataProvider;
     }

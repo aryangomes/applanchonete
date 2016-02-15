@@ -30,12 +30,16 @@ class AdminController extends Controller
     {
         // check for admin permission (`tbl_role.can_admin`)
         // note: check for Yii::$app->user first because it doesn't exist in console commands (throws exception)
-        if (!empty(Yii::$app->user) && !Yii::$app->user->can("admin") && !Yii::$app->user->can("user")) {
+        if (!empty(Yii::$app->user) && !Yii::$app->user->can("admin") && !Yii::$app->user->can("user")
+            && !Yii::$app->user->can("index-user")   && !Yii::$app->user->can("create-user") 
+            && !Yii::$app->user->can("view-user")   && !Yii::$app->user->can("update-user")
+            && !Yii::$app->user->can("delete-user")
+            ) {
             throw new ForbiddenHttpException('You are not allowed to perform this action.');
-        }
-
-        parent::init();
     }
+
+    parent::init();
+}
 
     /**
      * @inheritdoc
@@ -88,32 +92,32 @@ class AdminController extends Controller
      */
     public function actionCreate()
     {
-       /** @var \amnah\yii2\user\models\User $user */
-       /** @var \amnah\yii2\user\models\Profile $profile */
-       /** @var \amnah\yii2\user\models\Role $role */
+     /** @var \amnah\yii2\user\models\User $user */
+     /** @var \amnah\yii2\user\models\Profile $profile */
+     /** @var \amnah\yii2\user\models\Role $role */
 
 
         // AuthAssigment
-       $AuthItem = new AuthItem();
-       $permissoes = ArrayHelper::map(
+     $AuthItem = new AuthItem();
+     $permissoes = ArrayHelper::map(
         AuthItem::find()->
         where("name <> 'admin' " )->orderBy('type ASC')->all(), 
         'name','description');
-       $permissoesUser = null;
+     $permissoesUser = null;
         // set up new user/profile objects
-       $user = $this->module->model("User", ["scenario" => "register"]);
-       $profile = $this->module->model("Profile");
+     $user = $this->module->model("User", ["scenario" => "register"]);
+     $profile = $this->module->model("Profile");
 
         // load post data
-       $post = Yii::$app->request->post();
+     $post = Yii::$app->request->post();
 
-       if ($user->load($post)) {
+     if ($user->load($post)) {
 
             // ensure profile data gets loaded
-           $profile->load($post);
+         $profile->load($post);
 
             // validate for ajax request
-           if (Yii::$app->request->isAjax) {
+         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($user, $profile);
         }

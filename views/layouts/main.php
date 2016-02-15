@@ -27,13 +27,13 @@ $loja = Loja::find()->where(['user_id'=>Yii::$app->user->getId()])->all();
 
 if (count($loja) > 0) {
     foreach ($loja as $l) {
-       $nomeLoja = $l->nome;
-       $url =Url::toRoute(['/loja/view', 'id'=>Yii::$app->user->getId()]);
-   }
+     $nomeLoja = $l->nome;
+     $url =Url::toRoute(['/loja/view', 'id'=>Yii::$app->user->getId()]);
+ }
 
 }else{
- $nomeLoja = 'Cadastre sua loja';
- $url =Url::toRoute(['/loja/create']);
+   $nomeLoja = 'Cadastre sua loja';
+   $url =Url::toRoute(['/loja/create']);
 }
 
 ?>
@@ -44,7 +44,7 @@ if (count($loja) > 0) {
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
+    <title><?= Html::encode('App Lanchonete' /*$this->title*/) ?></title>
     <?php $this->head() ?>
 
 </head>
@@ -93,11 +93,16 @@ if (count($loja) > 0) {
                         <li><a href="<?= $url  ?>"><?= $nomeLoja ?> </a></li>
 
                         <?php
-                        if (Yii::$app->user->can("caixa")) {
+                        if (Yii::$app->user->can("caixa") || Yii::$app->user->can("despesa")  ) {
 
                             ?>
                             <li class="dropdown">
+                              <?php
+                              if ( Yii::$app->user->can("despesa")  ) {
+
+                                ?>
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
                                     <i class="fa fa-envelope"></i> 
                                     <?php
                                     if (count($despesasNaoPagas) > 0) {
@@ -137,49 +142,55 @@ if (count($loja) > 0) {
                                 </ul>
                                 <?php 
                             }
-                            ?>
 
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        }
+                        ?>
 
-                                <?php
-                                if(isset($caixa)){
-                                    if ($caixa->valoremcaixa < $valorDespesas ) {
+                    </li>
+                    <li class="dropdown">
+                      <?php
+                      if ( Yii::$app->user->can("caixa")  ) {
 
+                        ?>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
-                                        ?>
-                                        <i class="fa fa-bell"></i>
-                                        <span class="label label-danger">
-                                         !
-                                     </span>
-                                     <b class="caret"></b></a>
-                                     <ul class="dropdown-menu alert-dropdown">
+                            <?php
+                            if(isset($caixa)){
+                                if ($caixa->valoremcaixa < $valorDespesas ) {
 
 
-                                         <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
-                                         </li>
-                                         <?php  
-                                     }   
-                                 } else {
                                     ?>
                                     <i class="fa fa-bell"></i>
-
-                                    <b class="caret"></b></a>
-                                    <ul class="dropdown-menu alert-dropdown">
-                                        <li>
-                                            &nbsp; Não há alertas  </li>
-                                            <?php
-
-                                        }
-
-                                    }?>
+                                    <span class="label label-danger">
+                                       !
+                                   </span>
+                                   <b class="caret"></b></a>
+                                   <ul class="dropdown-menu alert-dropdown">
 
 
+                                       <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
+                                       </li>
+                                       <?php  
+                                   }   
+                               } else {
+                                ?>
+                                <i class="fa fa-bell"></i>
+
+                                <b class="caret"></b></a>
+                                <ul class="dropdown-menu alert-dropdown">
+                                    <li>
+                                        &nbsp; Não há alertas  </li>
+                                        <?php
+
+                                    }
+                                }
+                            }?>
 
 
-                                </ul>
-                            </li>
+
+
+                        </ul>
+                    </li>
 
 <!-- 
                             <li class="dropdown">

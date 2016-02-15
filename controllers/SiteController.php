@@ -8,7 +8,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
-
+use yii\web\ForbiddenHttpException;
 class SiteController extends Controller
 {
     public function behaviors()
@@ -58,12 +58,12 @@ class SiteController extends Controller
   public function actionLogin()
   {
     if (!\Yii::$app->user->isGuest) {
-     if (Yii::$app->user->can("admin")) {
-      return $this->redirect(['/user/admin']);
-  }
-  return $this->render('index');
+       if (Yii::$app->user->can("admin")) {
+          return $this->redirect(['/user/admin']);
+      }
+      return $this->render('index');
             //return $this->goHome();
-}else{
+  }else{
     $this->redirect('user/login');
 }
 

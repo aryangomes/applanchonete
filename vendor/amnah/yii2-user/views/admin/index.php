@@ -41,15 +41,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'id',
         [
         'attribute' => 'role_id',
-        'label' => Yii::t('user', 'Role'),
-               /* 'filter' => $role::dropdown(),
+        'label' => 'Permissões',
+        /*  Yii::t('user', 'Role'),
+               'filter' => $role::dropdown(),
                 'value' => function($model, $index, $dataColumn) use ($role) {
                     $roleDropdown = $role::dropdown();
                     return $roleDropdown[$model->role_id];
                 },*/
                 'value' => function($data) {
-                    $authitem = new AuthItem();
-                    return $authitem->getDescription($data->role_id)->description;
+                    /*$authitem = new AuthItem();
+                    return $authitem->getDescription($data->role_id)->description;*/
+                    return $data->permissoes;
                 }
                 ],
                 [

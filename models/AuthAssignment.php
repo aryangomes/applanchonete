@@ -15,6 +15,8 @@ use Yii;
  */
 class AuthAssignment extends \yii\db\ActiveRecord
 {
+
+
     /**
      * @inheritdoc
      */
@@ -55,5 +57,7 @@ class AuthAssignment extends \yii\db\ActiveRecord
         return $this->hasOne(AuthItem::className(), ['name' => 'item_name']);
     }
 
+
+    
     
 }

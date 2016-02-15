@@ -96,6 +96,11 @@ class AuthItem extends \yii\db\ActiveRecord
         return $this->find('description')->where(['type'=>$role_id])->one();
     }
 
+    public function getDescriptionByName($name)
+    {
+        return $this->find()->where(['name'=>$name])->one();
+    }
+
     public function getPermissao($role_id)
     {
         return AuthItem::find()->where(['type'=>$role_id])->one();

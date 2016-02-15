@@ -10,7 +10,7 @@ use yii\swiftmailer\Message;
 use yii\helpers\Inflector;
 use ReflectionClass;
 use app\models\AuthItem;
-
+use app\models\AuthAssignment;
 /**
  * This is the model class for table "tbl_user".
  *
@@ -76,6 +76,8 @@ class User extends ActiveRecord implements IdentityInterface
      * @var \amnah\yii2\user\Module
      */
     public $module;
+
+    private $cachePermissoes = null;
 
     /**
      * @inheritdoc
@@ -564,4 +566,31 @@ class User extends ActiveRecord implements IdentityInterface
 
         return $dropdown;
     }
+
+
+
+    public function getPermissoes()
+    {
+        if (is_null($this->cachePermissoes)) {
+            $obj = AuthAssignment::find()->where(['user_id'=>$this->id])
+            ->all();
+            if (!is_null($obj)) {
+                $authitem = new AuthItem();
+                
+                $this->cachePermissoes = $obj;
+                $aux = array();
+                foreach ($obj as $p) {
+                    array_push($aux, 
+                        $authitem->getDescriptionByName($p->item_name)->description
+                        );
+                }
+
+                return join(', ', $aux);
+                //return $obj;
+
+            } else return null;
+        } else return $this->cachePermissoes;
+
+    }
+
 }

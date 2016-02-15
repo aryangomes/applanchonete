@@ -31,7 +31,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'model' => $user,
             'attributes' => [
             'id',
-            'role_id',
+           // 'role_id',
+            [
+           // 'attribute'=>'gender',
+            'format'=>'text',
+            'label'=>'Permissões',
+            'value'=> 
+            ($user->permissoes),
+
+            ],
             'status',
             'email:email',
             'username',

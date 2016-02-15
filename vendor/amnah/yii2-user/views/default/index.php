@@ -69,7 +69,15 @@ else{
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'role_id',
+            [
+           // 'attribute'=>'gender',
+            'format'=>'text',
+            'label'=>'Permissões',
+            'value'=> function($model){
+                return $model->permissoes;
+            }
+
+            ],
             'status',
             'email:email',
             'username',

@@ -213,6 +213,39 @@ class DefaultController extends Controller
         return $this->goHome();
     }
 
+
+    public function permissoesSortable()
+    {
+
+     $aux = []; //Array auxiliar para receber as permissões de cada tipo(agrupados)
+     $roles_permission = []; // Array que irá guardar um conjunto de um tipo de permissão
+     $roles = [];
+     $authitems = ['despesa', 'caixa', 'fornecedor','relatorio','compra','user'];
+        /*$authitem = AuthItem::find()
+        ->where("name <> 'admin' ")->orderBy('type ASC')->all();*/
+
+
+        for ($i=0; $i < count($authitems); $i++) { 
+
+
+
+          $aux = AuthItem::find()
+          ->where("name <> 'admin' and name like '%" . $authitems[$i] ."%' ")->orderBy('type ASC')->all();
+          foreach ($aux as  $p) {
+              $roles_permission[$p->name] = [
+              'content' => $p->description,
+              'options' => ['data' => ['name'=>$p->name]],
+              ];
+          }
+          array_push($roles, $roles_permission);
+          $aux = [];
+          $roles_permission = [];
+      }
+
+      return $roles;
+
+  }
+
     /**
      * Display registration page
      */
@@ -225,61 +258,71 @@ class DefaultController extends Controller
 
         // AuthAssigment
         $AuthItem = new AuthItem();
-        $permissoes = ArrayHelper::map(
+       /* $permissoes = ArrayHelper::map(
             AuthItem::find()->
             where("name <> 'admin' " )->orderBy('type ASC')->all(), 
-            'name','description');
+            'name','description');*/
+$permissoes = $this->permissoesSortable();
+
+
         // set up new user/profile objects
-        $user = $this->module->model("User", ["scenario" => "register"]);
-        $profile = $this->module->model("Profile");
+$user = $this->module->model("User", ["scenario" => "register"]);
+$profile = $this->module->model("Profile");
 
         // load post data
-        $post = Yii::$app->request->post();
-
-        if ($user->load($post)) {
+$post = Yii::$app->request->post();
+//var_dump($this->permissoesSortable());
+if ($user->load($post)) {
 
             // ensure profile data gets loaded
-         $profile->load($post);
+   $profile->load($post);
+
+
 
             // validate for ajax request
-         if (Yii::$app->request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ActiveForm::validate($user, $profile);
-        }
-        if (isset($post['User']['role_id'])) {
-           // var_dump($post['User']['role_id']);
-            $roles = $post['User']['role_id'];
+   if (Yii::$app->request->isAjax) {
+    Yii::$app->response->format = Response::FORMAT_JSON;
+    return ActiveForm::validate($user, $profile);
+}
 
-        }
+if (isset($post['User']['role_id'])) {
+    $aux = $post['User']['role_id'];
+    $roles = explode(',', $aux);
+
+
+           // var_dump($post['User']['role_id']);
+   // $roles = $post['User']['role_id'];
+
+}
 
 
             // validate for normal request
-        if ($user->validate() && $profile->validate()) {
+if ($user->validate() && $profile->validate()) {
 
             // perform registration
-            $role = $this->module->model("Role");
+    $role = $this->module->model("Role");
         // VEJA AQUI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            $user->setRegisterAttributes($role::ROLE_USER, $user::STATUS_ACTIVE)->save();
+    $user->setRegisterAttributes($role::ROLE_USER, $user::STATUS_ACTIVE)->save();
 
        // $user->setPermissoes(1,$user->id);
-            $profile->setUser($user->id)->save();
+    $profile->setUser($user->id)->save();
 
-            $idUser = $user->id;
+    $idUser = $user->id;
            // var_dump($idUser);
-            foreach ( $roles as $role) {
+    foreach ( $roles as $role) {
 
-              $user->setPermissoes($role,$idUser);
-          }
+      $user->setPermissoes($role,$idUser);
+  }
      // $this->afterRegister($user);
                 // set flash
                 // don't use $this->refresh() because user may automatically be logged in and get 403 forbidden
-          $successText = Yii::t("user", "Successfully registered [ {displayName} ]", ["displayName" => $user->getDisplayName()]);
-          $guestText = "";
-          if (Yii::$app->user->isGuest) {
-            $guestText = Yii::t("user", " - Please check your email to confirm your account");
-        }
-        Yii::$app->session->setFlash("Register-success", $successText . $guestText);
-    }
+  $successText = Yii::t("user", "Successfully registered [ {displayName} ]", ["displayName" => $user->getDisplayName()]);
+  $guestText = "";
+  if (Yii::$app->user->isGuest) {
+    $guestText = Yii::t("user", " - Please check your email to confirm your account");
+}
+Yii::$app->session->setFlash("Register-success", $successText . $guestText);
+}
 }
 
 

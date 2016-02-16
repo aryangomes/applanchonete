@@ -282,4 +282,22 @@ return array (
       '@kartik/select2' => $vendorDir . '/kartik-v/yii2-widget-select2',
     ),
   ),
+  'kartik-v/yii2-sortable' => 
+  array (
+    'name' => 'kartik-v/yii2-sortable',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@kartik/sortable' => $vendorDir . '/kartik-v/yii2-sortable',
+    ),
+  ),
+  'kartik-v/yii2-sortable-input' => 
+  array (
+    'name' => 'kartik-v/yii2-sortable-input',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@kartik/sortinput' => $vendorDir . '/kartik-v/yii2-sortable-input',
+    ),
+  ),
 );

@@ -24,6 +24,7 @@ class DefaultController extends Controller
      * @inheritdoc
      */
     public $module;
+    private   $authitems = ['despesa', 'caixa', 'fornecedor','relatorio','compra','user'];
 
     /**
      * @inheritdoc
@@ -220,17 +221,16 @@ class DefaultController extends Controller
      $aux = []; //Array auxiliar para receber as permissões de cada tipo(agrupados)
      $roles_permission = []; // Array que irá guardar um conjunto de um tipo de permissão
      $roles = [];
-     $authitems = ['despesa', 'caixa', 'fornecedor','relatorio','compra','user'];
         /*$authitem = AuthItem::find()
         ->where("name <> 'admin' ")->orderBy('type ASC')->all();*/
 
 
-        for ($i=0; $i < count($authitems); $i++) { 
+        for ($i=0; $i < count($this->authitems); $i++) { 
 
 
 
           $aux = AuthItem::find()
-          ->where("name <> 'admin' and name like '%" . $authitems[$i] ."%' ")->orderBy('type ASC')->all();
+          ->where("name <> 'admin' and name like '%" . $this->authitems[$i] ."%' ")->orderBy('type ASC')->all();
           foreach ($aux as  $p) {
               $roles_permission[$p->name] = [
               'content' => $p->description,
@@ -325,8 +325,8 @@ Yii::$app->session->setFlash("Register-success", $successText . $guestText);
 }
 }
 
-
-return $this->render("register", compact("user", "profile","permissoes"));
+$macroauthitems = $this->authitems;
+return $this->render("register", compact("user", "profile","permissoes", "macroauthitems"));
 }
 
     /**

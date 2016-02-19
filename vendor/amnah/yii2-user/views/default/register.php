@@ -150,33 +150,162 @@ break;
 ]); */ ?>
 
 <?php 
+
 for ($i=0; $i < count($permissoes) ; $i++) { 
 
 
 
   echo SortableInput::widget([
-    'name'=>'kv-conn-1',
+    'name'=>'kv-conn-' . $i,
     'items' => $permissoes[$i],
     'hideInput' => true,
     'sortableOptions' => [
     'connected'=>true,
+
     ],
-    'options' => ['class'=>'form-control', 'readonly'=>true]
+
+    'options' => ['class'=>'form-control', 'readonly'=>true , 'id'=>$macroauthitems[$i]]
     ]);
   echo '</div>';
+
   echo '<div class="col-sm-6">';
-  echo SortableInput::widget([
-    'name'=>'User[role_id]',
-    'items' => [
-    ],
-    'hideInput' => true,
-    'sortableOptions' => [
-    'itemOptions'=>['class'=>'alert alert-warning'],
-    'connected'=>true,
-    ],
-    'options' => ['class'=>'form-control', 'readonly'=>true, 'placeholder'=>'Arraste para cá']
-    ]);
 }
+
+
+echo SortableInput::widget([
+  'name'=>'User[role_id]',
+  'items' => [
+  ],
+  'hideInput' => true,
+  'sortableOptions' => [
+  'itemOptions'=>['class'=>'alert alert-warning'],
+  'connected'=>true,
+  'pluginOptions'=>[
+  'handle'=>'h2',
+  ],
+  'pluginEvents' => [
+  'sortstart' => "function() { 
+    console.log('sortstart'); 
+  }",
+  'sortupdate' => "function(e, ui) {
+
+
+    if (ui.item.data().name == 'despesa') {
+     var arraydespesavalues = ['index-despesa','view-despesa',
+     'create-despesa','update-despesa','delete-despesa'];
+     var arraydespesatext = ['Listar','Visualizar','Criar','Editar','Deletar'];
+
+     for (i = 0; i < arraydespesavalues.length; i++) { 
+      $(this).append('<li data-name='+'arraydespesavalues[i]'+'  data-key='+'arraydespesavalues[i]'+'  > '+arraydespesatext[i] + ' Despesa'+'</li>');
+
+    }
+    $('input[name=\"User[role_id]\"]').val(arraydespesavalues);
+    $('#despesa-sortable').parent().remove(); 
+
+  }
+
+
+  if (ui.item.data().name == 'caixa') {
+   var arraycaixavalues = ['index-caixa','view-caixa',
+   'create-caixa','update-caixa','delete-caixa'];
+   var arraycaixatext = ['Listar','Visualizar','Criar','Editar','Deletar'];
+
+   for (i = 0; i < arraycaixavalues.length; i++) { 
+    $(this).append('<li data-name='+'arraycaixavalues[i]'+'  data-key='+'arraycaixavalues[i]'+'  > '+arraycaixatext[i] + ' Caixa'+'</li>');
+
+  }
+  $('input[name=\"User[role_id]\"]').val(arraycaixavalues);
+  $('#caixa-sortable').parent().remove(); 
+
+}
+
+if (ui.item.data().name == 'compra') {
+ var arraycompravalues = ['index-compra','view-compra',
+ 'create-compra','update-compra','delete-compra'];
+ var arraycompratext = ['Listar','Visualizar','Criar','Editar','Deletar'];
+
+ for (i = 0; i < arraycompravalues.length; i++) { 
+  $(this).append('<li data-name='+'arraycompravalues[i]'+'  data-key='+'arraycompravalues[i]'+'  > '+arraycompratext[i] + ' Compra'+'</li>');
+
+}
+$('input[name=\"User[role_id]\"]').val(arraycompravalues);
+$('#compra-sortable').parent().remove(); 
+
+}
+
+if (ui.item.data().name == 'relatorio') {
+ var arrayrelatoriovalues = ['index-relatorio','view-relatorio',
+ 'create-relatorio','update-relatorio','delete-relatorio'];
+ var arrayrelatoriotext = ['Listar','Visualizar','Criar','Editar','Deletar'];
+
+ for (i = 0; i < arrayrelatoriovalues.length; i++) { 
+  $(this).append('<li data-name='+'arrayrelatoriovalues[i]'+'  data-key='+'arrayrelatoriovalues[i]'+'  > '+arrayrelatoriotext[i] + ' Relatório'+'</li>');
+
+}
+$('input[name=\"User[role_id]\"]').val(arrayrelatoriovalues);
+$('#relatorio-sortable').parent().remove(); 
+
+}
+
+if (ui.item.data().name == 'fornecedor') {
+ var arrayfornecedorvalues = ['index-fornecedor','view-fornecedor',
+ 'create-fornecedor','update-fornecedor','delete-fornecedor'];
+ var arrayfornecedortext = ['Listar','Visualizar','Criar','Editar','Deletar'];
+
+ for (i = 0; i < arrayfornecedorvalues.length; i++) { 
+  $(this).append('<li data-name='+'arrayfornecedorvalues[i]'+'  data-key='+'arrayfornecedorvalues[i]'+'  > '+arrayfornecedortext[i] + ' Fornecedor'+'</li>');
+
+}
+$('input[name=\"User[role_id]\"]').val(arrayfornecedorvalues);
+$('#fornecedor-sortable').parent().remove(); 
+
+}
+
+if (ui.item.data().name == 'user') {
+ console.log('ok-user'); 
+ /*     $(this).appendTo($('#w6 li').text('Listar Usuário'));
+ $(this).appendTo($('#w6 li').text('Visualizar Usuário'));
+ $(this).append('<li data-name='+'index-user'+'  data-key='+'index-user'+'  >'+'Listar Usuários'+'</li>');
+ $(this).append('<li data-name='+'view-user'+'  data-key='+'view-user'+'  >'+'Visualizar Usuário'+'</li>');
+ $(this).append('<li data-name='+'create-user'+'  data-key='+'create-user'+'  >'+'Criar Usuário'+'</li>');
+ $(this).append('<li data-name='+'update-user'+'  data-key='+'update-user'+'  >'+'Editar Usuário'+'</li>');
+ $(this).append('<li data-name='+'delete-user'+'  data-key='+'delete-user'+'  >'+'Deletar Usuário'+'</li>');
+ */
+ var arrayuservalues = ['index-user','view-user','create-user','update-user','delete-user'];
+ var arrayusertext = ['Listar','Visualizar','Criar','Editar','Deletar'];
+
+     //console.log(arrayuser);
+ for (i = 0; i < arrayuservalues.length; i++) { 
+  console.log(arrayuservalues[i]);
+  console.log(arrayusertext[i]);
+  $(this).append('<li data-name='+'arrayuservalues[i]'+'  data-key='+'arrayuservalues[i]'+'  >'+arrayusertext[i] + ' Usuário'+'</li>');
+
+}
+$('input[name=\"User[role_id]\"]').val(arrayuservalues);
+$('#user-sortable').parent().remove(); 
+
+
+}
+
+
+
+
+console.log(ui.item.data().name); 
+$(this).sortable('refresh');
+
+
+var sortedIDs = $( this ).sortable( 'toArray' );
+console.log(sortedIDs); 
+
+}",
+'forcePlaceholderSize'=>'true',
+],
+],
+'options' => ['class'=>'form-control',
+'readonly'=>true, 'placeholder'=>'Arraste para cá'],
+
+
+]);
 
 ?>
 

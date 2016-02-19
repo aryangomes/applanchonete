@@ -50,11 +50,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?= $form->field($user, 'newPassword')->passwordInput() ?>
 
+</div>
+<div class="user-default-register">
+  <?php // $form->field($user, 'role_id')->dropDownList($permissoes, ['prompt'=>'Escolha o tipo de usuário'])  ?>
 
-<?php // $form->field($user, 'role_id')->dropDownList($permissoes, ['prompt'=>'Escolha o tipo de usuário'])  ?>
 
-
-<?php
+  <?php
 
  // $form->field($user, 'role_id')->checkboxList($permissoes)  ?>
 
@@ -187,7 +188,9 @@ echo SortableInput::widget([
   'sortstart' => "function() { 
     console.log('sortstart'); 
   }",
-  'sortupdate' => "function(e, ui) {
+  'sortupdate' => "
+
+  function(e, ui) {
 
 
     if (ui.item.data().name == 'despesa') {
@@ -197,9 +200,10 @@ echo SortableInput::widget([
 
      for (i = 0; i < arraydespesavalues.length; i++) { 
       $(this).append('<li data-name='+'arraydespesavalues[i]'+'  data-key='+'arraydespesavalues[i]'+'  > '+arraydespesatext[i] + ' Despesa'+'</li>');
-
+      arrayvalues.push(arraydespesavalues[i]);
     }
-    $('input[name=\"User[role_id]\"]').val(arraydespesavalues);
+
+   // $('input[name=\"User[role_id]\"]').val(arraydespesavalues);
     $('#despesa-sortable').parent().remove(); 
 
   }
@@ -212,9 +216,11 @@ echo SortableInput::widget([
 
    for (i = 0; i < arraycaixavalues.length; i++) { 
     $(this).append('<li data-name='+'arraycaixavalues[i]'+'  data-key='+'arraycaixavalues[i]'+'  > '+arraycaixatext[i] + ' Caixa'+'</li>');
-
+    arrayvalues.push(arraycaixavalues[i]);
   }
-  $('input[name=\"User[role_id]\"]').val(arraycaixavalues);
+
+  
+//  $('input[name=\"User[role_id]\"]').val(arraycaixavalues);
   $('#caixa-sortable').parent().remove(); 
 
 }
@@ -226,9 +232,10 @@ if (ui.item.data().name == 'compra') {
 
  for (i = 0; i < arraycompravalues.length; i++) { 
   $(this).append('<li data-name='+'arraycompravalues[i]'+'  data-key='+'arraycompravalues[i]'+'  > '+arraycompratext[i] + ' Compra'+'</li>');
-
+  arrayvalues.push(arraycompravalues[i]);
 }
-$('input[name=\"User[role_id]\"]').val(arraycompravalues);
+
+//$('input[name=\"User[role_id]\"]').val(arraycompravalues);
 $('#compra-sortable').parent().remove(); 
 
 }
@@ -240,9 +247,10 @@ if (ui.item.data().name == 'relatorio') {
 
  for (i = 0; i < arrayrelatoriovalues.length; i++) { 
   $(this).append('<li data-name='+'arrayrelatoriovalues[i]'+'  data-key='+'arrayrelatoriovalues[i]'+'  > '+arrayrelatoriotext[i] + ' Relatório'+'</li>');
-
+  arrayvalues.push(arrayrelatoriovalues[i]);
 }
-$('input[name=\"User[role_id]\"]').val(arrayrelatoriovalues);
+
+//$('input[name=\"User[role_id]\"]').val(arrayrelatoriovalues);
 $('#relatorio-sortable').parent().remove(); 
 
 }
@@ -254,9 +262,10 @@ if (ui.item.data().name == 'fornecedor') {
 
  for (i = 0; i < arrayfornecedorvalues.length; i++) { 
   $(this).append('<li data-name='+'arrayfornecedorvalues[i]'+'  data-key='+'arrayfornecedorvalues[i]'+'  > '+arrayfornecedortext[i] + ' Fornecedor'+'</li>');
-
+  arrayvalues.push(arrayfornecedorvalues[i]);
 }
-$('input[name=\"User[role_id]\"]').val(arrayfornecedorvalues);
+
+//$('input[name=\"User[role_id]\"]').val(arrayfornecedorvalues);
 $('#fornecedor-sortable').parent().remove(); 
 
 }
@@ -279,17 +288,18 @@ if (ui.item.data().name == 'user') {
   console.log(arrayuservalues[i]);
   console.log(arrayusertext[i]);
   $(this).append('<li data-name='+'arrayuservalues[i]'+'  data-key='+'arrayuservalues[i]'+'  >'+arrayusertext[i] + ' Usuário'+'</li>');
-
+  arrayvalues.push(arrayuservalues[i]);
 }
-$('input[name=\"User[role_id]\"]').val(arrayuservalues);
+
+//$('input[name=\"User[role_id]\"]').val(arrayuservalues);
 $('#user-sortable').parent().remove(); 
 
 
 }
 
 
-
-
+$('input[name=\"User[role_id]\"]').val(arrayvalues);
+console.log(arrayvalues); 
 console.log(ui.item.data().name); 
 $(this).sortable('refresh');
 

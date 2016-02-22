@@ -154,25 +154,30 @@ break;
 
 for ($i=0; $i < count($permissoes) ; $i++) { 
 
+ echo Html::label($macroauthitems[$i])
+ . '</br>';
+ echo SortableInput::widget([
+  'name'=>'kv-conn-' . $i,
+  'items' => $permissoes[$i],
 
+  'hideInput' => true,
+  'sortableOptions' => [
+  'connected'=>true,
+  'pluginOptions'=>[
+  'dropOnEmpty'=>true,
+  ],
+  ],
 
-  echo SortableInput::widget([
-    'name'=>'kv-conn-' . $i,
-    'items' => $permissoes[$i],
-    'hideInput' => true,
-    'sortableOptions' => [
-    'connected'=>true,
+  'options' => ['class'=>'form-control', 'readonly'=>true , 
+  'id'=>$macroauthitems[$i]]
+  ]);
+ echo '</div>';
 
-    ],
-
-    'options' => ['class'=>'form-control', 'readonly'=>true , 'id'=>$macroauthitems[$i]]
-    ]);
-  echo '</div>';
-
-  echo '<div class="col-sm-6">';
+ echo '<div class="col-sm-6">';
 }
 
-
+echo Html::label('Permissões')
+. '</br>';
 echo SortableInput::widget([
   'name'=>'User[role_id]',
   'items' => [
@@ -182,7 +187,7 @@ echo SortableInput::widget([
   'itemOptions'=>['class'=>'alert alert-warning'],
   'connected'=>true,
   'pluginOptions'=>[
-  'handle'=>'h2',
+  'dropOnEmpty'=>true,
   ],
   'pluginEvents' => [
   'sortstart' => "function() { 
@@ -204,12 +209,12 @@ echo SortableInput::widget([
     }
 
    // $('input[name=\"User[role_id]\"]').val(arraydespesavalues);
-    $('#despesa-sortable').parent().remove(); 
-
+  //  $('#despesa-sortable').parent().remove(); 
+    $(this).closest('li').remove();
   }
 
 
-  if (ui.item.data().name == 'caixa') {
+  else if (ui.item.data().name == 'caixa') {
    var arraycaixavalues = ['index-caixa','view-caixa',
    'create-caixa','update-caixa','delete-caixa'];
    var arraycaixatext = ['Listar','Visualizar','Criar','Editar','Deletar'];
@@ -221,11 +226,11 @@ echo SortableInput::widget([
 
   
 //  $('input[name=\"User[role_id]\"]').val(arraycaixavalues);
-  $('#caixa-sortable').parent().remove(); 
-
+//  $('#caixa-sortable').parent().remove(); 
+  $(this).closest('li').remove();
 }
 
-if (ui.item.data().name == 'compra') {
+else if (ui.item.data().name == 'compra') {
  var arraycompravalues = ['index-compra','view-compra',
  'create-compra','update-compra','delete-compra'];
  var arraycompratext = ['Listar','Visualizar','Criar','Editar','Deletar'];
@@ -236,11 +241,11 @@ if (ui.item.data().name == 'compra') {
 }
 
 //$('input[name=\"User[role_id]\"]').val(arraycompravalues);
-$('#compra-sortable').parent().remove(); 
-
+//$('#compra-sortable').parent().remove(); 
+$(this).closest('li').remove();
 }
 
-if (ui.item.data().name == 'relatorio') {
+else if (ui.item.data().name == 'relatorio') {
  var arrayrelatoriovalues = ['index-relatorio','view-relatorio',
  'create-relatorio','update-relatorio','delete-relatorio'];
  var arrayrelatoriotext = ['Listar','Visualizar','Criar','Editar','Deletar'];
@@ -251,11 +256,11 @@ if (ui.item.data().name == 'relatorio') {
 }
 
 //$('input[name=\"User[role_id]\"]').val(arrayrelatoriovalues);
-$('#relatorio-sortable').parent().remove(); 
-
+//$('#relatorio-sortable').parent().remove(); 
+$(this).closest('li').remove();
 }
 
-if (ui.item.data().name == 'fornecedor') {
+else if (ui.item.data().name == 'fornecedor') {
  var arrayfornecedorvalues = ['index-fornecedor','view-fornecedor',
  'create-fornecedor','update-fornecedor','delete-fornecedor'];
  var arrayfornecedortext = ['Listar','Visualizar','Criar','Editar','Deletar'];
@@ -266,11 +271,11 @@ if (ui.item.data().name == 'fornecedor') {
 }
 
 //$('input[name=\"User[role_id]\"]').val(arrayfornecedorvalues);
-$('#fornecedor-sortable').parent().remove(); 
-
+//$('#fornecedor-sortable').parent().remove(); 
+$(this).closest('li').remove();
 }
 
-if (ui.item.data().name == 'user') {
+else if (ui.item.data().name == 'user') {
  console.log('ok-user'); 
  /*     $(this).appendTo($('#w6 li').text('Listar Usuário'));
  $(this).appendTo($('#w6 li').text('Visualizar Usuário'));
@@ -283,29 +288,47 @@ if (ui.item.data().name == 'user') {
  var arrayuservalues = ['index-user','view-user','create-user','update-user','delete-user'];
  var arrayusertext = ['Listar','Visualizar','Criar','Editar','Deletar'];
 
-     //console.log(arrayuser);
+ console.log(arrayvalues);
+ var aux = [];
  for (i = 0; i < arrayuservalues.length; i++) { 
-  console.log(arrayuservalues[i]);
-  console.log(arrayusertext[i]);
+  if (arrayvalues.indexOf(arrayuservalues[i]) >= 0) {
+    console.log(arrayuservalues[i]);
+    aux.push(arrayuservalues[i]);
+  //  arrayuservalues.splice(arrayvalues.indexOf(arrayuservalues[i]), 1);
+    console.log('arrayuservalues: '+ arrayuservalues);
+  }
+}
+for (i = 0; i < arrayuservalues.length; i++) { 
+ // console.log(arrayuservalues[i]);
+//  console.log(arrayusertext[i]);
   $(this).append('<li data-name='+'arrayuservalues[i]'+'  data-key='+'arrayuservalues[i]'+'  >'+arrayusertext[i] + ' Usuário'+'</li>');
   arrayvalues.push(arrayuservalues[i]);
 }
-
+console.log('arrayuservalues: '+ arrayuservalues);
 //$('input[name=\"User[role_id]\"]').val(arrayuservalues);
-$('#user-sortable').parent().remove(); 
+//$('#user-sortable').parent().remove(); 
+$(this).closest('li').remove();
 
+}else{
+
+  if (arrayvalues.indexOf(ui.item.data().name) < 0) {
+  //  console.log(arrayuservalues[i]);
+    arrayvalues.push(ui.item.data().name);
+  }
+  
+//  arrayvalues.push(ui.item.data().name);
 
 }
 
 
 $('input[name=\"User[role_id]\"]').val(arrayvalues);
-console.log(arrayvalues); 
-console.log(ui.item.data().name); 
+/*console.log(arrayvalues); 
+console.log(ui.item.data().name); */
 $(this).sortable('refresh');
 
 
 var sortedIDs = $( this ).sortable( 'toArray' );
-console.log(sortedIDs); 
+//console.log(sortedIDs); 
 
 }",
 'forcePlaceholderSize'=>'true',

@@ -13,6 +13,8 @@ use kartik\sortinput\SortableInput;
  * @var string $userDisplayName
  */
 
+
+
 $module = $this->context->module;
 
 $this->title = Yii::t('user', 'Register');
@@ -169,7 +171,9 @@ for ($i=0; $i < count($permissoes) ; $i++) {
   ],
 
   'options' => ['class'=>'form-control', 'readonly'=>true , 
-  'id'=>$macroauthitems[$i]]
+  'id'=>$macroauthitems[$i]],
+  
+  
   ]);
  echo '</div>';
 
@@ -193,41 +197,73 @@ echo SortableInput::widget([
   'sortstart' => "function() { 
     console.log('sortstart'); 
   }",
+   'sortstop' => "function() { 
+    console.log('sortstop'); 
+  }",
   'sortupdate' => "
 
   function(e, ui) {
-
-
+  console.log('e.data:' + e.data); 
+ console.log('e.type: ' + e.type); 
     if (ui.item.data().name == 'despesa') {
      var arraydespesavalues = ['index-despesa','view-despesa',
      'create-despesa','update-despesa','delete-despesa'];
      var arraydespesatext = ['Listar','Visualizar','Criar','Editar','Deletar'];
 
-     for (i = 0; i < arraydespesavalues.length; i++) { 
-      $(this).append('<li data-name='+'arraydespesavalues[i]'+'  data-key='+'arraydespesavalues[i]'+'  > '+arraydespesatext[i] + ' Despesa'+'</li>');
-      arrayvalues.push(arraydespesavalues[i]);
-    }
-
-   // $('input[name=\"User[role_id]\"]').val(arraydespesavalues);
-  //  $('#despesa-sortable').parent().remove(); 
-    $(this).closest('li').remove();
+  var aux = [];
+ var auxtext = [];
+ for (i = 0; i < arraydespesavalues.length; i++) { 
+  if (arrayvalues.indexOf(arraydespesavalues[i]) < 0) {
+  
+    aux.push(arraydespesavalues[i]);
+    auxtext.push(arraydespesatext[i]);
+   
   }
+}
+for (i = 0; i < aux.length; i++) { 
+ arrayvalues.push(aux[i]);
+}
 
+$(\"[data-name=\'despesa\']\").text('Despesa (Listar, Visualizar, Criar, Editar, Deletar)');
 
+$('input[name=\"User[role_id]\"]').val(arrayuservalues);
+
+$('li').filter('[data-name=\"index-despesa\"]').remove();
+$('li').filter('[data-name=\"view-despesa\"]').remove();
+$('li').filter('[data-name=\"create-despesa\"]').remove();
+$('li').filter('[data-name=\"update-despesa\"]').remove();
+$('li').filter('[data-name=\"delete-despesa\"]').remove();
+$('#despesa-sortable li').remove();
+  }
   else if (ui.item.data().name == 'caixa') {
    var arraycaixavalues = ['index-caixa','view-caixa',
    'create-caixa','update-caixa','delete-caixa'];
    var arraycaixatext = ['Listar','Visualizar','Criar','Editar','Deletar'];
 
-   for (i = 0; i < arraycaixavalues.length; i++) { 
-    $(this).append('<li data-name='+'arraycaixavalues[i]'+'  data-key='+'arraycaixavalues[i]'+'  > '+arraycaixatext[i] + ' Caixa'+'</li>');
-    arrayvalues.push(arraycaixavalues[i]);
-  }
-
+var aux = [];
+ var auxtext = [];
+ for (i = 0; i < arraycaixavalues.length; i++) { 
+  if (arrayvalues.indexOf(arraycaixavalues[i]) < 0) {
   
-//  $('input[name=\"User[role_id]\"]').val(arraycaixavalues);
-//  $('#caixa-sortable').parent().remove(); 
-  $(this).closest('li').remove();
+    aux.push(arraycaixavalues[i]);
+    auxtext.push(arraycaixatext[i]);
+   
+  }
+}
+for (i = 0; i < aux.length; i++) { 
+ arrayvalues.push(aux[i]);
+}
+
+$(\"[data-name=\'caixa\']\").text('Caixa (Listar, Visualizar, Criar, Editar, Deletar)');
+
+$('input[name=\"User[role_id]\"]').val(arrayuservalues);
+
+$('li').filter('[data-name=\"index-caixa\"]').remove();
+$('li').filter('[data-name=\"view-caixa\"]').remove();
+$('li').filter('[data-name=\"create-caixa\"]').remove();
+$('li').filter('[data-name=\"update-caixa\"]').remove();
+$('li').filter('[data-name=\"delete-caixa\"]').remove();
+$('#caixa-sortable li').remove();
 }
 
 else if (ui.item.data().name == 'compra') {
@@ -235,14 +271,30 @@ else if (ui.item.data().name == 'compra') {
  'create-compra','update-compra','delete-compra'];
  var arraycompratext = ['Listar','Visualizar','Criar','Editar','Deletar'];
 
+var aux = [];
+ var auxtext = [];
  for (i = 0; i < arraycompravalues.length; i++) { 
-  $(this).append('<li data-name='+'arraycompravalues[i]'+'  data-key='+'arraycompravalues[i]'+'  > '+arraycompratext[i] + ' Compra'+'</li>');
-  arrayvalues.push(arraycompravalues[i]);
+  if (arrayvalues.indexOf(arraycompravalues[i]) < 0) {
+  
+    aux.push(arraycompravalues[i]);
+    auxtext.push(arraycompratext[i]);
+   
+  }
+}
+for (i = 0; i < aux.length; i++) { 
+ arrayvalues.push(aux[i]);
 }
 
-//$('input[name=\"User[role_id]\"]').val(arraycompravalues);
-//$('#compra-sortable').parent().remove(); 
-$(this).closest('li').remove();
+$(\"[data-name=\'compra\']\").text('Compra (Listar, Visualizar, Criar, Editar, Deletar)');
+
+$('input[name=\"User[role_id]\"]').val(arrayuservalues);
+
+$('li').filter('[data-name=\"index-compra\"]').remove();
+$('li').filter('[data-name=\"view-compra\"]').remove();
+$('li').filter('[data-name=\"create-compra\"]').remove();
+$('li').filter('[data-name=\"update-compra\"]').remove();
+$('li').filter('[data-name=\"delete-compra\"]').remove();
+$('#compra-sortable li').remove();
 }
 
 else if (ui.item.data().name == 'relatorio') {
@@ -250,14 +302,29 @@ else if (ui.item.data().name == 'relatorio') {
  'create-relatorio','update-relatorio','delete-relatorio'];
  var arrayrelatoriotext = ['Listar','Visualizar','Criar','Editar','Deletar'];
 
+ var aux = [];
+ var auxtext = [];
  for (i = 0; i < arrayrelatoriovalues.length; i++) { 
-  $(this).append('<li data-name='+'arrayrelatoriovalues[i]'+'  data-key='+'arrayrelatoriovalues[i]'+'  > '+arrayrelatoriotext[i] + ' Relatório'+'</li>');
-  arrayvalues.push(arrayrelatoriovalues[i]);
+  if (arrayvalues.indexOf(arrayrelatoriovalues[i]) < 0) {
+    
+    aux.push(arrayrelatoriovalues[i]);
+    auxtext.push(arrayrelatoriotext[i]);
+  }
+}
+for (i = 0; i < aux.length; i++) { 
+ arrayvalues.push(aux[i]);
 }
 
-//$('input[name=\"User[role_id]\"]').val(arrayrelatoriovalues);
-//$('#relatorio-sortable').parent().remove(); 
-$(this).closest('li').remove();
+$(\"[data-name=\'relatorio\']\").text('Relatório (Listar, Visualizar, Criar, Editar, Deletar)');
+
+$('input[name=\"User[role_id]\"]').val(arrayuservalues);
+
+$('li').filter('[data-name=\"index-relatorio\"]').remove();
+$('li').filter('[data-name=\"view-relatorio\"]').remove();
+$('li').filter('[data-name=\"create-relatorio\"]').remove();
+$('li').filter('[data-name=\"update-relatorio\"]').remove();
+$('li').filter('[data-name=\"delete-relatorio\"]').remove();
+$('#relatorio-sortable li').remove();
 }
 
 else if (ui.item.data().name == 'fornecedor') {
@@ -265,18 +332,38 @@ else if (ui.item.data().name == 'fornecedor') {
  'create-fornecedor','update-fornecedor','delete-fornecedor'];
  var arrayfornecedortext = ['Listar','Visualizar','Criar','Editar','Deletar'];
 
+
+
+ var aux = [];
+ var auxtext = [];
  for (i = 0; i < arrayfornecedorvalues.length; i++) { 
-  $(this).append('<li data-name='+'arrayfornecedorvalues[i]'+'  data-key='+'arrayfornecedorvalues[i]'+'  > '+arrayfornecedortext[i] + ' Fornecedor'+'</li>');
-  arrayvalues.push(arrayfornecedorvalues[i]);
+  if (arrayvalues.indexOf(arrayfornecedorvalues[i]) < 0) {
+    console.log(arrayfornecedorvalues[i]);
+    aux.push(arrayfornecedorvalues[i]);
+    auxtext.push(arrayfornecedortext[i]);
+    console.log('arrayfornecedorvalues: '+ arrayfornecedorvalues);
+  }
+}
+for (i = 0; i < aux.length; i++) { 
+ arrayvalues.push(aux[i]);
 }
 
-//$('input[name=\"User[role_id]\"]').val(arrayfornecedorvalues);
-//$('#fornecedor-sortable').parent().remove(); 
-$(this).closest('li').remove();
+$(\"[data-name=\'fornecedor\']\").text('Fornecedor (Listar, Visualizar, Criar, Editar, Deletar)');
+console.log('arrayuservalues: '+ arrayuservalues);
+$('input[name=\"User[role_id]\"]').val(arrayuservalues);
+
+$('li').filter('[data-name=\"index-fornecedor\"]').remove();
+$('li').filter('[data-name=\"view-fornecedor\"]').remove();
+$('li').filter('[data-name=\"create-fornecedor\"]').remove();
+$('li').filter('[data-name=\"update-fornecedor\"]').remove();
+$('li').filter('[data-name=\"delete-fornecedor\"]').remove();
+$('#fornecedor-sortable li').remove();
 }
 
 else if (ui.item.data().name == 'user') {
- console.log('ok-user'); 
+    
+    
+ 
  /*     $(this).appendTo($('#w6 li').text('Listar Usuário'));
  $(this).appendTo($('#w6 li').text('Visualizar Usuário'));
  $(this).append('<li data-name='+'index-user'+'  data-key='+'index-user'+'  >'+'Listar Usuários'+'</li>');
@@ -290,24 +377,33 @@ else if (ui.item.data().name == 'user') {
 
  console.log(arrayvalues);
  var aux = [];
+ var auxtext = [];
  for (i = 0; i < arrayuservalues.length; i++) { 
-  if (arrayvalues.indexOf(arrayuservalues[i]) >= 0) {
+  if (arrayvalues.indexOf(arrayuservalues[i]) < 0) {
     console.log(arrayuservalues[i]);
     aux.push(arrayuservalues[i]);
+    auxtext.push(arrayusertext[i]);
   //  arrayuservalues.splice(arrayvalues.indexOf(arrayuservalues[i]), 1);
     console.log('arrayuservalues: '+ arrayuservalues);
   }
 }
-for (i = 0; i < arrayuservalues.length; i++) { 
+for (i = 0; i < aux.length; i++) { 
  // console.log(arrayuservalues[i]);
 //  console.log(arrayusertext[i]);
-  $(this).append('<li data-name='+'arrayuservalues[i]'+'  data-key='+'arrayuservalues[i]'+'  >'+arrayusertext[i] + ' Usuário'+'</li>');
-  arrayvalues.push(arrayuservalues[i]);
+ // $(this).append('<li data-name='+arrayuservalues[i]+'  data-key='+arrayuservalues[i]+'  >'+auxtext[i] + ' Usuário'+'</li>');
+  arrayvalues.push(aux[i]);
 }
+
+$(\"[data-name=\'user\']\").text('Usuário (Listar, Visualizar, Criar, Editar, Deletar)');
 console.log('arrayuservalues: '+ arrayuservalues);
-//$('input[name=\"User[role_id]\"]').val(arrayuservalues);
+$('input[name=\"User[role_id]\"]').val(arrayuservalues);
 //$('#user-sortable').parent().remove(); 
-$(this).closest('li').remove();
+$('li').filter('[data-name=\"index-user\"]').remove();
+$('li').filter('[data-name=\"view-user\"]').remove();
+$('li').filter('[data-name=\"create-user\"]').remove();
+$('li').filter('[data-name=\"update-user\"]').remove();
+$('li').filter('[data-name=\"delete-user\"]').remove();
+$('#user-sortable li').remove();
 
 }else{
 
@@ -322,10 +418,10 @@ $(this).closest('li').remove();
 
 
 $('input[name=\"User[role_id]\"]').val(arrayvalues);
-/*console.log(arrayvalues); 
-console.log(ui.item.data().name); */
-$(this).sortable('refresh');
-
+/*console.log(arrayvalues); */
+console.log('ui.item.data().name: '+ ui.item.data().name); 
+//$(this).sortable('refresh');
+$(this).sortable();
 
 var sortedIDs = $( this ).sortable( 'toArray' );
 //console.log(sortedIDs); 

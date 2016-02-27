@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\Select2;
 use kartik\sortinput\SortableInput;
+use yii\helpers\BaseHtml;
 /**
  * @var yii\web\View $this
  * @var yii\widgets\ActiveForm $form
@@ -20,6 +21,13 @@ $module = $this->context->module;
 $this->title = Yii::t('user', 'Register');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+     <?= Html::jsFile("/applanchonete/web/admin/js/jquery.js") ?>
+
+
+    <?= Html::jsFile("/applanchonete/web/admin/js/cadastro-permissoes.js") ?>
+
+
+
 <div class="user-default-register">
 
   <h1><?= Html::encode($this->title) ?></h1>
@@ -464,3 +472,5 @@ var sortedIDs = $( this ).sortable( 'toArray' );
       <?php endif; ?>
 
     </div>
+    
+  

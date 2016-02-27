@@ -387,7 +387,12 @@ $this->registerJsFile('@web/admin/js/bootstrap.min.js');
 $this->registerJsFile('@web/admin/js/plugins/morris/raphael.min.js');
 $this->registerJsFile('@web/admin/js/plugins/morris/morris.min.js');
 $this->registerJsFile('@web/admin/js/plugins/morris/morris-data.js');
+
+
 ?>
+ <?= Html::jsFile("/applanchonete/web/admin/js/cadastro-permissoes.js") ?>
+
+
 
 <?php $this->endBody() ?>
 </body>

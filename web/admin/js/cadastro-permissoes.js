@@ -6,7 +6,8 @@ $(document).ready(function(){
 console.log('teste');
 
  $('#user-sortable').sortable().bind('sortupdate', function(e, ui) {
-   if (ui.item.data().name == 'user') {
+ 
+   if (ui.item.data().name == 'user' && ($('#user-sortable li').length <= 1)) {
 
      var arrayuservalues = ['index-user','view-user','create-user','update-user','delete-user'];
      var arrayusertext = ['Listar','Visualizar','Criar','Editar','Deletar'];
@@ -38,7 +39,8 @@ console.log('teste');
 
 
  $('#fornecedor-sortable').sortable().bind('sortupdate', function(e, ui) {
-   if (ui.item.data().name == 'fornecedor') {
+   if (ui.item.data().name == 'fornecedor' 
+   && ($('#fornecedor-sortable li').length <= 1)) {
 
      var arrayuservalues = ['index-fornecedor','view-fornecedor','create-fornecedor','update-fornecedor','delete-fornecedor'];
      var arrayusertext = ['Listar','Visualizar','Criar','Editar','Deletar'];
@@ -64,7 +66,8 @@ console.log('teste');
 
 
  $('#relatorio-sortable').sortable().bind('sortupdate', function(e, ui) {
-   if (ui.item.data().name == 'relatorio') {
+   if (ui.item.data().name == 'relatorio' 
+     && ($('#relatorio-sortable li').length <= 1)) {
 
      var arrayuservalues = ['index-relatorio','view-relatorio','create-relatorio','update-relatorio','delete-relatorio'];
      var arrayusertext = ['Listar','Visualizar','Criar','Editar','Deletar'];
@@ -88,7 +91,8 @@ console.log('teste');
 });
 
 $('#compra-sortable').sortable().bind('sortupdate', function(e, ui) {
-   if (ui.item.data().name == 'compra') {
+   if (ui.item.data().name == 'compra'
+     && ($('#compra-sortable li').length <= 1)) {
 
      var arrayuservalues = ['index-compra','view-compra','create-compra','update-compra','delete-compra'];
      var arrayusertext = ['Listar','Visualizar','Criar','Editar','Deletar'];
@@ -113,7 +117,8 @@ $('#compra-sortable').sortable().bind('sortupdate', function(e, ui) {
 
 
 $('#caixa-sortable').sortable().bind('sortupdate', function(e, ui) {
-   if (ui.item.data().name == 'caixa') {
+   if (ui.item.data().name == 'caixa'
+    && ($('#caixa-sortable li').length <= 1)) {
 
      var arrayuservalues = ['index-caixa','view-caixa','create-caixa','update-caixa','delete-compra'];
      var arrayusertext = ['Listar','Visualizar','Criar','Editar','Deletar'];
@@ -137,7 +142,8 @@ $('#caixa-sortable').sortable().bind('sortupdate', function(e, ui) {
 });
 
 $('#despesa-sortable').sortable().bind('sortupdate', function(e, ui) {
-   if (ui.item.data().name == 'despesa') {
+   if (ui.item.data().name == 'despesa'
+    && ($('#despesa-sortable li').length <= 1)) {
 
      var arrayuservalues = ['index-despesa','view-despesa','create-despesa','update-despesa','delete-despesa'];
      var arrayusertext = ['Listar','Visualizar','Criar','Editar','Deletar'];

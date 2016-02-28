@@ -24,9 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
      <?= Html::jsFile("/applanchonete/web/admin/js/jquery.js") ?>
 
 
-    <?= Html::jsFile("/applanchonete/web/admin/js/cadastro-permissoes.js") ?>
-
-
 
 <div class="user-default-register">
 

@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
+use app\components\AccessFilter;
 /**
  * LojaController implements the CRUD actions for Loja model.
  */
@@ -18,7 +19,7 @@ class LojaController extends Controller
     public function behaviors()
     {
         return [
-        'access' =>[
+      /*  'access' =>[
         'class' => AccessControl::classname(),
         'only'=> ['create','update','view','delete','index'],
         'rules'=> [
@@ -26,12 +27,31 @@ class LojaController extends Controller
        // 'roles' => ['gerente'],
         ],
         ]
-        ],
+        ],*/
         'verbs' => [
         'class' => VerbFilter::className(),
         'actions' => [
         'delete' => ['post'],
         ],
+        ],
+         'autorizacao'=>[
+        'class'=>AccessFilter::className(),
+'actions'=>[
+    
+    'loja'=>[
+        'index-loja',
+        'update-loja',
+        'delete-loja',
+        'view-loja',
+        'create-loja',
+    ],
+    
+    'index'=>'index-loja',
+    'update'=>'update-loja',
+    'delete'=>'delete-loja',
+      'view'=>'view-loja',
+      'create'=>'create-loja',
+],
         ],
         ];
     }
@@ -42,8 +62,7 @@ class LojaController extends Controller
      */
     public function actionIndex()
     {
-     if (Yii::$app->user->can("index-loja") ||
-        Yii::$app->user->can("loja") ) {
+  
         $searchModel = new LojaSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -51,9 +70,7 @@ class LojaController extends Controller
         'searchModel' => $searchModel,
         'dataProvider' => $dataProvider,
         ]);
-}else{
-    throw new ForbiddenHttpException("Acesso negado!");
-}
+
 }
 
     /**
@@ -63,14 +80,11 @@ class LojaController extends Controller
      */
     public function actionView($id)
     {
-       if (Yii::$app->user->can("view-loja") ||
-        Yii::$app->user->can("loja") ) {
+   
         return $this->render('view', [
             'model' => $this->findModel($id),
             ]);
-}else{
-    throw new ForbiddenHttpException("Acesso negado!");
-}
+
 }
 
     /**
@@ -80,8 +94,7 @@ class LojaController extends Controller
      */
     public function actionCreate()
     {
-        if (Yii::$app->user->can("create-loja") ||
-            Yii::$app->user->can("loja") ) {
+     
             $model = new Loja();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -91,9 +104,7 @@ class LojaController extends Controller
                 'model' => $model,
                 ]);
         }
-    }else{
-        throw new ForbiddenHttpException("Acesso negado!");
-    }
+ 
 }
 
     /**
@@ -104,8 +115,7 @@ class LojaController extends Controller
      */
     public function actionUpdate($id)
     {
-     if (Yii::$app->user->can("update-loja") ||
-        Yii::$app->user->can("loja") ) {
+  
         $model = $this->findModel($id);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -115,9 +125,7 @@ class LojaController extends Controller
             'model' => $model,
             ]);
     }
-}else{
-    throw new ForbiddenHttpException("Acesso negado!");
-}
+
 }
 
     /**
@@ -128,14 +136,11 @@ class LojaController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::$app->user->can("delete-loja") ||
-            Yii::$app->user->can("loja") ) {
+      
             $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }else{
-        throw new ForbiddenHttpException("Acesso negado!");
-    }
+   
 }
 
     /**

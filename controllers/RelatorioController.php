@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
+use app\components\AccessFilter;
 /**
  * RelatorioController implements the CRUD actions for Relatorio model.
  */
@@ -18,7 +19,7 @@ class RelatorioController extends Controller
     public function behaviors()
     {
         return [
-        'access' =>[
+       /* 'access' =>[
         'class' => AccessControl::classname(),
         'only'=> ['create','update','view','delete','index'],
         'rules'=> [
@@ -26,12 +27,31 @@ class RelatorioController extends Controller
         'roles' => ['relatorio','index-relatorio'],
         ],
         ]
-        ],
+        ],*/
         'verbs' => [
         'class' => VerbFilter::className(),
         'actions' => [
         'delete' => ['post'],
         ],
+        ],
+         'autorizacao'=>[
+        'class'=>AccessFilter::className(),
+'actions'=>[
+    
+    'relatorio'=>[
+        'index-relatorio',
+        'update-relatorio',
+        'delete-relatorio',
+        'view-relatorio',
+        'create-relatorio',
+    ],
+    
+    'index'=>'index-relatorio',
+    'update'=>'update-relatorio',
+    'delete'=>'delete-relatorio',
+      'view'=>'view-relatorio',
+      'create'=>'create-relatorio',
+],
         ],
         ];
     }
@@ -42,8 +62,7 @@ class RelatorioController extends Controller
      */
     public function actionIndex()
     {
-       if (Yii::$app->user->can("index-relatorio") ||
-        Yii::$app->user->can("relatorio") ) {
+     
         $searchModel = new RelatorioSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -51,9 +70,7 @@ class RelatorioController extends Controller
         'searchModel' => $searchModel,
         'dataProvider' => $dataProvider,
         ]);
-}else{
-    throw new ForbiddenHttpException("Acesso negado!");
-}
+
 }
 
     /**
@@ -63,14 +80,11 @@ class RelatorioController extends Controller
      */
     public function actionView($id)
     {
-     if (Yii::$app->user->can("view-relatorio") ||
-        Yii::$app->user->can("relatorio") ) {
+   
         return $this->render('view', [
             'model' => $this->findModel($id),
             ]);
-}else{
-    throw new ForbiddenHttpException("Acesso negado!");
-}
+
 }
 
     /**
@@ -80,8 +94,7 @@ class RelatorioController extends Controller
      */
     public function actionCreate()
     {
-     if (Yii::$app->user->can("create-relatorio") ||
-        Yii::$app->user->can("relatorio") ) {
+   
         $model = new Relatorio();
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -91,9 +104,7 @@ class RelatorioController extends Controller
             'model' => $model,
             ]);
     }
-}else{
-    throw new ForbiddenHttpException("Acesso negado!");
-}
+
 }
 
     /**
@@ -104,8 +115,7 @@ class RelatorioController extends Controller
      */
     public function actionUpdate($id)
     {
-     if (Yii::$app->user->can("update-relatorio") ||
-        Yii::$app->user->can("relatorio") ) {
+   
         $model = $this->findModel($id);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -115,9 +125,7 @@ class RelatorioController extends Controller
             'model' => $model,
             ]);
     }
-}else{
-    throw new ForbiddenHttpException("Acesso negado!");
-}
+
 }
 
     /**
@@ -128,14 +136,11 @@ class RelatorioController extends Controller
      */
     public function actionDelete($id)
     {
-      if (Yii::$app->user->can("delete-relatorio") ||
-        Yii::$app->user->can("relatorio") ) {
+      
         $this->findModel($id)->delete();
 
     return $this->redirect(['index']);
-}else{
-    throw new ForbiddenHttpException("Acesso negado!");
-}
+
 }
 
     /**

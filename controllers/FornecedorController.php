@@ -10,7 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
-
+use app\components\AccessFilter;
 /**
  * FornecedorController implements the CRUD actions for Fornecedor model.
  */
@@ -19,7 +19,7 @@ class FornecedorController extends Controller
     public function behaviors()
     {
         return [
-        'access' =>[
+     /*   'access' =>[
         'class' => AccessControl::classname(),
         'only'=> ['create','update','view','delete','index'],
         'rules'=> [
@@ -27,12 +27,32 @@ class FornecedorController extends Controller
         'roles' => ['fornecedor','index-fornecedor'],
         ],
         ]
-        ],
+        ],*/
         'verbs' => [
         'class' => VerbFilter::className(),
         'actions' => [
         'delete' => ['post'],
         ],
+        ],
+        
+         'autorizacao'=>[
+        'class'=>AccessFilter::className(),
+'actions'=>[
+    
+    'fornecedor'=>[
+        'index-fornecedor',
+        'update-fornecedor',
+        'delete-fornecedor',
+        'view-fornecedor',
+         'create-fornecedor',
+    ],
+    
+    'index'=>'index-fornecedor',
+    'update'=>'update-fornecedor',
+    'delete'=>'delete-fornecedor',
+      'view'=>'view-fornecedor',
+      'create'=> 'create-fornecedor',
+],
         ],
         ];
     }
@@ -46,8 +66,7 @@ class FornecedorController extends Controller
      */
     public function actionIndex()
     {
-     if (Yii::$app->user->can("index-fornecedor") ||
-        Yii::$app->user->can("fornecedor") ) {
+   
         $searchModel = new FornecedorSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -55,9 +74,7 @@ class FornecedorController extends Controller
         'searchModel' => $searchModel,
         'dataProvider' => $dataProvider,
         ]);
-}else{
-    throw new ForbiddenHttpException("Acesso negado!");
-}
+
 }
 
     /**
@@ -67,15 +84,12 @@ class FornecedorController extends Controller
      */
     public function actionView($id)
     { 
-        if (Yii::$app->user->can("view-fornecedor") ||
-            Yii::$app->user->can("fornecedor") ) {
+       
             return $this->render('view', [
                 'model' => $this->findModel($id),
                 ]);
 
-    }else{
-        throw new ForbiddenHttpException("Acesso negado!");
-    }
+
 }
 
 
@@ -86,8 +100,7 @@ class FornecedorController extends Controller
      */
     public function actionCreate()
     {
-        if (Yii::$app->user->can("create-fornecedor") ||
-            Yii::$app->user->can("fornecedor") ) {
+       
             $model = new Fornecedor();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -97,9 +110,7 @@ class FornecedorController extends Controller
                 'model' => $model,
                 ]);
         }
-    }else{
-        throw new ForbiddenHttpException("Acesso negado!");
-    }
+  
 }
 
     /**
@@ -111,8 +122,7 @@ class FornecedorController extends Controller
     public function actionUpdate($id)
     {
 
-       if (Yii::$app->user->can("update-fornecedor") ||
-        Yii::$app->user->can("fornecedor") ) {
+     
         $model = $this->findModel($id);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -123,9 +133,7 @@ class FornecedorController extends Controller
             ]);
     }
 
-}else{
-    throw new ForbiddenHttpException("Acesso negado!");
-}
+
 }
 
     /**
@@ -138,15 +146,11 @@ class FornecedorController extends Controller
     {
 
 
-       if (Yii::$app->user->can("delete-fornecedor") ||
-        Yii::$app->user->can("fornecedor") ) {
         $this->findModel($id)->delete();
 
     return $this->redirect(['index']);
 
-}else{
-    throw new ForbiddenHttpException("Acesso negado!");
-}
+
 }
 
     /**

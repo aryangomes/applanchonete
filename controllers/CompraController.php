@@ -12,6 +12,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use \yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
+use app\components\AccessFilter;
 /**
  * CompraController implements the CRUD actions for Compra model.
  */
@@ -20,7 +21,7 @@ class CompraController extends Controller
     public function behaviors()
     {
         return [
-        'access' =>[
+     /*   'access' =>[
         'class' => AccessControl::classname(),
         'only'=> ['create','update','view','delete','index'],
         'rules'=> [
@@ -28,12 +29,31 @@ class CompraController extends Controller
         'roles' => ['compra','index-compra'],
         ],
         ]
-        ],
+        ],*/
         'verbs' => [
         'class' => VerbFilter::className(),
         'actions' => [
         'delete' => ['post'],
         ],
+        ],
+         'autorizacao'=>[
+        'class'=>AccessFilter::className(),
+'actions'=>[
+    
+    'compra'=>[
+        'index-compra',
+        'update-compra',
+        'delete-compra',
+        'view-compra',
+        'create-compra',
+    ],
+    
+    'index'=>'index-compra',
+    'update'=>'update-compra',
+    'delete'=>'delete-compra',
+      'view'=>'view-compra',
+      'create'=>'create-compra',
+],
         ],
         ];
     }
@@ -44,8 +64,7 @@ class CompraController extends Controller
      */
     public function actionIndex()
     {
-        if (Yii::$app->user->can("index-compra") ||
-            Yii::$app->user->can("compra") ) {
+     
             $searchModel = new CompraSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -54,9 +73,7 @@ class CompraController extends Controller
             'dataProvider' => $dataProvider,
             ]);
 
-    }else{
-        throw new ForbiddenHttpException("Acesso negado!");
-    }
+   
 }
 
     /**
@@ -66,8 +83,7 @@ class CompraController extends Controller
      */
     public function actionView($id)
     {
-     if (Yii::$app->user->can("view-compra") ||
-        Yii::$app->user->can("compra") ) {
+   
         $compra = new Compra();
     $idFornecedor = $compra::find('fornecedor_idFornecedor')->where(['idcompra'=>$id])->one();
     $fornecedor = new Fornecedor();
@@ -81,9 +97,7 @@ class CompraController extends Controller
         'formatter'=>$formatter,
         ]);
 
-}else{
-    throw new ForbiddenHttpException("Acesso negado!");
-}
+
 }
 
     /**
@@ -93,8 +107,7 @@ class CompraController extends Controller
      */
     public function actionCreate()
     {
-        if (Yii::$app->user->can("create-compra") ||
-            Yii::$app->user->can("compra") ) {
+ 
           $fornecedores= ArrayHelper::map(
             Fornecedor::find()->all(), 
             'idFornecedor','nome');
@@ -108,9 +121,7 @@ class CompraController extends Controller
             'fornecedores'=>$fornecedores,
             ]);
     }
-}else{
-    throw new ForbiddenHttpException("Acesso negado!");
-}
+
 }
 
     /**
@@ -121,8 +132,7 @@ class CompraController extends Controller
      */
     public function actionUpdate($id)
     {
-      if (Yii::$app->user->can("update-compra") ||
-        Yii::$app->user->can("compra") ) {
+    
          $fornecedores= ArrayHelper::map(
             Fornecedor::find()->all(), 
             'idFornecedor','nome');
@@ -136,9 +146,7 @@ class CompraController extends Controller
             'fornecedores'=>$fornecedores,
             ]);
     }
-}else{
-    throw new ForbiddenHttpException("Acesso negado!");
-}
+
 }
 
     /**
@@ -149,14 +157,11 @@ class CompraController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::$app->user->can("delete-compra") ||
-            Yii::$app->user->can("compra") ) {
+  
             $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }else{
-        throw new ForbiddenHttpException("Acesso negado!");
-    }
+   
 }
 
     /**

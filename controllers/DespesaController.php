@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
+use app\components\AccessFilter;
 /**
  * DespesaController implements the CRUD actions for Despesa model.
  */
@@ -18,7 +19,7 @@ class DespesaController extends Controller
     public function behaviors()
     {
         return [
-        'access' =>[
+       /* 'access' =>[
         'class' => AccessControl::classname(),
         'only'=> ['create','update','view','delete','index'],
         'rules'=> [
@@ -26,12 +27,31 @@ class DespesaController extends Controller
         'roles' => ['despesa','index-despesa'],
         ],
         ]
-        ],
+        ],*/
         'verbs' => [
         'class' => VerbFilter::className(),
         'actions' => [
         'delete' => ['post'],
         ],
+        ],
+         'autorizacao'=>[
+        'class'=>AccessFilter::className(),
+'actions'=>[
+    
+    'despesa'=>[
+        'index-despesa',
+        'update-despesa',
+        'delete-despesa',
+        'view-despesa',
+        'create-despesa',
+    ],
+    
+    'index'=>'index-despesa',
+    'update'=>'update-despesa',
+    'delete'=>'delete-despesa',
+      'view'=>'view-despesa',
+      'create'=>'create-despesa',
+],
         ],
         ];
     }
@@ -42,8 +62,7 @@ class DespesaController extends Controller
      */
     public function actionIndex()
     {
-      if (Yii::$app->user->can("index-despesa") ||
-        Yii::$app->user->can("despesa") ) {
+     
         $searchModel = new DespesaSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -51,9 +70,7 @@ class DespesaController extends Controller
         'searchModel' => $searchModel,
         'dataProvider' => $dataProvider,
         ]);
-}else{
-    throw new ForbiddenHttpException("Acesso negado!");
-}
+
 }
 
     /**
@@ -63,16 +80,12 @@ class DespesaController extends Controller
      */
     public function actionView($id)
     {
-        if (Yii::$app->user->can("view-despesa") ||
-            Yii::$app->user->can("despesa") ) {
            $formatter = \Yii::$app->formatter;
        return $this->render('view', [
         'model' => $this->findModel($id),
         'formatter'=>$formatter,
         ]);
-   }else{
-    throw new ForbiddenHttpException("Acesso negado!");
-}
+
 }
 
     /**
@@ -83,8 +96,6 @@ class DespesaController extends Controller
     public function actionCreate()
     {
 
-        if (Yii::$app->user->can("create-despesa") ||
-            Yii::$app->user->can("despesa") ) {
             $model = new Despesa();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -94,9 +105,7 @@ class DespesaController extends Controller
                 'model' => $model,
                 ]);
         }
-    }else{
-        throw new ForbiddenHttpException("Acesso negado!");
-    }
+   
 }
 
     /**
@@ -107,8 +116,6 @@ class DespesaController extends Controller
      */
     public function actionUpdate($id)
     {
-     if (Yii::$app->user->can("update-despesa") ||
-        Yii::$app->user->can("despesa") ) {
         $model = $this->findModel($id);
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -118,9 +125,7 @@ class DespesaController extends Controller
             'model' => $model,
             ]);
     }
-}else{
-    throw new ForbiddenHttpException("Acesso negado!");
-}
+
 }
 
     /**
@@ -131,14 +136,10 @@ class DespesaController extends Controller
      */
     public function actionDelete($id)
     {
-       if (Yii::$app->user->can("delete-despesa") ||
-        Yii::$app->user->can("despesa") ) {
-        $this->findModel($id)->delete();
+         $this->findModel($id)->delete();
 
     return $this->redirect(['index']);
-}else{
-    throw new ForbiddenHttpException("Acesso negado!");
-}
+
 }
 
     /**

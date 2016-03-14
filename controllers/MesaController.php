@@ -8,6 +8,8 @@ use app\models\MesaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
 
 /**
  * MesaController implements the CRUD actions for Mesa model.
@@ -17,12 +19,21 @@ class MesaController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
+        'access' =>[
+        'class' => AccessControl::classname(),
+        'only'=> ['create','update','view','delete','index'],
+        'rules'=> [
+        ['allow'=>true,
+        'roles' => ['mesa','index-mesa'],
+        ],
+        ]
+        ],
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+        'delete' => ['post'],
+        ],
+        ],
         ];
     }
 
@@ -32,6 +43,9 @@ class MesaController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->can("index-mesa") ||
+        Yii::$app->user->can("mesa") ) {
+
         $searchModel = new MesaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -39,6 +53,9 @@ class MesaController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**
@@ -48,9 +65,15 @@ class MesaController extends Controller
      */
     public function actionView($id)
     {
+        if (Yii::$app->user->can("view-mesa") ||
+        Yii::$app->user->can("mesa") ) {
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**
@@ -60,6 +83,9 @@ class MesaController extends Controller
      */
     public function actionCreate()
     {
+        if (Yii::$app->user->can("create-mesa") ||
+        Yii::$app->user->can("mesa") ) {
+
         $model = new Mesa();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -68,6 +94,9 @@ class MesaController extends Controller
             return $this->render('create', [
                 'model' => $model,
             ]);
+        }
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
         }
     }
 
@@ -79,6 +108,9 @@ class MesaController extends Controller
      */
     public function actionUpdate($id)
     {
+        if (Yii::$app->user->can("update-mesa") ||
+        Yii::$app->user->can("mesa") ) {
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -87,6 +119,9 @@ class MesaController extends Controller
             return $this->render('update', [
                 'model' => $model,
             ]);
+        }
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
         }
     }
 
@@ -98,9 +133,15 @@ class MesaController extends Controller
      */
     public function actionDelete($id)
     {
+        if (Yii::$app->user->can("delete-mesa") ||
+        Yii::$app->user->can("mesa") ) {
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**

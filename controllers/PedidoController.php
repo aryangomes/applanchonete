@@ -17,12 +17,21 @@ class PedidoController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
+        'access' =>[
+        'class' => AccessControl::classname(),
+        'only'=> ['create','update','view','delete','index'],
+        'rules'=> [
+        ['allow'=>true,
+        'roles' => ['pagamento','index-pagamento'],
+        ],
+        ]
+        ],
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+        'delete' => ['post'],
+        ],
+        ],
         ];
     }
 
@@ -32,6 +41,9 @@ class PedidoController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->can("index-pedido") ||
+        Yii::$app->user->can("pedido") ) {
+
         $searchModel = new PedidoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -39,6 +51,9 @@ class PedidoController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**
@@ -48,9 +63,15 @@ class PedidoController extends Controller
      */
     public function actionView($id)
     {
+        if (Yii::$app->user->can("view-pedido") ||
+        Yii::$app->user->can("pedido") ) {
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**
@@ -60,6 +81,9 @@ class PedidoController extends Controller
      */
     public function actionCreate()
     {
+        if (Yii::$app->user->can("create-pedido") ||
+        Yii::$app->user->can("pedido") ) {
+
         $model = new Pedido();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -68,6 +92,9 @@ class PedidoController extends Controller
             return $this->render('create', [
                 'model' => $model,
             ]);
+        }
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
         }
     }
 
@@ -79,6 +106,9 @@ class PedidoController extends Controller
      */
     public function actionUpdate($id)
     {
+        if (Yii::$app->user->can("update-pedido") ||
+        Yii::$app->user->can("pedido") ) {
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -87,6 +117,9 @@ class PedidoController extends Controller
             return $this->render('update', [
                 'model' => $model,
             ]);
+        }
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
         }
     }
 
@@ -98,9 +131,15 @@ class PedidoController extends Controller
      */
     public function actionDelete($id)
     {
+        if (Yii::$app->user->can("delete-pedido") ||
+        Yii::$app->user->can("pedido") ) {
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**

@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
+use app\components\AccessFilter;
 
 /**
  * DestaquesController implements the CRUD actions for Destaques model.
@@ -20,21 +21,41 @@ class DestaquesController extends Controller
     {
         return [
         'access' =>[
-        'class' => AccessControl::classname(),
-        'only'=> ['create','update','view','delete','index'],
-        'rules'=> [
-        ['allow'=>true,
-        'roles' => ['destaques','index-destaques'],
-        ],
-        ]
-        ],
+//        'class' => AccessControl::classname(),
+//        'only'=> ['create','update','view','delete','index'],
+//        'rules'=> [
+//        ['allow'=>true,
+//        'roles' => ['destaques','index-destaques'],
+//        ],
+//        ]
+//        ],
         'verbs' => [
         'class' => VerbFilter::className(),
         'actions' => [
         'delete' => ['post'],
         ],
         ],
-        ];
+        ],
+        'autorizacao'=>[
+           'class'=>AccessFilter::className(),
+           'actions'=>[
+    
+           'destaques'=>[
+               'index-destaques',
+               'update-destaques',
+               'delete-destaques',
+               'view-destaques',
+               'create-destaques',
+           ],
+    
+            'index'=>'index-destaques',
+            'update'=>'update-destaques',
+            'delete'=>'delete-destaques',
+            'view'=>'view-destaques',
+            'create'=>'create-destaques',
+            ],
+            ],
+         ];    
     }
 
     /**

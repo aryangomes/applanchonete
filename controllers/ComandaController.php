@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
+use app\components\AccessFilter;
 /**
  * ComandaController implements the CRUD actions for Comanda model.
  */
@@ -19,20 +20,40 @@ class ComandaController extends Controller
     {
         return [
         'access' =>[
-        'class' => AccessControl::classname(),
-        'only'=> ['create','update','view','delete','index'],
-        'rules'=> [
-        ['allow'=>true,
-        'roles' => ['comanda','index-comanda'],
-        ],
-        ]
-        ],
+//        'class' => AccessControl::classname(),
+//        'only'=> ['create','update','view','delete','index'],
+//        'rules'=> [
+//        ['allow'=>true,
+//        'rules' => ['comanda','index-comanda'],
+//        ],
+//        ]
+//        ],
         'verbs' => [
         'class' => VerbFilter::className(),
         'actions' => [
         'delete' => ['post'],
         ],
         ],
+        ],
+        'autorizacao'=>[
+        'class'=>AccessFilter::className(),
+        'actions'=>[
+    
+        'cardapio'=>[
+           'index-comanda',
+           'update-comanda',
+           'delete-comanda',
+           'view-comanda',
+           'create-comanda',
+         ],
+    
+        'index'=>'index-comanda',
+        'update'=>'update-comanda',
+        'delete'=>'delete-comanda',
+        'view'=>'view-comanda',
+        'create'=>'create-comanda',
+           ],
+           ],
         ];
     }
 

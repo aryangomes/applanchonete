@@ -8,6 +8,7 @@ use app\models\PedidoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\components\AccessFilter;
 
 /**
  * PedidoController implements the CRUD actions for Pedido model.
@@ -18,21 +19,41 @@ class PedidoController extends Controller
     {
         return [
         'access' =>[
-        'class' => AccessControl::classname(),
-        'only'=> ['create','update','view','delete','index'],
-        'rules'=> [
-        ['allow'=>true,
-        'roles' => ['pagamento','index-pagamento'],
-        ],
-        ]
-        ],
+//        'class' => AccessControl::classname(),
+//        'only'=> ['create','update','view','delete','index'],
+//        'rules'=> [
+//        ['allow'=>true,
+//        'roles' => ['pagamento','index-pagamento'],
+//        ],
+//        ]
+//        ],
         'verbs' => [
         'class' => VerbFilter::className(),
         'actions' => [
         'delete' => ['post'],
         ],
         ],
-        ];
+        ],
+         'autorizacao'=>[
+           'class'=>AccessFilter::className(),
+           'actions'=>[
+    
+           'pedido'=>[
+               'index-pedido',
+               'update-pedido',
+               'delete-pedido',
+               'view-pedido',
+               'create-pedido',
+           ],
+    
+            'index'=>'index-pedido',
+            'update'=>'update-pedido',
+            'delete'=>'delete-pedido',
+            'view'=>'view-pedido',
+            'create'=>'create-pedido',
+            ],
+            ],
+         ];
     }
 
     /**

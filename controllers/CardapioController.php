@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
+use app\components\AccessFilter;
 /**
  * CardapioController implements the CRUD actions for Cardapio model.
  */
@@ -18,21 +19,42 @@ class CardapioController extends Controller
     public function behaviors()
     {
         return [
-        'access' =>[
-        'class' => AccessControl::classname(),
-        'only'=> ['create','update','view','delete','index'],
-        'rules'=> [
-        ['allow'=>true,
-        'roles' => ['cardapio','index-cardapio'],
-        ],
-        ]
-        ],
+//        'access' =>[
+//        'class' => AccessControl::classname(),
+//        'only'=> ['create','update','view','delete','index'],
+//        'rules'=> [
+//        ['allow'=>true,
+//        'rules' => ['cardapio','index-cardapio'],
+//        ],
+//        ]
+//        ],
+        'access' =>[    
         'verbs' => [
         'class' => VerbFilter::className(),
         'actions' => [
         'delete' => ['post'],
         ],
         ],
+        ],
+        'autorizacao'=>[
+        'class'=>AccessFilter::className(),
+        'actions'=>[
+    
+        'cardapio'=>[
+           'index-cardapio',
+           'update-cardapio',
+           'delete-cardapio',
+           'view-cardapio',
+           'create-cardapio',
+         ],
+    
+        'index'=>'index-cardapio',
+        'update'=>'update-cardapio',
+        'delete'=>'delete-cardapio',
+        'view'=>'view-cardapio',
+        'create'=>'create-cardapio',
+           ],
+           ],
         ];
     }
 

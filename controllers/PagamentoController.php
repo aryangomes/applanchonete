@@ -8,6 +8,7 @@ use app\models\PagamentoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\components\AccessFilter;
 
 /**
  * PagamentoController implements the CRUD actions for Pagamento model.
@@ -18,21 +19,41 @@ class PagamentoController extends Controller
     {
         return [
         'access' =>[
-        'class' => AccessControl::classname(),
-        'only'=> ['create','update','view','delete','index'],
-        'rules'=> [
-        ['allow'=>true,
-        'roles' => ['pagamento','index-pagamento'],
-        ],
-        ]
-        ],
+//        'class' => AccessControl::classname(),
+//        'only'=> ['create','update','view','delete','index'],
+//        'rules'=> [
+//        ['allow'=>true,
+//        'roles' => ['pagamento','index-pagamento'],
+//        ],
+//        ]
+//        ],
         'verbs' => [
         'class' => VerbFilter::className(),
         'actions' => [
         'delete' => ['post'],
         ],
         ],
-        ];
+        ],
+           'autorizacao'=>[
+           'class'=>AccessFilter::className(),
+           'actions'=>[
+    
+           'pagamento'=>[
+               'index-pagamento',
+               'update-pagamento',
+               'delete-pagamento',
+               'view-pagamento',
+               'create-pagamento',
+           ],
+    
+            'index'=>'index-pagamento',
+            'update'=>'update-pagamento',
+            'delete'=>'delete-pagamento',
+            'view'=>'view-pagamento',
+            'create'=>'create-pagamento',
+            ],
+            ],
+         ];
     }
 
     /**

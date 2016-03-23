@@ -8,7 +8,7 @@ use app\models\ProdutoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\components\AccessFilter;
 /**
  * ProdutoController implements the CRUD actions for Produto model.
  */
@@ -18,21 +18,41 @@ class ProdutoController extends Controller
     {
         return [
         'access' =>[
-        'class' => AccessControl::classname(),
-        'only'=> ['create','update','view','delete','index'],
-        'rules'=> [
-        ['allow'=>true,
-        'roles' => ['produto','index-produto'],
-        ],
-        ]
-        ],
+//        'class' => AccessControl::classname(),
+//        'only'=> ['create','update','view','delete','index'],
+//        'rules'=> [
+//        ['allow'=>true,
+//        'roles' => ['produto','index-produto'],
+//        ],
+//        ]
+//        ],
         'verbs' => [
         'class' => VerbFilter::className(),
         'actions' => [
         'delete' => ['post'],
         ],
         ],
-        ];
+        ],
+           'autorizacao'=>[
+           'class'=>AccessFilter::className(),
+           'actions'=>[
+    
+           'produto'=>[
+               'index-produto',
+               'update-produto',
+               'delete-produto',
+               'view-produto',
+               'create-produto',
+           ],
+    
+            'index'=>'index-produto',
+            'update'=>'update-produto',
+            'delete'=>'delete-produto',
+            'view'=>'view-produto',
+            'create'=>'create-produto',
+            ],
+            ],
+         ];
     }
 
     /**

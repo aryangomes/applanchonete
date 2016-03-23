@@ -10,7 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\components\AccessFilter;
 /**
  * ItemcardapioController implements the CRUD actions for Itemcardapio model.
  */
@@ -20,20 +20,39 @@ class ItemcardapioController extends Controller
     {
         return [
         'access' =>[
-        'class' => AccessControl::classname(),
-        'only'=> ['create','update','view','delete','index'],
-        'rules'=> [
-        ['allow'=>true,
-        'roles' => ['itemcardapio','index-itemcardapio'],
-        ],
-        ]
-        ],
+//        'class' => AccessControl::classname(),
+//        'only'=> ['create','update','view','delete','index'],
+//        'rules'=> [
+//        ['allow'=>true,
+//        'rules' => ['itemcardapio','index-itemcardapio'],
+        
+            
         'verbs' => [
         'class' => VerbFilter::className(),
         'actions' => [
         'delete' => ['post'],
         ],
-        ],
+        ],    
+        ],    
+        'autorizacao'=>[
+        'class'=>AccessFilter::className(),
+        'actions'=>[
+    
+        'itemcardapio'=>[
+           'index-itemcardapio',
+           'update-itemcardapio',
+           'delete-itemcardapio',
+           'view-itemcardapio',
+           'create-itemcardapio',
+         ],
+    
+        'index'=>'index-itemcardapio',
+        'update'=>'update-itemcardapio',
+        'delete'=>'delete-itemcardapio',
+        'view'=>'view-itemcardapio',
+        'create'=>'create-itemcardapio',
+           ],
+           ],
         ];
     }
 

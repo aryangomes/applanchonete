@@ -10,7 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\components\AccessFilter;
 /**
  * MesaController implements the CRUD actions for Mesa model.
  */
@@ -20,21 +20,41 @@ class MesaController extends Controller
     {
         return [
         'access' =>[
-        'class' => AccessControl::classname(),
-        'only'=> ['create','update','view','delete','index'],
-        'rules'=> [
-        ['allow'=>true,
-        'roles' => ['mesa','index-mesa'],
-        ],
-        ]
-        ],
+//        'class' => AccessControl::classname(),
+//        'only'=> ['create','update','view','delete','index'],
+//        'rules'=> [
+//        ['allow'=>true,
+//        'roles' => ['mesa','index-mesa'],
+//        ],
+//        ]
+//        ],
         'verbs' => [
         'class' => VerbFilter::className(),
         'actions' => [
         'delete' => ['post'],
         ],
         ],
-        ];
+        ],
+           'autorizacao'=>[
+           'class'=>AccessFilter::className(),
+           'actions'=>[
+    
+           'mesa'=>[
+               'index-mesa',
+               'update-mesa',
+               'delete-mesa',
+               'view-mesa',
+               'create-mesa',
+           ],
+    
+            'index'=>'index-mesa',
+            'update'=>'update-mesa',
+            'delete'=>'delete-mesa',
+            'view'=>'view-mesa',
+            'create'=>'create-mesa',
+            ],
+            ],
+         ];
     }
 
     /**

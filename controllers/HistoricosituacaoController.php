@@ -8,7 +8,7 @@ use app\models\HistoricosituacaoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\components\AccessFilter;
 /**
  * HistoricosituacaoController implements the CRUD actions for Historicosituacao model.
  */
@@ -18,22 +18,41 @@ class HistoricosituacaoController extends Controller
     {
         return [
         'access' =>[
-        'class' => AccessControl::classname(),
-        'only'=> ['create','update','view','delete','index'],
-        'rules'=> [
-        ['allow'=>true,
-        'roles' => ['historicosituacao','index-historicosituacao'],
-        ],
-        ]
-        ],
+//        'class' => AccessControl::classname(),
+//        'only'=> ['create','update','view','delete','index'],
+//        'rules'=> [
+//        ['allow'=>true,
+//        'roles' => ['historicosituacao','index-historicosituacao'],
+//        ],
+//        ]
+//        ],
         'verbs' => [
         'class' => VerbFilter::className(),
         'actions' => [
         'delete' => ['post'],
         ],
         ],
-        ];
-
+        ],
+        'autorizacao'=>[
+           'class'=>AccessFilter::className(),
+           'actions'=>[
+    
+           'historicosituacao'=>[
+               'index-historicosituacao',
+               'update-historicosituacao',
+               'delete-historicosituacao',
+               'view-historicosituacao',
+               'create-historicosituacao',
+           ],
+    
+            'index'=>'index-historicosituacao',
+            'update'=>'update-historicosituacao',
+            'delete'=>'delete-historicosituacao',
+            'view'=>'view-historicosituacao',
+            'create'=>'create-historicosituacao',
+            ],
+            ],
+         ];
     }
 
     /**

@@ -8,6 +8,9 @@ use app\models\DestaquesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use \yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
+use app\components\AccessFilter;
 
 /**
  * DestaquesController implements the CRUD actions for Destaques model.
@@ -17,13 +20,42 @@ class DestaquesController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
+        'access' =>[
+//        'class' => AccessControl::classname(),
+//        'only'=> ['create','update','view','delete','index'],
+//        'rules'=> [
+//        ['allow'=>true,
+//        'roles' => ['destaques','index-destaques'],
+//        ],
+//        ]
+//        ],
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+        'delete' => ['post'],
+        ],
+        ],
+        ],
+        'autorizacao'=>[
+           'class'=>AccessFilter::className(),
+           'actions'=>[
+    
+           'destaques'=>[
+               'index-destaques',
+               'update-destaques',
+               'delete-destaques',
+               'view-destaques',
+               'create-destaques',
+           ],
+    
+            'index'=>'index-destaques',
+            'update'=>'update-destaques',
+            'delete'=>'delete-destaques',
+            'view'=>'view-destaques',
+            'create'=>'create-destaques',
             ],
-        ];
+            ],
+         ];    
     }
 
     /**
@@ -32,6 +64,9 @@ class DestaquesController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->can("index-destaques") ||
+        Yii::$app->user->can("destaques") ) {
+        
         $searchModel = new DestaquesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -39,6 +74,9 @@ class DestaquesController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**
@@ -48,9 +86,14 @@ class DestaquesController extends Controller
      */
     public function actionView($id)
     {
+        if (Yii::$app->user->can("view-destaques") ||
+        Yii::$app->user->can("destaques") ) {
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**
@@ -60,6 +103,9 @@ class DestaquesController extends Controller
      */
     public function actionCreate()
     {
+        if (Yii::$app->user->can("create-destaques") ||
+        Yii::$app->user->can("destaques") ) {
+        
         $model = new Destaques();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -68,6 +114,9 @@ class DestaquesController extends Controller
             return $this->render('create', [
                 'model' => $model,
             ]);
+        }
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
         }
     }
 
@@ -79,6 +128,9 @@ class DestaquesController extends Controller
      */
     public function actionUpdate($id)
     {
+        if (Yii::$app->user->can("update-destaques") ||
+        Yii::$app->user->can("destaques") ) {
+        
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -87,6 +139,9 @@ class DestaquesController extends Controller
             return $this->render('update', [
                 'model' => $model,
             ]);
+        }
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
         }
     }
 
@@ -98,9 +153,15 @@ class DestaquesController extends Controller
      */
     public function actionDelete($id)
     {
+        if (Yii::$app->user->can("delete-destaques") ||
+        Yii::$app->user->can("destaques") ) {
+        
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**

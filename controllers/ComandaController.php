@@ -8,7 +8,9 @@ use app\models\ComandaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use \yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
+use app\components\AccessFilter;
 /**
  * ComandaController implements the CRUD actions for Comanda model.
  */
@@ -17,12 +19,41 @@ class ComandaController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
+        'access' =>[
+//        'class' => AccessControl::classname(),
+//        'only'=> ['create','update','view','delete','index'],
+//        'rules'=> [
+//        ['allow'=>true,
+//        'rules' => ['comanda','index-comanda'],
+//        ],
+//        ]
+//        ],
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+        'delete' => ['post'],
+        ],
+        ],
+        ],
+        'autorizacao'=>[
+        'class'=>AccessFilter::className(),
+        'actions'=>[
+    
+        'cardapio'=>[
+           'index-comanda',
+           'update-comanda',
+           'delete-comanda',
+           'view-comanda',
+           'create-comanda',
+         ],
+    
+        'index'=>'index-comanda',
+        'update'=>'update-comanda',
+        'delete'=>'delete-comanda',
+        'view'=>'view-comanda',
+        'create'=>'create-comanda',
+           ],
+           ],
         ];
     }
 
@@ -32,6 +63,9 @@ class ComandaController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->can("index-comanda") ||
+        Yii::$app->user->can("comanda") ) {
+        
         $searchModel = new ComandaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -39,6 +73,9 @@ class ComandaController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**
@@ -48,9 +85,15 @@ class ComandaController extends Controller
      */
     public function actionView($id)
     {
+        if (Yii::$app->user->can("view-comanda") ||
+            Yii::$app->user->can("comanda") ) {
+        
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**
@@ -60,6 +103,9 @@ class ComandaController extends Controller
      */
     public function actionCreate()
     {
+        if (Yii::$app->user->can("create-comanda") ||
+            Yii::$app->user->can("comanda") ) {
+        
         $model = new Comanda();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -68,6 +114,9 @@ class ComandaController extends Controller
             return $this->render('create', [
                 'model' => $model,
             ]);
+        }
+        } else{
+            throw new ForbiddenHttpException("Acesso negado!");
         }
     }
 
@@ -79,6 +128,9 @@ class ComandaController extends Controller
      */
     public function actionUpdate($id)
     {
+        if (Yii::$app->user->can("update-comanda") ||
+        Yii::$app->user->can("comanda") ) {
+        
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -87,6 +139,9 @@ class ComandaController extends Controller
             return $this->render('update', [
                 'model' => $model,
             ]);
+        }
+        } else{
+            throw new ForbiddenHttpException("Acesso negado!");
         }
     }
 
@@ -98,9 +153,15 @@ class ComandaController extends Controller
      */
     public function actionDelete($id)
     {
+        if (Yii::$app->user->can("delete-comanda") ||
+        Yii::$app->user->can("comanda") ) {
+        
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+        } else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**

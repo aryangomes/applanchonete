@@ -8,7 +8,9 @@ use app\models\CardapioSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use \yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
+use app\components\AccessFilter;
 /**
  * CardapioController implements the CRUD actions for Cardapio model.
  */
@@ -17,12 +19,42 @@ class CardapioController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
+//        'access' =>[
+//        'class' => AccessControl::classname(),
+//        'only'=> ['create','update','view','delete','index'],
+//        'rules'=> [
+//        ['allow'=>true,
+//        'rules' => ['cardapio','index-cardapio'],
+//        ],
+//        ]
+//        ],
+        'access' =>[    
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+        'delete' => ['post'],
+        ],
+        ],
+        ],
+        'autorizacao'=>[
+        'class'=>AccessFilter::className(),
+        'actions'=>[
+    
+        'cardapio'=>[
+           'index-cardapio',
+           'update-cardapio',
+           'delete-cardapio',
+           'view-cardapio',
+           'create-cardapio',
+         ],
+    
+        'index'=>'index-cardapio',
+        'update'=>'update-cardapio',
+        'delete'=>'delete-cardapio',
+        'view'=>'view-cardapio',
+        'create'=>'create-cardapio',
+           ],
+           ],
         ];
     }
 
@@ -32,6 +64,8 @@ class CardapioController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->can("index-cardapio") ||
+        Yii::$app->user->can("cardapio") ) {
         $searchModel = new CardapioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -39,6 +73,9 @@ class CardapioController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**
@@ -48,9 +85,14 @@ class CardapioController extends Controller
      */
     public function actionView($id)
     {
+        if (Yii::$app->user->can("view-cardapio") ||
+            Yii::$app->user->can("cardapio") ) {
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**
@@ -60,6 +102,8 @@ class CardapioController extends Controller
      */
     public function actionCreate()
     {
+        if (Yii::$app->user->can("create-cardapio") ||
+            Yii::$app->user->can("cardapio") ) {
         $model = new Cardapio();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -68,6 +112,9 @@ class CardapioController extends Controller
             return $this->render('create', [
                 'model' => $model,
             ]);
+        }
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
         }
     }
 
@@ -79,6 +126,8 @@ class CardapioController extends Controller
      */
     public function actionUpdate($id)
     {
+        if (Yii::$app->user->can("update-cardapio") ||
+        Yii::$app->user->can("cardapio") ) {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -87,6 +136,9 @@ class CardapioController extends Controller
             return $this->render('update', [
                 'model' => $model,
             ]);
+        }
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
         }
     }
 
@@ -98,9 +150,14 @@ class CardapioController extends Controller
      */
     public function actionDelete($id)
     {
+        if (Yii::$app->user->can("delete-cardapio") ||
+        Yii::$app->user->can("cardapio") ) {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**

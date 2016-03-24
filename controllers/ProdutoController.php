@@ -8,7 +8,7 @@ use app\models\ProdutoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\components\AccessFilter;
 /**
  * ProdutoController implements the CRUD actions for Produto model.
  */
@@ -17,13 +17,42 @@ class ProdutoController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
+        'access' =>[
+//        'class' => AccessControl::classname(),
+//        'only'=> ['create','update','view','delete','index'],
+//        'rules'=> [
+//        ['allow'=>true,
+//        'roles' => ['produto','index-produto'],
+//        ],
+//        ]
+//        ],
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+        'delete' => ['post'],
+        ],
+        ],
+        ],
+           'autorizacao'=>[
+           'class'=>AccessFilter::className(),
+           'actions'=>[
+    
+           'produto'=>[
+               'index-produto',
+               'update-produto',
+               'delete-produto',
+               'view-produto',
+               'create-produto',
+           ],
+    
+            'index'=>'index-produto',
+            'update'=>'update-produto',
+            'delete'=>'delete-produto',
+            'view'=>'view-produto',
+            'create'=>'create-produto',
             ],
-        ];
+            ],
+         ];
     }
 
     /**
@@ -32,6 +61,9 @@ class ProdutoController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->can("index-produto") ||
+        Yii::$app->user->can("produto") ) {
+
         $searchModel = new ProdutoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -39,6 +71,9 @@ class ProdutoController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**
@@ -48,9 +83,15 @@ class ProdutoController extends Controller
      */
     public function actionView($id)
     {
+        if (Yii::$app->user->can("view-produto") ||
+        Yii::$app->user->can("produto") ) {
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**
@@ -60,6 +101,9 @@ class ProdutoController extends Controller
      */
     public function actionCreate()
     {
+        if (Yii::$app->user->can("create-produto") ||
+        Yii::$app->user->can("produto") ) {
+
         $model = new Produto();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -68,6 +112,9 @@ class ProdutoController extends Controller
             return $this->render('create', [
                 'model' => $model,
             ]);
+        }
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
         }
     }
 
@@ -79,6 +126,9 @@ class ProdutoController extends Controller
      */
     public function actionUpdate($id)
     {
+        if (Yii::$app->user->can("update-produto") ||
+        Yii::$app->user->can("produto") ) {
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -87,6 +137,9 @@ class ProdutoController extends Controller
             return $this->render('update', [
                 'model' => $model,
             ]);
+        }
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
         }
     }
 
@@ -98,9 +151,15 @@ class ProdutoController extends Controller
      */
     public function actionDelete($id)
     {
+        if (Yii::$app->user->can("delete-produto") ||
+        Yii::$app->user->can("produto") ) {
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**

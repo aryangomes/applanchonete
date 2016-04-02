@@ -6,6 +6,7 @@ return [
 'Update {modelClass}: '=>'Alterar {modelClass}',
 'Relatorios'=>'Relatórios',
 'Relatorio'=>'Relatório',
+'Search'=>'Procurar',
 ];
 
 

@@ -6,7 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Produto;
-
+use app\models\Insumos;
 /**
  * ProdutoSearch represents the model behind the search form about `app\models\Produto`.
  */
@@ -18,9 +18,9 @@ class ProdutoSearch extends Produto
     public function rules()
     {
         return [
-            [['idProduto', 'isInsumo', 'idCategoria'], 'integer'],
-            [['nome'], 'safe'],
-            [['valorVenda', 'quantidadeMinima', 'quantidadeEstoque'], 'number'],
+        [['idProduto', 'isInsumo', 'idCategoria'], 'integer'],
+        [['nome'], 'safe'],
+        [['valorVenda', 'quantidadeMinima', 'quantidadeEstoque'], 'number'],
         ];
     }
 
@@ -46,7 +46,7 @@ class ProdutoSearch extends Produto
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-        ]);
+            ]);
 
         $this->load($params);
 
@@ -63,10 +63,21 @@ class ProdutoSearch extends Produto
             'quantidadeMinima' => $this->quantidadeMinima,
             'idCategoria' => $this->idCategoria,
             'quantidadeEstoque' => $this->quantidadeEstoque,
-        ]);
+            ]);
 
         $query->andFilterWhere(['like', 'nome', $this->nome]);
 
         return $dataProvider;
+    }
+
+    public function searchInsumos($params)
+    {
+
+        $query = Insumos::find()->
+        where(['idprodutoVenda'=>$params['produtovenda']] )->all();
+
+
+
+        return $query;
     }
 }

@@ -8,7 +8,8 @@ use app\models\InsumosSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\helpers\ArrayHelper;
+use app\models\Produto;
 /**
  * InsumosController implements the CRUD actions for Insumos model.
  */
@@ -17,12 +18,12 @@ class InsumosController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+        'delete' => ['post'],
+        ],
+        ],
         ];
     }
 
@@ -38,7 +39,7 @@ class InsumosController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
+            ]);
     }
 
     /**
@@ -50,7 +51,7 @@ class InsumosController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
-        ]);
+            ]);
     }
 
     /**
@@ -61,13 +62,20 @@ class InsumosController extends Controller
     public function actionCreate()
     {
         $model = new Insumos();
-
+        $produtosvenda = ArrayHelper::map(
+            Produto::find()->where(['isInsumo'=>0])->all(), 
+            'idProduto','nome');
+        $insumos = ArrayHelper::map(
+            Produto::find()->where(['isInsumo'=>1])->all(), 
+            'idProduto','nome');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idprodutoVenda]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-            ]);
+                'insumos' => $insumos,
+                'produtosvenda' => $produtosvenda,
+                ]);
         }
     }
 
@@ -86,7 +94,7 @@ class InsumosController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
-            ]);
+                ]);
         }
     }
 

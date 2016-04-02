@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Produto;
+use app\models\Insumos;
 
 /**
- * ProdutoSearch represents the model behind the search form about `app\models\Produto`.
+ * InsumosSearch represents the model behind the search form about `app\models\Insumos`.
  */
-class ProdutoSearch extends Produto
+class InsumosSearch extends Insumos
 {
     /**
      * @inheritdoc
@@ -18,9 +18,9 @@ class ProdutoSearch extends Produto
     public function rules()
     {
         return [
-            [['idProduto', 'isInsumo', 'idCategoria'], 'integer'],
-            [['nome'], 'safe'],
-            [['valorVenda', 'quantidadeMinima', 'quantidadeEstoque'], 'number'],
+            [['idprodutoVenda', 'idprodutoInsumo'], 'integer'],
+            [['quantidade'], 'number'],
+            [['unidade'], 'safe'],
         ];
     }
 
@@ -42,7 +42,7 @@ class ProdutoSearch extends Produto
      */
     public function search($params)
     {
-        $query = Produto::find();
+        $query = Insumos::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -57,15 +57,12 @@ class ProdutoSearch extends Produto
         }
 
         $query->andFilterWhere([
-            'idProduto' => $this->idProduto,
-            'valorVenda' => $this->valorVenda,
-            'isInsumo' => $this->isInsumo,
-            'quantidadeMinima' => $this->quantidadeMinima,
-            'idCategoria' => $this->idCategoria,
-            'quantidadeEstoque' => $this->quantidadeEstoque,
+            'idprodutoVenda' => $this->idprodutoVenda,
+            'idprodutoInsumo' => $this->idprodutoInsumo,
+            'quantidade' => $this->quantidade,
         ]);
 
-        $query->andFilterWhere(['like', 'nome', $this->nome]);
+        $query->andFilterWhere(['like', 'unidade', $this->unidade]);
 
         return $dataProvider;
     }

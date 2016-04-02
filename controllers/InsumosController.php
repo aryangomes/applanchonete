@@ -3,47 +3,46 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Produto;
-use app\models\ProdutoSearch;
+use app\models\Insumos;
+use app\models\InsumosSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\Categoria;
-use yii\helpers\ArrayHelper;
+
 /**
- * ProdutoController implements the CRUD actions for Produto model.
+ * InsumosController implements the CRUD actions for Insumos model.
  */
-class ProdutoController extends Controller
+class InsumosController extends Controller
 {
     public function behaviors()
     {
         return [
-        'verbs' => [
-        'class' => VerbFilter::className(),
-        'actions' => [
-        'delete' => ['post'],
-        ],
-        ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
         ];
     }
 
     /**
-     * Lists all Produto models.
+     * Lists all Insumos models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ProdutoSearch();
+        $searchModel = new InsumosSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            ]);
+        ]);
     }
 
     /**
-     * Displays a single Produto model.
+     * Displays a single Insumos model.
      * @param integer $id
      * @return mixed
      */
@@ -51,33 +50,29 @@ class ProdutoController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
-            ]);
+        ]);
     }
 
     /**
-     * Creates a new Produto model.
+     * Creates a new Insumos model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Produto();
-        $categorias = ArrayHelper::map(
-            Categoria::find()->all(), 
-            'idCategoria','nome');
+        $model = new Insumos();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idProduto]);
+            return $this->redirect(['view', 'id' => $model->idprodutoVenda]);
         } else {
-           
             return $this->render('create', [
                 'model' => $model,
-                'categorias' => $categorias,
-                ]);
+            ]);
         }
     }
 
     /**
-     * Updates an existing Produto model.
+     * Updates an existing Insumos model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -87,16 +82,16 @@ class ProdutoController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idProduto]);
+            return $this->redirect(['view', 'id' => $model->idprodutoVenda]);
         } else {
             return $this->render('update', [
                 'model' => $model,
-                ]);
+            ]);
         }
     }
 
     /**
-     * Deletes an existing Produto model.
+     * Deletes an existing Insumos model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -109,15 +104,15 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Finds the Produto model based on its primary key value.
+     * Finds the Insumos model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Produto the loaded model
+     * @return Insumos the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Produto::findOne($id)) !== null) {
+        if (($model = Insumos::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

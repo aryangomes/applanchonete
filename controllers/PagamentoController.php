@@ -8,6 +8,7 @@ use app\models\PagamentoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\components\AccessFilter;
 
 /**
  * PagamentoController implements the CRUD actions for Pagamento model.
@@ -17,13 +18,42 @@ class PagamentoController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
+        'access' =>[
+//        'class' => AccessControl::classname(),
+//        'only'=> ['create','update','view','delete','index'],
+//        'rules'=> [
+//        ['allow'=>true,
+//        'roles' => ['pagamento','index-pagamento'],
+//        ],
+//        ]
+//        ],
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+        'delete' => ['post'],
+        ],
+        ],
+        ],
+           'autorizacao'=>[
+           'class'=>AccessFilter::className(),
+           'actions'=>[
+    
+           'pagamento'=>[
+               'index-pagamento',
+               'update-pagamento',
+               'delete-pagamento',
+               'view-pagamento',
+               'create-pagamento',
+           ],
+    
+            'index'=>'index-pagamento',
+            'update'=>'update-pagamento',
+            'delete'=>'delete-pagamento',
+            'view'=>'view-pagamento',
+            'create'=>'create-pagamento',
             ],
-        ];
+            ],
+         ];
     }
 
     /**
@@ -32,6 +62,9 @@ class PagamentoController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->can("index-pagamento") ||
+        Yii::$app->user->can("pagamento") ) {
+
         $searchModel = new PagamentoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -39,6 +72,9 @@ class PagamentoController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**
@@ -48,9 +84,15 @@ class PagamentoController extends Controller
      */
     public function actionView($id)
     {
+        if (Yii::$app->user->can("view-pagamento") ||
+        Yii::$app->user->can("pagamento") ) {
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**
@@ -60,6 +102,9 @@ class PagamentoController extends Controller
      */
     public function actionCreate()
     {
+        if (Yii::$app->user->can("create-pagamento") ||
+        Yii::$app->user->can("pagamento") ) {
+
         $model = new Pagamento();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -68,6 +113,9 @@ class PagamentoController extends Controller
             return $this->render('create', [
                 'model' => $model,
             ]);
+        }
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
         }
     }
 
@@ -79,6 +127,9 @@ class PagamentoController extends Controller
      */
     public function actionUpdate($id)
     {
+        if (Yii::$app->user->can("update-pagamento") ||
+        Yii::$app->user->can("pagamento") ) {
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -87,6 +138,9 @@ class PagamentoController extends Controller
             return $this->render('update', [
                 'model' => $model,
             ]);
+        }
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
         }
     }
 
@@ -98,9 +152,15 @@ class PagamentoController extends Controller
      */
     public function actionDelete($id)
     {
+        if (Yii::$app->user->can("delete-pagamento") ||
+        Yii::$app->user->can("pagamento") ) {
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+        }else{
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
 
     /**

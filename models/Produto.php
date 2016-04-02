@@ -9,20 +9,19 @@ use Yii;
  *
  * @property integer $idProduto
  * @property string $nome
- * @property string $preco
- * @property string $unidade
- * @property string $descricao
+ * @property double $valorVenda
+ * @property integer $isInsumo
+ * @property double $quantidadeMinima
  * @property integer $idCategoria
- * @property string $dataValidade
+ * @property double $quantidadeEstoque
  *
- * @property Estoque[] $estoques
- * @property InsumoProduto[] $insumoProdutos
+ * @property Insumos $insumos
  * @property Itemcardapio[] $itemcardapios
  * @property Cardapio[] $idCardapios
  * @property Itempedido[] $itempedidos
  * @property Pedido[] $idPedidos
  * @property ItensProduto[] $itensProdutos
- * @property Categoria $idCategoria0
+ * @property Categoria $idCategoria
  */
 class Produto extends \yii\db\ActiveRecord
 {
@@ -40,13 +39,10 @@ class Produto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nome', 'preco', 'unidade', 'descricao', 'idCategoria'], 'required'],
-            [['preco'], 'number'],
-            [['descricao'], 'string'],
-            [['idCategoria'], 'integer'],
-            [['dataValidade'], 'safe'],
-            [['nome'], 'string', 'max' => 100],
-            [['unidade'], 'string', 'max' => 15]
+        [['nome', 'valorVenda', 'isInsumo', 'idCategoria'], 'required'],
+        [['valorVenda', 'quantidadeMinima', 'quantidadeEstoque'], 'number'],
+        [['isInsumo', 'idCategoria'], 'integer'],
+        [['nome'], 'string', 'max' => 100]
         ];
     }
 
@@ -56,30 +52,22 @@ class Produto extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idProduto' => 'Id Produto',
-            'nome' => 'Nome',
-            'preco' => 'Preco',
-            'unidade' => 'Unidade',
-            'descricao' => 'Descricao',
-            'idCategoria' => 'Id Categoria',
-            'dataValidade' => 'Data Validade',
+        'idProduto' => Yii::t('app', 'Id Produto'),
+        'nome' => Yii::t('app', 'Nome'),
+        'valorVenda' => Yii::t('app', 'Valor Venda'),
+        'isInsumo' => Yii::t('app', 'Is Insumo'),
+        'quantidadeMinima' => Yii::t('app', 'Quantidade Minima'),
+        'idCategoria' => Yii::t('app', 'Id Categoria'),
+        'quantidadeEstoque' => Yii::t('app', 'Quantidade Estoque'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEstoques()
+    public function getInsumos()
     {
-        return $this->hasMany(Estoque::className(), ['produto_idProduto' => 'idProduto']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getInsumoProdutos()
-    {
-        return $this->hasMany(InsumoProduto::className(), ['produto_idProduto' => 'idProduto']);
+        return $this->hasOne(Insumos::className(), ['idprodutoVenda' => 'idProduto']);
     }
 
     /**
@@ -125,7 +113,7 @@ class Produto extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdCategoria0()
+    public function getIdCategoria()
     {
         return $this->hasOne(Categoria::className(), ['idCategoria' => 'idCategoria']);
     }

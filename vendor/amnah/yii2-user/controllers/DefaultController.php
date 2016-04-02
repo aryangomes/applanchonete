@@ -125,7 +125,7 @@ class DefaultController extends Controller
         if ($loginEmailForm->load($post) && $loginEmailForm->sendEmail()) {
             $user = $loginEmailForm->getUser();
             $message = $user ? "Login link sent" : "Registration link sent";
-            $message .= " - Please check your email";
+          //  $message .= " - Please check your email";
             Yii::$app->session->setFlash("Login-success", Yii::t("user", $message));
         }
 
@@ -319,7 +319,7 @@ if ($user->validate() && $profile->validate()) {
   $successText = Yii::t("user", "Successfully registered [ {displayName} ]", ["displayName" => $user->getDisplayName()]);
   $guestText = "";
   if (Yii::$app->user->isGuest) {
-    $guestText = Yii::t("user", " - Please check your email to confirm your account");
+    //$guestText = Yii::t("user", " - Please check your email to confirm your account");
 }
 Yii::$app->session->setFlash("Register-success", $successText . $guestText);
 }

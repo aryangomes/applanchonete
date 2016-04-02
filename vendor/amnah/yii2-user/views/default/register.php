@@ -159,31 +159,7 @@ break;
 
 <?php 
 
-for ($i=0; $i < count($permissoes) ; $i++) { 
 
- echo Html::label($macroauthitems[$i])
- . '</br>';
- echo SortableInput::widget([
-  'name'=>'kv-conn-' . $i,
-  'items' => $permissoes[$i],
-
-  'hideInput' => true,
-  'sortableOptions' => [
-  'connected'=>true,
-  'pluginOptions'=>[
-  'dropOnEmpty'=>true,
-  ],
-  ],
-
-  'options' => ['class'=>'form-control', 'readonly'=>true , 
-  'id'=>$macroauthitems[$i]],
-  
-  
-  ]);
- echo '</div>';
-
- echo '<div class="col-sm-6">';
-}
 
 echo Html::label('Permissões')
 . '</br>';
@@ -191,6 +167,7 @@ echo SortableInput::widget([
   'name'=>'User[role_id]',
   'items' => [
   ],
+  
   'hideInput' => true,
   'sortableOptions' => [
   'itemOptions'=>['class'=>'alert alert-warning'],
@@ -440,7 +417,34 @@ var sortedIDs = $( this ).sortable( 'toArray' );
 
 
 ]);
+ echo "<div class='col-sm-12'>";
 
+for ($i=0; $i < count($permissoes) ; $i++) { 
+ echo '<div class="col-sm-2">';
+ echo Html::label(Yii::t('yii', $macroauthitems[$i]))
+ . '</br>';
+ echo SortableInput::widget([
+  'name'=>'kv-conn-' . $i,
+  'items' => $permissoes[$i],
+
+  'hideInput' => true,
+  'sortableOptions' => [
+  'connected'=>true,
+  'pluginOptions'=>[
+  'dropOnEmpty'=>true,
+  ],
+  ],
+
+  'options' => ['class'=>'form-control', 'readonly'=>true , 
+  'id'=>$macroauthitems[$i]],
+  
+  
+  ]);
+ echo '</div>';
+
+
+}
+ echo '</div>';
 ?>
 
 <?php /* uncomment if you want to add profile fields here
@@ -448,18 +452,20 @@ var sortedIDs = $( this ).sortable( 'toArray' );
         */ ?>
 
         <div class="form-group">
-          <div class="col-lg-offset-2 col-lg-10">
-            <?= Html::submitButton(Yii::t('user', 'Register'), ['class' => 'btn btn-primary']) ?>
+          <div class="col-sm-12">
+            <?= Html::submitButton(Yii::t('user', 'Register'), ['class' => 'btn btn-primary btn-block']) ?>
 
             <br/><br/>
-            <?= Html::a(Yii::t('user', 'Login'), ["/user/login"]) ?>
+            <?= Html::a(Yii::t('user', 'Login'), ["/user/login"],  ['class' => 'btn btn-primary btn-block']) ?>
           </div>
+           <?php // Html::resetButton('Resetar', ['class' => 'btn btn-primary btn-block']) ?>
+
         </div>
 
         <?php ActiveForm::end(); ?>
 
         <?php if (Yii::$app->get("authClientCollection", false)): ?>
-        <div class="col-lg-offset-2 col-lg-10">
+        <div class="col-sm-12">
           <?= yii\authclient\widgets\AuthChoice::widget([
             'baseAuthUrl' => ['/user/auth/login']
             ]) ?>

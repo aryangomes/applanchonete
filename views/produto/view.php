@@ -19,15 +19,15 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->idProduto], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
+            'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+            'method' => 'post',
             ],
-        ]) ?>
-    </p>
+            ]) ?>
+        </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
+        <?= DetailView::widget([
+            'model' => $model,
+            'attributes' => [
             'idProduto',
             'nome',
             'valorVenda',
@@ -35,7 +35,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'quantidadeMinima',
             'idCategoria',
             'quantidadeEstoque',
-        ],
-    ]) ?>
+            [
+            'label'=>'Preço sugerido',
+            'format'=>'text',
+            'value'=>($model->calculoprecoproduto($model->idProduto)),
+            ],
+            ],
+            ]) ?>
 
-</div>
+        </div>

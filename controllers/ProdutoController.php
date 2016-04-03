@@ -58,16 +58,17 @@ class ProdutoController extends Controller
     {
         $model = new Produto();
         $produtosVenda = ArrayHelper::map(
-            Produto::find()->where(['isInsumo'=>0])->all(), 
+            Produto::find()->join('INNER JOIN','insumos', 'idProduto = idprodutoVenda ')
+            ->where(['isInsumo'=>0 ])->all(), 
             'idProduto','nome');
         if ((Yii::$app->request->post())) {
-         $searchModel = new ProdutoSearch();
+           $searchModel = new ProdutoSearch();
 
-         $listadeinsumos = $searchModel->searchInsumos(Yii::$app->request->post());
+           $listadeinsumos = $searchModel->searchInsumos(Yii::$app->request->post());
 
-         $insumos = array();
+           $insumos = array();
 
-         foreach ($listadeinsumos as  $insumo) {
+           foreach ($listadeinsumos as  $insumo) {
             array_push($insumos, 
                 $model::findOne($insumo->idprodutoInsumo));
         }
@@ -84,6 +85,8 @@ class ProdutoController extends Controller
             ]);
     }
 }
+
+
 
     /**
      * Creates a new Produto model.
@@ -116,12 +119,15 @@ class ProdutoController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $categorias = ArrayHelper::map(
+            Categoria::find()->all(), 
+            'idCategoria','nome');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idProduto]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'categorias' => $categorias,
                 ]);
         }
     }

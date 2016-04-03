@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use app\models\ProdutoSearch;
 /**
  * This is the model class for table "produto".
  *
@@ -117,4 +117,31 @@ class Produto extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Categoria::className(), ['idCategoria' => 'idCategoria']);
     }
+
+
+    public function calculoprecoproduto($idprodutoVenda)
+    {
+        $model = new Produto();
+        $insumos =Insumos::find()->where([ 'idprodutoVenda'=>$idprodutoVenda ])->all();
+        $precosugerido = 0;
+        $searchModel = new ProdutoSearch();
+
+
+
+        foreach ($insumos as $key => $insumo) {
+            $produtoCompra = ($searchModel->searchProdutosCompra($insumo->idprodutoInsumo));
+
+            $precosugerido += 
+            (($produtoCompra->valorCompra *$insumo->quantidade)/ $produtoCompra->quantidade);
+           /* echo  'Valor da compra: '.$produtoCompra->valorCompra . "</br>";
+            echo  'Quantidade Comra: '.$produtoCompra->quantidade . "</br>";
+            echo  'Insumo quantidade : '.$insumo->quantidade . "</br>";
+            echo   'Preço parcial: '.(($produtoCompra->valorCompra *$insumo->quantidade)/ $produtoCompra->quantidade). "</br>";
+            echo  'Preço sugerido: '.$precosugerido . "</br>";
+            echo  "</br>";*/
+        }
+        return $precosugerido;
+
+    }
+
 }

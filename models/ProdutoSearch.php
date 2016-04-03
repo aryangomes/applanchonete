@@ -80,4 +80,15 @@ class ProdutoSearch extends Produto
 
         return $query;
     }
+
+    public function searchProdutosCompra($idProduto)
+    {
+
+        $query = Compraproduto::find()->
+        where(['idProduto'=>$idProduto] )->one();
+
+
+
+        return $query;
+    }
 }

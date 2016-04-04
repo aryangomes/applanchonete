@@ -17,17 +17,17 @@ use yii\base\Model;
  */
 class InsumosController extends Controller
 {
-    public function behaviors()
-    {
-        return [
-        'verbs' => [
-        'class' => VerbFilter::className(),
-        'actions' => [
-        'delete' => ['post'],
-        ],
-        ],
-        ];
-    }
+  public function behaviors()
+  {
+    return [
+    'verbs' => [
+    'class' => VerbFilter::className(),
+    'actions' => [
+    'delete' => ['post'],
+    ],
+    ],
+    ];
+  }
 
     /**
      * Lists all Insumos models.
@@ -35,13 +35,13 @@ class InsumosController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new InsumosSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+      $searchModel = new InsumosSearch();
+      $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            ]);
+      return $this->render('index', [
+        'searchModel' => $searchModel,
+        'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
@@ -51,9 +51,9 @@ class InsumosController extends Controller
      */
     public function actionView($idprodutoVenda, $idprodutoInsumo) 
     { 
-        return $this->render('view', [ 
-            'model' => $this->findModel($idprodutoVenda, $idprodutoInsumo), 
-            ]); 
+      return $this->render('view', [ 
+        'model' => $this->findModel($idprodutoVenda, $idprodutoInsumo), 
+        ]); 
     } 
 
     /**
@@ -63,27 +63,27 @@ class InsumosController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Insumos();
-        $produtosvenda = ArrayHelper::map(
-            Produto::find()->where(['isInsumo'=>0])->all(), 
-            'idProduto','nome');
-        $insumos = ArrayHelper::map(
-            Produto::find()->where(['isInsumo'=>1])->all(), 
-            'idProduto','nome');
-        $model2 = new InputInsumos();
-        $numeroinputs = 1;
-        $settings = Insumos::find()->indexBy('idprodutoVenda')->all();
+      $model = new Insumos();
+      $produtosvenda = ArrayHelper::map(
+        Produto::find()->where(['isInsumo'=>0])->all(), 
+        'idProduto','nome');
+      $insumos = ArrayHelper::map(
+        Produto::find()->where(['isInsumo'=>1])->all(), 
+        'idProduto','nome');
+      $model2 = new InputInsumos();
+      $numeroinputs = 1;
+      $settings = Insumos::find()->indexBy('idprodutoVenda')->all();
 
-        if ((Yii::$app->request->post('numeroinputs')) ) {
-          $numeroinputs = (Yii::$app->request->post()["numeroinputs"]);
-          return $this->render('create', [
-            'model' => $model,
-            'insumos' => $insumos,
-            'produtosvenda' => $produtosvenda,
-            'model2'=>$model2,
-            'numeroinputs'=>$numeroinputs,
+      if ((Yii::$app->request->post('numeroinputs')) ) {
+        $numeroinputs = (Yii::$app->request->post()["numeroinputs"]);
+        return $this->render('create', [
+          'model' => $model,
+          'insumos' => $insumos,
+          'produtosvenda' => $produtosvenda,
+          'model2'=>$model2,
+          'numeroinputs'=>$numeroinputs,
 
-            ]);
+          ]);
       }else{
         //if (Insumos::loadMultiple($settings, Yii::$app->request->post())){
         if ($model->load(Yii::$app->request->post()) ) {
@@ -91,10 +91,10 @@ class InsumosController extends Controller
 
           //  var_dump(Yii::$app->request->post('Insumos')['$i']['quantidade']);
         //  var_dump(Yii::$app->request->post('Insumos'));
-            $aux = Yii::$app->request->post()['Insumos'];
-            $n = count($aux['idprodutoInsumo']);
-            echo $n;
-            for ($i=0; $i < $n ; $i++) { 
+          $aux = Yii::$app->request->post()['Insumos'];
+          $n = count($aux['idprodutoInsumo']);
+          echo $n;
+          for ($i=0; $i < $n ; $i++) { 
              /*     echo "idprodutoVenda.:" . $aux['idprodutoVenda'];
                 echo "</br>";
                 echo "idprodutoInsumo.:" . $aux['idprodutoInsumo'][$i];
@@ -106,11 +106,11 @@ class InsumosController extends Controller
                 echo "</br>";*/
              //  var_dump($aux['quantidade'][$i]);
                 Yii::$app->db->createCommand(
-                    "INSERT INTO insumos
-                    (idprodutoVenda, idprodutoInsumo,
-                        quantidade,unidade ) 
+                  "INSERT INTO insumos
+                  (idprodutoVenda, idprodutoInsumo,
+                    quantidade,unidade ) 
                 VALUES (:idprodutoVenda, :idprodutoInsumo,
-                    :quantidade,:unidade)", [
+                  :quantidade,:unidade)", [
                 ':idprodutoVenda' => $aux['idprodutoVenda'],
                 ':idprodutoInsumo'=> $aux['idprodutoInsumo'][$i],
                 ':quantidade' => $aux['quantidade'][$i],
@@ -122,22 +122,22 @@ class InsumosController extends Controller
                 $model->unidade = $aux['unidade'][$i];
                 $model->save(false);
              */
+              } 
 
-            } 
-
-
-            return $this->redirect(['view', 'idprodutoVenda' => $model->idprodutoVenda, 'idprodutoInsumo' => $model->idprodutoInsumo]);
-        } else {
-            return $this->render('create', [
+              return $this->redirect(['produto/view', 'id' => $model->idprodutoVenda]);
+              
+           // return $this->redirect(['view', 'idprodutoVenda' => $model->idprodutoVenda, 'idprodutoInsumo' => $model->idprodutoInsumo]);
+            } else {
+              return $this->render('create', [
                 'model' => $model,
                 'insumos' => $insumos,
                 'produtosvenda' => $produtosvenda,
                 'model2'=>$model2,
                 'numeroinputs'=>$numeroinputs,
                 ]);
+            }
+          }
         }
-    }
-}
 
     /**
      * Updates an existing Insumos model.
@@ -150,25 +150,25 @@ class InsumosController extends Controller
 
     public function actionUpdate($idprodutoVenda, $idprodutoInsumo) 
     { 
-        $model = $this->findModel($idprodutoVenda, $idprodutoInsumo); 
+      $model = $this->findModel($idprodutoVenda, $idprodutoInsumo); 
 
-        $produtosvenda = ArrayHelper::map(
-            Produto::find()->where(['isInsumo'=>0])->all(), 
-            'idProduto','nome');
-        $insumos = ArrayHelper::map(
-            Produto::find()->where(['isInsumo'=>1])->all(), 
-            'idProduto','nome');
-        $model2 = new InputInsumos();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'idprodutoVenda' => $model->idprodutoVenda, 'idprodutoInsumo' => $model->idprodutoInsumo]); 
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                'insumos' => $insumos,
-                'produtosvenda' => $produtosvenda,
-                'model2'=>$model2,
-                ]);
-        }
+      $produtosvenda = ArrayHelper::map(
+        Produto::find()->where(['isInsumo'=>0])->all(), 
+        'idProduto','nome');
+      $insumos = ArrayHelper::map(
+        Produto::find()->where(['isInsumo'=>1])->all(), 
+        'idProduto','nome');
+      $model2 = new InputInsumos();
+      if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['view', 'idprodutoVenda' => $model->idprodutoVenda, 'idprodutoInsumo' => $model->idprodutoInsumo]); 
+      } else {
+        return $this->render('update', [
+          'model' => $model,
+          'insumos' => $insumos,
+          'produtosvenda' => $produtosvenda,
+          'model2'=>$model2,
+          ]);
+      }
     }
 
     /**
@@ -179,9 +179,9 @@ class InsumosController extends Controller
      */
     public function actionDelete($idprodutoVenda, $idprodutoInsumo) 
     { 
-        $this->findModel($idprodutoVenda, $idprodutoInsumo)->delete(); 
+      $this->findModel($idprodutoVenda, $idprodutoInsumo)->delete(); 
 
-        return $this->redirect(['index']); 
+      return $this->redirect(['index']); 
     } 
     /**
      * Finds the Insumos model based on its primary key value.
@@ -192,10 +192,10 @@ class InsumosController extends Controller
      */
     protected function findModel($idprodutoVenda, $idprodutoInsumo) 
     { 
-        if (($model = Insumos::findOne(['idprodutoVenda' => $idprodutoVenda, 'idprodutoInsumo' => $idprodutoInsumo])) !== null) {
-            return $model; 
-        } else { 
-            throw new NotFoundHttpException('The requested page does not exist.'); 
-        } 
+      if (($model = Insumos::findOne(['idprodutoVenda' => $idprodutoVenda, 'idprodutoInsumo' => $idprodutoInsumo])) !== null) {
+        return $model; 
+      } else { 
+        throw new NotFoundHttpException('The requested page does not exist.'); 
+      } 
     } 
-}
+  }

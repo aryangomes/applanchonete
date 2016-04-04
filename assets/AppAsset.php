@@ -27,11 +27,13 @@ class AppAsset extends AssetBundle
     'admin/font-awesome/css/font-awesome.min.css',
     ];
     public $js = [
-    'admin/js/bootstrap.js'
-    
+    'admin/js/bootstrap.js',
+    'admin/js/form-insumo.js'
     ];
     public $depends = [
     'yii\web\YiiAsset',
     'yii\bootstrap\BootstrapAsset',
     ];
+
+
 }

@@ -84,8 +84,9 @@ class ProdutoSearch extends Produto
     public function searchProdutosCompra($idProduto)
     {
 
-        $query = Compraproduto::find()->
-        where(['idProduto'=>$idProduto] )->one();
+        $query = Compraproduto::find()->join(
+            'INNER JOIN', 'compra', 'idCompra = idconta')->
+        where(['idProduto'=>$idProduto] )->orderBy('dataCompra DESC')->one();
 
 
 

@@ -10,6 +10,8 @@ $this->title = Yii::t('app', 'Create Insumos');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Insumos'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+
 <div class="insumos-create">
 
 	<h1><?= Html::encode($this->title) ?></h1>
@@ -18,6 +20,9 @@ $this->params['breadcrumbs'][] = $this->title;
 		'model' => $model,
 		'insumos' => $insumos,
 		'produtosvenda' => $produtosvenda,
+		'model2'=>$model2,
+		'numeroinputs'=>$numeroinputs,
+		
 		]) ?>
 
 	</div>

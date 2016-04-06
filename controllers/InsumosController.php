@@ -10,7 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use app\models\Produto;
-use app\models\InputInsumos;
+
 use yii\base\Model;
 /**
  * InsumosController implements the CRUD actions for Insumos model.
@@ -65,23 +65,23 @@ class InsumosController extends Controller
     {
       $model = new Insumos();
       $produtosvenda = ArrayHelper::map(
-        Produto::find()->where(['isInsumo'=>0])->all(), 
+        Produto::findBySql('select * from produto where isInsumo = 0 and  idProduto not in (
+          SELECT idProduto FROM produto RIGHT OUTER join  insumos on idprodutoVenda = idProduto)')->all(), 
         'idProduto','nome');
       $insumos = ArrayHelper::map(
         Produto::find()->where(['isInsumo'=>1])->all(), 
         'idProduto','nome');
-      $model2 = new InputInsumos();
-      $numeroinputs = 1;
+
       $settings = Insumos::find()->indexBy('idprodutoVenda')->all();
 
       if ((Yii::$app->request->post('numeroinputs')) ) {
-        $numeroinputs = (Yii::$app->request->post()["numeroinputs"]);
+
         return $this->render('create', [
           'model' => $model,
           'insumos' => $insumos,
           'produtosvenda' => $produtosvenda,
-          'model2'=>$model2,
-          'numeroinputs'=>$numeroinputs,
+
+
 
           ]);
       }else{
@@ -132,8 +132,7 @@ class InsumosController extends Controller
                 'model' => $model,
                 'insumos' => $insumos,
                 'produtosvenda' => $produtosvenda,
-                'model2'=>$model2,
-                'numeroinputs'=>$numeroinputs,
+
                 ]);
             }
           }
@@ -166,10 +165,12 @@ class InsumosController extends Controller
           'model' => $model,
           'insumos' => $insumos,
           'produtosvenda' => $produtosvenda,
-          'model2'=>$model2,
+
           ]);
       }
     }
+
+    
 
     /**
      * Deletes an existing Insumos model.

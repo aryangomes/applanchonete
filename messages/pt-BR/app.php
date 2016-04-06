@@ -7,6 +7,8 @@ return [
 'Relatorios'=>'Relatórios',
 'Relatorio'=>'Relatório',
 'Search'=>'Procurar',
+'Idproduto Venda'=>'Produto de venda',
+'Idproduto Insumo'=>'Insumo',
 ];
 
 

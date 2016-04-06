@@ -20,8 +20,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 		'model' => $model,
 		'insumos' => $insumos,
 		'produtosvenda' => $produtosvenda,
-		'model2'=>$model2,
-		'numeroinputs'=>$numeroinputs,
+		
 		]) ?>
 
 	</div>

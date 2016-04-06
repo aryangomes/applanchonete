@@ -31,9 +31,9 @@ class Itempedido extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idPedido', 'idProduto', 'quantidade', 'total'], 'required'],
-            [['idPedido', 'idProduto'], 'integer'],
-            [['quantidade', 'total'], 'number']
+        [['idPedido', 'idProduto', 'quantidade', 'total'], 'required'],
+        [['idPedido', 'idProduto'], 'integer'],
+        [['quantidade', 'total'], 'number']
         ];
     }
 
@@ -43,17 +43,17 @@ class Itempedido extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idPedido' => 'Id Pedido',
-            'idProduto' => 'Id Produto',
-            'quantidade' => 'Quantidade',
-            'total' => 'Total',
+        'idPedido' => 'Id Pedido',
+        'idProduto' => 'Id Produto',
+        'quantidade' => 'Quantidade',
+        'total' => 'Total',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdPedido0()
+    public function getpedidos()
     {
         return $this->hasOne(Pedido::className(), ['idPedido' => 'idPedido']);
     }
@@ -61,8 +61,9 @@ class Itempedido extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdProduto0()
+    public function getprodutos()
     {
         return $this->hasOne(Produto::className(), ['idProduto' => 'idProduto']);
     }
+    
 }

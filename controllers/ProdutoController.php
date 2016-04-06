@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Categoria;
+use app\models\Itempedido;
 use yii\helpers\ArrayHelper;
 /**
  * ProdutoController implements the CRUD actions for Produto model.
@@ -144,6 +145,65 @@ class ProdutoController extends Controller
 
         return $this->redirect(['index']);
     }
+
+    public function actionAvaliacaoproduto($idproduto) 
+    { 
+      $model = $this->findModel($idproduto); 
+
+      $vendas =
+      Itempedido::find()
+      ->join('INNER JOIN','produto','produto.idProduto = itempedido.idProduto')
+      ->join('INNER JOIN','pedido','pedido.idPedido = itempedido.idPedido')
+      ->join('INNER JOIN','comanda','comanda.idComanda = pedido.idPedido')
+      ->groupBy('dataHoraFechamento')
+      
+      //->where(['idProduto'=>$idproduto])
+      ->all();
+
+      $vendas = Itempedido::findBySql('
+        select * from (((produto natural join itempedido)
+            natural join pedido) natural join comanda) GROUP BY dataHoraFechamento;
+      ')->all();
+
+/*
+select sum(quantidade),nome,dataHoraFechamento from (((produto natural join itempedido)
+            natural join pedido) natural join comanda)
+WHERE  MONTH(dataHoraFechamento) = 4
+GROUP BY DAY(dataHoraFechamento) 
+ORDER BY `comanda`.`dataHoraFechamento` DESC
+*/
+
+$vendas =
+Itempedido::find('DAY(dataHoraFechamento)')
+->joinWith('produtos')
+->joinWith('pedidos')
+->joinWith('pedidos.comandas')
+->where(['produto.idProduto'=>$idproduto , 'MONTH(dataHoraFechamento)'=>4])
+->groupBy('DAY(dataHoraFechamento)');
+
+//var_dump($vendas->sum('quantidade'));$quantidade = $vendas->sum('quantidade');
+
+$a1 = array();
+$a2 = array();
+foreach ($vendas->all() as $key => $v) {
+  //  var_dump($vendas[0]->sum('quantidade'));
+    //echo $v->quantidade .' - ' .  ($v->pedidos->comandas->dataHoraFechamento) .'</br>';
+    array_push($a1, intval($v->quantidade));
+    array_push($a2, date('d/m/Y',strtotime($v->pedidos->comandas->dataHoraFechamento)));
+
+}
+
+
+     //;
+     // var_dump($vendas[1]->pedidos['comandas']->dataHoraFechamento);
+     // $v1 = $vendas->sum('quantidade');
+
+return $this->render('avaliacaoproduto', [
+    'a1'=>$a1,
+    'a2'=>$a2,
+    ]);
+
+}
 
     /**
      * Finds the Produto model based on its primary key value.

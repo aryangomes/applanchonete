@@ -35,9 +35,9 @@ class Pedido extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idPedido', 'totalPedido', 'idSituacaoAtual', 'idComanda'], 'required'],
-            [['idPedido', 'idSituacaoAtual', 'idComanda'], 'integer'],
-            [['totalPedido'], 'number']
+        [['idPedido', 'totalPedido', 'idSituacaoAtual', 'idComanda'], 'required'],
+        [['idPedido', 'idSituacaoAtual', 'idComanda'], 'integer'],
+        [['totalPedido'], 'number']
         ];
     }
 
@@ -47,10 +47,10 @@ class Pedido extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idPedido' => 'Id Pedido',
-            'totalPedido' => 'Total Pedido',
-            'idSituacaoAtual' => 'Id Situacao Atual',
-            'idComanda' => 'Id Comanda',
+        'idPedido' => 'Id Pedido',
+        'totalPedido' => 'Total Pedido',
+        'idSituacaoAtual' => 'Id Situacao Atual',
+        'idComanda' => 'Id Comanda',
         ];
     }
 
@@ -89,7 +89,7 @@ class Pedido extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdComanda0()
+    public function getcomandas()
     {
         return $this->hasOne(Comanda::className(), ['idComanda' => 'idComanda']);
     }

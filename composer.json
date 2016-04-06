@@ -25,7 +25,8 @@
         "amnah/yii2-user": " 4.0",
         "kartik-v/yii2-widget-select2": "@dev",
         "kartik-v/yii2-sortable": "@dev",
-        "kartik-v/yii2-sortable-input": "dev-master"
+        "kartik-v/yii2-sortable-input": "dev-master",
+        "miloschuman/yii2-highcharts-widget": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

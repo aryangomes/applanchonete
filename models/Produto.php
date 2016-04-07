@@ -28,6 +28,11 @@ class Produto extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
+    public $datainicioavaliacao;
+    public $datafimavaliacao;
+    public $groupbyavaliacao;
+
     public static function tableName()
     {
         return 'produto';
@@ -39,7 +44,8 @@ class Produto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-        [['nome', 'valorVenda', 'isInsumo', 'idCategoria'], 'required'],
+        [['nome', 'valorVenda', 'isInsumo', 'idCategoria','datainicioavaliacao','datafimavaliacao','groupbyavaliacao']
+        , 'required'],
         [['valorVenda', 'quantidadeMinima', 'quantidadeEstoque'], 'number'],
         [['isInsumo', 'idCategoria'], 'integer'],
         [['nome'], 'string', 'max' => 100]
@@ -59,6 +65,9 @@ class Produto extends \yii\db\ActiveRecord
         'quantidadeMinima' => Yii::t('app', 'Quantidade Minima'),
         'idCategoria' => Yii::t('app', 'Id Categoria'),
         'quantidadeEstoque' => Yii::t('app', 'Quantidade Estoque'),
+        'datainicioavaliacao' => Yii::t('app', 'De'),
+        'datafimavaliacao' => Yii::t('app', 'Até'),
+        'groupbyavaliacao' => Yii::t('app', 'Agrupar por'),
         ];
     }
 

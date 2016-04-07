@@ -149,46 +149,97 @@ class ProdutoController extends Controller
     public function actionAvaliacaoproduto($idproduto) 
     { 
       $model = $this->findModel($idproduto); 
+      if (Yii::$app->request->post()) {
+       // var_dump(Yii::$app->request->post());
+        $groupbyavaliacao = Yii::$app->request->post()['Produto']['groupbyavaliacao'];
+        $datainicioavaliacao = Yii::$app->request->post()['Produto']['datainicioavaliacao'];
+        $datafimavaliacao = Yii::$app->request->post()['Produto']['datafimavaliacao'];
 
-      $vendas =
-      Itempedido::find()
-      ->join('INNER JOIN','produto','produto.idProduto = itempedido.idProduto')
-      ->join('INNER JOIN','pedido','pedido.idPedido = itempedido.idPedido')
-      ->join('INNER JOIN','comanda','comanda.idComanda = pedido.idPedido')
-      ->groupBy('dataHoraFechamento')
-      
+        switch ($groupbyavaliacao) {
+            case 'DAY':
+            $formatdate = 'd';
+            break;
+
+            case 'MONTH':
+            $formatdate = 'm';
+            break;
+
+            case 'YEAR':
+            $formatdate = 'Y';
+            break;    
+            default:
+            $formatdate = 'd';
+            break;
+        }
+
+    /*    $vendas =
+        Itempedido::find()
+        ->join('INNER JOIN','produto','produto.idProduto = itempedido.idProduto')
+        ->join('INNER JOIN','pedido','pedido.idPedido = itempedido.idPedido')
+        ->join('INNER JOIN','comanda','comanda.idComanda = pedido.idPedido')
+        ->groupBy('dataHoraFechamento')
+
       //->where(['idProduto'=>$idproduto])
-      ->all();
+        ->all();
 
-      $vendas = Itempedido::findBySql('
-        select * from (((produto natural join itempedido)
-            natural join pedido) natural join comanda) GROUP BY dataHoraFechamento;
-      ')->all();
+        $vendas = Itempedido::findBySql('
+            select * from (((produto natural join itempedido)
+                natural join pedido) natural join comanda) GROUP BY dataHoraFechamento;
+        ')->all();
 
-/*
+
 select sum(quantidade),nome,dataHoraFechamento from (((produto natural join itempedido)
             natural join pedido) natural join comanda)
 WHERE  MONTH(dataHoraFechamento) = 4
 GROUP BY DAY(dataHoraFechamento) 
 ORDER BY `comanda`.`dataHoraFechamento` DESC
+
+
+-----------------------
+
+select sum(quantidade),nome,dataHoraFechamento from (((produto natural join itempedido)
+            natural join pedido) natural join comanda)
+WHERE  (dataHoraFechamento) >= ('01-04-2016') and (dataHoraFechamento) <=  ('30-04-2016') 
+GROUP BY MONTH(dataHoraFechamento) 
+ORDER BY `comanda`.`dataHoraFechamento` DESC
 */
 
 $vendas =
-Itempedido::find('DAY(dataHoraFechamento)')
+Itempedido::find('MONTH(dataHoraFechamento)')
 ->joinWith('produtos')
 ->joinWith('pedidos')
 ->joinWith('pedidos.comandas')
-->where(['produto.idProduto'=>$idproduto , 'MONTH(dataHoraFechamento)'=>4])
-->groupBy('DAY(dataHoraFechamento)');
+//->where(['produto.idProduto'=>$idproduto])
+//->where( ['between', 'dataHoraFechamento', $datainicioavaliacao, $datafimavaliacao])
+->andFilterWhere(['=','produto.idProduto',$idproduto])
+->andFilterWhere(['<=','dataHoraFechamento',$datafimavaliacao])
+/*->andFilterWhere(['>=','dataHoraFechamento',$datainicioavaliacao])
+->andFilterWhere(['<=','dataHoraFechamento',$datafimavaliacao])*/
+->groupBy($groupbyavaliacao.'(dataHoraFechamento)');
 
 //var_dump($vendas->sum('quantidade'));$quantidade = $vendas->sum('quantidade');
+$vendas = Itempedido::find();
+
+$vendas
+->select( '*, sum(quantidade) as total, '.$groupbyavaliacao.'(dataHoraFechamento) as periodo')
+->joinWith('produtos')
+->joinWith('pedidos')
+->joinWith('pedidos.comandas')
+->andFilterWhere([
+    'produto.idProduto' => $idproduto,
+
+    ])
+->andFilterWhere(['>=','dataHoraFechamento',$datainicioavaliacao])
+->andFilterWhere(['<=','dataHoraFechamento',$datafimavaliacao])
+->groupBy('periodo');
+
 
 $a1 = array();
 $a2 = array();
 foreach ($vendas->all() as $key => $v) {
   //  var_dump($vendas[0]->sum('quantidade'));
     //echo $v->quantidade .' - ' .  ($v->pedidos->comandas->dataHoraFechamento) .'</br>';
-    array_push($a1, intval($v->quantidade));
+    array_push($a1, intval($v->total));
     array_push($a2, date('d/m/Y',strtotime($v->pedidos->comandas->dataHoraFechamento)));
 
 }
@@ -197,12 +248,17 @@ foreach ($vendas->all() as $key => $v) {
      //;
      // var_dump($vendas[1]->pedidos['comandas']->dataHoraFechamento);
      // $v1 = $vendas->sum('quantidade');
-
 return $this->render('avaliacaoproduto', [
     'a1'=>$a1,
     'a2'=>$a2,
+    'model'=>$model,
     ]);
-
+}
+else{
+    return $this->render('avaliacaoproduto', [
+        'model'=>$model,
+        ]);
+}
 }
 
     /**

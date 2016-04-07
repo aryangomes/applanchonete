@@ -1,6 +1,13 @@
 Change Log: `yii2-widget-activeform`
 ====================================
 
+## Version 1.4.7
+
+**Date:** 05-Dec-2015
+
+- (bug #67, #69): Fix typo for `HINT_DEFAULT`.
+- (bug #70): Correct `staticOnly` form render.
+
 ## Version 1.4.6
 
 **Date:** 05-Dec-2015

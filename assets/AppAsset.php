@@ -28,7 +28,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
     'admin/js/bootstrap.js',
-    'admin/js/form-insumo.js'
+   // 'admin/js/form-insumo.js'
     ];
     public $depends = [
     'yii\web\YiiAsset',

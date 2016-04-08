@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ProdutoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -23,18 +23,30 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+        ['class' => 'yii\grid\SerialColumn'],
 
-            'idProduto',
-            'nome',
-            'valorVenda',
-            'isInsumo',
-            'quantidadeMinima',
+        'idProduto',
+        'nome',
+        'valorVenda',
+        'isInsumo',
+        'quantidadeMinima',
             // 'idCategoria',
             // 'quantidadeEstoque',
 
-            ['class' => 'yii\grid\ActionColumn'],
+        ['class' => 'yii\grid\ActionColumn',
+        'template' => '{view} {update} {delete} {avaliarproduto}',
+        'buttons' => [
+        'avaliarproduto' => function ($url, $model) {
+            return $model->isInsumo ?'' : Html::a('<i class="fa fa-line-chart"></i>',
+                Url::toRoute(['produto/avaliacaoproduto', 'idproduto'=>$model->idProduto]),
+                [
+                'title' => Yii::t('app', 'Avaliar Produto'),
+                ]);
+        }
         ],
-    ]); ?>
 
-</div>
+        ],
+        ],
+        ]); ?>
+
+    </div>

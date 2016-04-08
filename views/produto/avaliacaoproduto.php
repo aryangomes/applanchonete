@@ -23,11 +23,11 @@ $this->params['breadcrumbs'][] = $this->title;
       'type'=>DateControl::FORMAT_DATE,
       'ajaxConversion'=>false,
       'options' => [
-
       'pluginOptions' => [
-      'autoclose' => true
+      'autoclose' => true,
       ]
       ],
+
       'displayFormat' => 'dd/MM/yyyy',
       'language'=>'pt',
       ]);?>
@@ -36,7 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
       'type'=>DateControl::FORMAT_DATE,
       'ajaxConversion'=>false,
       'options' => [
-
       'pluginOptions' => [
       'autoclose' => true
       ]
@@ -50,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
       ?>
       <?= $form->field($model, 'groupbyavaliacao')->dropdownList(['DAY'=>'Dia','MONTH'=>'Mês','YEAR'=>'Ano']); ?>
       <div class="form-group">
-        <?= Html::submitButton('<i class="fa fa-search"></i>', ['class' =>  'btn btn-primary']) ?>
+        <?= Html::submitButton('Gerar gráfico <i class="fa fa-line-chart"></i>', ['class' =>  'btn btn-primary btn-block']) ?>
       </div>
       <?php ActiveForm::end(); ?>
 
@@ -59,27 +58,40 @@ $this->params['breadcrumbs'][] = $this->title;
   </br>
 
   <?php 
-  if (isset($a1) && isset($a2) ) {
-    HighchartsAsset::register($this)->withScripts(['highstock', 'modules/exporting', 'modules/drilldown']);
+  if (isset($qtdvendas) && isset($datasvendas) ) {
+    if (count($qtdvendas) > 0) {
+      HighchartsAsset::register($this)->withScripts(['highstock', 'modules/exporting', 'modules/drilldown']);
+      echo Highcharts::widget([
 
+       'options' => [
+       'chart'=>[
+       'type'=>'area'],
 
-    echo Highcharts::widget([
-     'options' => [
-     'title' => ['text' => 'Quantidade de vendas do produto'],
-     'xAxis' => [
-     'categories' =>$a2
-     ],
-     'yAxis' => [
-     'title' => ['text' => 'Quantidade de produtos vendidos']
-     ],
-     'credits'=>false,
-     'series' => [
-     ['name' => 'Quantidade de produtos vendidos', 'data' =>$a1
-     ],
+       'title' => ['text' => 'Total de vendas do produto: <b>' . $model->nome
+       . '</b> - de ' . $datainicioavaliacao . ' até ' . $datafimavaliacao ],
+       'xAxis' => [
+       'categories' =>$datasvendas
+       ],
+       'yAxis' => [
+       'title' => ['text' => 'Quantidade de produtos vendidos']
+       ],
+       'credits'=>false,
+       'series' => [
+       ['name' => 'Quantidade de produtos vendidos', 'data' =>$qtdvendas
+       ],
 
-     ]
-     ]
-     ]);
+       ]
+       ]
+       ]);
+    }else{
+      if (count($qtdvendas) <= 0) {
+        ?>
+        <div class="alert alert-danger">
+          Não há vendas cadastradas para o produto <?= $model->nome ?> nesse período
+        </div>
+        <?php
+      }
+    }
   }
   ?>
 

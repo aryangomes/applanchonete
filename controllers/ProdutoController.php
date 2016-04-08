@@ -16,17 +16,17 @@ use yii\helpers\ArrayHelper;
  */
 class ProdutoController extends Controller
 {
-    public function behaviors()
-    {
-        return [
-        'verbs' => [
-        'class' => VerbFilter::className(),
-        'actions' => [
-        'delete' => ['post'],
-        ],
-        ],
-        ];
-    }
+  public function behaviors()
+  {
+    return [
+    'verbs' => [
+    'class' => VerbFilter::className(),
+    'actions' => [
+    'delete' => ['post'],
+    ],
+    ],
+    ];
+  }
 
     /**
      * Lists all Produto models.
@@ -34,13 +34,13 @@ class ProdutoController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ProdutoSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+      $searchModel = new ProdutoSearch();
+      $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            ]);
+      return $this->render('index', [
+        'searchModel' => $searchModel,
+        'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
@@ -50,42 +50,42 @@ class ProdutoController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-            ]);
+      return $this->render('view', [
+        'model' => $this->findModel($id),
+        ]);
     }
 
     public function actionListadeinsumos()
     {
-        $model = new Produto();
-        $produtosVenda = ArrayHelper::map(
-            Produto::find()->join('INNER JOIN','insumos', 'idProduto = idprodutoVenda ')
-            ->where(['isInsumo'=>0 ])->all(), 
-            'idProduto','nome');
-        if ((Yii::$app->request->post())) {
-           $searchModel = new ProdutoSearch();
+      $model = new Produto();
+      $produtosVenda = ArrayHelper::map(
+        Produto::find()->join('INNER JOIN','insumos', 'idProduto = idprodutoVenda ')
+        ->where(['isInsumo'=>0 ])->all(), 
+        'idProduto','nome');
+      if ((Yii::$app->request->post())) {
+       $searchModel = new ProdutoSearch();
 
-           $listadeinsumos = $searchModel->searchInsumos(Yii::$app->request->post());
+       $listadeinsumos = $searchModel->searchInsumos(Yii::$app->request->post());
 
-           $insumos = array();
+       $insumos = array();
 
-           foreach ($listadeinsumos as  $insumo) {
-            array_push($insumos, 
-                $model::findOne($insumo->idprodutoInsumo));
-        }
+       foreach ($listadeinsumos as  $insumo) {
+        array_push($insumos, 
+          $model::findOne($insumo->idprodutoInsumo));
+      }
 
-        return $this->render('listadeinsumos', [
-            'insumos' => $insumos,
-            'produtosVenda' => $produtosVenda,  
-            ]); 
+      return $this->render('listadeinsumos', [
+        'insumos' => $insumos,
+        'produtosVenda' => $produtosVenda,  
+        ]); 
     } else {
 
-        return $this->render('listadeinsumos', [
-            'produtosVenda' => $produtosVenda,
+      return $this->render('listadeinsumos', [
+        'produtosVenda' => $produtosVenda,
 
-            ]);
+        ]);
     }
-}
+  }
 
 
 
@@ -96,19 +96,19 @@ class ProdutoController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Produto();
-        $categorias = ArrayHelper::map(
-            Categoria::find()->all(), 
-            'idCategoria','nome');
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idProduto]);
-        } else {
+      $model = new Produto();
+      $categorias = ArrayHelper::map(
+        Categoria::find()->all(), 
+        'idCategoria','nome');
+      if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['view', 'id' => $model->idProduto]);
+      } else {
 
-            return $this->render('create', [
-                'model' => $model,
-                'categorias' => $categorias,
-                ]);
-        }
+        return $this->render('create', [
+          'model' => $model,
+          'categorias' => $categorias,
+          ]);
+      }
     }
 
     /**
@@ -119,18 +119,18 @@ class ProdutoController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-        $categorias = ArrayHelper::map(
-            Categoria::find()->all(), 
-            'idCategoria','nome');
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idProduto]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                'categorias' => $categorias,
-                ]);
-        }
+      $model = $this->findModel($id);
+      $categorias = ArrayHelper::map(
+        Categoria::find()->all(), 
+        'idCategoria','nome');
+      if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['view', 'id' => $model->idProduto]);
+      } else {
+        return $this->render('update', [
+          'model' => $model,
+          'categorias' => $categorias,
+          ]);
+      }
     }
 
     /**
@@ -141,9 +141,9 @@ class ProdutoController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+      $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+      return $this->redirect(['index']);
     }
 
     public function actionAvaliacaoproduto($idproduto) 
@@ -156,109 +156,64 @@ class ProdutoController extends Controller
         $datafimavaliacao = Yii::$app->request->post()['Produto']['datafimavaliacao'];
 
         switch ($groupbyavaliacao) {
-            case 'DAY':
-            $formatdate = 'd';
-            break;
+          case 'DAY':
+          $formatdate = 'd';
+          break;
 
-            case 'MONTH':
-            $formatdate = 'm';
-            break;
+          case 'MONTH':
+          $formatdate = 'm';
+          break;
 
-            case 'YEAR':
-            $formatdate = 'Y';
-            break;    
-            default:
-            $formatdate = 'd';
-            break;
+          case 'YEAR':
+          $formatdate = 'Y';
+          break;    
+          default:
+          $formatdate = 'd';
+          break;
         }
 
-    /*    $vendas =
-        Itempedido::find()
-        ->join('INNER JOIN','produto','produto.idProduto = itempedido.idProduto')
-        ->join('INNER JOIN','pedido','pedido.idPedido = itempedido.idPedido')
-        ->join('INNER JOIN','comanda','comanda.idComanda = pedido.idPedido')
-        ->groupBy('dataHoraFechamento')
+        $vendas = Itempedido::find();
 
-      //->where(['idProduto'=>$idproduto])
-        ->all();
+        $vendas
+        ->select( '*, sum(quantidade) as total, '.$groupbyavaliacao.'(dataHoraFechamento) as periodo')
+        ->joinWith('produtos')
+        ->joinWith('pedidos')
+        ->joinWith('pedidos.comandas')
+        ->andFilterWhere(['produto.idProduto' => $idproduto,])
+        ->andFilterWhere(['>=','dataHoraFechamento',$datainicioavaliacao])
+        ->andFilterWhere(['<=','dataHoraFechamento',$datafimavaliacao])
+        ->groupBy('periodo');
 
-        $vendas = Itempedido::findBySql('
-            select * from (((produto natural join itempedido)
-                natural join pedido) natural join comanda) GROUP BY dataHoraFechamento;
-        ')->all();
+        $qtdvendas = array();
+        $datasvendas = array();
+        foreach ($vendas->all() as $key => $v) {
+         array_push($qtdvendas, intval($v->total));
+         if ($formatdate == 'm') {
+          array_push($datasvendas, Yii::t('app',date('F',strtotime($v->pedidos->comandas->dataHoraFechamento))));
 
+        }
+        elseif ($formatdate == 'Y') {
+         array_push($datasvendas, date('Y',strtotime($v->pedidos->comandas->dataHoraFechamento)));
 
-select sum(quantidade),nome,dataHoraFechamento from (((produto natural join itempedido)
-            natural join pedido) natural join comanda)
-WHERE  MONTH(dataHoraFechamento) = 4
-GROUP BY DAY(dataHoraFechamento) 
-ORDER BY `comanda`.`dataHoraFechamento` DESC
+       }
+       else{
+         array_push($datasvendas, date('d/m/Y',strtotime($v->pedidos->comandas->dataHoraFechamento)));
+       }
+     }
+     return $this->render('avaliacaoproduto', [
+      'qtdvendas'=>$qtdvendas,
+      'datasvendas'=>$datasvendas,
+      'datainicioavaliacao'=>date('d/m/Y',strtotime($datainicioavaliacao)),
+      'datafimavaliacao'=>date('d/m/Y',strtotime($datafimavaliacao)),
+      'model'=>$model,
 
-
------------------------
-
-select sum(quantidade),nome,dataHoraFechamento from (((produto natural join itempedido)
-            natural join pedido) natural join comanda)
-WHERE  (dataHoraFechamento) >= ('01-04-2016') and (dataHoraFechamento) <=  ('30-04-2016') 
-GROUP BY MONTH(dataHoraFechamento) 
-ORDER BY `comanda`.`dataHoraFechamento` DESC
-*/
-
-$vendas =
-Itempedido::find('MONTH(dataHoraFechamento)')
-->joinWith('produtos')
-->joinWith('pedidos')
-->joinWith('pedidos.comandas')
-//->where(['produto.idProduto'=>$idproduto])
-//->where( ['between', 'dataHoraFechamento', $datainicioavaliacao, $datafimavaliacao])
-->andFilterWhere(['=','produto.idProduto',$idproduto])
-->andFilterWhere(['<=','dataHoraFechamento',$datafimavaliacao])
-/*->andFilterWhere(['>=','dataHoraFechamento',$datainicioavaliacao])
-->andFilterWhere(['<=','dataHoraFechamento',$datafimavaliacao])*/
-->groupBy($groupbyavaliacao.'(dataHoraFechamento)');
-
-//var_dump($vendas->sum('quantidade'));$quantidade = $vendas->sum('quantidade');
-$vendas = Itempedido::find();
-
-$vendas
-->select( '*, sum(quantidade) as total, '.$groupbyavaliacao.'(dataHoraFechamento) as periodo')
-->joinWith('produtos')
-->joinWith('pedidos')
-->joinWith('pedidos.comandas')
-->andFilterWhere([
-    'produto.idProduto' => $idproduto,
-
-    ])
-->andFilterWhere(['>=','dataHoraFechamento',$datainicioavaliacao])
-->andFilterWhere(['<=','dataHoraFechamento',$datafimavaliacao])
-->groupBy('periodo');
-
-
-$a1 = array();
-$a2 = array();
-foreach ($vendas->all() as $key => $v) {
-  //  var_dump($vendas[0]->sum('quantidade'));
-    //echo $v->quantidade .' - ' .  ($v->pedidos->comandas->dataHoraFechamento) .'</br>';
-    array_push($a1, intval($v->total));
-    array_push($a2, date('d/m/Y',strtotime($v->pedidos->comandas->dataHoraFechamento)));
-
-}
-
-
-     //;
-     // var_dump($vendas[1]->pedidos['comandas']->dataHoraFechamento);
-     // $v1 = $vendas->sum('quantidade');
-return $this->render('avaliacaoproduto', [
-    'a1'=>$a1,
-    'a2'=>$a2,
-    'model'=>$model,
-    ]);
-}
-else{
+      ]);
+   }
+   else{
     return $this->render('avaliacaoproduto', [
-        'model'=>$model,
-        ]);
-}
+      'model'=>$model,
+      ]);
+  }
 }
 
     /**
@@ -270,10 +225,10 @@ else{
      */
     protected function findModel($id)
     {
-        if (($model = Produto::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
+      if (($model = Produto::findOne($id)) !== null) {
+        return $model;
+      } else {
+        throw new NotFoundHttpException('The requested page does not exist.');
+      }
     }
-}
+  }

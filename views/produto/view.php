@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use  yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model app\models\Produto */
 
@@ -38,9 +38,19 @@ $this->params['breadcrumbs'][] = $this->title;
             [
             'label'=>'Preço sugerido',
             'format'=>'text',
-            'value'=>($model->calculoprecoproduto($model->idProduto)),
+            'value'=> $model->isInsumo ? null :  ($model->calculoprecoproduto($model->idProduto)),
             ],
+
             ],
             ]) ?>
 
-        </div>
+
+        <?php 
+
+        if (!$model->isInsumo) {
+            echo Html::a('Avaliar produto <i class="fa fa-line-chart"></i>', 
+                Url::toRoute(['produto/avaliacaoproduto', 'idproduto'=>$model->idProduto]),
+                ['class' =>  'btn btn-primary btn-block']);
+        }
+        ?>
+    </div>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 02-Abr-2016 às 02:55
+-- Generation Time: 09-Abr-2016 às 01:21
 -- Versão do servidor: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -88,6 +88,7 @@ INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('index-fornecedor', 110, NULL),
 ('index-relatorio', 108, NULL),
 ('index-user', 109, NULL),
+('produto', 84, NULL),
 ('relatorio', 84, NULL),
 ('relatorio', 108, NULL),
 ('update-compra', 85, NULL),
@@ -124,104 +125,52 @@ CREATE TABLE IF NOT EXISTS `auth_item` (
 --
 
 INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`) VALUES
-('admin',1,'Admin',NULL,NULL,NULL,NULL),
-('caixa',8,'Caixa',NULL,NULL,NULL,NULL),
-('cardapio',38,'Cardapio',NULL,NULL,NULL,NULL),
-('comanda',44,'Comanda',NULL,NULL,NULL,NULL),
-('compra',26,'Compra',NULL,NULL,NULL,NULL),
-('create-caixa',11,'Criar Caixa',NULL,NULL,NULL,NULL),
-('create-cardapio',42,'Criar Cardapio',NULL,NULL,NULL,NULL),
-('create-comanda',45,'Criar Comanda',NULL,NULL,NULL,NULL),
-('create-compra',29,'Criar Compra',NULL,NULL,NULL,NULL),
-('create-despesa',5,'Criar Despesa',NULL,NULL,NULL,NULL),
-('create-destaque',52,'Criar Destaque',NULL,NULL,NULL,NULL),
-('create-fornecedor',17,'Criar Fornecedor',NULL,NULL,NULL,NULL),
-('create-historicosituacao',58,'Criar Histórico de Situação',NULL,NULL,NULL,NULL),
-('create-itemcardapio',64,'Criar Item-Cardapio',NULL,NULL,NULL,NULL),
-('create-loja',70,'Criar Loja',NULL,NULL,NULL,NULL),
-('create-mesa',76,'Criar Mesa',NULL,NULL,NULL,NULL),
-('create-pagamento',82,'Criar Pagamento',NULL,NULL,NULL,NULL),
-('create-pedido',88,'Criar Pedido',NULL,NULL,NULL,NULL),
-('create-produto',94,'Criar Produto',NULL,NULL,NULL,NULL),
-('create-relatorio',23,'Criar Relatório',NULL,NULL,NULL,NULL),
-('create-user',35,'Criar Usuário',NULL,NULL,NULL,NULL),
-('delete-caixa',13,'Deletar Caixa',NULL,NULL,NULL,NULL),
-('delete-cardapio',41,'Deletar Cardapio',NULL,NULL,NULL,NULL),
-('delete-comanda',49,'Deletar Comanda',NULL,NULL,NULL,NULL),
-('delete-compra',31,'Deletar Compra',NULL,NULL,NULL,NULL),
-('delete-despesa',7,'Deletar Despesa',NULL,NULL,NULL,NULL),
-('delete-destaque',51,'Deletar Destaque',NULL,NULL,NULL,NULL),
-('delete-fornecedor',19,'Deletar Fornecedor',NULL,NULL,NULL,NULL),
-('delete-historicosituacao',57,'Deletar Histórico Situação',NULL,NULL,NULL,NULL),
-('delete-itemcardapio',63,'Delete Item-Cardapio',NULL,NULL,NULL,NULL),
-('delete-loja',69,'Deletar Loja',NULL,NULL,NULL,NULL),
-('delete-mesa',75,'Deletar Mesa',NULL,NULL,NULL,NULL),
-('delete-pagamento',81,'Deletar Pagamento',NULL,NULL,NULL,NULL),
-('delete-pedido',87,'Deletar Pedido',NULL,NULL,NULL,NULL),
-('delete-produto',93,'Deletar Produto',NULL,NULL,NULL,NULL),
-('delete-relatorio',25,'Deletar Relatório',NULL,NULL,NULL,NULL),
-('delete-user',37,'Deletar Usuário',NULL,NULL,NULL,NULL),
-('despesa',2,'Despesa',NULL,NULL,NULL,NULL),
-('destaque',50,'Destaque',NULL,NULL,NULL,NULL),
-('fornecedor',14,'Fornecedor',NULL,NULL,NULL,NULL),
-('historicosituacao',56,'Historico Situação',NULL,NULL,NULL,NULL),
-('index-caixa',9,'Listar Caixas',NULL,NULL,NULL,NULL),
-('index-cardapio',40,'Listar Cardapio',NULL,NULL,NULL,NULL),
-('index-comanda',46,'Listar Comandas',NULL,NULL,NULL,NULL),
-('index-compra',27,'Listar Compras',NULL,NULL,NULL,NULL),
-('index-despesa',3,'Listar Despesas',NULL,NULL,NULL,NULL),
-('index-destaque',53,'Listar Destaques',NULL,NULL,NULL,NULL),
-('index-fornecedor',15,'Listar Fornecedores',NULL,NULL,NULL,NULL),
-('index-historicosituacao',59,'Listar Histórico de Situação',NULL,NULL,NULL,NULL),
-('index-itemcardapio',65,'Listar Item-Cardapio',NULL,NULL,NULL,NULL),
-('index-loja',71,'Listar Lojas',NULL,NULL,NULL,NULL),
-('index-mesa',77,'Listar Mesas',NULL,NULL,NULL,NULL),
-('index-pagamento',83,'Listar Pagamentos',NULL,NULL,NULL,NULL),
-('index-pedido',89,'Listar Pedidos',NULL,NULL,NULL,NULL),
-('index-produto',95,'Listar Produtos',NULL,NULL,NULL,NULL),
-('index-relatorio',21,'Listar Relatórios',NULL,NULL,NULL,NULL),
-('index-user',33,'Listar Usuários',NULL,NULL,NULL,NULL),
-('itemcardapio',62,'Item Cardapio',NULL,NULL,NULL,NULL),
-('loja',68,'Loja',NULL,NULL,NULL,NULL),
-('mesa',74,'Mesa',NULL,NULL,NULL,NULL),
-('pagamento',80,'Pagamento',NULL,NULL,NULL,NULL),
-('pedido',86,'Pedido',NULL,NULL,NULL,NULL),
-('produto',92,'Produto',NULL,NULL,NULL,NULL),
-('relatorio',20,'Relatório',NULL,NULL,NULL,NULL),
-('update-caixa',12,'Editar Caixa',NULL,NULL,NULL,NULL),
-('update-cardapio',43,'Atualizar Caradapio',NULL,NULL,NULL,NULL),
-('update-comanda',47,'Atualizar Comanada',NULL,NULL,NULL,NULL),
-('update-compra',30,'Editar Compra',NULL,NULL,NULL,NULL),
-('update-despesa',6,'Editar Despesa',NULL,NULL,NULL,NULL),
-('update-destaque',54,'Atualizar Destaque',NULL,NULL,NULL,NULL),
-('update-fornecedor',18,'Editar Fornecedor',NULL,NULL,NULL,NULL),
-('update-historicosituacao',60,'Atualizar Histórico de Situação',NULL,NULL,NULL,NULL),
-('update-itemcardapio',66,'Atualizar Item-Cardapio',NULL,NULL,NULL,NULL),
-('update-loja',72,'Atualizar Loja',NULL,NULL,NULL,NULL),
-('update-mesa',78,'Atualizar Mesa',NULL,NULL,NULL,NULL),
-('update-pagamento',84,'Atualizar Pagamento',NULL,NULL,NULL,NULL),
-('update-pedido',91,'Atualizar Pedido',NULL,NULL,NULL,NULL),
-('update-produto',96,'Atualizar Produto',NULL,NULL,NULL,NULL),
-('update-relatorio',24,'Editar Relatório',NULL,NULL,NULL,NULL),
-('update-user',36,'Editar Usuário',NULL,NULL,NULL,NULL),
-('user',32,'Usuário',NULL,NULL,NULL,NULL),
-('view-caixa',10,'Visualizar Caixa',NULL,NULL,NULL,NULL),
-('view-cardapio',39,'Visualizar Cardapio',NULL,NULL,NULL,NULL),
-('view-comanda',48,'Visualizar Comanda',NULL,NULL,NULL,NULL),
-('view-compra',28,'Visualizar Compra',NULL,NULL,NULL,NULL),
-('view-despesa',4,'Visualizar Despesa',NULL,NULL,NULL,NULL),
-('view-destaque',55,'Visualizar Destaque',NULL,NULL,NULL,NULL),
-('view-fornecedor',16,'Visualizar Fornecedor',NULL,NULL,NULL,NULL),
-('view-historicosituacao',61,'Listar Histórico de Situação',NULL,NULL,NULL,NULL),
-('view-itemcardapio',67,'Visualizar Item-Cardapio',NULL,NULL,NULL,NULL),
-('view-loja',73,'Visualizar Loja',NULL,NULL,NULL,NULL),
-('view-mesa',79,'Visualizar Mesa',NULL,NULL,NULL,NULL),
-('view-pagamento',85,'Visualizar Pagamentos',NULL,NULL,NULL,NULL),
-('view-pedido',90,'Visualizar Pedido',NULL,NULL,NULL,NULL),
-('view-produto',97,'Visualizar Produto',NULL,NULL,NULL,NULL),
-('view-relatorio',22,'Visualizar Relatório',NULL,NULL,NULL,NULL),
-('view-user',34,'Visualizar Usuário',NULL,NULL,NULL,NULL),
-
+('admin', 1, 'Admin', NULL, NULL, NULL, NULL),
+('avaliacaoproduto', 99, 'Avaliar Produto', NULL, NULL, NULL, NULL),
+('caixa', 8, 'Caixa', NULL, NULL, NULL, NULL),
+('compra', 26, 'Compra', NULL, NULL, NULL, NULL),
+('create-caixa', 11, 'Criar Caixa', NULL, NULL, NULL, NULL),
+('create-compra', 29, 'Criar Compra', NULL, NULL, NULL, NULL),
+('create-despesa', 5, 'Criar Despesa', NULL, NULL, NULL, NULL),
+('create-fornecedor', 17, 'Criar Fornecedor', NULL, NULL, NULL, NULL),
+('create-produto', 94, 'Criar Produto', NULL, NULL, NULL, NULL),
+('create-relatorio', 23, 'Criar Relatório', NULL, NULL, NULL, NULL),
+('create-user', 35, 'Criar Usuário', NULL, NULL, NULL, NULL),
+('delete-caixa', 13, 'Deletar Caixa', NULL, NULL, NULL, NULL),
+('delete-compra', 31, 'Deletar Compra', NULL, NULL, NULL, NULL),
+('delete-despesa', 7, 'Deletar Despesa', NULL, NULL, NULL, NULL),
+('delete-fornecedor', 19, 'Deletar Fornecedor', NULL, NULL, NULL, NULL),
+('delete-produto', 93, 'Deletar Produto', NULL, NULL, NULL, NULL),
+('delete-relatorio', 25, 'Deletar Relatório', NULL, NULL, NULL, NULL),
+('delete-user', 37, 'Deletar Usuário', NULL, NULL, NULL, NULL),
+('despesa', 2, 'Despesa', NULL, NULL, NULL, NULL),
+('fornecedor', 14, 'Fornecedor', NULL, NULL, NULL, NULL),
+('index-caixa', 9, 'Listar Caixas', NULL, NULL, NULL, NULL),
+('index-compra', 27, 'Listar Compras', NULL, NULL, NULL, NULL),
+('index-despesa', 3, 'Listar Despesas', NULL, NULL, NULL, NULL),
+('index-fornecedor', 15, 'Listar Fornecedores', NULL, NULL, NULL, NULL),
+('index-produto', 95, 'Listar Produtos', NULL, NULL, NULL, NULL),
+('index-relatorio', 21, 'Listar Relatórios', NULL, NULL, NULL, NULL),
+('index-user', 33, 'Listar Usuários', NULL, NULL, NULL, NULL),
+('listadeinsumos', 98, 'Listar Insumos', NULL, NULL, NULL, NULL),
+('listadeprodutosporinsumo', 100, 'Listar Produtos de Venda por Insumo', NULL, NULL, NULL, NULL),
+('produto', 92, 'Produto', NULL, NULL, NULL, NULL),
+('relatorio', 20, 'Relatório', NULL, NULL, NULL, NULL),
+('update-caixa', 12, 'Editar Caixa', NULL, NULL, NULL, NULL),
+('update-compra', 30, 'Editar Compra', NULL, NULL, NULL, NULL),
+('update-despesa', 6, 'Editar Despesa', NULL, NULL, NULL, NULL),
+('update-fornecedor', 18, 'Editar Fornecedor', NULL, NULL, NULL, NULL),
+('update-produto', 96, 'Atualizar Produto', NULL, NULL, NULL, NULL),
+('update-relatorio', 24, 'Editar Relatório', NULL, NULL, NULL, NULL),
+('update-user', 36, 'Editar Usuário', NULL, NULL, NULL, NULL),
+('user', 32, 'Usuário', NULL, NULL, NULL, NULL),
+('view-caixa', 10, 'Visualizar Caixa', NULL, NULL, NULL, NULL),
+('view-compra', 28, 'Visualizar Compra', NULL, NULL, NULL, NULL),
+('view-despesa', 4, 'Visualizar Despesa', NULL, NULL, NULL, NULL),
+('view-fornecedor', 16, 'Visualizar Fornecedor', NULL, NULL, NULL, NULL),
+('view-produto', 97, 'Visualizar Produto', NULL, NULL, NULL, NULL),
+('view-relatorio', 22, 'Visualizar Relatório', NULL, NULL, NULL, NULL),
+('view-user', 34, 'Visualizar Usuário', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -239,87 +188,45 @@ CREATE TABLE IF NOT EXISTS `auth_item_child` (
 --
 
 INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
-('caixa','create-caixa'),
-('cardapio','create-cardapio'),
-('comanda','create-comanda'),
-('compra','create-compra'),
-('despesa','create-despesa'),
-('destaque','create-destaque'),
-('fornecedor','create-fornecedor'),
-('historicosituacao','create-historicosituacao'),
-('itemcardapio','create-itemcardapio'),
-('loja','create-loja'),
-('mesa','create-mesa'),
-('pagamento','create-pagamento'),
-('pedido','create-pedido'),
-('produto','create-produto'),
-('relatorio','create-relatorio'),
-('user','create-user'),
-('caixa','delete-caixa'),
-('cardapio','delete-cardapio'),
-('comanda','delete-comanda'),
-('compra','delete-compra'),
-('despesa','delete-despesa'),
-('destaque','delete-destaque'),
-('fornecedor','delete-fornecedor'),
-('historicosituacao','delete-historicosituacao'),
-('itemcardapio','delete-itemcardapio'),
-('loja','delete-loja'),
-('mesa','delete-mesa'),
-('pagamento','delete-pagamento'),
-('pedido','delete-pedido'),
-('produto','delete-pedido'),
-('relatorio','delete-relatorio'),
-('user','delete-user'),
-('caixa','index-caixa'),
-('cardapio','index-cardapio'),
-('comanda','index-comanda'),
-('compra','index-compra'),
-('despesa','index-despesa'),
-('destaque','index-destaque'),
-('fornecedor','index-fornecedor'),
-('historicosituacao','index-historicosituacao'),
-('itemcardapio','index-itemcardapio'),
-('loja','index-loja'),
-('mesa','index-mesa'),
-('pagamento','index-pagamento'),
-('pedido','index-pedido'),
-('produto','index-produto'),
-('relatorio','index-relatorio'),
-('user','index-user'),
-('caixa','update-caixa'),
-('cardapio','update-cardapio'),
-('comanda','update-comanda'),
-('compra','update-compra'),
-('despesa','update-despesa'),
-('destaque','update-destaque'),
-('fornecedor','update-fornecedor'),
-('historicosituacao','update-historicosituacao'),
-('itemcardapio','update-itemcardapio'),
-('loja','update-loja'),
-('mesa','update-mesa'),
-('pagamento','update-pagamento'),
-('pedido','update-pedido'),
-('produto','update-produto'),
-('relatorio','update-relatorio'),
-('user','update-user'),
-('admin','user'),
-('caixa','view-caixa'),
-('cardapio','view-cardapio'),
-('comanda','view-comanda'),
-('compra','view-compra'),
-('despesa','view-despesa'),
-('destaque','view-destaque'),
-('fornecedor','view-fornecedor'),
-('historicosituacao','view-historicosituacao'),
-('itemcardapio','view-itemcardapio'),
-('loja','view-loja'),
-('mesa','view-mesa'),
-('pagamento','view-pagamento'),
-('pedido','view-pedido'),
-('produto','view-produto'),
-('relatorio','view-relatorio'),
-('user','view-user');
+('produto', 'avaliacaoproduto'),
+('caixa', 'create-caixa'),
+('compra', 'create-compra'),
+('despesa', 'create-despesa'),
+('fornecedor', 'create-fornecedor'),
+('produto', 'create-produto'),
+('relatorio', 'create-relatorio'),
+('user', 'create-user'),
+('caixa', 'delete-caixa'),
+('compra', 'delete-compra'),
+('despesa', 'delete-despesa'),
+('fornecedor', 'delete-fornecedor'),
+('produto', 'delete-produto'),
+('relatorio', 'delete-relatorio'),
+('user', 'delete-user'),
+('caixa', 'index-caixa'),
+('compra', 'index-compra'),
+('despesa', 'index-despesa'),
+('fornecedor', 'index-fornecedor'),
+('produto', 'index-produto'),
+('relatorio', 'index-relatorio'),
+('user', 'index-user'),
+('produto', 'listadeinsumos'),
+('produto', 'listadeprodutosporinsumo'),
+('caixa', 'update-caixa'),
+('compra', 'update-compra'),
+('despesa', 'update-despesa'),
+('fornecedor', 'update-fornecedor'),
+('produto', 'update-produto'),
+('relatorio', 'update-relatorio'),
+('user', 'update-user'),
+('admin', 'user'),
+('caixa', 'view-caixa'),
+('compra', 'view-compra'),
+('despesa', 'view-despesa'),
+('fornecedor', 'view-fornecedor'),
+('produto', 'view-produto'),
+('relatorio', 'view-relatorio'),
+('user', 'view-user');
 
 -- --------------------------------------------------------
 
@@ -404,7 +311,16 @@ CREATE TABLE IF NOT EXISTS `comanda` (
   `status` tinyint(4) NOT NULL DEFAULT '0',
   `totalPedidos` decimal(10,0) NOT NULL DEFAULT '0',
   `mesaIdMesa` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `comanda`
+--
+
+INSERT INTO `comanda` (`idComanda`, `desconto`, `totalPago`, `dataHoraAbertura`, `dataHoraFechamento`, `descricao`, `status`, `totalPedidos`, `mesaIdMesa`) VALUES
+(2, '0', '0', '2016-04-05 03:00:00', '2016-04-05 03:02:00', NULL, 0, '0', 1),
+(3, '0', '0', '2016-05-07 06:00:00', '2016-05-07 06:10:00', NULL, 0, '0', 1),
+(4, '0', '5', '2016-04-06 02:00:00', '2016-04-06 02:05:00', NULL, 0, '0', 1);
 
 -- --------------------------------------------------------
 
@@ -413,20 +329,49 @@ CREATE TABLE IF NOT EXISTS `comanda` (
 --
 
 CREATE TABLE IF NOT EXISTS `compra` (
-  `datacompra` date NOT NULL,
-  `totalcompra` float DEFAULT NULL,
-  `idcompra` int(11) NOT NULL,
-  `fornecedor_idFornecedor` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+  `idconta` int(11) NOT NULL,
+  `valor` double NOT NULL,
+  `descricao` text,
+  `tipoConta` varchar(50) NOT NULL,
+  `situacaoPagamento` tinyint(1) NOT NULL,
+  `dataVencimento` date DEFAULT NULL,
+  `dataCompra` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `compra`
 --
 
-INSERT INTO `compra` (`datacompra`, `totalcompra`, `idcompra`, `fornecedor_idFornecedor`) VALUES
-('2015-12-05', 0, 5, 1),
-('2016-01-08', 22.22, 6, 1),
-('2016-02-25', 1.23, 7, 1);
+INSERT INTO `compra` (`idconta`, `valor`, `descricao`, `tipoConta`, `situacaoPagamento`, `dataVencimento`, `dataCompra`) VALUES
+(1, 0, NULL, 'Compra', 1, NULL, '2016-04-02'),
+(2, 0, NULL, 'Compra', 1, NULL, '2016-04-03'),
+(3, 0, NULL, 'Compra', 1, NULL, '2016-04-04');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `compraproduto`
+--
+
+CREATE TABLE IF NOT EXISTS `compraproduto` (
+  `idCompra` int(11) NOT NULL,
+  `idProduto` int(11) NOT NULL,
+  `quantidade` float NOT NULL,
+  `valorCompra` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `compraproduto`
+--
+
+INSERT INTO `compraproduto` (`idCompra`, `idProduto`, `quantidade`, `valorCompra`) VALUES
+(1, 7, 20, 10),
+(1, 9, 20, 8),
+(1, 12, 20, 12),
+(1, 13, 20, 6),
+(2, 7, 20, 11),
+(2, 9, 20, 9),
+(3, 13, 20, 7);
 
 -- --------------------------------------------------------
 
@@ -470,28 +415,6 @@ CREATE TABLE IF NOT EXISTS `destaques` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `fornecedor`
---
-
-CREATE TABLE IF NOT EXISTS `fornecedor` (
-  `cnpj` varchar(18) NOT NULL,
-  `nome` varchar(100) NOT NULL,
-  `endereco` varchar(100) DEFAULT NULL,
-  `idFornecedor` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `fornecedor`
---
-
-INSERT INTO `fornecedor` (`cnpj`, `nome`, `endereco`, `idFornecedor`) VALUES
-('11.111.111/1111-11', 'Supermercado', 'Rua Principal , 123', 1),
-('22.222.222/2222-22', '123', '123', 2),
-('33.333.333/3333-33', 'Atacado e Varejo', 'Rua Principal', 3);
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `historicosituacao`
 --
 
@@ -513,6 +436,21 @@ CREATE TABLE IF NOT EXISTS `insumos` (
   `quantidade` float NOT NULL,
   `unidade` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `insumos`
+--
+
+INSERT INTO `insumos` (`idprodutoVenda`, `idprodutoInsumo`, `quantidade`, `unidade`) VALUES
+(8, 7, 0.5, 'kg'),
+(8, 9, 1, 'unidade'),
+(8, 12, 1, 'unidade'),
+(11, 9, 1, 'unidade'),
+(11, 12, 0.5, 'kg'),
+(11, 13, 1, 'unidade'),
+(14, 7, 0.2, 'kg'),
+(14, 9, 1, 'unidade'),
+(14, 12, 0.4, 'kg');
 
 -- --------------------------------------------------------
 
@@ -539,6 +477,15 @@ CREATE TABLE IF NOT EXISTS `itempedido` (
   `quantidade` decimal(10,0) NOT NULL,
   `total` decimal(10,0) NOT NULL COMMENT 'Preço produto * quandida'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `itempedido`
+--
+
+INSERT INTO `itempedido` (`idPedido`, `idProduto`, `quantidade`, `total`) VALUES
+(1, 8, '1', '0'),
+(2, 8, '2', '0'),
+(4, 8, '3', '15');
 
 -- --------------------------------------------------------
 
@@ -574,7 +521,14 @@ CREATE TABLE IF NOT EXISTS `mesa` (
   `qrcode` varchar(100) NOT NULL COMMENT 'localização ',
   `chave` varchar(45) NOT NULL COMMENT 'chave da mesa, criada no momento da criação da mesma',
   `cont` int(11) NOT NULL DEFAULT '0' COMMENT 'valor de iniciação do algoritimo de chaves\n'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `mesa`
+--
+
+INSERT INTO `mesa` (`idMesa`, `descricao`, `disponivel`, `alerta`, `qrcode`, `chave`, `cont`) VALUES
+(1, '-', 1, 0, '-', '-', 0);
 
 -- --------------------------------------------------------
 
@@ -623,6 +577,16 @@ CREATE TABLE IF NOT EXISTS `pedido` (
   `idComanda` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Extraindo dados da tabela `pedido`
+--
+
+INSERT INTO `pedido` (`idPedido`, `totalPedido`, `idSituacaoAtual`, `idComanda`) VALUES
+(0, '0', 1, 2),
+(1, '0', 1, 2),
+(2, '0', 1, 3),
+(4, '5', 1, 4);
+
 -- --------------------------------------------------------
 
 --
@@ -637,20 +601,22 @@ CREATE TABLE IF NOT EXISTS `produto` (
   `quantidadeMinima` float NOT NULL DEFAULT '0',
   `idCategoria` int(11) NOT NULL,
   `quantidadeEstoque` float DEFAULT '0' COMMENT 'Valor deve ser maior que 0'
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 --
--- Estrutura da tabela `produtos_compra`
+-- Extraindo dados da tabela `produto`
 --
 
-CREATE TABLE IF NOT EXISTS `produtos_compra` (
-  `idprodutos_compra` int(11) NOT NULL,
-  `compra_idcompra` int(11) NOT NULL,
-  `quantidade_produto` float NOT NULL,
-  `estoque_idestoque` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+INSERT INTO `produto` (`idProduto`, `nome`, `valorVenda`, `isInsumo`, `quantidadeMinima`, `idCategoria`, `quantidadeEstoque`) VALUES
+(7, 'Tomate', 20, 1, 0, 4, 20),
+(8, 'Sanduíche A', 4, 0, 0, 5, 0),
+(9, 'Pão', 0, 1, 0, 3, 20),
+(10, 'Refrigerante', 2, 0, 0, 5, 10),
+(11, 'Sanduíche B', 3, 0, 0, 5, 0),
+(12, 'Hambúrguer ', 0, 1, 0, 3, 20),
+(13, 'Ovo', 0, 1, 0, 3, 20),
+(14, 'Sanduíche C', 2, 0, 0, 5, 0),
+(15, 'Sanduíche D', 2, 0, 0, 5, 0);
 
 -- --------------------------------------------------------
 
@@ -742,7 +708,14 @@ CREATE TABLE IF NOT EXISTS `situacaopedido` (
   `idSituacaoPedido` int(11) NOT NULL,
   `titulo` varchar(45) NOT NULL,
   `descricao` text NOT NULL COMMENT 'ESTARA INCLUSO NA TABELA DE SISTEMA\n'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `situacaopedido`
+--
+
+INSERT INTO `situacaopedido` (`idSituacaoPedido`, `titulo`, `descricao`) VALUES
+(1, '-', '-');
 
 -- --------------------------------------------------------
 
@@ -791,7 +764,7 @@ INSERT INTO `user` (`id`, `role_id`, `status`, `email`, `username`, `password`, 
 (43, 3, 1, 'funcionario1@sigir.com', 'funcionario01', '$2y$13$MR/pQJFMZRJZkZj4.xg0qOtdjJK6NMaMo5jF4bVt1tPHf7sjr0QHi', 'JoIVj9p9IWlVklx1TZ00otnbcr-Gmao7', 'hAYvnkL8pFzP6FGMH7eKw7UmisflzyjX', '::1', '2016-02-05 03:48:25', '::1', '2016-02-01 01:00:46', '2016-02-01 04:23:48', NULL, NULL),
 (44, 2, 1, 'gerente1@sigir.com', 'gerente', '$2y$13$mujgA7j0OsPxUr0gYAao3OSk1yykiEFfxqXis7m.lzvZ3EWID1jOG', 'c4rPsYI-Q-WNI9GgYyTvbZr_ynwyuAlY', 'nAzvxmIB3bTRTW9d23dn1isBFBr6s7RI', '::1', '2016-02-09 23:37:54', '::1', '2016-02-01 01:01:26', '2016-02-09 07:11:09', NULL, NULL),
 (80, 2, 1, 'teste@teste.com', NULL, '$2y$13$Up2wVYVIsBKk3oij/H/8l.5hPym80.3NTFpGlc97cSJg32EqNGn4y', 'EXAFyYZpG5QVTcGx6yeFrlDOl9OizMuM', 'ZdjGbu9FKlXtF5mYt1A4CcShpkEaTd9i', '::1', '2016-02-08 01:22:20', '::1', '2016-02-05 03:30:47', '2016-02-05 05:19:16', NULL, NULL),
-(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-03-22 15:32:50', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
+(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-04-09 01:44:48', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
 (85, 2, 1, 'compras@compras.com', 'Compra', '$2y$13$fcSVvuFUmhH.3iZ0wTtoZOpkVTt1tjAg2fO2thZog9QwMUIEUUzKu', 'tVH-bh0RpqSA1RgMqIR4rqcKtKiGhvPB', '165xJKTAkwnR1QcUd6wQ-fkU8Q98od2O', '::1', '2016-02-12 04:37:12', '::1', '2016-02-10 06:13:27', '2016-02-13 17:20:37', NULL, NULL),
 (104, 2, 1, 'teste3@teste.com', 'teste3', '$2y$13$4MrmhHyYwYzQ5uFHtr8rpeUNCgFCZiHR0410sdcJBABbm/zl/1Z..', 'ndzPwraET0uG3RZMtH23_-7IdxZtiRaH', 'nO74vFAzRakvIVNVrrJLrl4CU9718fzh', '::1', '2016-02-14 05:59:05', '::1', '2016-02-14 05:09:25', '2016-02-14 06:02:05', NULL, NULL),
 (108, 2, 1, 'teste4@teste.com', 'teste44', '$2y$13$COZu07CnXAVlfSQJwK6ng.LnOd43dGyN29Tw/FH13Mtoa/zTtlGwy', 'Hs7QEYX6yxldLcpIVPjwNoBNBY5zWDSa', 'Ib_71XRL0h05Yr1STAjJwv9Y3sfJOIW4', '::1', '2016-02-14 06:35:23', '::1', '2016-02-14 06:30:37', '2016-02-14 06:35:48', NULL, NULL),
@@ -925,7 +898,13 @@ ALTER TABLE `comanda`
 -- Indexes for table `compra`
 --
 ALTER TABLE `compra`
-  ADD PRIMARY KEY (`idcompra`), ADD KEY `fk_compra_fornecedor1` (`fornecedor_idFornecedor`);
+  ADD PRIMARY KEY (`idconta`);
+
+--
+-- Indexes for table `compraproduto`
+--
+ALTER TABLE `compraproduto`
+  ADD PRIMARY KEY (`idCompra`,`idProduto`), ADD KEY `idProduto` (`idProduto`);
 
 --
 -- Indexes for table `despesa`
@@ -940,12 +919,6 @@ ALTER TABLE `destaques`
   ADD PRIMARY KEY (`idDestaques`);
 
 --
--- Indexes for table `fornecedor`
---
-ALTER TABLE `fornecedor`
-  ADD PRIMARY KEY (`idFornecedor`), ADD UNIQUE KEY `cnpj_UNIQUE` (`cnpj`);
-
---
 -- Indexes for table `historicosituacao`
 --
 ALTER TABLE `historicosituacao`
@@ -955,7 +928,7 @@ ALTER TABLE `historicosituacao`
 -- Indexes for table `insumos`
 --
 ALTER TABLE `insumos`
-  ADD PRIMARY KEY (`idprodutoVenda`);
+  ADD PRIMARY KEY (`idprodutoVenda`,`idprodutoInsumo`);
 
 --
 -- Indexes for table `itemcardapio`
@@ -1004,12 +977,6 @@ ALTER TABLE `pedido`
 --
 ALTER TABLE `produto`
   ADD PRIMARY KEY (`idProduto`), ADD KEY `fk_produto_categoria1_idx` (`idCategoria`);
-
---
--- Indexes for table `produtos_compra`
---
-ALTER TABLE `produtos_compra`
-  ADD PRIMARY KEY (`idprodutos_compra`), ADD KEY `fk_produtos_compra_compra1` (`compra_idcompra`), ADD KEY `fk_produtos_compra_estoque1` (`estoque_idestoque`);
 
 --
 -- Indexes for table `profile`
@@ -1088,27 +1055,17 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT for table `comanda`
 --
 ALTER TABLE `comanda`
-  MODIFY `idComanda` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `compra`
---
-ALTER TABLE `compra`
-  MODIFY `idcompra` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+  MODIFY `idComanda` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `despesa`
 --
 ALTER TABLE `despesa`
   MODIFY `iddespesa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
--- AUTO_INCREMENT for table `fornecedor`
---
-ALTER TABLE `fornecedor`
-  MODIFY `idFornecedor` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
---
 -- AUTO_INCREMENT for table `mesa`
 --
 ALTER TABLE `mesa`
-  MODIFY `idMesa` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idMesa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `pagamento`
 --
@@ -1118,12 +1075,7 @@ ALTER TABLE `pagamento`
 -- AUTO_INCREMENT for table `produto`
 --
 ALTER TABLE `produto`
-  MODIFY `idProduto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT for table `produtos_compra`
---
-ALTER TABLE `produtos_compra`
-  MODIFY `idprodutos_compra` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `idProduto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `profile`
 --
@@ -1143,7 +1095,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `situacaopedido`
 --
 ALTER TABLE `situacaopedido`
-  MODIFY `idSituacaoPedido` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idSituacaoPedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `tipopagamento`
 --
@@ -1212,10 +1164,11 @@ ALTER TABLE `comanda`
 ADD CONSTRAINT `fk_comanda_mesa10` FOREIGN KEY (`mesaIdMesa`) REFERENCES `mesa` (`idMesa`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Limitadores para a tabela `compra`
+-- Limitadores para a tabela `compraproduto`
 --
-ALTER TABLE `compra`
-ADD CONSTRAINT `fk_compra_fornecedor1` FOREIGN KEY (`fornecedor_idFornecedor`) REFERENCES `fornecedor` (`idFornecedor`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `compraproduto`
+ADD CONSTRAINT `compraproduto_ibfk_1` FOREIGN KEY (`idCompra`) REFERENCES `compra` (`idconta`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `compraproduto_ibfk_2` FOREIGN KEY (`idProduto`) REFERENCES `produto` (`idProduto`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `historicosituacao`
@@ -1228,7 +1181,7 @@ ADD CONSTRAINT `fk_historioSituacao_situacaoPedido10` FOREIGN KEY (`idSituacaoPe
 -- Limitadores para a tabela `insumos`
 --
 ALTER TABLE `insumos`
-ADD CONSTRAINT `insumos_ibfk_1` FOREIGN KEY (`idprodutoVenda`) REFERENCES `produto` (`idProduto`);
+ADD CONSTRAINT `insumos_ibfk_1` FOREIGN KEY (`idprodutoVenda`) REFERENCES `produto` (`idProduto`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `itemcardapio`
@@ -1269,12 +1222,6 @@ ADD CONSTRAINT `fk_pedido_situacaoPedido10` FOREIGN KEY (`idSituacaoAtual`) REFE
 --
 ALTER TABLE `produto`
 ADD CONSTRAINT `fk_produto_categoria10` FOREIGN KEY (`idCategoria`) REFERENCES `categoria` (`idCategoria`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Limitadores para a tabela `produtos_compra`
---
-ALTER TABLE `produtos_compra`
-ADD CONSTRAINT `fk_produtos_compra_compra1` FOREIGN KEY (`compra_idcompra`) REFERENCES `compra` (`idcompra`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `profile`

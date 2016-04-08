@@ -27,13 +27,13 @@ $loja = Loja::find()->where(['user_id'=>Yii::$app->user->getId()])->all();
 
 if (count($loja) > 0) {
     foreach ($loja as $l) {
-     $nomeLoja = $l->nome;
-     $url =Url::toRoute(['/loja/view', 'id'=>Yii::$app->user->getId()]);
- }
+       $nomeLoja = $l->nome;
+       $url =Url::toRoute(['/loja/view', 'id'=>Yii::$app->user->getId()]);
+   }
 
 }else{
-   $nomeLoja = 'Cadastre sua loja';
-   $url =Url::toRoute(['/loja/create']);
+ $nomeLoja = 'Cadastre sua loja';
+ $url =Url::toRoute(['/loja/create']);
 }
 
 ?>
@@ -162,17 +162,17 @@ if (count($loja) > 0) {
                                     ?>
                                     <i class="fa fa-bell"></i>
                                     <span class="label label-danger">
-                                       !
-                                   </span>
-                                   <b class="caret"></b></a>
-                                   <ul class="dropdown-menu alert-dropdown">
+                                     !
+                                 </span>
+                                 <b class="caret"></b></a>
+                                 <ul class="dropdown-menu alert-dropdown">
 
 
-                                       <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
-                                       </li>
-                                       <?php  
-                                   }   
-                               } else {
+                                     <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
+                                     </li>
+                                     <?php  
+                                 }   
+                             } else {
                                 ?>
                                 <i class="fa fa-bell"></i>
 
@@ -279,7 +279,7 @@ if (count($loja) > 0) {
 
                         ?>
                         <li>
-                            <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/compra/index']) ?>
+                            <?= Html::a('<i class="fa fa-shopping-cart"></i> Compras', ['/compra/index']) ?>
 
                         </li>
                         <?php
@@ -374,48 +374,63 @@ if (count($loja) > 0) {
                     }
                     ?>
                     <?php
-                    if (Yii::$app->user->can("index-mesa") || Yii::$app->user->can("produto")) {
+                    if (Yii::$app->user->can("index-produto") || Yii::$app->user->can("produto")) {
+
+                        ?>
+
+                        <li>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-shopping-basket"></i> Produtos <i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="demo" class="collapse">
+                                <li>
+                                    <?= Html::a('<i class="fa fa-list"></i> Listar Produtos', ['/produto/index']) ?>
+
+                                </li>
+                                <li>
+                                 <?= Html::a('<i class="fa fa-list"></i> Lista de Insumos', ['/produto/listadeinsumos']) ?>
+
+                             </li>
+                             <li>
+                                 <?= Html::a('<i class="fa fa-list"></i> Lista de Produtos Venda por Insumo', ['/produto/listadeprodutosporinsumo']) ?>
+
+                             </li>
+                         </ul>
+                     </li>
+
+                     <?php
+                 }
+                 ?>
+
+                 <?php 
+                 if (Yii::$app->user->can("user") || Yii::$app->user->can("admin") 
+                    || Yii::$app->user->can("index-user") ) {
+                        ?>
+
+                    <?php 
+                    if ( Yii::$app->user->can("admin") ) {
+                        ?>
+                        <li>
+                            <?= Html::a('<i class="fa fa-users"></i> Usuários', ['/user/admin']) ?>
+
+                        </li>
+                        <?php 
+                    }else{
 
                         ?>
                         <li>
-                            <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/produto/index']) ?>
+                            <?= Html::a('<i class="fa fa-users"></i> Usuários', ['/user/']) ?>
 
                         </li>
                         <?php
+
                     }
                     ?>
+
 
                     <?php 
-                    if (Yii::$app->user->can("user") || Yii::$app->user->can("admin") 
-                        || Yii::$app->user->can("index-user") ) {
-                            ?>
-
-                        <?php 
-                        if ( Yii::$app->user->can("admin") ) {
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="fa fa-users"></i> Usuários', ['/user/admin']) ?>
-
-                            </li>
-                            <?php 
-                        }else{
-
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="fa fa-users"></i> Usuários', ['/user/']) ?>
-
-                            </li>
-                            <?php
-
-                        }
-                        ?>
-
-
-                        <?php 
-                    }
-                    ?>
-                </ul>
-            </div>
+                }
+                ?>
+            </ul>
+        </div>
 
          <!--    <div class="collapse navbar-collapse navbar-ex1-collapse ">
                 <ul class="nav navbar-nav side-nav">
@@ -489,7 +504,7 @@ $this->registerJsFile('@web/admin/js/plugins/morris/morris-data.js');
 
 
 ?>
- <?= Html::jsFile("/applanchonete/web/admin/js/cadastro-permissoes.js") ?>
+<?= Html::jsFile("/applanchonete/web/admin/js/cadastro-permissoes.js") ?>
 
 
 

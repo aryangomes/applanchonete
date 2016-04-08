@@ -11,6 +11,8 @@ use yii\filters\VerbFilter;
 use app\models\Categoria;
 use app\models\Itempedido;
 use yii\helpers\ArrayHelper;
+use yii\web\ForbiddenHttpException;
+use app\components\AccessFilter;
 /**
  * ProdutoController implements the CRUD actions for Produto model.
  */
@@ -23,6 +25,32 @@ class ProdutoController extends Controller
     'class' => VerbFilter::className(),
     'actions' => [
     'delete' => ['post'],
+    ],
+    ],
+    'autorizacao'=>[
+    'class'=>AccessFilter::className(),
+    'actions'=>[
+    
+    'produto'=>[
+    'index-produto',
+    'update-produto',
+    'delete-produto',
+    'view-produto',
+    'create-produto',
+    'listadeinsumos',
+    'avaliacaoproduto',
+    'listadeprodutosporinsumo',
+    ],
+    
+    'index'=>'index-produto',
+    'update'=>'update-produto',
+    'delete'=>'delete-produto',
+    'view'=>'view-produto',
+    'create'=>'create-produto',
+    'avaliacaoproduto'=> 'avaliacaoproduto',
+    'listadeinsumos'=>'listadeinsumos',
+    'listadeprodutosporinsumo'=>'listadeprodutosporinsumo',
+
     ],
     ],
     ];
@@ -86,6 +114,39 @@ class ProdutoController extends Controller
         ]);
     }
   }
+
+
+  public function actionListadeprodutosporinsumo()
+  {
+    $model = new Produto();
+    $insumos = ArrayHelper::map(
+      Produto::find()->join('INNER JOIN','insumos', 'idProduto = idprodutoInsumo ')
+      ->where(['isInsumo'=>1 ])->all(), 
+      'idProduto','nome');
+    if ((Yii::$app->request->post())) {
+     $searchModel = new ProdutoSearch();
+
+     $listadeprodutosvenda = $searchModel->searchProdutosVenda(Yii::$app->request->post());
+
+     $produtosVenda = array();
+
+     foreach ($listadeprodutosvenda as  $pv) {
+      array_push($produtosVenda, 
+        $model::findOne($pv->idprodutoVenda));
+    }
+
+    return $this->render('listadeprodutosporinsumo', [
+      'insumos' => $insumos,
+      'produtosVenda' => $produtosVenda,  
+      ]); 
+  } else {
+
+    return $this->render('listadeprodutosporinsumo', [
+      'insumos' => $insumos,
+
+      ]);
+  }
+}
 
 
 

@@ -21,6 +21,9 @@ return [
 'October'=>'Outubro',  
 'November'=>'Novembro',  
 'December'=>'Dezembro', 
+'Is Insumo'=>'É Insumo',
+'Valor Venda'=>'Valor de venda', 
+'Quantidade Minima'=>'Quantidade mínima', 
 ];
 
 

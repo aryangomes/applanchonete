@@ -40,6 +40,7 @@ class ProdutoController extends Controller
     'listadeinsumos',
     'avaliacaoproduto',
     'listadeprodutosporinsumo',
+    'produtosvenda',
     ],
     
     'index'=>'index-produto',
@@ -50,7 +51,7 @@ class ProdutoController extends Controller
     'avaliacaoproduto'=> 'avaliacaoproduto',
     'listadeinsumos'=>'listadeinsumos',
     'listadeprodutosporinsumo'=>'listadeprodutosporinsumo',
-
+    'produtosvenda'=>'produtosvenda',
     ],
     ],
     ];
@@ -66,6 +67,17 @@ class ProdutoController extends Controller
       $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
       return $this->render('index', [
+        'searchModel' => $searchModel,
+        'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionProdutosvenda()
+    {
+      $searchModel = new ProdutoSearch();
+      $dataProvider =  $searchModel->searchProdutosVendaIndex(Yii::$app->request->queryParams);
+
+      return $this->render('produtosvenda', [
         'searchModel' => $searchModel,
         'dataProvider' => $dataProvider,
         ]);

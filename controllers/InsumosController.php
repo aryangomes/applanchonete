@@ -10,7 +10,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use app\models\Produto;
-
+use yii\web\ForbiddenHttpException;
+use app\components\AccessFilter;
 use yii\base\Model;
 /**
  * InsumosController implements the CRUD actions for Insumos model.
@@ -24,6 +25,26 @@ class InsumosController extends Controller
     'class' => VerbFilter::className(),
     'actions' => [
     'delete' => ['post'],
+    ],
+    ],
+    'autorizacao'=>[
+    'class'=>AccessFilter::className(),
+    'actions'=>[
+    
+    'insumos'=>[
+    'index-insumos',
+    'update-insumos',
+    'delete-insumos',
+    'view-insumos',
+    'create-insumos',
+    
+    ],
+    
+    'index'=>'index-insumos',
+    'update'=>'update-insumos',
+    'delete'=>'delete-insumos',
+    'view'=>'view-insumos',
+    'create'=>'create-insumos',
     ],
     ],
     ];

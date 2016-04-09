@@ -25,18 +25,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
 
-        'idProduto',
+     //   'idProduto',
         'nome',
         'valorVenda',
-        [
-        'attribute'=>  'isInsumo',
-        'format'=>'text',
-        'value'=> function($model){
-
-            return $model->isInsumo ? 'Sim' : 'Não';
-        }
-        ],
-        'quantidadeMinima',
+        //'isInsumo',
+        //'quantidadeMinima',
             // 'idCategoria',
             // 'quantidadeEstoque',
 

@@ -92,15 +92,30 @@ class ProdutoSearch extends Produto
         return $query;
     }
 
-    public function searchProdutosCompra($idProduto)
+
+    public function searchProdutosVendaIndex($params)
     {
+      $query = Produto::find();
 
-        $query = Compraproduto::find()->join(
-            'INNER JOIN', 'compra', 'idCompra = idconta')->
-        where(['idProduto'=>$idProduto] )->orderBy('dataCompra DESC')->one();
+      $dataProvider = new ActiveDataProvider([
+        'query' => $query,
+        ]);
+      $query->joinWith('insumos')
+      ->where(['isInsumo'=>0])->all();
 
 
 
-        return $query;
-    }
+      return $dataProvider;
+  }
+  public function searchProdutosCompra($idProduto)
+  {
+
+    $query = Compraproduto::find()->join(
+        'INNER JOIN', 'compra', 'idCompra = idconta')->
+    where(['idProduto'=>$idProduto] )->orderBy('dataCompra DESC')->one();
+
+
+
+    return $query;
+}
 }

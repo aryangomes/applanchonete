@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Insumos;
+use app\models\Produto;
 
 /**
  * InsumosSearch represents the model behind the search form about `app\models\Insumos`.
@@ -18,9 +19,9 @@ class InsumosSearch extends Insumos
     public function rules()
     {
         return [
-            [['idprodutoVenda', 'idprodutoInsumo'], 'integer'],
-            [['quantidade'], 'number'],
-            [['unidade'], 'safe'],
+        [['idprodutoVenda', 'idprodutoInsumo'], 'integer'],
+        [['quantidade'], 'number'],
+        [['unidade'], 'safe'],
         ];
     }
 
@@ -46,7 +47,7 @@ class InsumosSearch extends Insumos
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-        ]);
+            ]);
 
         $this->load($params);
 
@@ -60,10 +61,29 @@ class InsumosSearch extends Insumos
             'idprodutoVenda' => $this->idprodutoVenda,
             'idprodutoInsumo' => $this->idprodutoInsumo,
             'quantidade' => $this->quantidade,
-        ]);
+            ]);
 
         $query->andFilterWhere(['like', 'unidade', $this->unidade]);
 
+        return $dataProvider;
+    }
+
+    public function searchInsumos($params)
+    {
+
+        $query = Insumos::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            ]);
+
+        $query->joinWith('idprodutoInsumo');
+
+        $query->andFilterWhere([
+            'isInsumo' => 1,
+
+            ]);
+        
         return $dataProvider;
     }
 }

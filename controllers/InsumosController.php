@@ -57,7 +57,7 @@ class InsumosController extends Controller
     public function actionIndex()
     {
       $searchModel = new InsumosSearch();
-      $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+      $dataProvider = $searchModel->searchInsumos(Yii::$app->request->queryParams);
 
       return $this->render('index', [
         'searchModel' => $searchModel,
@@ -82,7 +82,9 @@ class InsumosController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+
+
+    /*public function actionCreate()
     {
       $model = new Insumos();
       $produtosvenda = ArrayHelper::map(
@@ -116,33 +118,33 @@ class InsumosController extends Controller
           $n = count($aux['idprodutoInsumo']);
           echo $n;
           for ($i=0; $i < $n ; $i++) { 
-             /*     echo "idprodutoVenda.:" . $aux['idprodutoVenda'];
-                echo "</br>";
-                echo "idprodutoInsumo.:" . $aux['idprodutoInsumo'][$i];
-                echo "</br>";
-                echo "quantidade.:" . $aux['quantidade'][$i];
-                echo "</br>";
-                echo "unidade.:" . $aux['unidade'][$i];
-                echo "</br>";
-                echo "</br>";*/
+            echo "idprodutoVenda.:" . $aux['idprodutoVenda'];
+            echo "</br>";
+            echo "idprodutoInsumo.:" . $aux['idprodutoInsumo'][$i];
+            echo "</br>";
+            echo "quantidade.:" . $aux['quantidade'][$i];
+            echo "</br>";
+            echo "unidade.:" . $aux['unidade'][$i];
+            echo "</br>";
+            echo "</br>";
              //  var_dump($aux['quantidade'][$i]);
-                Yii::$app->db->createCommand(
-                  "INSERT INTO insumos
-                  (idprodutoVenda, idprodutoInsumo,
-                    quantidade,unidade ) 
-                VALUES (:idprodutoVenda, :idprodutoInsumo,
-                  :quantidade,:unidade)", [
-                ':idprodutoVenda' => $aux['idprodutoVenda'],
-                ':idprodutoInsumo'=> $aux['idprodutoInsumo'][$i],
-                ':quantidade' => $aux['quantidade'][$i],
-                ':unidade'=> $aux['unidade'][$i],
-                ])->execute();
+            Yii::$app->db->createCommand(
+              "INSERT INTO insumos
+              (idprodutoVenda, idprodutoInsumo,
+                quantidade,unidade ) 
+            VALUES (:idprodutoVenda, :idprodutoInsumo,
+              :quantidade,:unidade)", [
+            ':idprodutoVenda' => $aux['idprodutoVenda'],
+            ':idprodutoInsumo'=> $aux['idprodutoInsumo'][$i],
+            ':quantidade' => $aux['quantidade'][$i],
+            ':unidade'=> $aux['unidade'][$i],
+            ])->execute();
               /*  $model->idprodutoInsumo = $aux['idprodutoInsumo'][$i];
                 $model->idprodutoVenda = $aux['idprodutoVenda'];
                 $model->quantidade = $aux['quantidade'][$i];
                 $model->unidade = $aux['unidade'][$i];
                 $model->save(false);
-             */
+             
               } 
 
               return $this->redirect(['produto/view', 'id' => $model->idprodutoVenda]);
@@ -157,7 +159,7 @@ class InsumosController extends Controller
                 ]);
             }
           }
-        }
+        }*/
 
     /**
      * Updates an existing Insumos model.
@@ -178,7 +180,7 @@ class InsumosController extends Controller
       $insumos = ArrayHelper::map(
         Produto::find()->where(['isInsumo'=>1])->all(), 
         'idProduto','nome');
-      $model2 = new InputInsumos();
+
       if ($model->load(Yii::$app->request->post()) && $model->save()) {
         return $this->redirect(['view', 'idprodutoVenda' => $model->idprodutoVenda, 'idprodutoInsumo' => $model->idprodutoInsumo]); 
       } else {

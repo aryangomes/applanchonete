@@ -6,11 +6,11 @@ use yii\helpers\Html;
 /* @var $model app\models\Insumos */
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
-	'modelClass' => 'Insumos',
-	]) . ' ' . $model->idprodutoVenda;
+	'modelClass' => 'insumo',
+	]) . ' ' . $model->nomeInsumo . ' no Produto Venda ' . $model->nomeProdutoVenda;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Insumos'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->idprodutoVenda, 'url' => ['view', 'id' => $model->idprodutoVenda]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 ?>
 <div class="insumos-update">
 

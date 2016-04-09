@@ -18,9 +18,9 @@ class CompraSearch extends Compra
     public function rules()
     {
         return [
-            [['datacompra'], 'safe'],
-            [['totalcompra'], 'number'],
-            [['idcompra', 'fornecedor_idFornecedor'], 'integer'],
+            [['idconta', 'situacaoPagamento'], 'integer'],
+            [['valor'], 'number'],
+            [['descricao', 'tipoConta', 'dataVencimento', 'dataCompra'], 'safe'],
         ];
     }
 
@@ -44,6 +44,8 @@ class CompraSearch extends Compra
     {
         $query = Compra::find();
 
+        // add conditions that should always apply here
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -56,12 +58,17 @@ class CompraSearch extends Compra
             return $dataProvider;
         }
 
+        // grid filtering conditions
         $query->andFilterWhere([
-            'datacompra' => $this->datacompra,
-            'totalcompra' => $this->totalcompra,
-            'idcompra' => $this->idcompra,
-            'fornecedor_idFornecedor' => $this->fornecedor_idFornecedor,
+            'idconta' => $this->idconta,
+            'valor' => $this->valor,
+            'situacaoPagamento' => $this->situacaoPagamento,
+            'dataVencimento' => $this->dataVencimento,
+            'dataCompra' => $this->dataCompra,
         ]);
+
+        $query->andFilterWhere(['like', 'descricao', $this->descricao])
+            ->andFilterWhere(['like', 'tipoConta', $this->tipoConta]);
 
         return $dataProvider;
     }

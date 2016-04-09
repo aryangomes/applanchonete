@@ -39,7 +39,7 @@ class Compra extends \yii\db\ActiveRecord
             [['valor'], 'number'],
             [['descricao'], 'string'],
             [['dataVencimento', 'dataCompra'], 'safe'],
-            [['tipoConta'], 'string', 'max' => 50]
+            [['tipoConta'], 'string', 'max' => 50],
         ];
     }
 

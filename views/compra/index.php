@@ -26,34 +26,47 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
 
+        'idconta',
+        'valor',
+        'descricao:ntext',
+        'tipoConta',
+        [
+        'attribute'=>'situacaoPagamento',
+        'format'=>'text',
+        
+        'value'=> function($model){
+
+            return $model->situacaoPagamento ? 'Pago':'Não pago';
+        }
+
+        ],
+
+            // 'dataVencimento',
+            // 'dataCompra',
 
         [
-        'attribute'=>'datacompra',
+        'attribute'=>'dataCompra',
         'format'=>'text',
-       // 'label'=>'Fornecedor',
+
         'value'=> function($model){
             $formatter = \Yii::$app->formatter;
-            return $formatter->asDate($model->datacompra, 'dd/MM/yyyy');
+            return $formatter->asDate($model->dataCompra, 'dd/MM/yyyy');
         }
 
         ],
-        'totalcompra',
-      //  'idcompra',
-       // 'fornecedor_idFornecedor',
+
         [
-       // 'attribute'=>'fornecedor_idFornecedor',
+        'attribute'=>'dataVencimento',
         'format'=>'text',
-        'label'=>'Fornecedor',
-        'value'=> function($model){
-                //'format'=>'html';
-                //return '<img src="" /> ';
-            $fornecedor = new Fornecedor();
-            $fornecedor = $fornecedor::getNomeFornecedor($model->fornecedor_idFornecedor);
 
-            return $fornecedor->nome;
+        'value'=> function($model){
+            $formatter = \Yii::$app->formatter;
+            return isset($model->dataVencimento) ? $formatter->asDate($model->dataVencimento, 'dd/MM/yyyy') 
+            : null;
         }
 
         ],
+
         ['class' => 'yii\grid\ActionColumn'],
         ],
         ]); ?>

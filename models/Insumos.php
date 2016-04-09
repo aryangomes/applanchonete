@@ -30,10 +30,10 @@ class Insumos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idprodutoVenda', 'idprodutoInsumo', 'quantidade', 'unidade'], 'required'],
-            [['idprodutoVenda', 'idprodutoInsumo'], 'integer'],
-            [['quantidade'], 'number'],
-            [['unidade'], 'string', 'max' => 15]
+        [['idprodutoVenda', 'idprodutoInsumo', 'quantidade', 'unidade'], 'required'],
+        [['idprodutoVenda', 'idprodutoInsumo'], 'integer'],
+        [['quantidade'], 'number'],
+        [['unidade'], 'string', 'max' => 15]
         ];
     }
 
@@ -43,18 +43,33 @@ class Insumos extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idprodutoVenda' => Yii::t('app', 'Idproduto Venda'),
-            'idprodutoInsumo' => Yii::t('app', 'Idproduto Insumo'),
-            'quantidade' => Yii::t('app', 'Quantidade'),
-            'unidade' => Yii::t('app', 'Unidade'),
+        'idprodutoVenda' => Yii::t('app', 'Produto Venda'),
+        'idprodutoInsumo' => Yii::t('app', 'Insumo'),
+        'quantidade' => Yii::t('app', 'Quantidade'),
+        'unidade' => Yii::t('app', 'Unidade'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdprodutoVenda0()
+    public function getIdprodutoVenda()
     {
         return $this->hasOne(Produto::className(), ['idProduto' => 'idprodutoVenda']);
+    }
+
+    public function getIdprodutoInsumo()
+    {
+        return $this->hasOne(Produto::className(), ['idProduto' => 'idprodutoInsumo']);
+    }
+
+    public function getNomeinsumo()
+    {
+        return Produto::find()->where(['idProduto'=>$this->idprodutoInsumo])->one()->nome;
+    }
+
+    public function getNomeprodutovenda()
+    {
+        return Produto::find()->where(['idProduto'=>$this->idprodutoVenda])->one()->nome;
     }
 }

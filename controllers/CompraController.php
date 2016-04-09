@@ -36,24 +36,24 @@ class CompraController extends Controller
         'delete' => ['post'],
         ],
         ],
-         'autorizacao'=>[
+        'autorizacao'=>[
         'class'=>AccessFilter::className(),
-'actions'=>[
-    
-    'compra'=>[
+        'actions'=>[
+
+        'compra'=>[
         'index-compra',
         'update-compra',
         'delete-compra',
         'view-compra',
         'create-compra',
-    ],
-    
-    'index'=>'index-compra',
-    'update'=>'update-compra',
-    'delete'=>'delete-compra',
-      'view'=>'view-compra',
-      'create'=>'create-compra',
-],
+        ],
+
+        'index'=>'index-compra',
+        'update'=>'update-compra',
+        'delete'=>'delete-compra',
+        'view'=>'view-compra',
+        'create'=>'create-compra',
+        ],
         ],
         ];
     }
@@ -64,8 +64,8 @@ class CompraController extends Controller
      */
     public function actionIndex()
     {
-     
-            $searchModel = new CompraSearch();
+
+        $searchModel = new CompraSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -73,8 +73,8 @@ class CompraController extends Controller
             'dataProvider' => $dataProvider,
             ]);
 
-   
-}
+
+    }
 
     /**
      * Displays a single Compra model.
@@ -83,22 +83,20 @@ class CompraController extends Controller
      */
     public function actionView($id)
     {
-   
+
         $compra = new Compra();
-    $idFornecedor = $compra::find('fornecedor_idFornecedor')->where(['idcompra'=>$id])->one();
-    $fornecedor = new Fornecedor();
+
         //var_dump($id);
        // var_dump($idFornecedor->fornecedor_idFornecedor);
-    $fornecedor = $fornecedor::getNomeFornecedor($idFornecedor->fornecedor_idFornecedor);
-    $formatter = \Yii::$app->formatter;
-    return $this->render('view', [
-        'model' => $this->findModel($id),
-        'fornecedor'=>$fornecedor,
-        'formatter'=>$formatter,
-        ]);
+        $formatter = \Yii::$app->formatter;
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+
+            'formatter'=>$formatter,
+            ]);
 
 
-}
+    }
 
     /**
      * Creates a new Compra model.
@@ -107,10 +105,7 @@ class CompraController extends Controller
      */
     public function actionCreate()
     {
- 
-          $fornecedores= ArrayHelper::map(
-            Fornecedor::find()->all(), 
-            'idFornecedor','nome');
+
       $model = new Compra();
 
       if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -118,7 +113,7 @@ class CompraController extends Controller
     } else {
         return $this->render('create', [
             'model' => $model,
-            'fornecedores'=>$fornecedores,
+            
             ]);
     }
 
@@ -132,10 +127,10 @@ class CompraController extends Controller
      */
     public function actionUpdate($id)
     {
-    
-         $fornecedores= ArrayHelper::map(
-            Fornecedor::find()->all(), 
-            'idFornecedor','nome');
+
+     $fornecedores= ArrayHelper::map(
+        Fornecedor::find()->all(), 
+        'idFornecedor','nome');
      $model = $this->findModel($id);
 
      if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -157,12 +152,12 @@ class CompraController extends Controller
      */
     public function actionDelete($id)
     {
-  
-            $this->findModel($id)->delete();
+
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-   
-}
+
+    }
 
     /**
      * Finds the Compra model based on its primary key value.

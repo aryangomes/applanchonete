@@ -253,10 +253,10 @@ if (count($loja) > 0) {
                     if (Yii::$app->user->can("index-fornecedor") || Yii::$app->user->can("fornecedor")) {
 
                         ?>
-                        <li>
-                            <?= Html::a('<i class="fa fa-truck"></i> Fornecedor', ['/fornecedor/index']) ?>
+                       <!--  <li>
+                            <?php // Html::a('<i class="fa fa-truck"></i> Fornecedor', ['/fornecedor/index']) ?>
 
-                        </li>
+                        </li> -->
 
                         <?php
                     }

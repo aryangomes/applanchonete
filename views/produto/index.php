@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Produto'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create {model}', ['model'=>'Produto']), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -36,7 +36,16 @@ $this->params['breadcrumbs'][] = $this->title;
             return $model->isInsumo ? 'Sim' : 'Não';
         }
         ],
-        'quantidadeMinima',
+        [
+        'attribute'=>  'quantidadeMinima',
+        'format'=>'text',
+
+        'value'=> function($model){
+
+            return $model->isInsumo ? $model->quantidadeMinima : null ;
+        }
+        ],
+
             // 'idCategoria',
             // 'quantidadeEstoque',
 

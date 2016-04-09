@@ -25,18 +25,18 @@ $this->title = 'Lista de insumos de um Produto';
       //  'multiple' => true
         ],
         ]);?>
+    </br>
+    <div class="form-group">
+        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary btn-block']) ?>
+    </div>
 
-        <div class="form-group">
-            <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
-        </div>
+    <?php ActiveForm::end(); ?>
+    <div class="panel panel-default">
 
-        <?php ActiveForm::end(); ?>
-        <div class="panel panel-default">
-
-            <?php 
-            if (isset($insumos)) {
-              ?> <div class="panel-heading">Insumos</div> <?php
-              foreach ($insumos as $insumo) {
+        <?php 
+        if (isset($insumos)) {
+            ?> <div class="panel-heading">Insumos de <?= $nomeProdutoVenda ?></div> <?php
+            foreach ($insumos as $insumo) {
                 ?> <div class="panel-body"><?= $insumo->nome ?></div><?php
             }
         }

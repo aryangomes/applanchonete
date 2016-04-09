@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Insumos */
 
-$this->title = $model->idprodutoVenda;
+$this->title = 'Insumo: ' . $model->nomeInsumo;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Insumos'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Update'),['update', 'idprodutoVenda' => $model->idprodutoVenda, 'idprodutoInsumo' => $model->idprodutoInsumo], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('yii', 'Update'),['update', 'idprodutoVenda' => $model->idprodutoVenda, 'idprodutoInsumo' => $model->idprodutoInsumo], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'idprodutoVenda' => $model->idprodutoVenda, 'idprodutoInsumo' => $model->idprodutoInsumo], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -28,8 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-            'idprodutoVenda',
-            'idprodutoInsumo',
+            
+            //'idprodutoVenda',
+           // 'idprodutoInsumo',
+            [
+            'label'=>'Produto Venda',
+            'value' =>$model->nomeprodutovenda,
+            ],
             'quantidade',
             'unidade',
             ],

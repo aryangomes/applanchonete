@@ -7,7 +7,7 @@ use yii\helpers\Url;
 /* @var $searchModel app\models\ProdutoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Produtos');
+$this->title = Yii::t('app', 'Produtos de Venda');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="produto-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Produto'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create {model}', ['model'=>'Produto de Venda']), ['produto/cadastrarprodutovenda'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([

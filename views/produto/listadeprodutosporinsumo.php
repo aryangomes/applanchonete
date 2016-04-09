@@ -25,22 +25,22 @@ $this->title = 'Lista de produtos de venda por insumo';
       //  'multiple' => true
         ],
         ]);?>
-
-        <div class="form-group">
-            <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
-        </div>
-
-        <?php ActiveForm::end(); ?>
-        <div class="panel panel-default">
-
-            <?php 
-            if (isset($produtosVenda)) {
-                ?> <div class="panel-heading">Produtos Venda</div> <?php
-                foreach ($produtosVenda as $pv) {
-                    ?> <div class="panel-body"><?= $pv->nome ?></div><?php
-                }
-            }
-
-            ?>
-        </div>
+    </br>
+    <div class="form-group">
+        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary btn-block']) ?>
     </div>
+
+    <?php ActiveForm::end(); ?>
+    <div class="panel panel-default">
+
+        <?php 
+        if (isset($produtosVenda)) {
+            ?> <div class="panel-heading">Produtos de venda que possuem o insumo <?= $nomeInsumo ?> em sua composição</div> <?php
+            foreach ($produtosVenda as $pv) {
+                ?> <div class="panel-body"><?= $pv->nome ?></div><?php
+            }
+        }
+
+        ?>
+    </div>
+</div>

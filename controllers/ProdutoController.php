@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Categoria;
+use app\models\Insumos;
 use app\models\Itempedido;
 use yii\helpers\ArrayHelper;
 use yii\web\ForbiddenHttpException;
@@ -41,6 +42,7 @@ class ProdutoController extends Controller
     'avaliacaoproduto',
     'listadeprodutosporinsumo',
     'produtosvenda',
+    'cadastrarprodutovenda',
     ],
     
     'index'=>'index-produto',
@@ -52,6 +54,7 @@ class ProdutoController extends Controller
     'listadeinsumos'=>'listadeinsumos',
     'listadeprodutosporinsumo'=>'listadeprodutosporinsumo',
     'produtosvenda'=>'produtosvenda',
+    'cadastrarprodutovenda'=>'cadastrarprodutovenda',
     ],
     ],
     ];
@@ -108,7 +111,7 @@ class ProdutoController extends Controller
        $listadeinsumos = $searchModel->searchInsumos(Yii::$app->request->post());
 
        $insumos = array();
-
+       $nomeProdutoVenda = $this->findModel(Yii::$app->request->post()['produtovenda'])->nome;
        foreach ($listadeinsumos as  $insumo) {
         array_push($insumos, 
           $model::findOne($insumo->idprodutoInsumo));
@@ -117,6 +120,7 @@ class ProdutoController extends Controller
       return $this->render('listadeinsumos', [
         'insumos' => $insumos,
         'produtosVenda' => $produtosVenda,  
+        'nomeProdutoVenda'=>$nomeProdutoVenda,
         ]); 
     } else {
 
@@ -140,6 +144,9 @@ class ProdutoController extends Controller
 
      $listadeprodutosvenda = $searchModel->searchProdutosVenda(Yii::$app->request->post());
 
+     $nomeInsumo = $this->findModel(Yii::$app->request->post()['idinsumo'])->nome;
+
+
      $produtosVenda = array();
 
      foreach ($listadeprodutosvenda as  $pv) {
@@ -150,6 +157,7 @@ class ProdutoController extends Controller
     return $this->render('listadeprodutosporinsumo', [
       'insumos' => $insumos,
       'produtosVenda' => $produtosVenda,  
+      'nomeInsumo'=>$nomeInsumo,
       ]); 
   } else {
 
@@ -304,4 +312,103 @@ class ProdutoController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
       }
     }
-  }
+
+    public function actionCadastrarprodutovenda()
+    {
+      $model = new Insumos();
+      $produtosvenda = ArrayHelper::map(
+        Produto::findBySql('select * from produto where isInsumo = 0 and  idProduto not in (
+          SELECT idProduto FROM produto RIGHT OUTER join  insumos on idprodutoVenda = idProduto)')->all(), 
+        'idProduto','nome');
+      $insumos = ArrayHelper::map(
+        Produto::find()->where(['isInsumo'=>1])->all(), 
+        'idProduto','nome');
+
+      $settings = Insumos::find()->indexBy('idprodutoVenda')->all();
+
+      if ((Yii::$app->request->post('numeroinputs')) ) {
+//Para modificar acesse o /views/insumos/_form.php
+        return $this->render('/insumos/create', [
+          'model' => $model,
+          'insumos' => $insumos,
+          'produtosvenda' => $produtosvenda,
+          'action'=>'create',
+          ]);
+      }else{
+        //if (Insumos::loadMultiple($settings, Yii::$app->request->post())){
+        if ($model->load(Yii::$app->request->post()) ) {
+
+
+          //  var_dump(Yii::$app->request->post('Insumos')['$i']['quantidade']);
+        //  var_dump(Yii::$app->request->post('Insumos'));
+          $aux = Yii::$app->request->post()['Insumos'];
+          $n = count($aux['idprodutoInsumo']);
+          echo $n;
+          for ($i=0; $i < $n ; $i++) { 
+             /*     echo "idprodutoVenda.:" . $aux['idprodutoVenda'];
+                echo "</br>";
+                echo "idprodutoInsumo.:" . $aux['idprodutoInsumo'][$i];
+                echo "</br>";
+                echo "quantidade.:" . $aux['quantidade'][$i];
+                echo "</br>";
+                echo "unidade.:" . $aux['unidade'][$i];
+                echo "</br>";
+                echo "</br>";*/
+             //  var_dump($aux['quantidade'][$i]);
+                Yii::$app->db->createCommand(
+                  "INSERT INTO insumos
+                  (idprodutoVenda, idprodutoInsumo,
+                    quantidade,unidade ) 
+                VALUES (:idprodutoVenda, :idprodutoInsumo,
+                  :quantidade,:unidade)", [
+                ':idprodutoVenda' => $aux['idprodutoVenda'],
+                ':idprodutoInsumo'=> $aux['idprodutoInsumo'][$i],
+                ':quantidade' => $aux['quantidade'][$i],
+                ':unidade'=> $aux['unidade'][$i],
+                ])->execute();
+              /*  $model->idprodutoInsumo = $aux['idprodutoInsumo'][$i];
+                $model->idprodutoVenda = $aux['idprodutoVenda'];
+                $model->quantidade = $aux['quantidade'][$i];
+                $model->unidade = $aux['unidade'][$i];
+                $model->save(false);
+             */
+              } 
+
+              return $this->redirect(['produto/view', 'id' => $model->idprodutoVenda]);
+              
+           // return $this->redirect(['view', 'idprodutoVenda' => $model->idprodutoVenda, 'idprodutoInsumo' => $model->idprodutoInsumo]);
+            } else {
+              //Para modificar acesse o /views/insumos/_form.php
+              return $this->render('/insumos/create', [
+                'model' => $model,
+                'insumos' => $insumos,
+                'produtosvenda' => $produtosvenda,
+                'action'=>'create',
+                ]);
+            }
+          }
+        }
+
+        public function actionAlterarprodutovenda($idprodutoVenda) 
+        { 
+          $model = $this->findModel($idprodutoVenda, $idprodutoInsumo); 
+
+          $produtosvenda = ArrayHelper::map(
+            Produto::find()->where(['isInsumo'=>0])->all(), 
+            'idProduto','nome');
+          $insumos = ArrayHelper::map(
+            Produto::find()->where(['isInsumo'=>1])->all(), 
+            'idProduto','nome');
+          
+          if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'idprodutoVenda' => $model->idprodutoVenda, 'idprodutoInsumo' => $model->idprodutoInsumo]); 
+          } else {
+            return $this->render('update', [
+              'model' => $model,
+              'insumos' => $insumos,
+              'produtosvenda' => $produtosvenda,
+
+              ]);
+          }
+        }
+      }

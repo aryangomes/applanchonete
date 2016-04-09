@@ -63,8 +63,8 @@ class Produto extends \yii\db\ActiveRecord
         'valorVenda' => Yii::t('app', 'Valor Venda'),
         'isInsumo' => Yii::t('app', 'Is Insumo'),
         'quantidadeMinima' => Yii::t('app', 'Quantidade Minima'),
-        'idCategoria' => Yii::t('app', 'Id Categoria'),
-        'quantidadeEstoque' => Yii::t('app', 'Quantidade Estoque'),
+        'idCategoria' => Yii::t('app', 'Categoria'),
+        'quantidadeEstoque' => Yii::t('app', 'Quantidade em Estoque'),
         'datainicioavaliacao' => Yii::t('app', 'De'),
         'datafimavaliacao' => Yii::t('app', 'Até'),
         'groupbyavaliacao' => Yii::t('app', 'Agrupar por'),
@@ -127,6 +127,12 @@ class Produto extends \yii\db\ActiveRecord
         return $this->hasOne(Categoria::className(), ['idCategoria' => 'idCategoria']);
     }
 
+
+    public function getNomeCategoria()
+    {
+        return Categoria::find()->where(['idCategoria' => $this->idCategoria])->one()->nome;
+    }
+    
 
     public function calculoprecoproduto($idprodutoVenda)
     {

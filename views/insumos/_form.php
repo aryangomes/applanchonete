@@ -26,7 +26,7 @@ use yii\helpers\Url;
 
 		?>
 
-
+		<hr>
 		<?php 
 		echo $form->field($model, 'idprodutoInsumo[]')->widget(Select2::classname(), [
 				//'name'=>'insumos[]',
@@ -63,29 +63,33 @@ use yii\helpers\Url;
 				$o = implode("", $options);
 
 
+				if (isset($action) && $action == 'create') {
 
-				$this->registerJs('var i = 1; $("#btnadd").on("click",function(){'
-					. '$("#input-dinamico").append(\'<div class="form-group field-insumos-idprodutoinsumo required"><label class="control-label" for="insumos-idprodutoinsumo">Insumo</label><select id="idinsumo\'+i+\'" class="form-control" name="Insumos[idprodutoInsumo][]" >'.$o.'</select><div class="help-block"></div></div>\');'
-					. '$("#input-dinamico").append(\'<div class="form-group field-insumos-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Insumos[quantidade][]" value="0" min="0" step="0.1"><div class="help-block"></div></div>\');'
-					. '$("#input-dinamico").append(\'<div class="form-group field-insumos-unidade required"><label class="control-label" for="insumos-unidade\'+i+\'">Unidade</label><select id="insumos-unidade\'+i+\'" class="form-control" name="Insumos[unidade][]"><option value="">Selecione a unidade</option><option value="kg">Kg</option><option value="l">Litros</option><option value="unidade">Unidade</option></select><div class="help-block"></div></div>\');'
-					. '$("#input-dinamico").append(\'<hr>\');'
-					. '$("[name=\'Insumos[idprodutoInsumo][]\']").select2();;' 
-					. '})');
-					?>	
-					
-				</div>
-				<div class="form-group">
-					<?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-					<input class="btn btn-primary" type='button' id='btnadd' value="Adicionar mais insumos">
-				</div>
+					$this->registerJs('var i = 1; $("#btnadd").on("click",function(){'
+						. '$("#input-dinamico").append(\'<div class="form-group field-insumos-idprodutoinsumo required"><label class="control-label" for="insumos-idprodutoinsumo">Insumo</label><select id="idinsumo\'+i+\'" class="form-control" name="Insumos[idprodutoInsumo][]" >'.$o.'</select><div class="help-block"></div></div>\');'
+						. '$("#input-dinamico").append(\'<div class="form-group field-insumos-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Insumos[quantidade][]" value="0" min="0" step="0.1"><div class="help-block"></div></div>\');'
+						. '$("#input-dinamico").append(\'<div class="form-group field-insumos-unidade required"><label class="control-label" for="insumos-unidade\'+i+\'">Unidade</label><select id="insumos-unidade\'+i+\'" class="form-control" name="Insumos[unidade][]"><option value="">Selecione a unidade</option><option value="kg">Kg</option><option value="l">Litros</option><option value="unidade">Unidade</option></select><div class="help-block"></div></div>\');'
+						. '$("#input-dinamico").append(\'<hr>\');'
+						. '$("[name=\'Insumos[idprodutoInsumo][]\']").select2();;' 
+						. '})');
 
-				<?php ActiveForm::end(); ?>
+}
+?>			
+</div>
+<div class="form-group">
+	<?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+	<?php if (isset($action) && $action == 'create') {
+		?><input class="btn btn-primary" type='button' id='btnadd' value="Adicionar mais insumos">
+		<?php } ?>
+	</div>
+
+	<?php ActiveForm::end(); ?>
 
 
-				<?=  Html::beginForm('/applanchonete/web/insumos/create','post',['id'=>'idd']) ?>
-				<div id="dynamicInput">
-				</br>
+	<?=  Html::beginForm('/applanchonete/web/insumos/create','post',['id'=>'idd']) ?>
+	<div id="dynamicInput">
+	</br>
 
-			</div>
-			<?= Html::endForm() ?>
-		</div>
+</div>
+<?= Html::endForm() ?>
+</div>

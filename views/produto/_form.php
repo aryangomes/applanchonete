@@ -25,7 +25,7 @@ use kartik\widgets\Select2;
         ]
         ]); ?>
 
-    <?=  $form->field($model, 'isInsumo')->widget(SwitchInput::classname(), [
+    <?php /* echo $form->field($model, 'isInsumo')->widget(SwitchInput::classname(), [
         'pluginOptions' => [
         'size' => 'mini',
         'onText' => 'É insumo',
@@ -33,30 +33,33 @@ use kartik\widgets\Select2;
 
         ],
 
-        ]); ?>
+        ]); */
+//Usando o dropDownList pois o SwitchInput está bugado
+echo $form->field($model, 'isInsumo')->dropDownList([1=>'Sim',0=>'Não'],['prompt'=>'Informe se o produto cadastrado é insumo']) 
+?>
 
-        <?= $form->field($model, 'quantidadeMinima')->textInput([ 'type' => 'number', 'value'=>0]) ?>
+<?= $form->field($model, 'quantidadeMinima')->textInput([ 'type' => 'number', 'value'=>0]) ?>
 
-        <?= 
-        $form->field($model, 'idCategoria')->widget(Select2::classname(), [
-            'data' => $categorias,
-            'options' => ['placeholder' => 'Seleciona a categoria'],
-            'pluginOptions' => [
+<?= 
+$form->field($model, 'idCategoria')->widget(Select2::classname(), [
+    'data' => $categorias,
+    'options' => ['placeholder' => 'Seleciona a categoria'],
+    'pluginOptions' => [
            // 'allowClear' => true
-            ],
-            ]);
-            ?>
+    ],
+    ]);
+    ?>
 
-            <?= $form->field($model, 'quantidadeEstoque')->textInput([ 'type' => 'number', 'value'=>0]) ?>
-
-
+    <?= $form->field($model, 'quantidadeEstoque')->textInput([ 'type' => 'number', 'value'=>0]) ?>
 
 
 
-            <div class="form-group">
-                <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-            </div>
 
-            <?php ActiveForm::end(); ?>
 
-        </div>
+    <div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+
+</div>

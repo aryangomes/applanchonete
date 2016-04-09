@@ -16,7 +16,7 @@ use kartik\widgets\Select2;
 
 	<?php $form = ActiveForm::begin(); ?>
 
-	<?= $form->field($model, 'datacompra')->widget(DateControl::classname(), [
+	<?= $form->field($model, 'dataCompra')->widget(DateControl::classname(), [
 		'type'=>DateControl::FORMAT_DATE,
 		'ajaxConversion'=>false,
 		'options' => [
@@ -29,26 +29,26 @@ use kartik\widgets\Select2;
 		'language'=>'pt',
 		]); ?>
 
-	<?= $form->field($model, 'totalcompra')->widget(MaskMoney::classname(), [
+	<?php /* $form->field($model, 'totalCompra')->widget(MaskMoney::classname(), [
 		'pluginOptions' => [
 		'prefix' => 'R$ ',
 		
 		'allowNegative' => false,
 		]
-		]); ?>
+		]); */?>
 
-	<?= $form->field($model, 'fornecedor_idFornecedor')->widget(Select2::classname(), [
-		'data' => $fornecedores,
-		'options' => ['placeholder' => 'Selecione o fornecedore'],
-		'pluginOptions' => [
-		'allowClear' => true
-		],
-		]); ?>
-		
-		<div class="form-group">
-			<?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-		</div>
+<?php /* $form->field($model, 'fornecedor_idFornecedor')->widget(Select2::classname(), [
+	'data' => $fornecedores,
+	'options' => ['placeholder' => 'Selecione o fornecedore'],
+	'pluginOptions' => [
+	'allowClear' => true
+	],
+	]);*/ ?>
 
-		<?php ActiveForm::end(); ?>
-
+	<div class="form-group">
+		<?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 	</div>
+
+	<?php ActiveForm::end(); ?>
+
+</div>

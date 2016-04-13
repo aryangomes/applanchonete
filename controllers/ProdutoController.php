@@ -43,6 +43,7 @@ class ProdutoController extends Controller
     'listadeprodutosporinsumo',
     'produtosvenda',
     'cadastrarprodutovenda',
+    'alterarprodutovenda',
     ],
     
     'index'=>'index-produto',
@@ -55,6 +56,7 @@ class ProdutoController extends Controller
     'listadeprodutosporinsumo'=>'listadeprodutosporinsumo',
     'produtosvenda'=>'produtosvenda',
     'cadastrarprodutovenda'=>'cadastrarprodutovenda',
+    'alterarprodutovenda'=>'alterarprodutovenda',
     ],
     ],
     ];
@@ -183,8 +185,8 @@ class ProdutoController extends Controller
         'idCategoria','nome');
       if ($model->load(Yii::$app->request->post()) && $model->save()) {
         return $this->redirect(['view', 'id' => $model->idProduto]);
-      } else {
 
+      } else {
         return $this->render('create', [
           'model' => $model,
           'categorias' => $categorias,
@@ -366,7 +368,7 @@ class ProdutoController extends Controller
                 ':quantidade' => $aux['quantidade'][$i],
                 ':unidade'=> $aux['unidade'][$i],
                 ])->execute();
-              /*  $model->idprodutoInsumo = $aux['idprodutoInsumo'][$i];
+             /*  $model->idprodutoInsumo = $aux['idprodutoInsumo'][$i];
                 $model->idprodutoVenda = $aux['idprodutoVenda'];
                 $model->quantidade = $aux['quantidade'][$i];
                 $model->unidade = $aux['unidade'][$i];
@@ -391,24 +393,77 @@ class ProdutoController extends Controller
 
         public function actionAlterarprodutovenda($idprodutoVenda) 
         { 
-          $model = $this->findModel($idprodutoVenda, $idprodutoInsumo); 
+         $model = new Insumos();//::findOne(['idprodutoVenda' => $idprodutoVenda, 'idprodutoInsumo' => $idprodutoInsumo]); 
+         $models = Insumos::find()->where(['idprodutoVenda' => $idprodutoVenda])->all();
 
-          $produtosvenda = ArrayHelper::map(
-            Produto::find()->where(['isInsumo'=>0])->all(), 
-            'idProduto','nome');
-          $insumos = ArrayHelper::map(
-            Produto::find()->where(['isInsumo'=>1])->all(), 
-            'idProduto','nome');
-          
-          if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'idprodutoVenda' => $model->idprodutoVenda, 'idprodutoInsumo' => $model->idprodutoInsumo]); 
-          } else {
-            return $this->render('update', [
-              'model' => $model,
-              'insumos' => $insumos,
-              'produtosvenda' => $produtosvenda,
+         $modelProdutoVenda = $this::findModel($idprodutoVenda);
+         $produtosvenda = ArrayHelper::map(
+          Produto::findBySql('select * from produto where isInsumo = 0 and  idProduto not in (
+            SELECT idProduto FROM produto RIGHT OUTER join  insumos on idprodutoVenda = idProduto)')->all(), 
+          'idProduto','nome');
+         $insumos = ArrayHelper::map(
+          Produto::find()->where(['isInsumo'=>1])->all(), 
+          'idProduto','nome');
 
-              ]);
+         $settings = Insumos::find()->indexBy('idprodutoVenda')->all();
+
+        //if (Insumos::loadMultiple($settings, Yii::$app->request->post())){
+         if ($model->load(Yii::$app->request->post()) ) {
+
+          var_dump(Yii::$app->request->post());
+          //  var_dump(Yii::$app->request->post('Insumos')['$i']['quantidade']);
+        //  var_dump(Yii::$app->request->post('Insumos'));
+          $aux = Yii::$app->request->post()['Insumos'];
+          $n = count(Yii::$app->request->post()['idprodutoInsumo']);
+           // echo $n;
+          Yii::$app->db->createCommand(
+            "DELETE FROM insumos WHERE idprodutoVenda = :idprodutoVenda", [
+            ':idprodutoVenda' => $idprodutoVenda,
+            ])->execute();
+          for ($i=0; $i < $n ; $i++) { 
+             /*     echo "idprodutoVenda.:" . $aux['idprodutoVenda'];
+                echo "</br>";
+                echo "idprodutoInsumo.:" . $aux['idprodutoInsumo'][$i];
+                echo "</br>";
+                echo "quantidade.:" . $aux['quantidade'][$i];
+                echo "</br>";
+                echo "unidade.:" . $aux['unidade'][$i];
+                echo "</br>";
+                echo "</br>";*/
+             //  var_dump($aux['quantidade'][$i]);
+                Yii::$app->db->createCommand(
+                  "INSERT INTO insumos
+                  (idprodutoVenda, idprodutoInsumo,
+                    quantidade,unidade ) 
+                VALUES (:idprodutoVenda, :idprodutoInsumo,
+                  :quantidade,:unidade)", [
+                ':idprodutoVenda' => $idprodutoVenda,
+                ':idprodutoInsumo'=> Yii::$app->request->post()['idprodutoInsumo'][$i],
+                ':quantidade' => $aux['quantidade'][$i],
+                ':unidade'=> $aux['unidade'][$i],
+                ])->execute();
+              /* $model->idprodutoInsumo = $aux['idprodutoInsumo'][$i];
+                $model->idprodutoVenda = $aux['idprodutoVenda'];
+                $model->quantidade = $aux['quantidade'][$i];
+                $model->unidade = $aux['unidade'][$i];
+                $model->save(false);
+             */
+              } 
+
+              return $this->redirect(['produto/view', 'id' => $idprodutoVenda]);
+              
+           // return $this->redirect(['view', 'idprodutoVenda' => $model->idprodutoVenda, 'idprodutoInsumo' => $model->idprodutoInsumo]);
+            } else {
+
+              //Para modificar acesse o /views/insumos/_form.php
+              return $this->render('/produto/alterarprodutovenda', [
+                'models' => $models,
+                'modelProdutoVenda' => $modelProdutoVenda,
+                'insumos' => $insumos,
+                'produtosvenda' => $produtosvenda,
+                'idprodutoVenda'=>$idprodutoVenda,
+                ]);
+            }
+
           }
         }
-      }

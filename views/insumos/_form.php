@@ -7,8 +7,28 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model app\models\Insumos */
 /* @var $form yii\widgets\ActiveForm */
-?>
+$action = Yii::$app->controller->action->id;
 
+switch ($action) {
+	case 'update':
+	$idprodutoInsumo = 'idprodutoInsumo';
+	$quantidade = 'quantidade';
+	$unidade = 'unidade';
+	break;
+	
+	case 'create':
+	$idprodutoInsumo = 'idprodutoInsumo[]';
+	$quantidade = 'quantidade[]';
+	$unidade = 'unidade[]';
+	break;
+	default:
+	$idprodutoInsumo = 'idprodutoInsumo[]';
+	$quantidade = 'quantidade[]';
+	$unidade = 'unidade[]';
+	break;
+}
+
+?>
 <div class="insumos-form">
 
 	<?php $form = ActiveForm::begin(); ?>
@@ -18,6 +38,7 @@ use yii\helpers\Url;
 	<?= 
 	$form->field($model, 'idprodutoVenda')->widget(Select2::classname(), [
 		'data' => $produtosvenda,
+		'disabled'=>($action == 'update') ? true : false,
 		'options' => ['placeholder' => 'Selecione o produto de venda'],
 		'pluginOptions' => [
 		'allowClear'=>true,
@@ -28,9 +49,10 @@ use yii\helpers\Url;
 
 		<hr>
 		<?php 
-		echo $form->field($model, 'idprodutoInsumo[]')->widget(Select2::classname(), [
+		echo $form->field($model, $idprodutoInsumo)->widget(Select2::classname(), [
 				//'name'=>'insumos[]',
 			'data' => $insumos,
+
 			'options' => ['placeholder' => 'Selecione o insumo',
 			'id'=>'idinsumo0',
 			],
@@ -41,13 +63,13 @@ use yii\helpers\Url;
 			]);
 
 
-		echo $form->field($model, 'quantidade[]')->textInput([ 'type' => 'number', 
-			'value'=>0, 'min'=>0, 'step'=>'0.1','id'=>'quantidade0']);
+		echo $form->field($model,  $quantidade)->textInput([ 'type' => 'number', 
+			'value'=>0, 'min'=>0, 'step'=>'0.1','id'=>'quantidade0','value' => Yii::$app->formatter->asDecimal($model->quantidade)]);
 
-		echo $form->field($model, 'unidade[]')->dropDownList(
+		echo $form->field($model, $unidade)->dropDownList(
 			['kg'=> 'Kg', 'l'=>'Litros', 'unidade'=>'Unidade'],
 			['prompt'=>'Selecione a unidade']); 
-		
+
 			?>	
 			<hr>
 			<div class="table-responsive" id="input-dinamico">
@@ -63,7 +85,7 @@ use yii\helpers\Url;
 				$o = implode("", $options);
 
 
-				if (isset($action) && $action == 'create') {
+				if (isset($action) && $action == 'cadastrarprodutovenda') {
 
 					$this->registerJs('var i = 1; $("#btnadd").on("click",function(){'
 						. '$("#input-dinamico").append(\'<div class="form-group field-insumos-idprodutoinsumo required"><label class="control-label" for="insumos-idprodutoinsumo">Insumo</label><select id="idinsumo\'+i+\'" class="form-control" name="Insumos[idprodutoInsumo][]" >'.$o.'</select><div class="help-block"></div></div>\');'
@@ -74,11 +96,13 @@ use yii\helpers\Url;
 						. '})');
 
 }
+
+
 ?>			
 </div>
 <div class="form-group">
 	<?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-	<?php if (isset($action) && $action == 'create') {
+	<?php if (isset($action) && $action == 'cadastrarprodutovenda') {
 		?><input class="btn btn-primary" type='button' id='btnadd' value="Adicionar mais insumos">
 		<?php } ?>
 	</div>

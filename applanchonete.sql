@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 09-Abr-2016 às 05:10
+-- Generation Time: 13-Abr-2016 às 05:41
 -- Versão do servidor: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -128,7 +128,9 @@ CREATE TABLE IF NOT EXISTS `auth_item` (
 
 INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`) VALUES
 ('admin', 1, 'Admin', NULL, NULL, NULL, NULL),
+('alterarprodutovenda', 103, 'Alterar Produto Venda', NULL, NULL, NULL, NULL),
 ('avaliacaoproduto', 99, 'Avaliar Produto', NULL, NULL, NULL, NULL),
+('cadastrarprodutovenda', 102, 'Cadastrar Produto Venda', NULL, NULL, NULL, NULL),
 ('caixa', 8, 'Caixa', NULL, NULL, NULL, NULL),
 ('cardapio', 38, 'Cardapio', NULL, NULL, NULL, NULL),
 ('comanda', 44, 'Comanda', NULL, NULL, NULL, NULL),
@@ -141,7 +143,7 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('create-destaque', 52, 'Criar Destaque', NULL, NULL, NULL, NULL),
 ('create-fornecedor', 17, 'Criar Fornecedor', NULL, NULL, NULL, NULL),
 ('create-historicosituacao', 58, 'Criar Histórico de Situação', NULL, NULL, NULL, NULL),
-('create-insumos', 104, 'Criar Insumos', NULL, NULL, NULL, NULL),
+('create-insumos', 106, 'Criar Insumos', NULL, NULL, NULL, NULL),
 ('create-itemcardapio', 64, 'Criar Item-Cardapio', NULL, NULL, NULL, NULL),
 ('create-loja', 70, 'Criar Loja', NULL, NULL, NULL, NULL),
 ('create-mesa', 76, 'Criar Mesa', NULL, NULL, NULL, NULL),
@@ -158,7 +160,7 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('delete-destaque', 51, 'Deletar Destaque', NULL, NULL, NULL, NULL),
 ('delete-fornecedor', 19, 'Deletar Fornecedor', NULL, NULL, NULL, NULL),
 ('delete-historicosituacao', 57, 'Deletar Histórico Situação', NULL, NULL, NULL, NULL),
-('delete-insumos', 107, 'Deletar Insumos', NULL, NULL, NULL, NULL),
+('delete-insumos', 109, 'Deletar Insumos', NULL, NULL, NULL, NULL),
 ('delete-itemcardapio', 63, 'Delete Item-Cardapio', NULL, NULL, NULL, NULL),
 ('delete-loja', 69, 'Deletar Loja', NULL, NULL, NULL, NULL),
 ('delete-mesa', 75, 'Deletar Mesa', NULL, NULL, NULL, NULL),
@@ -179,7 +181,7 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('index-destaque', 53, 'Listar Destaques', NULL, NULL, NULL, NULL),
 ('index-fornecedor', 15, 'Listar Fornecedores', NULL, NULL, NULL, NULL),
 ('index-historicosituacao', 59, 'Listar Histórico de Situação', NULL, NULL, NULL, NULL),
-('index-insumos', 103, 'Listar Insumos', NULL, NULL, NULL, NULL),
+('index-insumos', 105, 'Listar Insumos', NULL, NULL, NULL, NULL),
 ('index-itemcardapio', 65, 'Listar Item-Cardapio', NULL, NULL, NULL, NULL),
 ('index-loja', 71, 'Listar Lojas', NULL, NULL, NULL, NULL),
 ('index-mesa', 77, 'Listar Mesas', NULL, NULL, NULL, NULL),
@@ -188,7 +190,7 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('index-produto', 95, 'Listar Produtos', NULL, NULL, NULL, NULL),
 ('index-relatorio', 21, 'Listar Relatórios', NULL, NULL, NULL, NULL),
 ('index-user', 33, 'Listar Usuários', NULL, NULL, NULL, NULL),
-('insumos', 102, 'Insumos', NULL, NULL, NULL, NULL),
+('insumos', 104, 'Insumos', NULL, NULL, NULL, NULL),
 ('itemcardapio', 62, 'Item Cardapio', NULL, NULL, NULL, NULL),
 ('listadeinsumos', 98, 'Listar Insumos', NULL, NULL, NULL, NULL),
 ('listadeprodutosporinsumo', 100, 'Listar Produtos de Venda por Insumo', NULL, NULL, NULL, NULL),
@@ -207,7 +209,7 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('update-destaque', 54, 'Atualizar Destaque', NULL, NULL, NULL, NULL),
 ('update-fornecedor', 18, 'Editar Fornecedor', NULL, NULL, NULL, NULL),
 ('update-historicosituacao', 60, 'Atualizar Histórico de Situação', NULL, NULL, NULL, NULL),
-('update-insumos', 106, 'Atualizar Insumos', NULL, NULL, NULL, NULL),
+('update-insumos', 108, 'Atualizar Insumos', NULL, NULL, NULL, NULL),
 ('update-itemcardapio', 66, 'Atualizar Item-Cardapio', NULL, NULL, NULL, NULL),
 ('update-loja', 72, 'Atualizar Loja', NULL, NULL, NULL, NULL),
 ('update-mesa', 78, 'Atualizar Mesa', NULL, NULL, NULL, NULL),
@@ -225,7 +227,7 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('view-destaque', 55, 'Visualizar Destaque', NULL, NULL, NULL, NULL),
 ('view-fornecedor', 16, 'Visualizar Fornecedor', NULL, NULL, NULL, NULL),
 ('view-historicosituacao', 61, 'Listar Histórico de Situação', NULL, NULL, NULL, NULL),
-('view-insumos', 105, 'Visualizar Insumos', NULL, NULL, NULL, NULL),
+('view-insumos', 107, 'Visualizar Insumos', NULL, NULL, NULL, NULL),
 ('view-itemcardapio', 67, 'Visualizar Item-Cardapio', NULL, NULL, NULL, NULL),
 ('view-loja', 73, 'Visualizar Loja', NULL, NULL, NULL, NULL),
 ('view-mesa', 79, 'Visualizar Mesa', NULL, NULL, NULL, NULL),
@@ -251,7 +253,9 @@ CREATE TABLE IF NOT EXISTS `auth_item_child` (
 --
 
 INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
+('produto', 'alterarprodutovenda'),
 ('produto', 'avaliacaoproduto'),
+('produto', 'cadastrarprodutovenda'),
 ('caixa', 'create-caixa'),
 ('cardapio', 'create-cardapio'),
 ('comanda', 'create-comanda'),
@@ -563,7 +567,10 @@ INSERT INTO `insumos` (`idprodutoVenda`, `idprodutoInsumo`, `quantidade`, `unida
 (11, 13, 1, 'unidade'),
 (14, 7, 0.2, 'kg'),
 (14, 9, 1, 'unidade'),
-(14, 12, 0.4, 'kg');
+(14, 12, 0.4, 'kg'),
+(17, 7, 0.3, 'kg'),
+(17, 9, 1, 'unidade'),
+(17, 12, 0.5, 'kg');
 
 -- --------------------------------------------------------
 
@@ -714,7 +721,7 @@ CREATE TABLE IF NOT EXISTS `produto` (
   `quantidadeMinima` float NOT NULL DEFAULT '0',
   `idCategoria` int(11) NOT NULL,
   `quantidadeEstoque` float DEFAULT '0' COMMENT 'Valor deve ser maior que 0'
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `produto`
@@ -729,7 +736,8 @@ INSERT INTO `produto` (`idProduto`, `nome`, `valorVenda`, `isInsumo`, `quantidad
 (12, 'Hambúrguer ', 0, 1, 0, 3, 20),
 (13, 'Ovo', 0, 1, 0, 3, 20),
 (14, 'Sanduíche C', 2, 0, 0, 5, 0),
-(15, 'Sanduíche D', 2, 0, 0, 5, 0);
+(15, 'Sanduíche D', 2, 0, 0, 5, 0),
+(17, 'Sanduíche E', 4, 0, 0, 5, 0);
 
 -- --------------------------------------------------------
 
@@ -877,7 +885,7 @@ INSERT INTO `user` (`id`, `role_id`, `status`, `email`, `username`, `password`, 
 (43, 3, 1, 'funcionario1@sigir.com', 'funcionario01', '$2y$13$MR/pQJFMZRJZkZj4.xg0qOtdjJK6NMaMo5jF4bVt1tPHf7sjr0QHi', 'JoIVj9p9IWlVklx1TZ00otnbcr-Gmao7', 'hAYvnkL8pFzP6FGMH7eKw7UmisflzyjX', '::1', '2016-02-05 03:48:25', '::1', '2016-02-01 01:00:46', '2016-02-01 04:23:48', NULL, NULL),
 (44, 2, 1, 'gerente1@sigir.com', 'gerente', '$2y$13$mujgA7j0OsPxUr0gYAao3OSk1yykiEFfxqXis7m.lzvZ3EWID1jOG', 'c4rPsYI-Q-WNI9GgYyTvbZr_ynwyuAlY', 'nAzvxmIB3bTRTW9d23dn1isBFBr6s7RI', '::1', '2016-02-09 23:37:54', '::1', '2016-02-01 01:01:26', '2016-02-09 07:11:09', NULL, NULL),
 (80, 2, 1, 'teste@teste.com', NULL, '$2y$13$Up2wVYVIsBKk3oij/H/8l.5hPym80.3NTFpGlc97cSJg32EqNGn4y', 'EXAFyYZpG5QVTcGx6yeFrlDOl9OizMuM', 'ZdjGbu9FKlXtF5mYt1A4CcShpkEaTd9i', '::1', '2016-02-08 01:22:20', '::1', '2016-02-05 03:30:47', '2016-02-05 05:19:16', NULL, NULL),
-(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-04-09 04:43:38', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
+(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-04-13 01:21:35', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
 (85, 2, 1, 'compras@compras.com', 'Compra', '$2y$13$fcSVvuFUmhH.3iZ0wTtoZOpkVTt1tjAg2fO2thZog9QwMUIEUUzKu', 'tVH-bh0RpqSA1RgMqIR4rqcKtKiGhvPB', '165xJKTAkwnR1QcUd6wQ-fkU8Q98od2O', '::1', '2016-02-12 04:37:12', '::1', '2016-02-10 06:13:27', '2016-02-13 17:20:37', NULL, NULL),
 (104, 2, 1, 'teste3@teste.com', 'teste3', '$2y$13$4MrmhHyYwYzQ5uFHtr8rpeUNCgFCZiHR0410sdcJBABbm/zl/1Z..', 'ndzPwraET0uG3RZMtH23_-7IdxZtiRaH', 'nO74vFAzRakvIVNVrrJLrl4CU9718fzh', '::1', '2016-02-14 05:59:05', '::1', '2016-02-14 05:09:25', '2016-02-14 06:02:05', NULL, NULL),
 (108, 2, 1, 'teste4@teste.com', 'teste44', '$2y$13$COZu07CnXAVlfSQJwK6ng.LnOd43dGyN29Tw/FH13Mtoa/zTtlGwy', 'Hs7QEYX6yxldLcpIVPjwNoBNBY5zWDSa', 'Ib_71XRL0h05Yr1STAjJwv9Y3sfJOIW4', '::1', '2016-02-14 06:35:23', '::1', '2016-02-14 06:30:37', '2016-02-14 06:35:48', NULL, NULL),
@@ -1188,7 +1196,7 @@ ALTER TABLE `pagamento`
 -- AUTO_INCREMENT for table `produto`
 --
 ALTER TABLE `produto`
-  MODIFY `idProduto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
+  MODIFY `idProduto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `profile`
 --

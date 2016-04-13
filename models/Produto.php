@@ -44,7 +44,7 @@ class Produto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-        [['nome', 'valorVenda', 'isInsumo', 'idCategoria','datainicioavaliacao','datafimavaliacao','groupbyavaliacao']
+        [['nome', 'valorVenda', 'isInsumo', 'idCategoria']
         , 'required'],
         [['valorVenda', 'quantidadeMinima', 'quantidadeEstoque'], 'number'],
         [['isInsumo', 'idCategoria'], 'integer'],

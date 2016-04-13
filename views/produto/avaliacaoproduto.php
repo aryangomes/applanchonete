@@ -87,7 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
       if (count($qtdvendas) <= 0) {
         ?>
         <div class="alert alert-danger">
-          Não há vendas cadastradas para o produto <?= $model->nome ?> nesse período
+          Não há vendas cadastradas para o produto <b><?= $model->nome ?></b> nesse período
         </div>
         <?php
       }

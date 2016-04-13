@@ -34,8 +34,15 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'quantidadeEstoque',
 
         ['class' => 'yii\grid\ActionColumn',
-        'template' => '{view} {update} {delete} {avaliarproduto}',
+        'template' => '{view} {update} {alterarprodutovenda} {delete} {avaliarproduto}',
         'buttons' => [
+        'alterarprodutovenda' => function ($url, $model) {
+            return $model->isInsumo ?'' : Html::a('<i class="fa fa-pencil-square-o"></i>',
+                Url::toRoute(['produto/alterarprodutovenda', 'idprodutoVenda'=>$model->idProduto]),
+                [
+                'title' => Yii::t('app', 'Alterar Insumos do Produto Venda'),
+                ]);
+        },
         'avaliarproduto' => function ($url, $model) {
             return $model->isInsumo ?'' : Html::a('<i class="fa fa-line-chart"></i>',
                 Url::toRoute(['produto/avaliacaoproduto', 'idproduto'=>$model->idProduto]),

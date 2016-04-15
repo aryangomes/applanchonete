@@ -21,8 +21,8 @@ $module = $this->context->module;
 $this->title = Yii::t('user', 'Register');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-     <?= Html::jsFile("/applanchonete/web/admin/js/jquery.js") ?>
-
+<?= Html::jsFile("/applanchonete/web/admin/js/jquery.js") ?>
+<?= Html::jsFile("/applanchonete/web/admin/js/bootstrap.js") ?>
 
 
 <div class="user-default-register">
@@ -179,73 +179,73 @@ echo SortableInput::widget([
   'sortstart' => "function() { 
     console.log('sortstart'); 
   }",
-   'sortstop' => "function() { 
+  'sortstop' => "function() { 
     console.log('sortstop'); 
   }",
   'sortupdate' => "
 
   function(e, ui) {
-  console.log('e.data:' + e.data); 
- console.log('e.type: ' + e.type); 
+    console.log('e.data:' + e.data); 
+    console.log('e.type: ' + e.type); 
     if (ui.item.data().name == 'despesa') {
      var arraydespesavalues = ['index-despesa','view-despesa',
      'create-despesa','update-despesa','delete-despesa'];
      var arraydespesatext = ['Listar','Visualizar','Criar','Editar','Deletar'];
 
-  var aux = [];
- var auxtext = [];
- for (i = 0; i < arraydespesavalues.length; i++) { 
-  if (arrayvalues.indexOf(arraydespesavalues[i]) < 0) {
-  
-    aux.push(arraydespesavalues[i]);
-    auxtext.push(arraydespesatext[i]);
-   
-  }
-}
-for (i = 0; i < aux.length; i++) { 
- arrayvalues.push(aux[i]);
-}
+     var aux = [];
+     var auxtext = [];
+     for (i = 0; i < arraydespesavalues.length; i++) { 
+      if (arrayvalues.indexOf(arraydespesavalues[i]) < 0) {
+        
+        aux.push(arraydespesavalues[i]);
+        auxtext.push(arraydespesatext[i]);
+        
+      }
+    }
+    for (i = 0; i < aux.length; i++) { 
+     arrayvalues.push(aux[i]);
+   }
 
-$(\"[data-name=\'despesa\']\").text('Despesa (Listar, Visualizar, Criar, Editar, Deletar)');
+   $(\"[data-name=\'despesa\']\").text('Despesa (Listar, Visualizar, Criar, Editar, Deletar)');
 
-$('input[name=\"User[role_id]\"]').val(arrayuservalues);
+   $('input[name=\"User[role_id]\"]').val(arrayuservalues);
 
-$('li').filter('[data-name=\"index-despesa\"]').remove();
-$('li').filter('[data-name=\"view-despesa\"]').remove();
-$('li').filter('[data-name=\"create-despesa\"]').remove();
-$('li').filter('[data-name=\"update-despesa\"]').remove();
-$('li').filter('[data-name=\"delete-despesa\"]').remove();
-$('#despesa-sortable li').remove();
-  }
-  else if (ui.item.data().name == 'caixa') {
+   $('li').filter('[data-name=\"index-despesa\"]').remove();
+   $('li').filter('[data-name=\"view-despesa\"]').remove();
+   $('li').filter('[data-name=\"create-despesa\"]').remove();
+   $('li').filter('[data-name=\"update-despesa\"]').remove();
+   $('li').filter('[data-name=\"delete-despesa\"]').remove();
+   $('#despesa-sortable li').remove();
+ }
+ else if (ui.item.data().name == 'caixa') {
    var arraycaixavalues = ['index-caixa','view-caixa',
    'create-caixa','update-caixa','delete-caixa'];
    var arraycaixatext = ['Listar','Visualizar','Criar','Editar','Deletar'];
 
-var aux = [];
- var auxtext = [];
- for (i = 0; i < arraycaixavalues.length; i++) { 
-  if (arrayvalues.indexOf(arraycaixavalues[i]) < 0) {
-  
-    aux.push(arraycaixavalues[i]);
-    auxtext.push(arraycaixatext[i]);
-   
+   var aux = [];
+   var auxtext = [];
+   for (i = 0; i < arraycaixavalues.length; i++) { 
+    if (arrayvalues.indexOf(arraycaixavalues[i]) < 0) {
+      
+      aux.push(arraycaixavalues[i]);
+      auxtext.push(arraycaixatext[i]);
+      
+    }
   }
-}
-for (i = 0; i < aux.length; i++) { 
- arrayvalues.push(aux[i]);
-}
+  for (i = 0; i < aux.length; i++) { 
+   arrayvalues.push(aux[i]);
+ }
 
-$(\"[data-name=\'caixa\']\").text('Caixa (Listar, Visualizar, Criar, Editar, Deletar)');
+ $(\"[data-name=\'caixa\']\").text('Caixa (Listar, Visualizar, Criar, Editar, Deletar)');
 
-$('input[name=\"User[role_id]\"]').val(arrayuservalues);
+ $('input[name=\"User[role_id]\"]').val(arrayuservalues);
 
-$('li').filter('[data-name=\"index-caixa\"]').remove();
-$('li').filter('[data-name=\"view-caixa\"]').remove();
-$('li').filter('[data-name=\"create-caixa\"]').remove();
-$('li').filter('[data-name=\"update-caixa\"]').remove();
-$('li').filter('[data-name=\"delete-caixa\"]').remove();
-$('#caixa-sortable li').remove();
+ $('li').filter('[data-name=\"index-caixa\"]').remove();
+ $('li').filter('[data-name=\"view-caixa\"]').remove();
+ $('li').filter('[data-name=\"create-caixa\"]').remove();
+ $('li').filter('[data-name=\"update-caixa\"]').remove();
+ $('li').filter('[data-name=\"delete-caixa\"]').remove();
+ $('#caixa-sortable li').remove();
 }
 
 else if (ui.item.data().name == 'compra') {
@@ -253,14 +253,14 @@ else if (ui.item.data().name == 'compra') {
  'create-compra','update-compra','delete-compra'];
  var arraycompratext = ['Listar','Visualizar','Criar','Editar','Deletar'];
 
-var aux = [];
+ var aux = [];
  var auxtext = [];
  for (i = 0; i < arraycompravalues.length; i++) { 
   if (arrayvalues.indexOf(arraycompravalues[i]) < 0) {
-  
+    
     aux.push(arraycompravalues[i]);
     auxtext.push(arraycompratext[i]);
-   
+    
   }
 }
 for (i = 0; i < aux.length; i++) { 
@@ -343,8 +343,8 @@ $('#fornecedor-sortable li').remove();
 }
 
 else if (ui.item.data().name == 'user') {
-    
-    
+  
+  
  
  /*     $(this).appendTo($('#w6 li').text('Listar Usuário'));
  $(this).appendTo($('#w6 li').text('Visualizar Usuário'));
@@ -417,7 +417,7 @@ var sortedIDs = $( this ).sortable( 'toArray' );
 
 
 ]);
- echo "<div class='col-sm-12'>";
+echo "<div class='col-sm-12'>";
 
 for ($i=0; $i < count($permissoes) ; $i++) { 
  echo '<div class="col-sm-2">';
@@ -444,7 +444,7 @@ for ($i=0; $i < count($permissoes) ; $i++) {
 
 
 }
- echo '</div>';
+echo '</div>';
 ?>
 
 <?php /* uncomment if you want to add profile fields here
@@ -458,7 +458,7 @@ for ($i=0; $i < count($permissoes) ; $i++) {
             <br/><br/>
             <?= Html::a(Yii::t('user', 'Login'), ["/user/login"],  ['class' => 'btn btn-primary btn-block']) ?>
           </div>
-           <?php // Html::resetButton('Resetar', ['class' => 'btn btn-primary btn-block']) ?>
+          <?php // Html::resetButton('Resetar', ['class' => 'btn btn-primary btn-block']) ?>
 
         </div>
 
@@ -476,4 +476,4 @@ for ($i=0; $i < count($permissoes) ; $i++) {
 
     </div>
     
-  
+    

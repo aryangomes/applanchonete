@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 use kartik\widgets\Select2;
 use yii\widgets\ActiveForm;
@@ -35,9 +36,9 @@ $this->title = 'Lista de insumos de um Produto';
 
         <?php 
         if (isset($insumos)) {
-            ?> <div class="panel-heading">Insumos de <?= $nomeProdutoVenda ?></div> <?php
+            ?> <div class="panel-heading">Insumos de <?= $produtoVenda->nome ?></div> <?php
             foreach ($insumos as $insumo) {
-                ?> <div class="panel-body"><?= $insumo->nome ?></div><?php
+                ?> <div class="panel-body"><?= Html::a($insumo->nome,Url::toRoute(['/insumos/update','idprodutoVenda'=>$produtoVenda->idProduto,'idprodutoInsumo'=>$insumo->idProduto])) ?></div><?php
             }
         }
 

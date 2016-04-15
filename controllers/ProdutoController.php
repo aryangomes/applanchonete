@@ -113,7 +113,7 @@ class ProdutoController extends Controller
        $listadeinsumos = $searchModel->searchInsumos(Yii::$app->request->post());
 
        $insumos = array();
-       $nomeProdutoVenda = $this->findModel(Yii::$app->request->post()['produtovenda'])->nome;
+       $produtoVenda = $this->findModel(Yii::$app->request->post()['produtovenda']);
        foreach ($listadeinsumos as  $insumo) {
         array_push($insumos, 
           $model::findOne($insumo->idprodutoInsumo));
@@ -122,7 +122,7 @@ class ProdutoController extends Controller
       return $this->render('listadeinsumos', [
         'insumos' => $insumos,
         'produtosVenda' => $produtosVenda,  
-        'nomeProdutoVenda'=>$nomeProdutoVenda,
+        'produtoVenda'=>$produtoVenda,
         ]); 
     } else {
 
@@ -345,7 +345,7 @@ class ProdutoController extends Controller
         //  var_dump(Yii::$app->request->post('Insumos'));
           $aux = Yii::$app->request->post()['Insumos'];
           $n = count($aux['idprodutoInsumo']);
-          echo $n;
+      //    echo $n;
           for ($i=0; $i < $n ; $i++) { 
              /*     echo "idprodutoVenda.:" . $aux['idprodutoVenda'];
                 echo "</br>";
@@ -357,17 +357,21 @@ class ProdutoController extends Controller
                 echo "</br>";
                 echo "</br>";*/
              //  var_dump($aux['quantidade'][$i]);
-                Yii::$app->db->createCommand(
-                  "INSERT INTO insumos
-                  (idprodutoVenda, idprodutoInsumo,
-                    quantidade,unidade ) 
-                VALUES (:idprodutoVenda, :idprodutoInsumo,
-                  :quantidade,:unidade)", [
-                ':idprodutoVenda' => $aux['idprodutoVenda'],
-                ':idprodutoInsumo'=> $aux['idprodutoInsumo'][$i],
-                ':quantidade' => $aux['quantidade'][$i],
-                ':unidade'=> $aux['unidade'][$i],
-                ])->execute();
+                if (($aux['idprodutoInsumo'][$i]) > 0) {
+
+
+                  Yii::$app->db->createCommand(
+                    "INSERT INTO insumos
+                    (idprodutoVenda, idprodutoInsumo,
+                      quantidade,unidade ) 
+                  VALUES (:idprodutoVenda, :idprodutoInsumo,
+                    :quantidade,:unidade)", [
+                  ':idprodutoVenda' => $aux['idprodutoVenda'],
+                  ':idprodutoInsumo'=> $aux['idprodutoInsumo'][$i],
+                  ':quantidade' => $aux['quantidade'][$i],
+                  ':unidade'=> $aux['unidade'][$i],
+                  ])->execute();
+                }
              /*  $model->idprodutoInsumo = $aux['idprodutoInsumo'][$i];
                 $model->idprodutoVenda = $aux['idprodutoVenda'];
                 $model->quantidade = $aux['quantidade'][$i];
@@ -410,11 +414,11 @@ class ProdutoController extends Controller
         //if (Insumos::loadMultiple($settings, Yii::$app->request->post())){
          if ($model->load(Yii::$app->request->post()) ) {
 
-          var_dump(Yii::$app->request->post());
+         // var_dump(Yii::$app->request->post());
           //  var_dump(Yii::$app->request->post('Insumos')['$i']['quantidade']);
         //  var_dump(Yii::$app->request->post('Insumos'));
           $aux = Yii::$app->request->post()['Insumos'];
-          $n = count(Yii::$app->request->post()['idprodutoInsumo']);
+          $n = count(Yii::$app->request->post()['Insumos']['idprodutoInsumo']);
            // echo $n;
           Yii::$app->db->createCommand(
             "DELETE FROM insumos WHERE idprodutoVenda = :idprodutoVenda", [
@@ -431,17 +435,20 @@ class ProdutoController extends Controller
                 echo "</br>";
                 echo "</br>";*/
              //  var_dump($aux['quantidade'][$i]);
-                Yii::$app->db->createCommand(
-                  "INSERT INTO insumos
-                  (idprodutoVenda, idprodutoInsumo,
-                    quantidade,unidade ) 
-                VALUES (:idprodutoVenda, :idprodutoInsumo,
-                  :quantidade,:unidade)", [
-                ':idprodutoVenda' => $idprodutoVenda,
-                ':idprodutoInsumo'=> Yii::$app->request->post()['idprodutoInsumo'][$i],
-                ':quantidade' => $aux['quantidade'][$i],
-                ':unidade'=> $aux['unidade'][$i],
-                ])->execute();
+                if (($aux['idprodutoInsumo'][$i]) > 0) {
+
+                  Yii::$app->db->createCommand(
+                    "INSERT INTO insumos
+                    (idprodutoVenda, idprodutoInsumo,
+                      quantidade,unidade ) 
+                  VALUES (:idprodutoVenda, :idprodutoInsumo,
+                    :quantidade,:unidade)", [
+                  ':idprodutoVenda' => $idprodutoVenda,
+                  ':idprodutoInsumo'=>  $aux['idprodutoInsumo'][$i],
+                  ':quantidade' => $aux['quantidade'][$i],
+                  ':unidade'=> $aux['unidade'][$i],
+                  ])->execute();
+                }
               /* $model->idprodutoInsumo = $aux['idprodutoInsumo'][$i];
                 $model->idprodutoVenda = $aux['idprodutoVenda'];
                 $model->quantidade = $aux['quantidade'][$i];

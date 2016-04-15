@@ -27,11 +27,18 @@ switch ($action) {
 	$unidade = 'unidade[]';
 	break;
 }
+$this->title = Yii::t('app', 'Update {modelClass}: ', [
+	'modelClass' => 'Produto',
+	]) . ' ' . $modelProdutoVenda->nome;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Produtos'), 'url' => ['produtosvenda']];
+$this->params['breadcrumbs'][] = ['label' =>'Produto '.$modelProdutoVenda->nome, 'url' => ['view', 'id' => $modelProdutoVenda->idProduto]];
+$this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 
 ?>
 <div class="insumos-form">
 
 	<?php $form = ActiveForm::begin(); ?>
+
 
 
 
@@ -44,6 +51,9 @@ switch ($action) {
 		<hr>
 		<?php 
 		for ($i = 0 ; $i< count($models); $i++) {
+			?>
+			<div id="<?= 'inputinsumo' .$i ?>"> 
+				<?php
 			/*echo $form->field($models[$i], $idprodutoInsumo)->widget(Select2::classname(), [
 				//'name'=>'insumos[]',
 				'data' => $insumos,
@@ -60,7 +70,7 @@ switch ($action) {
 echo Html::activeLabel($models[$i], $idprodutoInsumo);
 echo Select2::widget([
 	'model'=>$models[$i],
-	'name' => $idprodutoInsumo,
+	'name' =>'Insumos[idprodutoInsumo][]',
     'value' => $models[$i]->idprodutoInsumo, // initial value
     'data' => $insumos,
     'options' => ['placeholder' => 'Selecione o insumo',
@@ -80,7 +90,11 @@ echo $form->field($models[$i], $unidade)->dropDownList(
 	['prompt'=>'Selecione a unidade', 
 	'options'=>[$models[$i]->unidade=>['Selected'=>true]]]); 
 echo "<hr>";
+?><input class="btn btn-danger" onclick="removeins(<?= $i?>)" type='button' value="Remover Insumo"> </div>
+</br> <?php
 }
+
+
 ?>	
 
 <div class="table-responsive" id="input-dinamico">
@@ -95,35 +109,38 @@ echo "<hr>";
 	}
 	$o = implode("", $options);
 
+	
 
-
-	$this->registerJs('var i = '.$i.'; $("#btnadd").on("click",function(){'
-		. '$("#input-dinamico").append(\'<div class="form-group field-insumos-idprodutoinsumo required"><label class="control-label" for="insumos-idprodutoinsumo">Insumo</label><select id="idinsumo\'+i+\'" class="form-control" name="idprodutoInsumo[]" >'.$o.'</select><div class="help-block"></div></div>\');'
-		. '$("#input-dinamico").append(\'<div class="form-group field-insumos-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Insumos[quantidade][]" value="0" min="0" step="0.1"><div class="help-block"></div></div>\');'
-		. '$("#input-dinamico").append(\'<div class="form-group field-insumos-unidade required"><label class="control-label" for="insumos-unidade\'+i+\'">Unidade</label><select id="insumos-unidade\'+i+\'" class="form-control" name="Insumos[unidade][]"><option value="">Selecione a unidade</option><option value="kg">Kg</option><option value="l">Litros</option><option value="unidade">Unidade</option></select><div class="help-block"></div></div>\');'
-		. '$("#input-dinamico").append(\'<hr>\');'
-		. '$("[name=\'idprodutoInsumo[]\']").select2();;' 
+	$this->registerJs('var i = '.$i.';  console.log(\'i:\'+i);$("#btnadd").on("click",function(){'
+		. '$("#input-dinamico").append(\'<div id="inputinsumo\'+i+\'" ><div class="form-group field-insumos-idprodutoinsumo required"><label class="control-label" for="insumos-idprodutoinsumo">Insumo</label><select required="true" id="idinsumo\'+i+\'" class="form-control" name="Insumos[idprodutoInsumo][]" >'.$o.'</select><div class="help-block"></div></div><div class="form-group field-insumos-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input required="true" type="number" id="quantidade\'+i+\'" class="form-control" name="Insumos[quantidade][]" value="0" min="0" step="0.1"><div class="help-block"></div></div><div class="form-group field-insumos-unidade required"><label class="control-label" for="insumos-unidade\'+i+\'">Unidade</label><select required="true" id="insumos-unidade\'+i+\'" class="form-control" name="Insumos[unidade][]"><option value="">Selecione a unidade</option><option value="kg">Kg</option><option value="l">Litros</option><option value="unidade">Unidade</option></select><div class="help-block"></div></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Insumo"> <hr></div>\');'
+		. '$("[name=\'Insumos[idprodutoInsumo][]\']").select2();i=i+1;console.log(\'add:\'+i);' 
 		. '})');
+$this->registerJs('$("#btnrem").on("click",function(){var input_insumo = \'inputinsumo\'+(i-1);$(\'#\'+input_insumo).empty();console.log(input_insumo);$("[name=\'idprodutoInsumo[]\']").remove();i = i-1;})');
 
 
 
-
-		?>			
-	</div>
-	<div class="form-group">
-		<?= Html::submitButton($modelProdutoVenda->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $modelProdutoVenda->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-		<input class="btn btn-primary" type='button' id='btnadd' value="Adicionar mais insumos">
-
-		
-	</div>
-
-	<?php ActiveForm::end(); ?>
+?>			
+</div>
+<div class="form-group">
+	<?= Html::submitButton($modelProdutoVenda->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => 'btn btn-success']) ?>
+	<input class="btn btn-primary" type='button' id='btnadd' value="Adicionar mais insumos">
+	<!-- <input class="btn btn-primary" type='button' id='btnrem' value="Remover Insumo"> -->
 
 
-	<?=  Html::beginForm('/applanchonete/web/insumos/create','post',['id'=>'idd']) ?>
-	<div id="dynamicInput">
-	</br>
+</div>
+
+<?php ActiveForm::end(); ?>
+
+
+<?=  Html::beginForm('/applanchonete/web/insumos/create','post',['id'=>'idd']) ?>
+<div id="dynamicInput">
+</br>
 
 </div>
 <?= Html::endForm() ?>
 </div>
+<script type="text/javascript">
+function removeins(id){
+	$('#inputinsumo'+id).empty();
+}
+</script>

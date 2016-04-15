@@ -30,7 +30,7 @@ class Insumos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-        [['idprodutoVenda', 'idprodutoInsumo', 'quantidade', 'unidade'], 'required'],
+        [['idprodutoVenda', 'idprodutoInsumo', 'quantidade', 'unidade','Insumos[idprodutoInsumo][]'], 'required'],
         [['idprodutoVenda', 'idprodutoInsumo'], 'integer'],
         [['quantidade'], 'number'],
         [['unidade'], 'string', 'max' => 15]

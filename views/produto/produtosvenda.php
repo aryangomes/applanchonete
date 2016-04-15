@@ -49,7 +49,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                 'title' => Yii::t('app', 'Avaliar Produto'),
                 ]);
-        }
+        },
+        
         ],
 
         ],

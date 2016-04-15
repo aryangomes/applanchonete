@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 13-Abr-2016 às 05:41
+-- Generation Time: 15-Abr-2016 às 04:13
 -- Versão do servidor: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -66,12 +66,16 @@ INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('caixa', 84, NULL),
 ('compra', 84, NULL),
 ('compra', 85, NULL),
+('create-caixa', 111, NULL),
 ('create-compra', 85, NULL),
+('create-despesa', 111, NULL),
 ('create-fornecedor', 85, NULL),
 ('create-fornecedor', 104, NULL),
 ('create-fornecedor', 110, NULL),
 ('create-relatorio', 108, NULL),
+('delete-caixa', 111, NULL),
 ('delete-compra', 85, NULL),
+('delete-despesa', 111, NULL),
 ('delete-fornecedor', 85, NULL),
 ('delete-fornecedor', 104, NULL),
 ('delete-fornecedor', 110, NULL),
@@ -81,7 +85,9 @@ INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('fornecedor', 85, NULL),
 ('fornecedor', 104, NULL),
 ('fornecedor', 110, NULL),
+('index-caixa', 111, NULL),
 ('index-compra', 85, NULL),
+('index-despesa', 111, NULL),
 ('index-fornecedor', 85, NULL),
 ('index-fornecedor', 104, NULL),
 ('index-fornecedor', 109, NULL),
@@ -93,14 +99,18 @@ INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('produtosvenda', 84, NULL),
 ('relatorio', 84, NULL),
 ('relatorio', 108, NULL),
+('update-caixa', 111, NULL),
 ('update-compra', 85, NULL),
+('update-despesa', 111, NULL),
 ('update-fornecedor', 85, NULL),
 ('update-fornecedor', 104, NULL),
 ('update-fornecedor', 110, NULL),
 ('update-relatorio', 108, NULL),
 ('user', 84, NULL),
+('view-caixa', 111, NULL),
 ('view-compra', 85, NULL),
 ('view-despesa', 104, NULL),
+('view-despesa', 111, NULL),
 ('view-fornecedor', 85, NULL),
 ('view-fornecedor', 104, NULL),
 ('view-fornecedor', 110, NULL),
@@ -568,9 +578,8 @@ INSERT INTO `insumos` (`idprodutoVenda`, `idprodutoInsumo`, `quantidade`, `unida
 (14, 7, 0.2, 'kg'),
 (14, 9, 1, 'unidade'),
 (14, 12, 0.4, 'kg'),
-(17, 7, 0.3, 'kg'),
-(17, 9, 1, 'unidade'),
-(17, 12, 0.5, 'kg');
+(15, 9, 1, 'unidade'),
+(15, 13, 1, 'unidade');
 
 -- --------------------------------------------------------
 
@@ -721,7 +730,7 @@ CREATE TABLE IF NOT EXISTS `produto` (
   `quantidadeMinima` float NOT NULL DEFAULT '0',
   `idCategoria` int(11) NOT NULL,
   `quantidadeEstoque` float DEFAULT '0' COMMENT 'Valor deve ser maior que 0'
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `produto`
@@ -736,8 +745,7 @@ INSERT INTO `produto` (`idProduto`, `nome`, `valorVenda`, `isInsumo`, `quantidad
 (12, 'Hambúrguer ', 0, 1, 0, 3, 20),
 (13, 'Ovo', 0, 1, 0, 3, 20),
 (14, 'Sanduíche C', 2, 0, 0, 5, 0),
-(15, 'Sanduíche D', 2, 0, 0, 5, 0),
-(17, 'Sanduíche E', 4, 0, 0, 5, 0);
+(15, 'Sanduíche D', 2, 0, 0, 5, 0);
 
 -- --------------------------------------------------------
 
@@ -751,7 +759,7 @@ CREATE TABLE IF NOT EXISTS `profile` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `full_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `profile`
@@ -769,7 +777,8 @@ INSERT INTO `profile` (`id`, `user_id`, `created_at`, `updated_at`, `full_name`)
 (65, 104, '2016-02-14 05:09:25', '2016-02-14 06:02:05', ''),
 (69, 108, '2016-02-14 06:30:37', '2016-02-14 06:30:37', ''),
 (70, 109, '2016-02-14 22:38:19', '2016-03-02 04:26:23', ''),
-(71, 110, '2016-03-02 04:30:57', '2016-03-02 04:49:11', '');
+(71, 110, '2016-03-02 04:30:57', '2016-03-02 04:49:11', ''),
+(72, 111, '2016-04-15 00:53:56', '2016-04-15 00:53:56', NULL);
 
 -- --------------------------------------------------------
 
@@ -872,7 +881,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `banned_at` timestamp NULL DEFAULT NULL,
   `banned_reason` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `user`
@@ -885,12 +894,13 @@ INSERT INTO `user` (`id`, `role_id`, `status`, `email`, `username`, `password`, 
 (43, 3, 1, 'funcionario1@sigir.com', 'funcionario01', '$2y$13$MR/pQJFMZRJZkZj4.xg0qOtdjJK6NMaMo5jF4bVt1tPHf7sjr0QHi', 'JoIVj9p9IWlVklx1TZ00otnbcr-Gmao7', 'hAYvnkL8pFzP6FGMH7eKw7UmisflzyjX', '::1', '2016-02-05 03:48:25', '::1', '2016-02-01 01:00:46', '2016-02-01 04:23:48', NULL, NULL),
 (44, 2, 1, 'gerente1@sigir.com', 'gerente', '$2y$13$mujgA7j0OsPxUr0gYAao3OSk1yykiEFfxqXis7m.lzvZ3EWID1jOG', 'c4rPsYI-Q-WNI9GgYyTvbZr_ynwyuAlY', 'nAzvxmIB3bTRTW9d23dn1isBFBr6s7RI', '::1', '2016-02-09 23:37:54', '::1', '2016-02-01 01:01:26', '2016-02-09 07:11:09', NULL, NULL),
 (80, 2, 1, 'teste@teste.com', NULL, '$2y$13$Up2wVYVIsBKk3oij/H/8l.5hPym80.3NTFpGlc97cSJg32EqNGn4y', 'EXAFyYZpG5QVTcGx6yeFrlDOl9OizMuM', 'ZdjGbu9FKlXtF5mYt1A4CcShpkEaTd9i', '::1', '2016-02-08 01:22:20', '::1', '2016-02-05 03:30:47', '2016-02-05 05:19:16', NULL, NULL),
-(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-04-13 01:21:35', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
+(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-04-15 03:36:25', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
 (85, 2, 1, 'compras@compras.com', 'Compra', '$2y$13$fcSVvuFUmhH.3iZ0wTtoZOpkVTt1tjAg2fO2thZog9QwMUIEUUzKu', 'tVH-bh0RpqSA1RgMqIR4rqcKtKiGhvPB', '165xJKTAkwnR1QcUd6wQ-fkU8Q98od2O', '::1', '2016-02-12 04:37:12', '::1', '2016-02-10 06:13:27', '2016-02-13 17:20:37', NULL, NULL),
 (104, 2, 1, 'teste3@teste.com', 'teste3', '$2y$13$4MrmhHyYwYzQ5uFHtr8rpeUNCgFCZiHR0410sdcJBABbm/zl/1Z..', 'ndzPwraET0uG3RZMtH23_-7IdxZtiRaH', 'nO74vFAzRakvIVNVrrJLrl4CU9718fzh', '::1', '2016-02-14 05:59:05', '::1', '2016-02-14 05:09:25', '2016-02-14 06:02:05', NULL, NULL),
 (108, 2, 1, 'teste4@teste.com', 'teste44', '$2y$13$COZu07CnXAVlfSQJwK6ng.LnOd43dGyN29Tw/FH13Mtoa/zTtlGwy', 'Hs7QEYX6yxldLcpIVPjwNoBNBY5zWDSa', 'Ib_71XRL0h05Yr1STAjJwv9Y3sfJOIW4', '::1', '2016-02-14 06:35:23', '::1', '2016-02-14 06:30:37', '2016-02-14 06:35:48', NULL, NULL),
 (109, 2, 1, 'teste5@teste.com', 'te5te', '$2y$13$kmvcINGlBELnlIkODn5jROZn1j9YaK6gUOgE1d1hLgVRK0Div9ZDC', 'qhwHHhEN3dUbQlbS-KgD0s-FeCaEHWN8', 'bjaxj0OwAYpBgPGkY-8IiQz6078n-lHd', '::1', '2016-03-02 04:25:06', '::1', '2016-02-14 22:38:19', '2016-03-02 04:26:23', NULL, NULL),
-(110, 2, 1, 'teste6@teste.com', NULL, '$2y$13$HqbxlWNZCTEvklWOT0qe3.6SzPXRnw8Dw5NUvzwZbbRNUux6iRD0e', 'qu8OL_HN7TxFAYp8EQ1aUet-ApaO3ayK', '8ui-NK4VbPSmS6uTSBbLeiByU8ZSeOuj', '::1', '2016-03-02 04:33:26', '::1', '2016-03-02 04:30:57', '2016-03-02 04:49:11', NULL, NULL);
+(110, 2, 1, 'teste6@teste.com', NULL, '$2y$13$HqbxlWNZCTEvklWOT0qe3.6SzPXRnw8Dw5NUvzwZbbRNUux6iRD0e', 'qu8OL_HN7TxFAYp8EQ1aUet-ApaO3ayK', '8ui-NK4VbPSmS6uTSBbLeiByU8ZSeOuj', '::1', '2016-03-02 04:33:26', '::1', '2016-03-02 04:30:57', '2016-03-02 04:49:11', NULL, NULL),
+(111, 2, 1, 'usuarioteste@teste.com', NULL, '$2y$13$8nBfj/0.K2CL0pn012PIdOlkSL3KRs6wRepYFznpSY3zMWmy8LMNm', 'm5uwlU49V2CY0J30w50UWKBFK38R103q', 'HQG6cFxZlokzDIOKTRR6yanCvJllyz6y', '::1', '2016-04-15 00:55:42', '::1', '2016-04-15 00:53:56', '2016-04-15 00:53:56', NULL, NULL);
 
 --
 -- Acionadores `user`
@@ -1196,12 +1206,12 @@ ALTER TABLE `pagamento`
 -- AUTO_INCREMENT for table `produto`
 --
 ALTER TABLE `produto`
-  MODIFY `idProduto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=18;
+  MODIFY `idProduto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `profile`
 --
 ALTER TABLE `profile`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=72;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=73;
 --
 -- AUTO_INCREMENT for table `relatorio`
 --
@@ -1226,7 +1236,7 @@ ALTER TABLE `tipopagamento`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=111;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=112;
 --
 -- AUTO_INCREMENT for table `user_auth`
 --
@@ -1302,7 +1312,7 @@ ADD CONSTRAINT `fk_historioSituacao_situacaoPedido10` FOREIGN KEY (`idSituacaoPe
 -- Limitadores para a tabela `insumos`
 --
 ALTER TABLE `insumos`
-ADD CONSTRAINT `insumos_ibfk_1` FOREIGN KEY (`idprodutoVenda`) REFERENCES `produto` (`idProduto`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `insumos_ibfk_1` FOREIGN KEY (`idprodutoVenda`) REFERENCES `produto` (`idProduto`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `itemcardapio`

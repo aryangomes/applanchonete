@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 		<?php 
 		for ($i = 0 ; $i< count($models); $i++) {
 			?>
-			<div id="<?= 'inputinsumo' .$i ?>"> 
+			<div class "form-group field-insumos-idprodutoinsumo required" id="<?= 'inputinsumo' .$i ?>"> 
 				<?php
 			/*echo $form->field($models[$i], $idprodutoInsumo)->widget(Select2::classname(), [
 				//'name'=>'insumos[]',
@@ -67,12 +67,13 @@ $this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 
 				],
 				]);*/
-echo Html::activeLabel($models[$i], $idprodutoInsumo);
+echo Html::activeLabel($models[$i], $idprodutoInsumo, ['class'=>'control-label']);
 echo Select2::widget([
 	'model'=>$models[$i],
 	'name' =>'Insumos[idprodutoInsumo][]',
     'value' => $models[$i]->idprodutoInsumo, // initial value
     'data' => $insumos,
+    
     'options' => ['placeholder' => 'Selecione o insumo',
     'id'=>'idinsumo'.$i,
 
@@ -80,7 +81,20 @@ echo Select2::widget([
     'pluginOptions' => [
     'allowClear'=>true,
     ],
+    'pluginEvents'=>[
+    "change" => "function() {
+    	var s = $(\"#idinsumo".$i."\").val();
+    	console.log(s); 
+    	if (s == \"\" || s == null) {
+    		$(\".help-block-insumo".$i."\").append('</br><div class=\"alert alert-danger\">\"Insumo\" não pode ficar em branco.</div>');
+    		//alert('Escolha um insumo ou remova-o');
+    	}else{
+    		$(\".help-block-insumo".$i."\").remove();
+    	}
+    }",
+    ],
     ]);
+?><div class="help-block-insumo<?= $i?>"> </div><?php
 echo "</br>";
 echo $form->field($models[$i],  $quantidade)->textInput([ 'type' => 'number', 
 	'value'=>0, 'min'=>0, 'step'=>'0.1','id'=>'quantidade'.$i,'value' => Yii::$app->formatter->asDecimal($models[$i]->quantidade)]);
@@ -119,6 +133,7 @@ $this->registerJs('$("#btnrem").on("click",function(){var input_insumo = \'input
 
 
 
+
 ?>			
 </div>
 <div class="form-group">
@@ -143,4 +158,5 @@ $this->registerJs('$("#btnrem").on("click",function(){var input_insumo = \'input
 function removeins(id){
 	$('#inputinsumo'+id).empty();
 }
+
 </script>

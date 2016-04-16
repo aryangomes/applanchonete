@@ -76,21 +76,21 @@ if (count($loja) > 0) {
                             <?= Yii::$app->user->displayName ?><b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="<?= Url::toRoute('/user/account') ?>"><i class="fa fa-fw fa-user"></i> Profile</a>
+                                    <a href="<?= Url::toRoute('/user/account') ?>"><i class="fa fa-fw fa-user"></i> Perfil</a>
                                 </li>
-                                <li>
+                           <!--      <li>
                                     <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
                                 </li>
                                 <li>
                                     <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                                </li>
+                                </li> -->
                                 <li class="divider"></li>
                                 <li>
-                                    <a href="<?= Url::toRoute('/user/logout')?>" data-method='POST'><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                                    <a href="<?= Url::toRoute('/user/logout')?>" data-method='POST'><i class="fa fa-fw fa-power-off"></i> Sair</a>
                                 </li>
                             </ul>
                         </li>
-                        <li><a href="<?= $url  ?>"><?= $nomeLoja ?> </a></li>
+                        <li><a href="#"><?= $nomeLoja ?> </a></li>
 
                         <?php
                         if (Yii::$app->user->can("caixa") || Yii::$app->user->can("despesa")  ) {

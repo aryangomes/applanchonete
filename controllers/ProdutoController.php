@@ -225,6 +225,7 @@ class ProdutoController extends Controller
     public function actionDelete($id)
     {
       $this->findModel($id)->delete();
+      
 
       return $this->redirect(['index']);
     }
@@ -322,31 +323,33 @@ class ProdutoController extends Controller
         Produto::findBySql('select * from produto where isInsumo = 0 and  idProduto not in (
           SELECT idProduto FROM produto RIGHT OUTER join  insumos on idprodutoVenda = idProduto)')->all(), 
         'idProduto','nome');
-      $insumos = ArrayHelper::map(
+ /*     $insumos = ArrayHelper::map(
         Produto::find()->where(['isInsumo'=>1])->all(), 
-        'idProduto','nome');
+        'idProduto','nome');*/
+$insumos = ArrayHelper::map(
+  Produto::find()->join('NATURAL JOIN','compraproduto')->where(['isInsumo'=>1])->all(), 
+  'idProduto','nome');
+$settings = Insumos::find()->indexBy('idprodutoVenda')->all();
 
-      $settings = Insumos::find()->indexBy('idprodutoVenda')->all();
-
-      if ((Yii::$app->request->post('numeroinputs')) ) {
+if ((Yii::$app->request->post('numeroinputs')) ) {
 //Para modificar acesse o /views/insumos/_form.php
-        return $this->render('/insumos/create', [
-          'model' => $model,
-          'insumos' => $insumos,
-          'produtosvenda' => $produtosvenda,
-          'action'=>'create',
-          ]);
-      }else{
+  return $this->render('/insumos/create', [
+    'model' => $model,
+    'insumos' => $insumos,
+    'produtosvenda' => $produtosvenda,
+    'action'=>'create',
+    ]);
+}else{
         //if (Insumos::loadMultiple($settings, Yii::$app->request->post())){
-        if ($model->load(Yii::$app->request->post()) ) {
+  if ($model->load(Yii::$app->request->post()) ) {
 
 
           //  var_dump(Yii::$app->request->post('Insumos')['$i']['quantidade']);
         //  var_dump(Yii::$app->request->post('Insumos'));
-          $aux = Yii::$app->request->post()['Insumos'];
-          $n = count($aux['idprodutoInsumo']);
+    $aux = Yii::$app->request->post()['Insumos'];
+    $n = count($aux['idprodutoInsumo']);
       //    echo $n;
-          for ($i=0; $i < $n ; $i++) { 
+    for ($i=0; $i < $n ; $i++) { 
              /*     echo "idprodutoVenda.:" . $aux['idprodutoVenda'];
                 echo "</br>";
                 echo "idprodutoInsumo.:" . $aux['idprodutoInsumo'][$i];
@@ -418,7 +421,8 @@ class ProdutoController extends Controller
           //  var_dump(Yii::$app->request->post('Insumos')['$i']['quantidade']);
         //  var_dump(Yii::$app->request->post('Insumos'));
           $aux = Yii::$app->request->post()['Insumos'];
-          $n = count(Yii::$app->request->post()['Insumos']['idprodutoInsumo']);
+
+          $n = count($aux['idprodutoInsumo']);
            // echo $n;
           Yii::$app->db->createCommand(
             "DELETE FROM insumos WHERE idprodutoVenda = :idprodutoVenda", [

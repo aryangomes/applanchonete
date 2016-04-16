@@ -52,14 +52,29 @@ $form->field($model, 'idCategoria')->widget(Select2::classname(), [
 
     <?= $form->field($model, 'quantidadeEstoque')->textInput([ 'type' => 'number', 'value'=>0]) ?>
 
+    <?php
+
+    $this->registerJs('$("[name=\'Produto[isInsumo]\']").change(function(){
+        var ins = $("[name=\'Produto[isInsumo]\']").val();
+        console.log(ins);
+        if (ins == 0) {
+            $("[class~=\'field-produto-quantidademinima\']").hide();
+            $("[class~=\'field-produto-quantidadeestoque\']").hide();
+            $("[class~=\'field-produto-valorvenda\']").show();
+        }else if (ins == 1) {
+          $("[class~=\'field-produto-quantidademinima\']").show();
+          $("[class~=\'field-produto-quantidadeestoque\']").show();
+          $("[class~=\'field-produto-valorvenda\']").hide();
+      }
+  });');
+  ?>
 
 
 
+  <div class="form-group">
+    <?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+</div>
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
 
 </div>

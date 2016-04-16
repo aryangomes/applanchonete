@@ -14,6 +14,7 @@ switch ($action) {
 	$idprodutoInsumo = 'idprodutoInsumo';
 	$quantidade = 'quantidade';
 	$unidade = 'unidade';
+	$idinsumo = 'insumos-idprodutoinsumo';
 	break;
 	
 	case 'create':
@@ -25,8 +26,11 @@ switch ($action) {
 	$idprodutoInsumo = 'idprodutoInsumo[]';
 	$quantidade = 'quantidade[]';
 	$unidade = 'unidade[]';
+	$idinsumo = 'idinsumo0';
 	break;
 }
+
+
 
 ?>
 <div class="insumos-form">
@@ -54,7 +58,7 @@ switch ($action) {
 			'data' => $insumos,
 
 			'options' => ['placeholder' => 'Selecione o insumo',
-			'id'=>'idinsumo0',
+			//'id'=>$idinsumo,
 		//	'required'=>'required',
 			],
 			'pluginOptions' => [
@@ -91,7 +95,7 @@ switch ($action) {
 					if (isset($action) && $action == 'cadastrarprodutovenda') {
 
 						$this->registerJs('var i = 1; $("#btnadd").on("click",function(){'
-							. '$("#input-dinamico").append(\'<div id="inputinsumo\'+i+\'" ><div class="form-group field-insumos-idprodutoinsumo required"><label class="control-label" for="insumos-idprodutoinsumo">Insumo</label><select id="idinsumo\'+i+\'" class="form-control" name="Insumos[idprodutoInsumo][]" >'.$o.'</select><div class="help-block"></div></div><div class="form-group field-insumos-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Insumos[quantidade][]" value="0" min="0" step="0.1"><div class="help-block"></div></div><div class="form-group field-insumos-unidade required"><label class="control-label" for="insumos-unidade\'+i+\'">Unidade</label><select id="insumos-unidade\'+i+\'" class="form-control" name="Insumos[unidade][]"><option value="">Selecione a unidade</option><option value="kg">Kg</option><option value="l">Litros</option><option value="unidade">Unidade</option></select><div class="help-block"></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Insumo"></div><hr></div>\');'
+							. '$("#input-dinamico").append(\'<div id="inputinsumo\'+i+\'" ><div class="form-group field-insumos-idprodutoinsumo required"><label class="control-label" for="insumos-idprodutoinsumo">Insumo</label><select id="insumos-idprodutoinsumo" class="form-control" name="Insumos[idprodutoInsumo][]" >'.$o.'</select><div class="help-block"></div></div><div class="form-group field-insumos-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Insumos[quantidade][]" value="0" min="0" step="0.1"><div class="help-block"></div></div><div class="form-group field-insumos-unidade required"><label class="control-label" for="insumos-unidade\'+i+\'">Unidade</label><select id="insumos-unidade\'+i+\'" class="form-control" name="Insumos[unidade][]"><option value="">Selecione a unidade</option><option value="kg">Kg</option><option value="l">Litros</option><option value="unidade">Unidade</option></select><div class="help-block"></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Insumo"></div><hr></div>\');'
 							. '$("[name=\'Insumos[idprodutoInsumo][]\']").select2();i = i+1;' 
 							. '})');
 

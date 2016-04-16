@@ -30,11 +30,18 @@ class Insumos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-        [['idprodutoVenda', 'idprodutoInsumo', 'quantidade', 'unidade','Insumos[idprodutoInsumo][]'], 'required'],
+        [['idprodutoVenda', 'idprodutoInsumo', 'quantidade', 'unidade', 'idprodutoInsumo[]'], 'required'],
         [['idprodutoVenda', 'idprodutoInsumo'], 'integer'],
         [['quantidade'], 'number'],
         [['unidade'], 'string', 'max' => 15]
         ];
+    }
+
+    public function validateIdsProdutosInsumos($attribute, $params)
+    {
+        if (!in_array($this->$attribute, ['USA', 'Web'])) {
+            $this->addError($attribute, 'The country must be either "USA" or "Web".');
+        }
     }
 
     /**

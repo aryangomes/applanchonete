@@ -79,4 +79,70 @@ class Insumos extends \yii\db\ActiveRecord
     {
         return Produto::find()->where(['idProduto'=>$this->idprodutoVenda])->one()->nome;
     }
+
+    public function atualizaQtdNoEstoque($idProdVnd, $qtdProdVnd = 1)
+    {
+        $insumos = Insumos::find()->where(['idProdutoVenda'=>$idProdVnd])->all();
+        $produto = new Produto();
+        foreach ($insumos as $key => $ins) {
+            $qtdInsumo = $ins->quantidade * $qtdProdVnd;
+            $qtdEstoque = $produto::find()->where(['idProduto'=>$ins->idprodutoInsumo])->one()->quantidadeEstoque;
+            if (($qtdEstoque - $qtdInsumo) > 0) {
+             Yii::$app->db->createCommand(
+                "UPDATE produto SET quantidadeEstoque =
+                (quantidadeEstoque - :qtd_insumo)
+                where idProduto = :idprodutoInsumo", [
+                ':qtd_insumo' => $qtdInsumo,
+                ':idprodutoInsumo'=>$ins->idprodutoInsumo,
+                ])->execute();
+
+         }
+     }
+
+ }
+
+
+ public function atualizaQtdNoEstoqueUpdate($newIdProdVnd,$oldIdProdVnd, $qtdProdVnd = 1)
+ {
+    if ($newIdProdVnd != $oldIdProdVnd ) {
+        $insumos = Insumos::find()->where(['idProdutoVenda'=>$oldIdProdVnd])->all();
+        $produto = new Produto();
+        foreach ($insumos as $key => $ins) {
+            $qtdInsumo = $ins->quantidade * $qtdProdVnd;
+            $qtdEstoque = $produto::find()->where(['idProduto'=>$ins->idprodutoInsumo])->one()->quantidadeEstoque;
+            
+            Yii::$app->db->createCommand(
+                "UPDATE produto SET quantidadeEstoque =
+                (quantidadeEstoque + :qtd_insumo)
+                where idProduto = :idprodutoInsumo", [
+                ':qtd_insumo' => $qtdInsumo,
+                ':idprodutoInsumo'=>$ins->idprodutoInsumo,
+                ])->execute();
+
+
+        }
+
+
+        $insumos = Insumos::find()->where(['idProdutoVenda'=>$newIdProdVnd])->all();
+
+        foreach ($insumos as $key => $ins) {
+            $qtdInsumo = $ins->quantidade * $qtdProdVnd;
+            $qtdEstoque = $produto::find()->where(['idProduto'=>$ins->idprodutoInsumo])->one()->quantidadeEstoque;
+            if (($qtdEstoque - $qtdInsumo) > 0) {
+             Yii::$app->db->createCommand(
+                "UPDATE produto SET quantidadeEstoque =
+                (quantidadeEstoque - :qtd_insumo)
+                where idProduto = :idprodutoInsumo", [
+                ':qtd_insumo' => $qtdInsumo,
+                ':idprodutoInsumo'=>$ins->idprodutoInsumo,
+                ])->execute();
+
+         }
+     }
+
+ }
+
+}
+
+
 }

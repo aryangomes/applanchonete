@@ -326,7 +326,7 @@ class ProdutoController extends Controller
  /*     $insumos = ArrayHelper::map(
         Produto::find()->where(['isInsumo'=>1])->all(), 
         'idProduto','nome');*/
-$insumos = ArrayHelper::map(
+$insumos = ArrayHelper::mpa(
   Produto::find()->join('NATURAL JOIN','compraproduto')->where(['isInsumo'=>1])->all(), 
   'idProduto','nome');
 $settings = Insumos::find()->indexBy('idprodutoVenda')->all();

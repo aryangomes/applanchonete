@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <div class="col-lg-offset-2" style="color:#999;">
               
-             <!-- To modify the username/password, log in first and then --> <?php /* echo HTML::a("update your account", ["/user/account"])  */ ?>.
-         </div>
+               <!-- To modify the username/password, log in first and then --> <?php /* echo HTML::a("update your account", ["/user/account"])  */ ?>.
+           </div>
 
-     </div>
+       </div>

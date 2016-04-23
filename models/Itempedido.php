@@ -31,9 +31,11 @@ class Itempedido extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-        [['idPedido', 'idProduto', 'quantidade', 'total'], 'required'],
-        [['idPedido', 'idProduto'], 'integer'],
-        [['quantidade', 'total'], 'number']
+            [['idPedido', 'idProduto', 'quantidade', 'total'], 'required'],
+            [['idPedido', 'idProduto'], 'integer'],
+            [['quantidade', 'total'], 'number'],
+            [['idPedido'], 'exist', 'skipOnError' => true, 'targetClass' => Pedido::className(), 'targetAttribute' => ['idPedido' => 'idPedido']],
+            [['idProduto'], 'exist', 'skipOnError' => true, 'targetClass' => Produto::className(), 'targetAttribute' => ['idProduto' => 'idProduto']],
         ];
     }
 
@@ -43,17 +45,17 @@ class Itempedido extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-        'idPedido' => 'Id Pedido',
-        'idProduto' => 'Id Produto',
-        'quantidade' => 'Quantidade',
-        'total' => 'Total',
+            'idPedido' => Yii::t('app', 'Id Pedido'),
+            'idProduto' => Yii::t('app', 'Id Produto'),
+            'quantidade' => Yii::t('app', 'Quantidade'),
+            'total' => Yii::t('app', 'Total'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getpedidos()
+    public function getIdPedido0()
     {
         return $this->hasOne(Pedido::className(), ['idPedido' => 'idPedido']);
     }
@@ -61,9 +63,8 @@ class Itempedido extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getprodutos()
+    public function getIdProduto0()
     {
         return $this->hasOne(Produto::className(), ['idProduto' => 'idProduto']);
     }
-    
 }

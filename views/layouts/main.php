@@ -296,6 +296,18 @@ if (count($loja) > 0) {
                         <?php
                     }
                     ?>
+
+                    <?php
+                    if (Yii::$app->user->can("index-categoria") || Yii::$app->user->can("categoria")) {
+
+                        ?>
+                        <li>
+                            <?= Html::a('<i class="fa fa-tags"></i> Categorias de Produto', ['/categoria/index']) ?>
+
+                        </li>
+                        <?php
+                    }
+                    ?>
                     <?php
                     if (Yii::$app->user->can("index-comanda") || Yii::$app->user->can("comanda")) {
 
@@ -313,6 +325,17 @@ if (count($loja) > 0) {
                         ?>
                         <li>
                             <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/destaque/index']) ?>
+
+                        </li>
+                        <?php
+                    }
+                    ?>
+                    <?php
+                    if (Yii::$app->user->can("index-itempedido") || Yii::$app->user->can("itempedido")) {
+
+                        ?>
+                        <li>
+                            <?= Html::a('<i class="fa fa-pencil-square-o"></i> Itens Pedido', ['/itempedido/index']) ?>
 
                         </li>
                         <?php

@@ -12,6 +12,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use app\components\AccessFilter;
 /**
  * ItempedidoController implements the CRUD actions for Itempedido model.
  */
@@ -27,6 +28,27 @@ class ItempedidoController extends Controller
         'class' => VerbFilter::className(),
         'actions' => [
         'delete' => ['POST'],
+        ],
+        ],
+        'autorizacao'=>[
+        'class'=>AccessFilter::className(),
+        'actions'=>[
+
+        'itempedido'=>[
+        'index-itempedido',
+        'update-itempedido',
+        'delete-itempedido',
+        'view-itempedido',
+        'create-itempedido',
+
+        ],
+
+        'index'=>'index-itempedido',
+        'update'=>'update-itempedido',
+        'delete'=>'delete-itempedido',
+        'view'=>'view-itempedido',
+        'create'=>'create-itempedido',
+
         ],
         ],
         ];

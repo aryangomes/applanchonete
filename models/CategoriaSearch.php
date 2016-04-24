@@ -43,6 +43,8 @@ class CategoriaSearch extends Categoria
     {
         $query = Categoria::find();
 
+        // add conditions that should always apply here
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -55,6 +57,7 @@ class CategoriaSearch extends Categoria
             return $dataProvider;
         }
 
+        // grid filtering conditions
         $query->andFilterWhere([
             'idCategoria' => $this->idCategoria,
         ]);

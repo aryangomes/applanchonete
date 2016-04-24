@@ -8,21 +8,46 @@ use app\models\CategoriaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\components\AccessFilter;
 
 /**
  * CategoriaController implements the CRUD actions for Categoria model.
  */
 class CategoriaController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+        'delete' => ['POST'],
+        ],
+        ],
+        'autorizacao'=>[
+        'class'=>AccessFilter::className(),
+        'actions'=>[
+
+        'categoria'=>[
+        'index-categoria',
+        'update-categoria',
+        'delete-categoria',
+        'view-categoria',
+        'create-categoria',
+
+        ],
+
+        'index'=>'index-categoria',
+        'update'=>'update-categoria',
+        'delete'=>'delete-categoria',
+        'view'=>'view-categoria',
+        'create'=>'create-categoria',
+
+        ],
+        ],
         ];
     }
 
@@ -38,7 +63,7 @@ class CategoriaController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
+            ]);
     }
 
     /**
@@ -50,7 +75,7 @@ class CategoriaController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
-        ]);
+            ]);
     }
 
     /**
@@ -67,7 +92,7 @@ class CategoriaController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
-            ]);
+                ]);
         }
     }
 
@@ -86,7 +111,7 @@ class CategoriaController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
-            ]);
+                ]);
         }
     }
 

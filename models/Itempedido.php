@@ -31,11 +31,11 @@ class Itempedido extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idPedido', 'idProduto', 'quantidade', 'total'], 'required'],
-            [['idPedido', 'idProduto'], 'integer'],
-            [['quantidade', 'total'], 'number'],
-            [['idPedido'], 'exist', 'skipOnError' => true, 'targetClass' => Pedido::className(), 'targetAttribute' => ['idPedido' => 'idPedido']],
-            [['idProduto'], 'exist', 'skipOnError' => true, 'targetClass' => Produto::className(), 'targetAttribute' => ['idProduto' => 'idProduto']],
+        [['idPedido', 'idProduto', 'quantidade', 'total'], 'required'],
+        [['idPedido', 'idProduto'], 'integer'],
+        [['quantidade', 'total'], 'number'],
+        [['idPedido'], 'exist', 'skipOnError' => true, 'targetClass' => Pedido::className(), 'targetAttribute' => ['idPedido' => 'idPedido']],
+        [['idProduto'], 'exist', 'skipOnError' => true, 'targetClass' => Produto::className(), 'targetAttribute' => ['idProduto' => 'idProduto']],
         ];
     }
 
@@ -45,10 +45,10 @@ class Itempedido extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idPedido' => Yii::t('app', 'Id Pedido'),
-            'idProduto' => Yii::t('app', 'Id Produto'),
-            'quantidade' => Yii::t('app', 'Quantidade'),
-            'total' => Yii::t('app', 'Total'),
+        'idPedido' => Yii::t('app', 'Pedido'),
+        'idProduto' => Yii::t('app', 'Produto'),
+        'quantidade' => Yii::t('app', 'Quantidade'),
+        'total' => Yii::t('app', 'Total'),
         ];
     }
 

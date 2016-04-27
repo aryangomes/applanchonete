@@ -26,13 +26,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('user', 'Create {modelClass}', [
-          'modelClass' => 'User',
-          ]), ['create'], ['class' => 'btn btn-success']) ?>
-      </p>
+        <?= Html::a(Yii::t('app', 'Create {model}', ['model'=>'Usuário']), ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
 
-      <?php \yii\widgets\Pjax::begin(); ?>
-      <?= GridView::widget([
+    <?php \yii\widgets\Pjax::begin(); ?>
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [

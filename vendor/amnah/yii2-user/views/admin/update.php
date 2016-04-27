@@ -12,7 +12,7 @@ $this->title = Yii::t('user', 'Update {modelClass}: ', [
 	'modelClass' => 'User',
 	]) . ' ' . $user->email;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('user', 'Users'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $user->id, 'url' => ['view', 'id' => $user->id]];
+$this->params['breadcrumbs'][] = ['label' => $user->username, 'url' => ['view', 'id' => $user->id]];
 $this->params['breadcrumbs'][] = Yii::t('user', 'Update');
 ?>
 <div class="user-update">

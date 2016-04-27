@@ -59,7 +59,7 @@ else{
         <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
         <p>
-            <?= Html::a(Yii::t('app', 'Create User'), ['admin/create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('app', 'Create {model}', ['model'=>'Usuário']), ['admin/create'], ['class' => 'btn btn-success']) ?>
         </p>
 
         <?= GridView::widget([
@@ -68,7 +68,7 @@ else{
             'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //'id',
             [
            // 'attribute'=>'gender',
             'format'=>'text',

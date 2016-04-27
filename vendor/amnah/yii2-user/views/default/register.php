@@ -196,7 +196,7 @@ echo SortableInput::widget([
      var auxtext = [];
      for (i = 0; i < arraydespesavalues.length; i++) { 
       if (arrayvalues.indexOf(arraydespesavalues[i]) < 0) {
-        
+
         aux.push(arraydespesavalues[i]);
         auxtext.push(arraydespesatext[i]);
         
@@ -226,7 +226,7 @@ echo SortableInput::widget([
    var auxtext = [];
    for (i = 0; i < arraycaixavalues.length; i++) { 
     if (arrayvalues.indexOf(arraycaixavalues[i]) < 0) {
-      
+
       aux.push(arraycaixavalues[i]);
       auxtext.push(arraycaixatext[i]);
       
@@ -257,7 +257,7 @@ else if (ui.item.data().name == 'compra') {
  var auxtext = [];
  for (i = 0; i < arraycompravalues.length; i++) { 
   if (arrayvalues.indexOf(arraycompravalues[i]) < 0) {
-    
+
     aux.push(arraycompravalues[i]);
     auxtext.push(arraycompratext[i]);
     
@@ -288,7 +288,7 @@ else if (ui.item.data().name == 'relatorio') {
  var auxtext = [];
  for (i = 0; i < arrayrelatoriovalues.length; i++) { 
   if (arrayvalues.indexOf(arrayrelatoriovalues[i]) < 0) {
-    
+
     aux.push(arrayrelatoriovalues[i]);
     auxtext.push(arrayrelatoriotext[i]);
   }
@@ -343,9 +343,9 @@ $('#fornecedor-sortable li').remove();
 }
 
 else if (ui.item.data().name == 'user') {
-  
-  
- 
+
+
+
  /*     $(this).appendTo($('#w6 li').text('Listar Usuário'));
  $(this).appendTo($('#w6 li').text('Visualizar Usuário'));
  $(this).append('<li data-name='+'index-user'+'  data-key='+'index-user'+'  >'+'Listar Usuários'+'</li>');
@@ -436,7 +436,8 @@ for ($i=0; $i < count($permissoes) ; $i++) {
   ],
 
   'options' => ['class'=>'form-control', 'readonly'=>true , 
-  'id'=>$macroauthitems[$i]],
+  'id'=>$macroauthitems[$i]
+  ],
   
   
   ]);

@@ -24,7 +24,7 @@ class DefaultController extends Controller
      * @inheritdoc
      */
     public $module;
-    private   $authitems = ['despesa', 'caixa', 'fornecedor','relatorio','compra','user'];
+   private   $authitems ;//= ['despesa', 'caixa', 'fornecedor','relatorio','compra','user'];
 
     /**
      * @inheritdoc
@@ -224,13 +224,17 @@ class DefaultController extends Controller
         /*$authitem = AuthItem::find()
         ->where("name <> 'admin' ")->orderBy('type ASC')->all();*/
 
-
-        for ($i=0; $i < count($this->authitems); $i++) { 
+        $this->authitems = AuthItem::find()
+        ->where("name not like '%-%' and name <> 'admin' and name <> 'alterarprodutovenda'   and name <> 'produtosvenda'   and name <> 'cadastrarprodutovenda'
+            and name <> 'avaliacaoproduto'
+            and name <> 'listadeinsumos'
+            and name <> 'listadeprodutosporinsumo'")->orderBy('type ASC')->all();
+        foreach ( $this->authitems as  $ai) {
 
 
 
           $aux = AuthItem::find()
-          ->where("name <> 'admin' and name like '%" . $this->authitems[$i] ."%' ")->orderBy('type ASC')->all();
+          ->where("name <> 'admin' and name like '%" . $ai->name ."%' ")->orderBy('type ASC')->all();
           foreach ($aux as  $p) {
               $roles_permission[$p->name] = [
               'content' => $p->description,
@@ -320,12 +324,26 @@ if ($user->validate() && $profile->validate()) {
   $guestText = "";
   if (Yii::$app->user->isGuest) {
     //$guestText = Yii::t("user", " - Please check your email to confirm your account");
-}
-Yii::$app->session->setFlash("Register-success", $successText . $guestText);
+  }
+  Yii::$app->session->setFlash("Register-success", $successText . $guestText);
 }
 }
 
-$macroauthitems = $this->authitems;
+$this->authitems = AuthItem::find()
+->where("name not like '%-%' and name <> 'admin' and name <> 'alterarprodutovenda'   and name <> 'produtosvenda'   and name <> 'cadastrarprodutovenda'
+    and name <> 'avaliacaoproduto'
+    and name <> 'listadeinsumos'
+    and name <> 'listadeprodutosporinsumo'")->orderBy('type ASC')->all();
+$macroauthitems = array();
+foreach ( $this->authitems as  $ai) {
+
+
+
+
+  array_push($macroauthitems, $ai->name);
+
+}
+
 return $this->render("register", compact("user", "profile","permissoes", "macroauthitems"));
 }
 

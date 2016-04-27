@@ -13,6 +13,7 @@ use app\models\Loja;
 use app\models\Despesa;
 use app\models\Caixa;
 use yii\helpers\Url;
+use app\models\Produto;
 AppAsset::register($this);
 
 $formatter = \Yii::$app->formatter;
@@ -25,15 +26,18 @@ $valorDespesas = $despesa::find('*')->where('situacaopagamento=0')->sum('valorde
 
 $loja = Loja::find()->where(['user_id'=>Yii::$app->user->getId()])->all();
 
+$qtdProdutoMinimo = Produto::find()->where("quantidadeMinima = quantidadeEstoque AND isInsumo = 1")->all();
+//var_dump($qtdProduto);
+
 if (count($loja) > 0) {
     foreach ($loja as $l) {
-     $nomeLoja = $l->nome;
-     $url =Url::toRoute(['/loja/view', 'id'=>Yii::$app->user->getId()]);
- }
+       $nomeLoja = $l->nome;
+       $url =Url::toRoute(['/loja/view', 'id'=>Yii::$app->user->getId()]);
+   }
 
 }else{
-   $nomeLoja = 'Cadastre sua loja';
-   $url =Url::toRoute(['/loja/create']);
+ $nomeLoja = 'Cadastre sua loja';
+ $url =Url::toRoute(['/loja/create']);
 }
 
 ?>
@@ -155,42 +159,55 @@ if (count($loja) > 0) {
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
                             <?php
-                            if(isset($caixa)){
-                                if ($caixa->valoremcaixa < $valorDespesas ) {
+                            if(isset($caixa) && $caixa->valoremcaixa < $valorDespesas || count($qtdProdutoMinimo) > 0){
 
-
-                                    ?>
-                                    <i class="fa fa-bell"></i>
-                                    <span class="label label-danger">
-                                       !
-                                   </span>
-                                   <b class="caret"></b></a>
-                                   <ul class="dropdown-menu alert-dropdown">
-
-
-                                       <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
-                                       </li>
-                                       <?php  
-                                   }   
-                               } else {
                                 ?>
                                 <i class="fa fa-bell"></i>
+                                <span class="label label-danger">
+                                 !
+                             </span>
+                             <b class="caret"></b></a>
+                             <ul class="dropdown-menu alert-dropdown">
+                                <?php
+                                if ($caixa->valoremcaixa < $valorDespesas  ) {
+                                    ?>
+                                    <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <?php  
+                                }  
 
-                                <b class="caret"></b></a>
-                                <ul class="dropdown-menu alert-dropdown">
-                                    <li>
-                                        &nbsp; Não há alertas  </li>
-                                        <?php
 
-                                    }
+                                if (count($qtdProdutoMinimo) > 0) {
+                                    echo "<li><a><b>Produtos com quantidade em estoque com valor mínimo</b></a></li>";
+                                    foreach ($qtdProdutoMinimo as  $p) {
+
+                                       ?>
+                                       <li><a href="<?= Url::toRoute(['/produto/view','id'=>$p->idProduto]) ?>"> <?= $p->nome?> </a>
+                                       </li>
+                                       <li class="divider"></li>
+                                       <?php  
+                                   }
+                               } 
+                           } else {
+                            ?>
+                            <i class="fa fa-bell"></i>
+
+                            <b class="caret"></b></a>
+                            <ul class="dropdown-menu alert-dropdown">
+                                <li>
+                                    &nbsp; Não há alertas  </li>
+                                    <?php
+
                                 }
-                            }?>
+                            }
+                        }?>
 
 
 
 
-                        </ul>
-                    </li>
+                    </ul>
+                </li>
 
 <!-- 
                             <li class="dropdown">
@@ -413,10 +430,10 @@ if (count($loja) > 0) {
 
                                 </li>
                                 <li>
-                                   <?= Html::a('<i class="fa fa-list"></i> Lista de Produtos de Venda por Insumo', ['/produto/listadeprodutosporinsumo']) ?>
+                                 <?= Html::a('<i class="fa fa-list"></i> Lista de Produtos de Venda por Insumo', ['/produto/listadeprodutosporinsumo']) ?>
 
-                               </li>
-                               <li>
+                             </li>
+                             <li>
                                 <?= Html::a('<i class="glyphicon glyphicon-grain"></i> Lista de Insumos', ['/insumos/index']) ?>
 
                             </li>

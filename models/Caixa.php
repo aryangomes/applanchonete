@@ -29,9 +29,9 @@ class Caixa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['valorapurado', 'valoremcaixa', 'valorlucro', 'user_id'], 'required'],
-            [['valorapurado', 'valoremcaixa', 'valorlucro'], 'number'],
-            [['user_id'], 'integer']
+        [['valorapurado', 'valoremcaixa', 'valorlucro', 'user_id'], 'required'],
+        [['valorapurado', 'valoremcaixa', 'valorlucro'], 'number'],
+        [['user_id'], 'integer']
         ];
     }
 
@@ -41,11 +41,11 @@ class Caixa extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idcaixa' => Yii::t('app', 'Idcaixa'),
-            'valorapurado' => Yii::t('app', 'Valorapurado'),
-            'valoremcaixa' => Yii::t('app', 'Valoremcaixa'),
-            'valorlucro' => Yii::t('app', 'Valorlucro'),
-            'user_id' => Yii::t('app', 'User ID'),
+        'idcaixa' => Yii::t('app', 'Idcaixa'),
+        'valorapurado' => Yii::t('app', 'Valor Apurado'),
+        'valoremcaixa' => Yii::t('app', 'Valor em Caixa'),
+        'valorlucro' => Yii::t('app', 'Valor Lucro'),
+        'user_id' => Yii::t('app', 'User ID'),
         ];
     }
 }

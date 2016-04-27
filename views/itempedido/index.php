@@ -25,7 +25,15 @@ $this->params['breadcrumbs'][] = $this->title;
         ['class' => 'yii\grid\SerialColumn'],
 
         'idPedido',
-        'idProduto',
+       // 'idProduto',
+        [
+        'label'=>'Produto',
+        'format'=>'text',
+        'value'=> function ($model)
+        {
+            return $model->nomeProduto;
+        }
+        ],
         'quantidade',
         'total',
 

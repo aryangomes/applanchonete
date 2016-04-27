@@ -22,6 +22,7 @@ $this->title = 'Lista de produtos de venda por insumo';
         'name' => 'idinsumo',
         'data' => $insumos,
         'options' => [
+        'required'=>true,
         'placeholder' => 'Digite o insumo',
       //  'multiple' => true
         ],

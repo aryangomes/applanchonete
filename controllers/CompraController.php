@@ -128,19 +128,19 @@ class CompraController extends Controller
     public function actionUpdate($id)
     {
 
-     $fornecedores= ArrayHelper::map(
+     /*  $fornecedores= ArrayHelper::map(
         Fornecedor::find()->all(), 
-        'idFornecedor','nome');
-     $model = $this->findModel($id);
+        'idFornecedor','nome');*/
+$model = $this->findModel($id);
 
-     if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        return $this->redirect(['view', 'id' => $model->idcompra]);
-    } else {
-        return $this->render('update', [
-            'model' => $model,
-            'fornecedores'=>$fornecedores,
-            ]);
-    }
+if ($model->load(Yii::$app->request->post()) && $model->save()) {
+    return $this->redirect(['view', 'id' => $model->idconta]);
+} else {
+    return $this->render('update', [
+        'model' => $model,
+        //    'fornecedores'=>$fornecedores,
+        ]);
+}
 
 }
 

@@ -24,6 +24,7 @@ return [
 'Is Insumo'=>'É Insumo',
 'Valor Venda'=>'Valor de venda', 
 'Quantidade Minima'=>'Quantidade mínima', 
+'Users'=>'Usuários',
 ];
 
 

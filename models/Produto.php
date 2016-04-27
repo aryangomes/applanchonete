@@ -133,6 +133,7 @@ class Produto extends \yii\db\ActiveRecord
         return Categoria::find()->where(['idCategoria' => $this->idCategoria])->one()->nome;
     }
     
+    
 
     public function calculoprecoproduto($idprodutoVenda)
     {

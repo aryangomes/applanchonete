@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use app\models\Produto;
 /**
  * This is the model class for table "itempedido".
  *
@@ -55,7 +55,7 @@ class Itempedido extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdPedido0()
+    public function getIdPedido()
     {
         return $this->hasOne(Pedido::className(), ['idPedido' => 'idPedido']);
     }
@@ -63,8 +63,13 @@ class Itempedido extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdProduto0()
+    public function getIdProduto()
     {
         return $this->hasOne(Produto::className(), ['idProduto' => 'idProduto']);
     }
+    public function getNomeProduto()
+    {
+        return Produto::find()->where(['idProduto' => $this->idProduto])->one()->nome;
+    }
+
 }

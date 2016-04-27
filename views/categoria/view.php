@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Categoria */
 
-$this->title = $model->idCategoria;
+$this->title = $model->nome;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Categorias'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-            'idCategoria',
+           // 'idCategoria',
             'nome',
             ],
             ]) ?>

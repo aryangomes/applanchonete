@@ -37,12 +37,12 @@ $this->params['breadcrumbs'][] = $this->title;
         }
         ],
         [
-        'attribute'=>  'quantidadeMinima',
+        'attribute'=>  'quantidadeEstoque',
         'format'=>'text',
 
         'value'=> function($model){
 
-            return $model->isInsumo ? $model->quantidadeMinima : null ;
+            return $model->isInsumo ? $model->quantidadeEstoque : null ;
         }
         ],
 

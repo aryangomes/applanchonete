@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 30-Abr-2016 às 03:59
+-- Generation Time: 30-Abr-2016 às 04:42
 -- Versão do servidor: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -112,6 +112,14 @@ UPDATE conta set valor = totalped where idconta = idcta;
 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizaTotalPedidoDelete`(IN `iddoPedido` INT, IN `totalProduto` FLOAT)
+    NO SQL
+BEGIN
+
+UPDATE pedido set totalPedido = (totalPedido- totalProduto) WHERE idPedido = iddoPedido;
+
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizaTotalPedidoInsert`(IN `iddoPedido` INT, IN `totalProduto` FLOAT)
     NO SQL
 BEGIN
@@ -123,13 +131,20 @@ UPDATE pedido set totalPedido = (totalPedido + totalProduto) WHERE idPedido = id
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizaTotalPedidoUpdate`(IN `iddoPedido` INT, IN `totalProduto` FLOAT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizaTotalPedidoUpdate`(IN `iddoPedido` INT, IN `totalProduto` FLOAT, IN `oldTotalProduto` INT)
     NO SQL
 BEGIN
 
-
-
+IF (totalProduto > oldTotalProduto) THEN
+UPDATE pedido set totalPedido = (totalPedido + (totalProduto - oldTotalProduto )) WHERE idPedido = iddoPedido;
+ELSEIF(totalProduto < oldTotalProduto) THEN 
+UPDATE pedido set totalPedido = (totalPedido - (oldTotalProduto - totalProduto )) WHERE idPedido = iddoPedido;
+ELSE 
 UPDATE pedido set totalPedido = (totalPedido + totalProduto) WHERE idPedido = iddoPedido;
+END IF;
+
+
+
 
 
 END$$
@@ -668,8 +683,8 @@ CREATE TABLE IF NOT EXISTS `conta` (
 --
 
 INSERT INTO `conta` (`idconta`, `valor`, `descricao`, `tipoConta`) VALUES
-(2, 0, NULL, 'pagamento'),
-(3, 13, NULL, 'pagamento');
+(2, 6, NULL, 'pagamento'),
+(3, 21, NULL, 'pagamento');
 
 -- --------------------------------------------------------
 
@@ -812,12 +827,19 @@ INSERT INTO `itempedido` (`idPedido`, `idProduto`, `quantidade`, `total`) VALUES
 (2, 8, '1', '4'),
 (2, 11, '2', '4'),
 (3, 8, '2', '8'),
-(3, 11, '2', '6'),
-(3, 14, '1', '2');
+(3, 11, '3', '9');
 
 --
 -- Acionadores `itempedido`
 --
+DELIMITER $$
+CREATE TRIGGER `trg_atualizaTotalPedidoDelete` AFTER DELETE ON `itempedido`
+ FOR EACH ROW BEGIN
+
+CALL atualizaTotalPedidoDelete(old.idPedido,old.total);
+END
+$$
+DELIMITER ;
 DELIMITER $$
 CREATE TRIGGER `trg_atualizaTotalPedidoInsert` AFTER INSERT ON `itempedido`
  FOR EACH ROW BEGIN
@@ -829,7 +851,7 @@ DELIMITER ;
 DELIMITER $$
 CREATE TRIGGER `trg_atualizaTotalPedidoUpdate` AFTER UPDATE ON `itempedido`
  FOR EACH ROW BEGIN
-call atualizaTotalPedidoUpdate(NEW.idPedido,NEW.total);
+call atualizaTotalPedidoUpdate(NEW.idPedido,NEW.total,OLD.total);
 END
 $$
 DELIMITER ;
@@ -933,8 +955,8 @@ CREATE TABLE IF NOT EXISTS `pedido` (
 --
 
 INSERT INTO `pedido` (`idPedido`, `totalPedido`, `idSituacaoAtual`) VALUES
-(2, '4', 1),
-(3, '13', 1);
+(2, '6', 1),
+(3, '21', 1);
 
 --
 -- Acionadores `pedido`
@@ -981,7 +1003,7 @@ INSERT INTO `produto` (`idProduto`, `nome`, `valorVenda`, `isInsumo`, `quantidad
 (9, 'Pão', 0, 1, 0, 3, 6),
 (10, 'Refrigerante', 2, 0, 0, 5, 10),
 (11, 'Sanduíche B', 3, 0, 0, 5, 0),
-(12, 'Hambúrguer ', 0, 1, 0, 3, 10.9),
+(12, 'Hambúrguer ', 0, 1, 0, 3, 10.5),
 (13, 'Ovo', 0, 1, 0, 3, 35),
 (14, 'Sanduíche C', 2, 0, 0, 5, 0),
 (15, 'Sanduíche D', 2, 0, 0, 5, 0),

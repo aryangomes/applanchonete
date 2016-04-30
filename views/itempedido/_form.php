@@ -31,7 +31,7 @@ use kartik\widgets\Select2;
 			?>
 
 			<?= $form->field($model, 'quantidade')->textInput([ 'type' => 'number', 
-			'value'=>0, 'min'=>0, 'step'=>'1']) ?>
+			'min'=>0, 'step'=>'1']) ?>
 
 			<?= $form->field($model, 'total')->hiddenInput(['value' => 0])->label(false) ?>
 

@@ -4,17 +4,19 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Pedido */
+/* @var $model app\models\Conta */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="pedido-form">
+<div class="conta-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'totalPedido')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'valor')->textInput() ?>
 
-    <?= $form->field($model, 'idSituacaoAtual')->textInput() ?>
+    <?= $form->field($model, 'descricao')->textarea(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'tipoConta')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -4,22 +4,24 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\PedidoSearch */
+/* @var $model app\models\ContaSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="pedido-search">
+<div class="conta-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'idPedido') ?>
+    <?= $form->field($model, 'idconta') ?>
 
-    <?= $form->field($model, 'totalPedido') ?>
+    <?= $form->field($model, 'valor') ?>
 
-    <?= $form->field($model, 'idSituacaoAtual') ?>
+    <?= $form->field($model, 'descricao') ?>
+
+    <?= $form->field($model, 'tipoConta') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

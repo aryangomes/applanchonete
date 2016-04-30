@@ -477,4 +477,44 @@ echo '</div>';
 
     </div>
     
-    
+    <script>
+    $(document).ready(function(){
+      $("[data-name='despesa']").dblclick(function(){
+       var arraydespesavalues = ['index-despesa','view-despesa',
+       'create-despesa','update-despesa','delete-despesa'];
+       var arraydespesatext = ['Listar','Visualizar','Criar','Editar','Deletar'];
+
+       var aux = [];
+       var auxtext = [];
+       for (i = 0; i < arraydespesavalues.length; i++) { 
+        if (arrayvalues.indexOf(arraydespesavalues[i]) < 0) {
+
+          aux.push(arraydespesavalues[i]);
+          auxtext.push(arraydespesatext[i]);
+
+        }
+      }
+      for (i = 0; i < aux.length; i++) { 
+       arrayvalues.push(aux[i]);
+     }
+
+     $("[data-name='despesa']").text('Despesa (Listar, Visualizar, Criar, Editar, Deletar)');
+
+     $('input[name="User[role_id]"]').val(arraydespesavalues);
+
+     $('li').filter('[data-name="index-despesa"]').remove();
+     $('li').filter('[data-name="view-despesa"]').remove();
+     $('li').filter('[data-name="create-despesa"]').remove();
+     $('li').filter('[data-name="update-despesa"]').remove();
+     $('li').filter('[data-name="delete-despesa"]').remove();
+     $('#despesa-sortable li').remove();
+
+     $("#w0-sortable").append("<li data-name='despesa' data-key='despesa' role=\"option\" aria-grabbed=\"false\" draggable=\"true\" style=\"display: list-item;\" > Despesas</li>");
+
+   });
+
+
+
+
+});
+</script>

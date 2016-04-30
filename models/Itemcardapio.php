@@ -31,8 +31,8 @@ class Itemcardapio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idCardapio', 'idProduto'], 'required'],
-            [['idCardapio', 'idProduto', 'status', 'ordem'], 'integer']
+        [['idCardapio', 'idProduto'], 'required'],
+        [['idCardapio', 'idProduto', 'status', 'ordem'], 'integer']
         ];
     }
 
@@ -42,10 +42,10 @@ class Itemcardapio extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idCardapio' => 'Id Cardapio',
-            'idProduto' => 'Id Produto',
-            'status' => 'Status',
-            'ordem' => 'Ordem',
+        'idCardapio' => 'Id Cardapio',
+        'idProduto' => 'Id Produto',
+        'status' => 'Status',
+        'ordem' => 'Ordem',
         ];
     }
 

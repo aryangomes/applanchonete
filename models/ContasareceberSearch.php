@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Pedido;
+use app\models\Contasareceber;
 
 /**
- * PedidoSearch represents the model behind the search form about `app\models\Pedido`.
+ * ContasareceberSearch represents the model behind the search form about `app\models\Contasareceber`.
  */
-class PedidoSearch extends Pedido
+class ContasareceberSearch extends Contasareceber
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class PedidoSearch extends Pedido
     public function rules()
     {
         return [
-            [['idPedido', 'idSituacaoAtual'], 'integer'],
-            [['totalPedido'], 'number'],
+            [['idconta'], 'integer'],
+            [['dataHora'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class PedidoSearch extends Pedido
      */
     public function search($params)
     {
-        $query = Pedido::find();
+        $query = Contasareceber::find();
 
         // add conditions that should always apply here
 
@@ -59,9 +59,8 @@ class PedidoSearch extends Pedido
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'idPedido' => $this->idPedido,
-            'totalPedido' => $this->totalPedido,
-            'idSituacaoAtual' => $this->idSituacaoAtual,
+            'idconta' => $this->idconta,
+            'dataHora' => $this->dataHora,
         ]);
 
         return $dataProvider;

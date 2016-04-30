@@ -10,13 +10,11 @@ use Yii;
  * @property integer $idPedido
  * @property string $totalPedido
  * @property integer $idSituacaoAtual
- * @property integer $idComanda
  *
  * @property Historicosituacao[] $historicosituacaos
  * @property Situacaopedido[] $idSituacaoPedidos
  * @property Itempedido[] $itempedidos
  * @property Produto[] $idProdutos
- * @property Comanda $idComanda0
  * @property Situacaopedido $idSituacaoAtual0
  */
 class Pedido extends \yii\db\ActiveRecord
@@ -35,9 +33,10 @@ class Pedido extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-        [['idPedido', 'totalPedido', 'idSituacaoAtual', 'idComanda'], 'required'],
-        [['idPedido', 'idSituacaoAtual', 'idComanda'], 'integer'],
-        [['totalPedido'], 'number']
+            [['totalPedido'], 'number'],
+            [['idSituacaoAtual'], 'required'],
+            [['idSituacaoAtual'], 'integer'],
+            [['idSituacaoAtual'], 'exist', 'skipOnError' => true, 'targetClass' => Situacaopedido::className(), 'targetAttribute' => ['idSituacaoAtual' => 'idSituacaoPedido']],
         ];
     }
 
@@ -47,10 +46,9 @@ class Pedido extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-        'idPedido' => 'Id Pedido',
-        'totalPedido' => 'Total Pedido',
-        'idSituacaoAtual' => 'Id Situacao Atual',
-        'idComanda' => 'Id Comanda',
+            'idPedido' => Yii::t('app', 'Id Pedido'),
+            'totalPedido' => Yii::t('app', 'Total Pedido'),
+            'idSituacaoAtual' => Yii::t('app', 'Id Situacao Atual'),
         ];
     }
 
@@ -84,14 +82,6 @@ class Pedido extends \yii\db\ActiveRecord
     public function getIdProdutos()
     {
         return $this->hasMany(Produto::className(), ['idProduto' => 'idProduto'])->viaTable('itempedido', ['idPedido' => 'idPedido']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getcomandas()
-    {
-        return $this->hasOne(Comanda::className(), ['idComanda' => 'idComanda']);
     }
 
     /**

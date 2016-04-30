@@ -3,16 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Pedido;
-use app\models\PedidoSearch;
+use app\models\Conta;
+use app\models\ContaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * PedidoController implements the CRUD actions for Pedido model.
+ * ContaController implements the CRUD actions for Conta model.
  */
-class PedidoController extends Controller
+class ContaController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +30,12 @@ class PedidoController extends Controller
     }
 
     /**
-     * Lists all Pedido models.
+     * Lists all Conta models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new PedidoSearch();
+        $searchModel = new ContaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class PedidoController extends Controller
     }
 
     /**
-     * Displays a single Pedido model.
+     * Displays a single Conta model.
      * @param integer $id
      * @return mixed
      */
@@ -57,16 +57,16 @@ class PedidoController extends Controller
     }
 
     /**
-     * Creates a new Pedido model.
+     * Creates a new Conta model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Pedido();
+        $model = new Conta();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idPedido]);
+            return $this->redirect(['view', 'id' => $model->idconta]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -75,7 +75,7 @@ class PedidoController extends Controller
     }
 
     /**
-     * Updates an existing Pedido model.
+     * Updates an existing Conta model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -85,7 +85,7 @@ class PedidoController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idPedido]);
+            return $this->redirect(['view', 'id' => $model->idconta]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -94,7 +94,7 @@ class PedidoController extends Controller
     }
 
     /**
-     * Deletes an existing Pedido model.
+     * Deletes an existing Conta model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -107,15 +107,15 @@ class PedidoController extends Controller
     }
 
     /**
-     * Finds the Pedido model based on its primary key value.
+     * Finds the Conta model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Pedido the loaded model
+     * @return Conta the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Pedido::findOne($id)) !== null) {
+        if (($model = Conta::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -19,6 +19,9 @@ use Yii;
  */
 class Pedido extends \yii\db\ActiveRecord
 {
+
+ 
+
     /**
      * @inheritdoc
      */
@@ -33,10 +36,11 @@ class Pedido extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['totalPedido'], 'number'],
-            [['idSituacaoAtual'], 'required'],
-            [['idSituacaoAtual'], 'integer'],
-            [['idSituacaoAtual'], 'exist', 'skipOnError' => true, 'targetClass' => Situacaopedido::className(), 'targetAttribute' => ['idSituacaoAtual' => 'idSituacaoPedido']],
+        [['totalPedido'], 'double'],
+        [['idSituacaoAtual'], 'required'],
+        [['idSituacaoAtual'], 'integer'],
+        [['situacaopedido'], 'safe'],
+        [['idSituacaoAtual'], 'exist', 'skipOnError' => true, 'targetClass' => Situacaopedido::className(), 'targetAttribute' => ['idSituacaoAtual' => 'idSituacaoPedido']],
         ];
     }
 
@@ -46,9 +50,9 @@ class Pedido extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idPedido' => Yii::t('app', 'Id Pedido'),
-            'totalPedido' => Yii::t('app', 'Total Pedido'),
-            'idSituacaoAtual' => Yii::t('app', 'Id Situacao Atual'),
+        'idPedido' => Yii::t('app', 'Id Pedido'),
+        'totalPedido' => Yii::t('app', 'Total Pedido'),
+        'idSituacaoAtual' => Yii::t('app', 'Situação Atual'),
         ];
     }
 
@@ -88,6 +92,11 @@ class Pedido extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
     public function getIdSituacaoAtual0()
+    {
+        return $this->hasOne(Situacaopedido::className(), ['idSituacaoPedido' => 'idSituacaoAtual']);
+    }
+
+    public function getSituacaopedido()
     {
         return $this->hasOne(Situacaopedido::className(), ['idSituacaoPedido' => 'idSituacaoAtual']);
     }

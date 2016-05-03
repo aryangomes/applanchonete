@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\ContasapagarSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Contasapagars');
+$this->title = Yii::t('app', 'Contas a pagar');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="contasapagar-index">
@@ -16,19 +16,40 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Contasapagar'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?php // Html::a(Yii::t('app', 'Create {model}',['model'=>'Contas a pagar']), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-<?php Pjax::begin(); ?>    <?= GridView::widget([
+    <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+        ['class' => 'yii\grid\SerialColumn'],
 
-            'idconta',
-            'situacaoPagamento',
-            'dataVencimento',
-
-            ['class' => 'yii\grid\ActionColumn'],
+       // 'idconta',
+        ['attribute'=>'conta',
+        'format'=>'text',
+        'label'=>'Conta',
+        'value'=>function ($model)
+        {
+            return $model->conta->descricao;
+        }
         ],
-    ]); ?>
-<?php Pjax::end(); ?></div>
+        ['attribute'=>'situacaoPagamento',
+        'format'=>'text',
+        'value'=>function ($model)
+        {
+            return $model->situacaoPagamento ? 'Paga' : 'Não paga';
+        }
+        ],
+        ['attribute'=>'dataVencimento',
+        'format'=>'text',
+        'value'=>function ($model)
+        {
+            return isset($model->dataVencimento) ?
+            \Yii::$app->formatter->asDate($model->dataVencimento, 'dd/MM/yyyy') : null ;
+        }
+        ],
+
+        ['class' => 'yii\grid\ActionColumn'],
+        ],
+        ]); ?>
+        <?php Pjax::end(); ?></div>

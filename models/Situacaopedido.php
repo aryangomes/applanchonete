@@ -31,9 +31,9 @@ class Situacaopedido extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['titulo', 'descricao'], 'required'],
-            [['descricao'], 'string'],
-            [['titulo'], 'string', 'max' => 45]
+        [['titulo', 'descricao'], 'required'],
+        [['descricao'], 'string'],
+        [['titulo'], 'string', 'max' => 45]
         ];
     }
 
@@ -43,9 +43,9 @@ class Situacaopedido extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idSituacaoPedido' => 'Id Situacao Pedido',
-            'titulo' => 'Titulo',
-            'descricao' => 'Descricao',
+        'idSituacaoPedido' => 'Id Situacao Pedido',
+        'titulo' => 'Título',
+        'descricao' => 'Descrição',
         ];
     }
 

@@ -12,14 +12,17 @@ use app\models\Pedido;
  */
 class PedidoSearch extends Pedido
 {
+
+   public $situacaopedido;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['idPedido', 'idSituacaoAtual'], 'integer'],
-            [['totalPedido'], 'number'],
+        [['idPedido', 'idSituacaoAtual'], 'integer'],
+        [['situacaopedido'] , 'safe'],
+        [['totalPedido'], 'number'],
         ];
     }
 
@@ -47,7 +50,7 @@ class PedidoSearch extends Pedido
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-        ]);
+            ]);
 
         $this->load($params);
 
@@ -62,7 +65,7 @@ class PedidoSearch extends Pedido
             'idPedido' => $this->idPedido,
             'totalPedido' => $this->totalPedido,
             'idSituacaoAtual' => $this->idSituacaoAtual,
-        ]);
+            ]);
 
         return $dataProvider;
     }

@@ -12,14 +12,16 @@ use app\models\Contasareceber;
  */
 class ContasareceberSearch extends Contasareceber
 {
+
+    public $conta;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['idconta'], 'integer'],
-            [['dataHora'], 'safe'],
+        [['idconta'], 'integer'],
+        [['dataHora','conta'], 'safe'],
         ];
     }
 
@@ -47,7 +49,7 @@ class ContasareceberSearch extends Contasareceber
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-        ]);
+            ]);
 
         $this->load($params);
 
@@ -61,7 +63,7 @@ class ContasareceberSearch extends Contasareceber
         $query->andFilterWhere([
             'idconta' => $this->idconta,
             'dataHora' => $this->dataHora,
-        ]);
+            ]);
 
         return $dataProvider;
     }

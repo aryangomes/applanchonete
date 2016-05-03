@@ -6,18 +6,19 @@ use yii\helpers\Html;
 /* @var $model app\models\Contasapagar */
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
-    'modelClass' => 'Contasapagar',
-]) . $model->idconta;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Contasapagars'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->idconta, 'url' => ['view', 'id' => $model->idconta]];
+	'modelClass' => 'Conta a pagar',
+	]) . ' '.$model->conta->descricao;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Contas a pagar'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->conta->descricao, 'url' => ['view', 'id' => $model->idconta]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="contasapagar-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+	<h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+	<?= $this->render('_form', [
+		'model' => $model,
+		'contas'=>$contas,
+		]) ?>
 
-</div>
+	</div>

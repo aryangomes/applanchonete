@@ -44,7 +44,7 @@ class Conta extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idconta' => Yii::t('app', 'Idconta'),
+        'idconta' => Yii::t('app', 'Idconta'),
             'valor' => Yii::t('app', 'Valor'),
             'descricao' => Yii::t('app', 'Descricao'),
             'tipoConta' => Yii::t('app', 'Tipo Conta'),

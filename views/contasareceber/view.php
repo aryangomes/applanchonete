@@ -6,8 +6,8 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Contasareceber */
 
-$this->title = $model->idconta;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Contasarecebers'), 'url' => ['index']];
+$this->title = $model->conta->descricao;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Conta a receber'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="contasareceber-view">
@@ -15,22 +15,22 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->idconta], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->idconta], [
+        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->idconta], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->idconta], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
+            'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+            'method' => 'post',
             ],
-        ]) ?>
-    </p>
+            ]) ?>
+        </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
+        <?= DetailView::widget([
+            'model' => $model,
+            'attributes' => [
             'idconta',
             'dataHora',
-        ],
-    ]) ?>
+            ],
+            ]) ?>
 
-</div>
+        </div>

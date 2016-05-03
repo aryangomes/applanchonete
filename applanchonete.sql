@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 30-Abr-2016 às 04:42
+-- Generation Time: 03-Maio-2016 às 05:07
 -- Versão do servidor: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -184,6 +184,9 @@ INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('categoria', 84, NULL),
 ('compra', 84, NULL),
 ('compra', 85, NULL),
+('conta', 84, NULL),
+('contasapagar', 84, NULL),
+('contasareceber', 84, NULL),
 ('create-caixa', 111, NULL),
 ('create-compra', 85, NULL),
 ('create-despesa', 111, NULL),
@@ -270,11 +273,17 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('categoria', 110, 'Categorias', NULL, NULL, NULL, NULL),
 ('comanda', 44, 'Comanda', NULL, NULL, NULL, NULL),
 ('compra', 26, 'Compra', NULL, NULL, NULL, NULL),
+('conta', 122, 'Conta', NULL, NULL, NULL, NULL),
+('contasapagar', 128, 'Conta a pagar', NULL, NULL, NULL, NULL),
+('contasareceber', 134, 'Conta a receber', NULL, NULL, NULL, NULL),
 ('create-caixa', 11, 'Criar Caixa', NULL, NULL, NULL, NULL),
 ('create-cardapio', 42, 'Criar Cardapio', NULL, NULL, NULL, NULL),
 ('create-categoria', 112, 'Criar Categoria', NULL, NULL, NULL, NULL),
 ('create-comanda', 45, 'Criar Comanda', NULL, NULL, NULL, NULL),
 ('create-compra', 29, 'Criar Compra', NULL, NULL, NULL, NULL),
+('create-conta', 124, 'Criar Conta', NULL, NULL, NULL, NULL),
+('create-contasapagar', 130, 'Criar Conta a pagar', NULL, NULL, NULL, NULL),
+('create-contasareceber', 136, 'Criar Conta a receber', NULL, NULL, NULL, NULL),
 ('create-despesa', 5, 'Criar Despesa', NULL, NULL, NULL, NULL),
 ('create-destaque', 52, 'Criar Destaque', NULL, NULL, NULL, NULL),
 ('create-fornecedor', 17, 'Criar Fornecedor', NULL, NULL, NULL, NULL),
@@ -294,6 +303,9 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('delete-categoria', 115, 'Deletar Categoria', NULL, NULL, NULL, NULL),
 ('delete-comanda', 49, 'Deletar Comanda', NULL, NULL, NULL, NULL),
 ('delete-compra', 31, 'Deletar Compra', NULL, NULL, NULL, NULL),
+('delete-conta', 127, 'Deletar Conta', NULL, NULL, NULL, NULL),
+('delete-contasapagar', 133, 'Deletar Conta a pagar', NULL, NULL, NULL, NULL),
+('delete-contasareceber', 139, 'Deletar Conta a receber', NULL, NULL, NULL, NULL),
 ('delete-despesa', 7, 'Deletar Despesa', NULL, NULL, NULL, NULL),
 ('delete-destaque', 51, 'Deletar Destaque', NULL, NULL, NULL, NULL),
 ('delete-fornecedor', 19, 'Deletar Fornecedor', NULL, NULL, NULL, NULL),
@@ -317,6 +329,9 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('index-categoria', 111, 'Listar Categorias', NULL, NULL, NULL, NULL),
 ('index-comanda', 46, 'Listar Comandas', NULL, NULL, NULL, NULL),
 ('index-compra', 27, 'Listar Compras', NULL, NULL, NULL, NULL),
+('index-conta', 123, 'Listar Contas', NULL, NULL, NULL, NULL),
+('index-contasapagar', 129, 'Listar Contas a pagar', NULL, NULL, NULL, NULL),
+('index-contasareceber', 135, 'Listar Contas a receber', NULL, NULL, NULL, NULL),
 ('index-despesa', 3, 'Listar Despesas', NULL, NULL, NULL, NULL),
 ('index-destaque', 53, 'Listar Destaques', NULL, NULL, NULL, NULL),
 ('index-fornecedor', 15, 'Listar Fornecedores', NULL, NULL, NULL, NULL),
@@ -348,6 +363,9 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('update-categoria', 114, 'Atualizar Categoria', NULL, NULL, NULL, NULL),
 ('update-comanda', 47, 'Atualizar Comanada', NULL, NULL, NULL, NULL),
 ('update-compra', 30, 'Editar Compra', NULL, NULL, NULL, NULL),
+('update-conta', 126, 'Atualizar Conta', NULL, NULL, NULL, NULL),
+('update-contasapagar', 132, 'Atualizar Conta a pagar', NULL, NULL, NULL, NULL),
+('update-contasareceber', 138, 'Atualizar Conta a receber', NULL, NULL, NULL, NULL),
 ('update-despesa', 6, 'Editar Despesa', NULL, NULL, NULL, NULL),
 ('update-destaque', 54, 'Atualizar Destaque', NULL, NULL, NULL, NULL),
 ('update-fornecedor', 18, 'Editar Fornecedor', NULL, NULL, NULL, NULL),
@@ -368,6 +386,9 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('view-categoria', 113, 'Visualizar Categoria', NULL, NULL, NULL, NULL),
 ('view-comanda', 48, 'Visualizar Comanda', NULL, NULL, NULL, NULL),
 ('view-compra', 28, 'Visualizar Compra', NULL, NULL, NULL, NULL),
+('view-conta', 125, 'Visualizar Conta', NULL, NULL, NULL, NULL),
+('view-contasapagar', 131, 'Visualizar Conta a pagar', NULL, NULL, NULL, NULL),
+('view-contasareceber', 137, 'Visualizar Conta a receber', NULL, NULL, NULL, NULL),
 ('view-despesa', 4, 'Visualizar Despesa', NULL, NULL, NULL, NULL),
 ('view-destaque', 55, 'Visualizar Destaque', NULL, NULL, NULL, NULL),
 ('view-fornecedor', 16, 'Visualizar Fornecedor', NULL, NULL, NULL, NULL),
@@ -407,6 +428,9 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('categoria', 'create-categoria'),
 ('comanda', 'create-comanda'),
 ('compra', 'create-compra'),
+('conta', 'create-conta'),
+('contasapagar', 'create-contasapagar'),
+('contasareceber', 'create-contasareceber'),
 ('despesa', 'create-despesa'),
 ('destaque', 'create-destaque'),
 ('fornecedor', 'create-fornecedor'),
@@ -425,6 +449,9 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('cardapio', 'delete-cardapio'),
 ('categoria', 'delete-categoria'),
 ('compra', 'delete-compra'),
+('conta', 'delete-conta'),
+('contasapagar', 'delete-contasapagar'),
+('contasareceber', 'delete-contasareceber'),
 ('despesa', 'delete-despesa'),
 ('destaque', 'delete-destaque'),
 ('fornecedor', 'delete-fornecedor'),
@@ -444,6 +471,9 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('categoria', 'index-categoria'),
 ('comanda', 'index-comanda'),
 ('compra', 'index-compra'),
+('conta', 'index-conta'),
+('contasapagar', 'index-contasapagar'),
+('contasareceber', 'index-contasareceber'),
 ('despesa', 'index-despesa'),
 ('destaque', 'index-destaque'),
 ('fornecedor', 'index-fornecedor'),
@@ -466,6 +496,9 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('categoria', 'update-categoria'),
 ('comanda', 'update-comanda'),
 ('compra', 'update-compra'),
+('conta', 'update-conta'),
+('contasapagar', 'update-contasapagar'),
+('contasareceber', 'update-contasareceber'),
 ('despesa', 'update-despesa'),
 ('destaque', 'update-destaque'),
 ('fornecedor', 'update-fornecedor'),
@@ -486,6 +519,9 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('categoria', 'view-categoria'),
 ('comanda', 'view-comanda'),
 ('compra', 'view-compra'),
+('conta', 'view-conta'),
+('contasapagar', 'view-contasapagar'),
+('contasareceber', 'view-contasareceber'),
 ('despesa', 'view-despesa'),
 ('destaque', 'view-destaque'),
 ('fornecedor', 'view-fornecedor'),
@@ -533,7 +569,7 @@ CREATE TABLE IF NOT EXISTS `caixa` (
 --
 
 INSERT INTO `caixa` (`idcaixa`, `valorapurado`, `valoremcaixa`, `valorlucro`, `user_id`) VALUES
-(4, 2211.11, 0.31, 0.22, 84),
+(4, 2211.11, 3.13, 0.22, 84),
 (6, 0.01, 0.02, 0.03, 109);
 
 -- --------------------------------------------------------
@@ -676,15 +712,19 @@ CREATE TABLE IF NOT EXISTS `conta` (
   `valor` double NOT NULL DEFAULT '0',
   `descricao` text,
   `tipoConta` varchar(100) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `conta`
 --
 
 INSERT INTO `conta` (`idconta`, `valor`, `descricao`, `tipoConta`) VALUES
-(2, 6, NULL, 'pagamento'),
-(3, 21, NULL, 'pagamento');
+(2, 6, 'Luz', 'contasapagar'),
+(3, 21, 'Pedido', 'contasareceber'),
+(5, 1.23, 'Pedido', 'contasareceber'),
+(6, 5.67, 'Água', 'contasapagar'),
+(13, 5.67, 'receber', 'contasareceber'),
+(14, 8.9, 'pagar', 'contasapagar');
 
 -- --------------------------------------------------------
 
@@ -695,8 +735,17 @@ INSERT INTO `conta` (`idconta`, `valor`, `descricao`, `tipoConta`) VALUES
 CREATE TABLE IF NOT EXISTS `contasapagar` (
   `idconta` int(11) NOT NULL,
   `situacaoPagamento` tinyint(1) NOT NULL,
-  `dataVencimento` date NOT NULL
+  `dataVencimento` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `contasapagar`
+--
+
+INSERT INTO `contasapagar` (`idconta`, `situacaoPagamento`, `dataVencimento`) VALUES
+(3, 1, NULL),
+(6, 0, '2016-04-30'),
+(14, 0, '2016-05-18');
 
 -- --------------------------------------------------------
 
@@ -708,6 +757,14 @@ CREATE TABLE IF NOT EXISTS `contasareceber` (
   `idconta` int(11) NOT NULL,
   `dataHora` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `contasareceber`
+--
+
+INSERT INTO `contasareceber` (`idconta`, `dataHora`) VALUES
+(5, '2016-05-12 00:00:00'),
+(13, '2016-05-19 20:55:00');
 
 -- --------------------------------------------------------
 
@@ -936,7 +993,9 @@ CREATE TABLE IF NOT EXISTS `pagamento` (
 INSERT INTO `pagamento` (`idConta`, `idPedido`) VALUES
 (2, 2),
 (3, 3),
-(4, 4);
+(4, 4),
+(5, 5),
+(6, 6);
 
 -- --------------------------------------------------------
 
@@ -946,17 +1005,19 @@ INSERT INTO `pagamento` (`idConta`, `idPedido`) VALUES
 
 CREATE TABLE IF NOT EXISTS `pedido` (
   `idPedido` int(11) NOT NULL,
-  `totalPedido` decimal(10,0) NOT NULL DEFAULT '0',
+  `totalPedido` double NOT NULL DEFAULT '0',
   `idSituacaoAtual` int(11) NOT NULL COMMENT 'Situação atual do staus do pedido, \nfacilitar na busca do status do pedido'
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `pedido`
 --
 
 INSERT INTO `pedido` (`idPedido`, `totalPedido`, `idSituacaoAtual`) VALUES
-(2, '6', 1),
-(3, '21', 1);
+(2, 6, 1),
+(3, 21, 1),
+(5, 0, 1),
+(6, 2.31, 1);
 
 --
 -- Acionadores `pedido`
@@ -1102,14 +1163,16 @@ CREATE TABLE IF NOT EXISTS `situacaopedido` (
   `idSituacaoPedido` int(11) NOT NULL,
   `titulo` varchar(45) NOT NULL,
   `descricao` text NOT NULL COMMENT 'ESTARA INCLUSO NA TABELA DE SISTEMA\n'
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `situacaopedido`
 --
 
 INSERT INTO `situacaopedido` (`idSituacaoPedido`, `titulo`, `descricao`) VALUES
-(1, '-', '-');
+(1, 'Em andamento', '-'),
+(2, 'Concluído', ''),
+(3, 'Cancelado', '');
 
 -- --------------------------------------------------------
 
@@ -1158,7 +1221,7 @@ INSERT INTO `user` (`id`, `role_id`, `status`, `email`, `username`, `password`, 
 (43, 3, 1, 'funcionario1@sigir.com', 'funcionario01', '$2y$13$MR/pQJFMZRJZkZj4.xg0qOtdjJK6NMaMo5jF4bVt1tPHf7sjr0QHi', 'JoIVj9p9IWlVklx1TZ00otnbcr-Gmao7', 'hAYvnkL8pFzP6FGMH7eKw7UmisflzyjX', '::1', '2016-02-05 03:48:25', '::1', '2016-02-01 01:00:46', '2016-02-01 04:23:48', NULL, NULL),
 (44, 2, 1, 'gerente1@sigir.com', 'gerente', '$2y$13$mujgA7j0OsPxUr0gYAao3OSk1yykiEFfxqXis7m.lzvZ3EWID1jOG', 'c4rPsYI-Q-WNI9GgYyTvbZr_ynwyuAlY', 'nAzvxmIB3bTRTW9d23dn1isBFBr6s7RI', '::1', '2016-02-09 23:37:54', '::1', '2016-02-01 01:01:26', '2016-02-09 07:11:09', NULL, NULL),
 (80, 2, 1, 'teste@teste.com', NULL, '$2y$13$Up2wVYVIsBKk3oij/H/8l.5hPym80.3NTFpGlc97cSJg32EqNGn4y', 'EXAFyYZpG5QVTcGx6yeFrlDOl9OizMuM', 'ZdjGbu9FKlXtF5mYt1A4CcShpkEaTd9i', '::1', '2016-02-08 01:22:20', '::1', '2016-02-05 03:30:47', '2016-02-05 05:19:16', NULL, NULL),
-(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-04-30 03:23:54', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
+(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-05-03 04:19:44', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
 (85, 2, 1, 'compras@compras.com', 'Compra', '$2y$13$fcSVvuFUmhH.3iZ0wTtoZOpkVTt1tjAg2fO2thZog9QwMUIEUUzKu', 'tVH-bh0RpqSA1RgMqIR4rqcKtKiGhvPB', '165xJKTAkwnR1QcUd6wQ-fkU8Q98od2O', '::1', '2016-02-12 04:37:12', '::1', '2016-02-10 06:13:27', '2016-02-13 17:20:37', NULL, NULL),
 (104, 2, 1, 'teste3@teste.com', 'teste3', '$2y$13$4MrmhHyYwYzQ5uFHtr8rpeUNCgFCZiHR0410sdcJBABbm/zl/1Z..', 'ndzPwraET0uG3RZMtH23_-7IdxZtiRaH', 'nO74vFAzRakvIVNVrrJLrl4CU9718fzh', '::1', '2016-02-14 05:59:05', '::1', '2016-02-14 05:09:25', '2016-02-14 06:02:05', NULL, NULL),
 (108, 2, 1, 'teste4@teste.com', 'teste44', '$2y$13$COZu07CnXAVlfSQJwK6ng.LnOd43dGyN29Tw/FH13Mtoa/zTtlGwy', 'Hs7QEYX6yxldLcpIVPjwNoBNBY5zWDSa', 'Ib_71XRL0h05Yr1STAjJwv9Y3sfJOIW4', '::1', '2016-02-14 06:35:23', '::1', '2016-02-14 06:30:37', '2016-02-14 06:35:48', NULL, NULL),
@@ -1474,7 +1537,7 @@ ALTER TABLE `comanda`
 -- AUTO_INCREMENT for table `conta`
 --
 ALTER TABLE `conta`
-  MODIFY `idconta` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `idconta` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `despesa`
 --
@@ -1489,7 +1552,7 @@ ALTER TABLE `mesa`
 -- AUTO_INCREMENT for table `pedido`
 --
 ALTER TABLE `pedido`
-  MODIFY `idPedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `idPedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `produto`
 --
@@ -1514,7 +1577,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `situacaopedido`
 --
 ALTER TABLE `situacaopedido`
-  MODIFY `idSituacaoPedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `idSituacaoPedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `tipopagamento`
 --

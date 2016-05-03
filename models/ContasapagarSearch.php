@@ -12,14 +12,15 @@ use app\models\Contasapagar;
  */
 class ContasapagarSearch extends Contasapagar
 {
+    public $conta;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['idconta', 'situacaoPagamento'], 'integer'],
-            [['dataVencimento'], 'safe'],
+        [['idconta', 'situacaoPagamento'], 'integer'],
+        [['dataVencimento','conta'], 'safe'],
         ];
     }
 
@@ -47,7 +48,7 @@ class ContasapagarSearch extends Contasapagar
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-        ]);
+            ]);
 
         $this->load($params);
 
@@ -62,7 +63,7 @@ class ContasapagarSearch extends Contasapagar
             'idconta' => $this->idconta,
             'situacaoPagamento' => $this->situacaoPagamento,
             'dataVencimento' => $this->dataVencimento,
-        ]);
+            ]);
 
         return $dataProvider;
     }

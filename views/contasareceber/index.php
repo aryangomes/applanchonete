@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\ContasareceberSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Contasarecebers');
+$this->title = Yii::t('app', 'Contas a receber');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="contasareceber-index">
@@ -16,18 +16,32 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Contasareceber'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?php // Html::a(Yii::t('app', 'Create {model}',['model'=>'Conta a receber']), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-<?php Pjax::begin(); ?>    <?= GridView::widget([
+    <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+        ['class' => 'yii\grid\SerialColumn'],
 
-            'idconta',
-            'dataHora',
-
-            ['class' => 'yii\grid\ActionColumn'],
+        ['attribute'=>'conta',
+        'format'=>'text',
+        'label'=>'Conta',
+        'value'=>function ($model)
+        {
+            return $model->conta->descricao;
+        }
         ],
-    ]); ?>
-<?php Pjax::end(); ?></div>
+        ['attribute'=>'dataHora',
+        'format'=>'text',
+        'value'=>function ($model)
+        {
+            return isset($model->dataHora) ?
+            \Yii::$app->formatter->asDate($model->dataHora, 'dd/MM/yyyy H:m') : null ;
+        }
+        ],
+
+        ['class' => 'yii\grid\ActionColumn'],
+        ],
+        ]); ?>
+        <?php Pjax::end(); ?></div>

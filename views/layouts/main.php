@@ -255,7 +255,7 @@ if (count($loja) > 0) {
 
                                         ?>
                                         <li>
-                                            <?= Html::a('<i class="fa fa-money"></i> Caixa', ['/caixa/index']) ?>
+                                            <?= Html::a('<i class="glyphicon glyphicon-piggy-bank"></i> Caixa', ['/caixa/index']) ?>
 
                                         </li>
 
@@ -380,6 +380,49 @@ if (count($loja) > 0) {
                         <?php
                     }
                     ?>
+
+                    <?php
+                    if (Yii::$app->user->can("index-conta") || Yii::$app->user->can("conta")) {
+
+                        ?>
+
+                        <li>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="glyphicon glyphicon-barcode"></i> Contas <i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="demo" class="collapse">
+                                <li>
+                                    <?= Html::a('<i class="glyphicon glyphicon-barcode"></i> Lista de todas as Contas', ['/conta/index']) ?>
+
+                                </li>
+                                <?php
+                                if (Yii::$app->user->can("index-contasapagar") || Yii::$app->user->can("contasapagar")) {
+
+                                    ?>
+                                    <li>
+                                        <?= Html::a('<i class="glyphicon glyphicon-pushpin"></i> Contas a Pagar', ['/contasapagar/index']) ?>
+
+                                    </li>
+                                    <?php
+                                }
+                                ?>
+                                <?php
+                                if (Yii::$app->user->can("index-contasareceber") || Yii::$app->user->can("contasareceber")) {
+
+                                    ?>
+                                    <li>
+                                        <?= Html::a('<i class="fa fa-money"></i> Contas a Receber', ['/contasareceber/index']) ?>
+
+                                    </li>
+                                    <?php
+                                }
+                                ?>
+
+                            </ul>
+                        </li>
+
+                        <?php
+                    }
+                    ?>
+
                     <?php
                     if (Yii::$app->user->can("index-loja") || Yii::$app->user->can("loja")) {
 
@@ -553,7 +596,7 @@ $this->registerJsFile('@web/admin/js/plugins/morris/morris-data.js');
 
 
 ?>
-<?= Html::jsFile("/applanchonete/web/admin/js/cadastro-permissoes.js") ?>
+<?php // Html::jsFile("/applanchonete/web/admin/js/cadastro-permissoes.js") ?>
 
 
 

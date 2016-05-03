@@ -29,10 +29,10 @@ class Contasapagar extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idconta', 'situacaoPagamento', 'dataVencimento'], 'required'],
-            [['idconta', 'situacaoPagamento'], 'integer'],
-            [['dataVencimento'], 'safe'],
-            [['idconta'], 'exist', 'skipOnError' => true, 'targetClass' => Conta::className(), 'targetAttribute' => ['idconta' => 'idconta']],
+        [['idconta', 'situacaoPagamento'], 'required'],
+        [['idconta', 'situacaoPagamento'], 'integer'],
+        [['dataVencimento'], 'safe'],
+        [['idconta'], 'exist', 'skipOnError' => true, 'targetClass' => Conta::className(), 'targetAttribute' => ['idconta' => 'idconta']],
         ];
     }
 
@@ -42,16 +42,21 @@ class Contasapagar extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idconta' => Yii::t('app', 'Idconta'),
-            'situacaoPagamento' => Yii::t('app', 'Situacao Pagamento'),
-            'dataVencimento' => Yii::t('app', 'Data Vencimento'),
+        'idconta' => Yii::t('app', 'Conta'),
+        'situacaoPagamento' => Yii::t('app', 'Situação Pagamento'),
+        'dataVencimento' => Yii::t('app', 'Data Vencimento'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdconta0()
+    public function getIdconta()
+    {
+        return $this->hasOne(Conta::className(), ['idconta' => 'idconta']);
+    }
+
+    public function getConta()
     {
         return $this->hasOne(Conta::className(), ['idconta' => 'idconta']);
     }

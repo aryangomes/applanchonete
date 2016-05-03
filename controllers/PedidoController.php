@@ -8,7 +8,8 @@ use app\models\PedidoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\models\Situacaopedido;
+use yii\helpers\ArrayHelper;
 /**
  * PedidoController implements the CRUD actions for Pedido model.
  */
@@ -20,12 +21,12 @@ class PedidoController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+        'delete' => ['POST'],
+        ],
+        ],
         ];
     }
 
@@ -41,7 +42,7 @@ class PedidoController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
+            ]);
     }
 
     /**
@@ -53,7 +54,7 @@ class PedidoController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
-        ]);
+            ]);
     }
 
     /**
@@ -64,13 +65,16 @@ class PedidoController extends Controller
     public function actionCreate()
     {
         $model = new Pedido();
-
+        $situacaopedido = ArrayHelper::map(
+            Situacaopedido::find()->all()
+            , 'idSituacaoPedido' ,'titulo');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idPedido]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-            ]);
+                'situacaopedido'=>$situacaopedido,
+                ]);
         }
     }
 
@@ -83,13 +87,16 @@ class PedidoController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $situacaopedido = ArrayHelper::map(
+            Situacaopedido::find()->all()
+            , 'idSituacaoPedido' ,'titulo');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idPedido]);
         } else {
             return $this->render('update', [
                 'model' => $model,
-            ]);
+                'situacaopedido'=>$situacaopedido,
+                ]);
         }
     }
 

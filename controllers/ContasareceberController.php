@@ -8,7 +8,9 @@ use app\models\ContasareceberSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\models\Conta;
+use yii\helpers\ArrayHelper;
+use app\components\AccessFilter;
 /**
  * ContasareceberController implements the CRUD actions for Contasareceber model.
  */
@@ -20,12 +22,31 @@ class ContasareceberController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+        'delete' => ['POST'],
+        ],
+        ],
+        'autorizacao'=>[
+        'class'=>AccessFilter::className(),
+        'actions'=>[
+        
+        'contasareceber'=>[
+        'index-contasareceber',
+        'update-contasareceber',
+        'delete-contasareceber',
+        'view-contasareceber',
+        'create-contasareceber',
+        ],
+        
+        'index'=>'index-contasareceber',
+        'update'=>'update-contasareceber',
+        'delete'=>'delete-contasareceber',
+        'view'=>'view-contasareceber',
+        'create'=>'create-contasareceber',
+        ],
+        ],
         ];
     }
 
@@ -41,7 +62,7 @@ class ContasareceberController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
+            ]);
     }
 
     /**
@@ -53,7 +74,7 @@ class ContasareceberController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
-        ]);
+            ]);
     }
 
     /**
@@ -61,18 +82,23 @@ class ContasareceberController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    /*public function actionCreate()
     {
         $model = new Contasareceber();
-
+        $contas = ArrayHelper::map(
+            Conta::find()->where('idconta not in (select idconta from contasareceber) && 
+                idconta not in (select idconta from contasapagar)')->all(),
+            'idconta','descricao'
+            );
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idconta]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-            ]);
+                'contas'=>$contas,
+                ]);
         }
-    }
+    }*/
 
     /**
      * Updates an existing Contasareceber model.
@@ -83,13 +109,18 @@ class ContasareceberController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $contas = ArrayHelper::map(
+            Conta::find()->where('idconta not in (select idconta from contasareceber) && 
+                idconta not in (select idconta from contasapagar)')->all(),
+            'idconta','descricao'
+            );
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idconta]);
         } else {
             return $this->render('update', [
                 'model' => $model,
-            ]);
+                'contas'=>$contas,
+                ]);
         }
     }
 

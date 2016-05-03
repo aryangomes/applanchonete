@@ -78,7 +78,8 @@ $config = [
                 ],
                 'modules' => [
                 'datecontrol' =>  [
-                'class' => '\kartik\datecontrol\Module'
+                'class' => '\kartik\datecontrol\Module',
+                
                 ],
                 'user' => [
                 'class' => 'amnah\yii2\user\Module',

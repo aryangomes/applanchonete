@@ -28,10 +28,10 @@ class Contasareceber extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idconta'], 'required'],
-            [['idconta'], 'integer'],
-            [['dataHora'], 'safe'],
-            [['idconta'], 'exist', 'skipOnError' => true, 'targetClass' => Conta::className(), 'targetAttribute' => ['idconta' => 'idconta']],
+        [['idconta'], 'required'],
+        [['idconta'], 'integer'],
+        [['dataHora'], 'safe'],
+        [['idconta'], 'exist', 'skipOnError' => true, 'targetClass' => Conta::className(), 'targetAttribute' => ['idconta' => 'idconta']],
         ];
     }
 
@@ -41,8 +41,8 @@ class Contasareceber extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idconta' => Yii::t('app', 'Idconta'),
-            'dataHora' => Yii::t('app', 'Data Hora'),
+        'idconta' => Yii::t('app', 'Conta'),
+        'dataHora' => Yii::t('app', 'Data Hora'),
         ];
     }
 
@@ -50,6 +50,11 @@ class Contasareceber extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
     public function getIdconta0()
+    {
+        return $this->hasOne(Conta::className(), ['idconta' => 'idconta']);
+    }
+
+    public function getConta()
     {
         return $this->hasOne(Conta::className(), ['idconta' => 'idconta']);
     }

@@ -8,7 +8,9 @@ use app\models\ContaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\models\Contasapagar;
+use app\models\Contasareceber;
+use app\components\AccessFilter;
 /**
  * ContaController implements the CRUD actions for Conta model.
  */
@@ -20,12 +22,31 @@ class ContaController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+        'delete' => ['POST'],
+        ],
+        ],
+        'autorizacao'=>[
+        'class'=>AccessFilter::className(),
+        'actions'=>[
+        
+        'conta'=>[
+        'index-conta',
+        'update-conta',
+        'delete-conta',
+        'view-conta',
+        'create-conta',
+        ],
+        
+        'index'=>'index-conta',
+        'update'=>'update-conta',
+        'delete'=>'delete-conta',
+        'view'=>'view-conta',
+        'create'=>'create-conta',
+        ],
+        ],
         ];
     }
 
@@ -41,7 +62,7 @@ class ContaController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
+            ]);
     }
 
     /**
@@ -53,7 +74,7 @@ class ContaController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
-        ]);
+            ]);
     }
 
     /**
@@ -64,13 +85,40 @@ class ContaController extends Controller
     public function actionCreate()
     {
         $model = new Conta();
-
+        $modelContaapagar = new Contasapagar();
+        $modelContasareceber = new Contasareceber();
+        $tiposConta =['Pagamento'=>'Pagamento','Compra'=>'Compra'];
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idconta]);
+
+
+            $conta = Yii::$app->request->post()['Conta'];
+
+            $contasapagar = Yii::$app->request->post()['Contasapagar'];
+            $contasareceber = Yii::$app->request->post()['Contasareceber'];
+            if ($conta['tipoConta'] == 'contasapagar' ) {
+                $modelContaapagar->idconta = $model->idconta;
+                $modelContaapagar->situacaoPagamento = $contasapagar['situacaoPagamento'];
+                $modelContaapagar->dataVencimento = $contasapagar['dataVencimento'];
+                $modelContaapagar->save();
+            }else if ($conta['tipoConta'] == 'contasareceber') {
+              $modelContasareceber->idconta = $model->idconta;
+              if (($contasareceber['dataHora']) != null) {
+                 $modelContasareceber->dataHora = $contasareceber['dataHora'];
+             }
+
+             $modelContasareceber->save();
+         }
+
+         return $this->redirect(['view', 'id' => $model->idconta]);
+        /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->idconta]);*/
         } else {
             return $this->render('create', [
                 'model' => $model,
-            ]);
+                'tiposConta'=>$tiposConta,
+                'modelContaapagar'=>$modelContaapagar,
+                'modelContasareceber'=>$modelContasareceber,
+                ]);
         }
     }
 
@@ -83,13 +131,18 @@ class ContaController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $tiposConta =['Pagamento'=>'Pagamento','Compra'=>'Compra'];
+        $modelContaapagar = new Contasapagar();
+        $modelContasareceber = new Contasareceber();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idconta]);
         } else {
             return $this->render('update', [
                 'model' => $model,
-            ]);
+                'tiposConta'=>$tiposConta,
+                'modelContaapagar'=>$modelContaapagar,
+                'modelContasareceber'=>$modelContasareceber,
+                ]);
         }
     }
 

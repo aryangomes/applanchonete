@@ -11,6 +11,9 @@ use yii\filters\VerbFilter;
 use app\models\Contasapagar;
 use app\models\Contasareceber;
 use app\components\AccessFilter;
+use app\models\Itempedido;
+use app\models\Pagamento;
+use app\models\Insumos;
 /**
  * ContaController implements the CRUD actions for Conta model.
  */
@@ -103,13 +106,13 @@ class ContaController extends Controller
             }else if ($conta['tipoConta'] == 'contasareceber') {
               $modelContasareceber->idconta = $model->idconta;
               if (($contasareceber['dataHora']) != null) {
-                 $modelContasareceber->dataHora = $contasareceber['dataHora'];
-             }
+               $modelContasareceber->dataHora = $contasareceber['dataHora'];
+           }
 
-             $modelContasareceber->save();
-         }
+           $modelContasareceber->save();
+       }
 
-         return $this->redirect(['view', 'id' => $model->idconta]);
+       return $this->redirect(['view', 'id' => $model->idconta]);
         /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idconta]);*/
         } else {
@@ -154,10 +157,17 @@ class ContaController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
-    }
+        $idpedido = Pagamento::find()->where(['idconta'=>$id])->one()->idPedido;
+        $itenspedido = Itempedido::find()->where(['idPedido'=>$idpedido])->all();
+
+        foreach ($itenspedido as  $p) {
+           Insumos::atualizaQtdNoEstoqueDelete($p->idProduto,$p->quantidade);
+       }
+       $this->findModel($id)->delete();
+
+       return $this->redirect(['index']);
+   }
 
     /**
      * Finds the Conta model based on its primary key value.

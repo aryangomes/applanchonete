@@ -31,13 +31,13 @@ $qtdProdutoMinimo = Produto::find()->where("quantidadeMinima = quantidadeEstoque
 
 if (count($loja) > 0) {
     foreach ($loja as $l) {
-       $nomeLoja = $l->nome;
-       $url =Url::toRoute(['/loja/view', 'id'=>Yii::$app->user->getId()]);
-   }
+     $nomeLoja = $l->nome;
+     $url =Url::toRoute(['/loja/view', 'id'=>Yii::$app->user->getId()]);
+ }
 
 }else{
- $nomeLoja = 'Cadastre sua loja';
- $url =Url::toRoute(['/loja/create']);
+   $nomeLoja = 'Cadastre sua loja';
+   $url =Url::toRoute(['/loja/create']);
 }
 
 ?>
@@ -164,10 +164,10 @@ if (count($loja) > 0) {
                                 ?>
                                 <i class="fa fa-bell"></i>
                                 <span class="label label-danger">
-                                 !
-                             </span>
-                             <b class="caret"></b></a>
-                             <ul class="dropdown-menu alert-dropdown">
+                                   !
+                               </span>
+                               <b class="caret"></b></a>
+                               <ul class="dropdown-menu alert-dropdown">
                                 <?php
                                 if ($caixa->valoremcaixa < $valorDespesas  ) {
                                     ?>
@@ -182,14 +182,14 @@ if (count($loja) > 0) {
                                     echo "<li><a><b>Produtos com quantidade em estoque com valor mínimo</b></a></li>";
                                     foreach ($qtdProdutoMinimo as  $p) {
 
-                                       ?>
-                                       <li><a href="<?= Url::toRoute(['/produto/view','id'=>$p->idProduto]) ?>"> <?= $p->nome?> </a>
-                                       </li>
-                                       <li class="divider"></li>
-                                       <?php  
-                                   }
-                               } 
-                           } else {
+                                     ?>
+                                     <li><a href="<?= Url::toRoute(['/produto/view','id'=>$p->idProduto]) ?>"> <?= $p->nome?> </a>
+                                     </li>
+                                     <li class="divider"></li>
+                                     <?php  
+                                 }
+                             } 
+                         } else {
                             ?>
                             <i class="fa fa-bell"></i>
 
@@ -348,6 +348,17 @@ if (count($loja) > 0) {
                     }
                     ?>
                     <?php
+                    if (Yii::$app->user->can("index-pedido") || Yii::$app->user->can("pedido")) {
+
+                        ?>
+                        <li>
+                            <?= Html::a('<i class="fa fa-hand-o-up"></i> Pedidos', ['/pedido/index']) ?>
+
+                        </li>
+                        <?php
+                    }
+                    ?>
+                    <?php
                     if (Yii::$app->user->can("index-itempedido") || Yii::$app->user->can("itempedido")) {
 
                         ?>
@@ -387,8 +398,8 @@ if (count($loja) > 0) {
                         ?>
 
                         <li>
-                            <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="glyphicon glyphicon-barcode"></i> Contas <i class="fa fa-fw fa-caret-down"></i></a>
-                            <ul id="demo" class="collapse">
+                            <a href="javascript:;" data-toggle="collapse" data-target="#conta"><i class="glyphicon glyphicon-barcode"></i> Contas <i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="conta" class="collapse">
                                 <li>
                                     <?= Html::a('<i class="glyphicon glyphicon-barcode"></i> Lista de todas as Contas', ['/conta/index']) ?>
 
@@ -445,25 +456,15 @@ if (count($loja) > 0) {
                         <?php
                     }
                     ?>
-                    <?php
-                    if (Yii::$app->user->can("index-pedido") || Yii::$app->user->can("pedido")) {
 
-                        ?>
-                        <li>
-                            <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/pedido/index']) ?>
-
-                        </li>
-                        <?php
-                    }
-                    ?>
                     <?php
                     if (Yii::$app->user->can("index-produto") || Yii::$app->user->can("produto")) {
 
                         ?>
 
                         <li>
-                            <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-shopping-basket"></i> Produtos <i class="fa fa-fw fa-caret-down"></i></a>
-                            <ul id="demo" class="collapse">
+                            <a href="javascript:;" data-toggle="collapse" data-target="#produto"><i class="fa fa-shopping-basket"></i> Produtos <i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="produto" class="collapse">
                                 <li>
                                     <?= Html::a('<i class="fa fa-list"></i> Lista de todos os Produtos', ['/produto/index']) ?>
 
@@ -473,10 +474,10 @@ if (count($loja) > 0) {
 
                                 </li>
                                 <li>
-                                 <?= Html::a('<i class="fa fa-list"></i> Lista de Produtos de Venda por Insumo', ['/produto/listadeprodutosporinsumo']) ?>
+                                   <?= Html::a('<i class="fa fa-list"></i> Lista de Produtos de Venda por Insumo', ['/produto/listadeprodutosporinsumo']) ?>
 
-                             </li>
-                             <li>
+                               </li>
+                               <li>
                                 <?= Html::a('<i class="glyphicon glyphicon-grain"></i> Lista de Insumos', ['/insumos/index']) ?>
 
                             </li>

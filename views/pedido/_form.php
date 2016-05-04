@@ -12,13 +12,13 @@ use kartik\money\MaskMoney;
 
 	<?php $form = ActiveForm::begin(); ?>
 
-	<?= $form->field($model, 'totalPedido')->widget(MaskMoney::classname(), [
+	<?php /* $form->field($model, 'totalPedido')->widget(MaskMoney::classname(), [
 		'pluginOptions' => [
 		'prefix' => 'R$ ',
 		
 		'allowNegative' => false,
 		]
-		]); ?>
+		]);*/ ?>
 
 		<?= $form->field($model, 'idSituacaoAtual')->dropDownList($situacaopedido, ['prompt'=>'Selecione a situação do pedido']) ?>
 

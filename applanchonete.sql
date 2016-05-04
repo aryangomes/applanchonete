@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 03-Maio-2016 às 05:07
+-- Generation Time: 04-Maio-2016 às 05:15
 -- Versão do servidor: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -149,12 +149,35 @@ END IF;
 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteContaPedido`(IN `iddaConta` INT)
+    NO SQL
+BEGIN
+
+DECLARE  iddoPedido int;
+
+SELECT idPedido into iddoPedido from pagamento where idconta = iddaConta;
+
+DELETE FROM pedido where idPedido = iddoPedido;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deletePedidoConta`(IN `iddoPedido` INT)
+    NO SQL
+BEGIN
+declare iddaconta int;
+
+SELECT idconta INTO iddaconta from pagamento WHERE idPedido = iddoPedido;
+
+DELETE from conta where idconta = iddaconta;
+
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insereContaPedido`(IN `idPedido` INT)
     NO SQL
 BEGIN
 
 
-INSERT INTO conta (tipoConta) VALUES ('pagamento');
+INSERT INTO conta (descricao,tipoConta) VALUES ('Pedido','contasareceber');
 
 INSERT INTO pagamento VALUES (LAST_INSERT_ID(), idPedido);
 
@@ -220,6 +243,7 @@ INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('index-user', 109, NULL),
 ('insumos', 84, NULL),
 ('itempedido', 84, NULL),
+('pedido', 84, NULL),
 ('produto', 84, NULL),
 ('produtosvenda', 84, NULL),
 ('relatorio', 84, NULL),
@@ -712,7 +736,7 @@ CREATE TABLE IF NOT EXISTS `conta` (
   `valor` double NOT NULL DEFAULT '0',
   `descricao` text,
   `tipoConta` varchar(100) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `conta`
@@ -724,7 +748,20 @@ INSERT INTO `conta` (`idconta`, `valor`, `descricao`, `tipoConta`) VALUES
 (5, 1.23, 'Pedido', 'contasareceber'),
 (6, 5.67, 'Água', 'contasapagar'),
 (13, 5.67, 'receber', 'contasareceber'),
-(14, 8.9, 'pagar', 'contasapagar');
+(14, 8.9, 'pagar', 'contasapagar'),
+(24, 2, 'Pedido', 'contasareceber');
+
+--
+-- Acionadores `conta`
+--
+DELIMITER $$
+CREATE TRIGGER `tgr_deleteContaPedido` AFTER DELETE ON `conta`
+ FOR EACH ROW BEGIN
+
+call deleteContaPedido(OLD.idconta);
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -995,7 +1032,16 @@ INSERT INTO `pagamento` (`idConta`, `idPedido`) VALUES
 (3, 3),
 (4, 4),
 (5, 5),
-(6, 6);
+(6, 6),
+(15, 7),
+(17, 9),
+(18, 10),
+(19, 11),
+(20, 12),
+(21, 13),
+(22, 14),
+(23, 15),
+(24, 16);
 
 -- --------------------------------------------------------
 
@@ -1007,7 +1053,7 @@ CREATE TABLE IF NOT EXISTS `pedido` (
   `idPedido` int(11) NOT NULL,
   `totalPedido` double NOT NULL DEFAULT '0',
   `idSituacaoAtual` int(11) NOT NULL COMMENT 'Situação atual do staus do pedido, \nfacilitar na busca do status do pedido'
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `pedido`
@@ -1017,7 +1063,8 @@ INSERT INTO `pedido` (`idPedido`, `totalPedido`, `idSituacaoAtual`) VALUES
 (2, 6, 1),
 (3, 21, 1),
 (5, 0, 1),
-(6, 2.31, 1);
+(6, 2.31, 1),
+(8, 0, 1);
 
 --
 -- Acionadores `pedido`
@@ -1026,6 +1073,14 @@ DELIMITER $$
 CREATE TRIGGER `trg_atualizaContaPedido` AFTER UPDATE ON `pedido`
  FOR EACH ROW BEGIN
 call atualizaTotalContaUpdate(new.idPedido);
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `trg_deletePedidoConta` AFTER DELETE ON `pedido`
+ FOR EACH ROW BEGIN
+/*call deletePedidoConta(OLD.idPedido);*/
+
 END
 $$
 DELIMITER ;
@@ -1061,10 +1116,10 @@ CREATE TABLE IF NOT EXISTS `produto` (
 INSERT INTO `produto` (`idProduto`, `nome`, `valorVenda`, `isInsumo`, `quantidadeMinima`, `idCategoria`, `quantidadeEstoque`) VALUES
 (7, 'Tomate', 20, 1, 0, 4, 0),
 (8, 'Sanduíche A', 4, 0, 0, 5, 0),
-(9, 'Pão', 0, 1, 0, 3, 6),
+(9, 'Pão', 0, 1, 0, 3, 25),
 (10, 'Refrigerante', 2, 0, 0, 5, 10),
 (11, 'Sanduíche B', 3, 0, 0, 5, 0),
-(12, 'Hambúrguer ', 0, 1, 0, 3, 10.5),
+(12, 'Hambúrguer ', 0, 1, 0, 3, 18),
 (13, 'Ovo', 0, 1, 0, 3, 35),
 (14, 'Sanduíche C', 2, 0, 0, 5, 0),
 (15, 'Sanduíche D', 2, 0, 0, 5, 0),
@@ -1215,13 +1270,13 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id`, `role_id`, `status`, `email`, `username`, `password`, `auth_key`, `access_token`, `logged_in_ip`, `logged_in_at`, `created_ip`, `created_at`, `updated_at`, `banned_at`, `banned_reason`) VALUES
-(1, 1, 1, 'admin@sigir.com', 'admin', '$2y$13$ZaQ4eZwz1ZevK9oaKksT2uKcUlh1aytLRyqGGUGYJSzNLuBcYJOvO', '4c1Lk1bFV-2gSyrQnXm7661avqoQOC0L', 'W6ELUzLx6Zvva8fQ5NV4nLl8jJInF_BC', '::1', '2016-04-26 18:24:14', NULL, '2016-01-26 02:42:06', '2016-01-28 01:27:25', NULL, NULL),
+(1, 1, 1, 'admin@sigir.com', 'admin', '$2y$13$ZaQ4eZwz1ZevK9oaKksT2uKcUlh1aytLRyqGGUGYJSzNLuBcYJOvO', '4c1Lk1bFV-2gSyrQnXm7661avqoQOC0L', 'W6ELUzLx6Zvva8fQ5NV4nLl8jJInF_BC', '::1', '2016-05-03 06:08:14', NULL, '2016-01-26 02:42:06', '2016-01-28 01:27:25', NULL, NULL),
 (2, 2, 1, 'gerente@sigir.com', 'gerente2', '$2y$13$SVYrr6CicYYdpMnep5LKtO8ak84X8h6tFHYVpR8j7nGupVOvqnpVa', 'VPd_SzxMvyTgZprvDA-tfT4kPW_IYzZD', 'UyNFyd41oMBIiRVurZPZuvt6kgTe98xy', '::1', '2016-02-07 23:58:31', '::1', '2016-01-26 20:58:10', '2016-01-31 01:28:29', NULL, NULL),
 (3, 3, 1, 'funcionario@sigir.com', 'funcionario', '$2y$13$.gl9ePCdOVOww1C7AZosD.GSsbD6cMERou36tWYrmEN.dtEFkml9i', 't6g9cyhdz2-EKqG3Whb6TC30qNPQ6oU7', 'BAWIuKS9sXShdh2fM3QnwH8ZqdT5mGwv', '::1', '2016-02-02 05:21:59', '::1', '2016-01-26 21:02:42', '2016-01-31 04:37:09', NULL, NULL),
 (43, 3, 1, 'funcionario1@sigir.com', 'funcionario01', '$2y$13$MR/pQJFMZRJZkZj4.xg0qOtdjJK6NMaMo5jF4bVt1tPHf7sjr0QHi', 'JoIVj9p9IWlVklx1TZ00otnbcr-Gmao7', 'hAYvnkL8pFzP6FGMH7eKw7UmisflzyjX', '::1', '2016-02-05 03:48:25', '::1', '2016-02-01 01:00:46', '2016-02-01 04:23:48', NULL, NULL),
 (44, 2, 1, 'gerente1@sigir.com', 'gerente', '$2y$13$mujgA7j0OsPxUr0gYAao3OSk1yykiEFfxqXis7m.lzvZ3EWID1jOG', 'c4rPsYI-Q-WNI9GgYyTvbZr_ynwyuAlY', 'nAzvxmIB3bTRTW9d23dn1isBFBr6s7RI', '::1', '2016-02-09 23:37:54', '::1', '2016-02-01 01:01:26', '2016-02-09 07:11:09', NULL, NULL),
 (80, 2, 1, 'teste@teste.com', NULL, '$2y$13$Up2wVYVIsBKk3oij/H/8l.5hPym80.3NTFpGlc97cSJg32EqNGn4y', 'EXAFyYZpG5QVTcGx6yeFrlDOl9OizMuM', 'ZdjGbu9FKlXtF5mYt1A4CcShpkEaTd9i', '::1', '2016-02-08 01:22:20', '::1', '2016-02-05 03:30:47', '2016-02-05 05:19:16', NULL, NULL),
-(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-05-03 04:19:44', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
+(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-05-04 03:37:25', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
 (85, 2, 1, 'compras@compras.com', 'Compra', '$2y$13$fcSVvuFUmhH.3iZ0wTtoZOpkVTt1tjAg2fO2thZog9QwMUIEUUzKu', 'tVH-bh0RpqSA1RgMqIR4rqcKtKiGhvPB', '165xJKTAkwnR1QcUd6wQ-fkU8Q98od2O', '::1', '2016-02-12 04:37:12', '::1', '2016-02-10 06:13:27', '2016-02-13 17:20:37', NULL, NULL),
 (104, 2, 1, 'teste3@teste.com', 'teste3', '$2y$13$4MrmhHyYwYzQ5uFHtr8rpeUNCgFCZiHR0410sdcJBABbm/zl/1Z..', 'ndzPwraET0uG3RZMtH23_-7IdxZtiRaH', 'nO74vFAzRakvIVNVrrJLrl4CU9718fzh', '::1', '2016-02-14 05:59:05', '::1', '2016-02-14 05:09:25', '2016-02-14 06:02:05', NULL, NULL),
 (108, 2, 1, 'teste4@teste.com', 'teste44', '$2y$13$COZu07CnXAVlfSQJwK6ng.LnOd43dGyN29Tw/FH13Mtoa/zTtlGwy', 'Hs7QEYX6yxldLcpIVPjwNoBNBY5zWDSa', 'Ib_71XRL0h05Yr1STAjJwv9Y3sfJOIW4', '::1', '2016-02-14 06:35:23', '::1', '2016-02-14 06:30:37', '2016-02-14 06:35:48', NULL, NULL),
@@ -1537,7 +1592,7 @@ ALTER TABLE `comanda`
 -- AUTO_INCREMENT for table `conta`
 --
 ALTER TABLE `conta`
-  MODIFY `idconta` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
+  MODIFY `idconta` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT for table `despesa`
 --
@@ -1552,7 +1607,7 @@ ALTER TABLE `mesa`
 -- AUTO_INCREMENT for table `pedido`
 --
 ALTER TABLE `pedido`
-  MODIFY `idPedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `idPedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `produto`
 --
@@ -1702,7 +1757,7 @@ ADD CONSTRAINT `loja_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON
 -- Limitadores para a tabela `pedido`
 --
 ALTER TABLE `pedido`
-ADD CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`idSituacaoAtual`) REFERENCES `situacaopedido` (`idSituacaoPedido`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`idSituacaoAtual`) REFERENCES `situacaopedido` (`idSituacaoPedido`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `produto`

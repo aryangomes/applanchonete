@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Itempedido */
 
 $this->title = 'Pedido: ' .$model->idPedido;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Itempedidos'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Item pedido'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="itempedido-view">

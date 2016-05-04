@@ -10,6 +10,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Situacaopedido;
 use yii\helpers\ArrayHelper;
+use app\components\AccessFilter;
+use app\models\Insumos;
+use app\models\Itempedido;
 /**
  * PedidoController implements the CRUD actions for Pedido model.
  */
@@ -25,6 +28,25 @@ class PedidoController extends Controller
         'class' => VerbFilter::className(),
         'actions' => [
         'delete' => ['POST'],
+        ],
+        ],
+        'autorizacao'=>[
+        'class'=>AccessFilter::className(),
+        'actions'=>[
+        
+        'pedido'=>[
+        'index-pedido',
+        'update-pedido',
+        'delete-pedido',
+        'view-pedido',
+        'create-pedido',
+        ],
+        
+        'index'=>'index-pedido',
+        'update'=>'update-pedido',
+        'delete'=>'delete-pedido',
+        'view'=>'view-pedido',
+        'create'=>'create-pedido',
         ],
         ],
         ];
@@ -108,10 +130,16 @@ class PedidoController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
-    }
+     $itenspedido = Itempedido::find()->where(['idPedido'=>$id])->all();
+
+     foreach ($itenspedido as  $p) {
+       Insumos::atualizaQtdNoEstoqueDelete($p->idProduto,$p->quantidade);
+   }
+   $this->findModel($id)->delete();
+
+   return $this->redirect(['index']);
+}
 
     /**
      * Finds the Pedido model based on its primary key value.

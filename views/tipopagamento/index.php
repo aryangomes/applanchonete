@@ -4,19 +4,19 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\PagamentoSearch */
+/* @var $searchModel app\models\TipopagamentoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Pagamentos');
+$this->title = Yii::t('app', 'Tipopagamentos');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="pagamento-index">
+<div class="tipopagamento-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Pagamento'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create Tipopagamento'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -25,8 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'idTipoPagamento',
-            'idConta',
-            'idPedido',
+            'titulo',
+            'descricao:ntext',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

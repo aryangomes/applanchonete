@@ -13,6 +13,8 @@ use yii\helpers\ArrayHelper;
 use app\components\AccessFilter;
 use app\models\Insumos;
 use app\models\Itempedido;
+use app\models\Tipopagamento;
+use app\models\Pagamento;
 /**
  * PedidoController implements the CRUD actions for Pedido model.
  */
@@ -112,12 +114,23 @@ class PedidoController extends Controller
         $situacaopedido = ArrayHelper::map(
             Situacaopedido::find()->all()
             , 'idSituacaoPedido' ,'titulo');
+        $tipoPagamento = new Tipopagamento();
+        $tiposPagamento = ArrayHelper::map(
+         $tipoPagamento::find()->all()
+         , 'idTipoPagamento' ,'titulo');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $pagamento = new Pagamento();
+            $pagamento = $pagamento::find()->where(['idPedido'=>$id])->one();
+            $pagamento->idTipoPagamento = Yii::$app->request->post()['Tipopagamento']['idTipoPagamento'];
+
+            $pagamento->save();
             return $this->redirect(['view', 'id' => $model->idPedido]);
         } else {
             return $this->render('update', [
                 'model' => $model,
                 'situacaopedido'=>$situacaopedido,
+                'tipoPagamento'=>$tipoPagamento,
+                'tiposPagamento'=>$tiposPagamento,
                 ]);
         }
     }
@@ -131,15 +144,15 @@ class PedidoController extends Controller
     public function actionDelete($id)
     {
 
-     $itenspedido = Itempedido::find()->where(['idPedido'=>$id])->all();
+       $itenspedido = Itempedido::find()->where(['idPedido'=>$id])->all();
 
-     foreach ($itenspedido as  $p) {
-       Insumos::atualizaQtdNoEstoqueDelete($p->idProduto,$p->quantidade);
-   }
-   $this->findModel($id)->delete();
+       foreach ($itenspedido as  $p) {
+         Insumos::atualizaQtdNoEstoqueDelete($p->idProduto,$p->quantidade);
+     }
+     $this->findModel($id)->delete();
 
-   return $this->redirect(['index']);
-}
+     return $this->redirect(['index']);
+ }
 
     /**
      * Finds the Pedido model based on its primary key value.

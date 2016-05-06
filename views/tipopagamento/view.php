@@ -4,19 +4,19 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Pagamento */
+/* @var $model app\models\Tipopagamento */
 
-$this->title = $model->idConta;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pagamentos'), 'url' => ['index']];
+$this->title = $model->idTipoPagamento;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tipopagamentos'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="pagamento-view">
+<div class="tipopagamento-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'idConta' => $model->idConta, 'idPedido' => $model->idPedido], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'idConta' => $model->idConta, 'idPedido' => $model->idPedido], [
+        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->idTipoPagamento], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->idTipoPagamento], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
@@ -29,8 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'idTipoPagamento',
-            'idConta',
-            'idPedido',
+            'titulo',
+            'descricao:ntext',
         ],
     ]) ?>
 

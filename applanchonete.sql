@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 04-Maio-2016 às 05:15
+-- Generation Time: 06-Maio-2016 às 04:55
 -- Versão do servidor: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -101,10 +101,10 @@ DECLARE
 idcta int;
 DECLARE totalped float;
 
-SELECT totalPedido into totalped from pedido where pedido.idPedido = iddoPedido;
+SELECT DISTINCT totalPedido into totalped from pedido where pedido.idPedido = iddoPedido;
 
 
-SELECT idconta into idcta from pagamento where pagamento.idPedido = iddoPedido;
+SELECT DISTINCT idconta into idcta from pagamento where pagamento.idPedido = iddoPedido;
 
 UPDATE conta set valor = totalped where idconta = idcta;
 
@@ -139,8 +139,8 @@ IF (totalProduto > oldTotalProduto) THEN
 UPDATE pedido set totalPedido = (totalPedido + (totalProduto - oldTotalProduto )) WHERE idPedido = iddoPedido;
 ELSEIF(totalProduto < oldTotalProduto) THEN 
 UPDATE pedido set totalPedido = (totalPedido - (oldTotalProduto - totalProduto )) WHERE idPedido = iddoPedido;
-ELSE 
-UPDATE pedido set totalPedido = (totalPedido + totalProduto) WHERE idPedido = iddoPedido;
+/*ELSE 
+UPDATE pedido set totalPedido = (totalPedido + totalProduto) WHERE idPedido = iddoPedido;*/
 END IF;
 
 
@@ -154,22 +154,31 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteContaPedido`(IN `iddaConta` I
 BEGIN
 
 DECLARE  iddoPedido int;
+DECLARE auxidpedido int;
 
 SELECT idPedido into iddoPedido from pagamento where idconta = iddaConta;
 
-DELETE FROM pedido where idPedido = iddoPedido;
 
+SELECT idPedido into auxidpedido from pedido where idPedido = iddoPedido;
+
+if auxidpedido is not null then
+DELETE FROM pedido where idPedido = iddoPedido;
+end if;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deletePedidoConta`(IN `iddoPedido` INT)
     NO SQL
 BEGIN
 declare iddaconta int;
+DECLARE auxidconta int;
 
 SELECT idconta INTO iddaconta from pagamento WHERE idPedido = iddoPedido;
 
-DELETE from conta where idconta = iddaconta;
+SELECT idconta INTO auxidconta from conta WHERE idconta = iddaconta;
 
+IF auxidconta is not null then 
+DELETE from conta where idconta = iddaconta;
+end if;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insereContaPedido`(IN `idPedido` INT)
@@ -179,7 +188,10 @@ BEGIN
 
 INSERT INTO conta (descricao,tipoConta) VALUES ('Pedido','contasareceber');
 
-INSERT INTO pagamento VALUES (LAST_INSERT_ID(), idPedido);
+INSERT INTO pagamento (idConta,idPedido) VALUES (LAST_INSERT_ID(), idPedido);
+
+
+INSERT INTO contasareceber (idconta) VALUES (LAST_INSERT_ID());
 
 END$$
 
@@ -736,7 +748,7 @@ CREATE TABLE IF NOT EXISTS `conta` (
   `valor` double NOT NULL DEFAULT '0',
   `descricao` text,
   `tipoConta` varchar(100) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `conta`
@@ -746,10 +758,10 @@ INSERT INTO `conta` (`idconta`, `valor`, `descricao`, `tipoConta`) VALUES
 (2, 6, 'Luz', 'contasapagar'),
 (3, 21, 'Pedido', 'contasareceber'),
 (5, 1.23, 'Pedido', 'contasareceber'),
-(6, 5.67, 'Água', 'contasapagar'),
+(6, 10.3100004196167, 'Água', 'contasapagar'),
 (13, 5.67, 'receber', 'contasareceber'),
 (14, 8.9, 'pagar', 'contasapagar'),
-(24, 2, 'Pedido', 'contasareceber');
+(42, 0, 'Pedido', 'contasareceber');
 
 --
 -- Acionadores `conta`
@@ -801,7 +813,8 @@ CREATE TABLE IF NOT EXISTS `contasareceber` (
 
 INSERT INTO `contasareceber` (`idconta`, `dataHora`) VALUES
 (5, '2016-05-12 00:00:00'),
-(13, '2016-05-19 20:55:00');
+(13, '2016-05-19 20:55:00'),
+(42, '2016-05-05 23:16:26');
 
 -- --------------------------------------------------------
 
@@ -1019,6 +1032,7 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `pagamento` (
+  `idTipoPagamento` int(11) DEFAULT NULL,
   `idConta` int(11) NOT NULL,
   `idPedido` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1027,21 +1041,9 @@ CREATE TABLE IF NOT EXISTS `pagamento` (
 -- Extraindo dados da tabela `pagamento`
 --
 
-INSERT INTO `pagamento` (`idConta`, `idPedido`) VALUES
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5),
-(6, 6),
-(15, 7),
-(17, 9),
-(18, 10),
-(19, 11),
-(20, 12),
-(21, 13),
-(22, 14),
-(23, 15),
-(24, 16);
+INSERT INTO `pagamento` (`idTipoPagamento`, `idConta`, `idPedido`) VALUES
+(1, 42, 105),
+(2, 43, 106);
 
 -- --------------------------------------------------------
 
@@ -1053,7 +1055,7 @@ CREATE TABLE IF NOT EXISTS `pedido` (
   `idPedido` int(11) NOT NULL,
   `totalPedido` double NOT NULL DEFAULT '0',
   `idSituacaoAtual` int(11) NOT NULL COMMENT 'Situação atual do staus do pedido, \nfacilitar na busca do status do pedido'
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `pedido`
@@ -1063,8 +1065,9 @@ INSERT INTO `pedido` (`idPedido`, `totalPedido`, `idSituacaoAtual`) VALUES
 (2, 6, 1),
 (3, 21, 1),
 (5, 0, 1),
-(6, 2.31, 1),
-(8, 0, 1);
+(8, 0, 1),
+(10, 0, 2),
+(105, 0, 2);
 
 --
 -- Acionadores `pedido`
@@ -1079,7 +1082,7 @@ DELIMITER ;
 DELIMITER $$
 CREATE TRIGGER `trg_deletePedidoConta` AFTER DELETE ON `pedido`
  FOR EACH ROW BEGIN
-/*call deletePedidoConta(OLD.idPedido);*/
+call deletePedidoConta(OLD.idPedido);
 
 END
 $$
@@ -1087,7 +1090,6 @@ DELIMITER ;
 DELIMITER $$
 CREATE TRIGGER `trg_insereContaPedido` AFTER INSERT ON `pedido`
  FOR EACH ROW BEGIN
-
 CALL insereContaPedido(new.idPedido);
 END
 $$
@@ -1116,10 +1118,10 @@ CREATE TABLE IF NOT EXISTS `produto` (
 INSERT INTO `produto` (`idProduto`, `nome`, `valorVenda`, `isInsumo`, `quantidadeMinima`, `idCategoria`, `quantidadeEstoque`) VALUES
 (7, 'Tomate', 20, 1, 0, 4, 0),
 (8, 'Sanduíche A', 4, 0, 0, 5, 0),
-(9, 'Pão', 0, 1, 0, 3, 25),
+(9, 'Pão', 0, 1, 0, 3, 26),
 (10, 'Refrigerante', 2, 0, 0, 5, 10),
 (11, 'Sanduíche B', 3, 0, 0, 5, 0),
-(12, 'Hambúrguer ', 0, 1, 0, 3, 18),
+(12, 'Hambúrguer ', 0, 1, 0, 3, 19),
 (13, 'Ovo', 0, 1, 0, 3, 35),
 (14, 'Sanduíche C', 2, 0, 0, 5, 0),
 (15, 'Sanduíche D', 2, 0, 0, 5, 0),
@@ -1239,7 +1241,15 @@ CREATE TABLE IF NOT EXISTS `tipopagamento` (
   `idTipoPagamento` int(11) NOT NULL,
   `titulo` varchar(45) NOT NULL,
   `descricao` text
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `tipopagamento`
+--
+
+INSERT INTO `tipopagamento` (`idTipoPagamento`, `titulo`, `descricao`) VALUES
+(1, 'Dinheiro', ''),
+(2, 'Cartão', '');
 
 -- --------------------------------------------------------
 
@@ -1276,7 +1286,7 @@ INSERT INTO `user` (`id`, `role_id`, `status`, `email`, `username`, `password`, 
 (43, 3, 1, 'funcionario1@sigir.com', 'funcionario01', '$2y$13$MR/pQJFMZRJZkZj4.xg0qOtdjJK6NMaMo5jF4bVt1tPHf7sjr0QHi', 'JoIVj9p9IWlVklx1TZ00otnbcr-Gmao7', 'hAYvnkL8pFzP6FGMH7eKw7UmisflzyjX', '::1', '2016-02-05 03:48:25', '::1', '2016-02-01 01:00:46', '2016-02-01 04:23:48', NULL, NULL),
 (44, 2, 1, 'gerente1@sigir.com', 'gerente', '$2y$13$mujgA7j0OsPxUr0gYAao3OSk1yykiEFfxqXis7m.lzvZ3EWID1jOG', 'c4rPsYI-Q-WNI9GgYyTvbZr_ynwyuAlY', 'nAzvxmIB3bTRTW9d23dn1isBFBr6s7RI', '::1', '2016-02-09 23:37:54', '::1', '2016-02-01 01:01:26', '2016-02-09 07:11:09', NULL, NULL),
 (80, 2, 1, 'teste@teste.com', NULL, '$2y$13$Up2wVYVIsBKk3oij/H/8l.5hPym80.3NTFpGlc97cSJg32EqNGn4y', 'EXAFyYZpG5QVTcGx6yeFrlDOl9OizMuM', 'ZdjGbu9FKlXtF5mYt1A4CcShpkEaTd9i', '::1', '2016-02-08 01:22:20', '::1', '2016-02-05 03:30:47', '2016-02-05 05:19:16', NULL, NULL),
-(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-05-04 03:37:25', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
+(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-05-06 03:23:01', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
 (85, 2, 1, 'compras@compras.com', 'Compra', '$2y$13$fcSVvuFUmhH.3iZ0wTtoZOpkVTt1tjAg2fO2thZog9QwMUIEUUzKu', 'tVH-bh0RpqSA1RgMqIR4rqcKtKiGhvPB', '165xJKTAkwnR1QcUd6wQ-fkU8Q98od2O', '::1', '2016-02-12 04:37:12', '::1', '2016-02-10 06:13:27', '2016-02-13 17:20:37', NULL, NULL),
 (104, 2, 1, 'teste3@teste.com', 'teste3', '$2y$13$4MrmhHyYwYzQ5uFHtr8rpeUNCgFCZiHR0410sdcJBABbm/zl/1Z..', 'ndzPwraET0uG3RZMtH23_-7IdxZtiRaH', 'nO74vFAzRakvIVNVrrJLrl4CU9718fzh', '::1', '2016-02-14 05:59:05', '::1', '2016-02-14 05:09:25', '2016-02-14 06:02:05', NULL, NULL),
 (108, 2, 1, 'teste4@teste.com', 'teste44', '$2y$13$COZu07CnXAVlfSQJwK6ng.LnOd43dGyN29Tw/FH13Mtoa/zTtlGwy', 'Hs7QEYX6yxldLcpIVPjwNoBNBY5zWDSa', 'Ib_71XRL0h05Yr1STAjJwv9Y3sfJOIW4', '::1', '2016-02-14 06:35:23', '::1', '2016-02-14 06:30:37', '2016-02-14 06:35:48', NULL, NULL),
@@ -1496,7 +1506,7 @@ ALTER TABLE `migration`
 -- Indexes for table `pagamento`
 --
 ALTER TABLE `pagamento`
-  ADD PRIMARY KEY (`idConta`);
+  ADD PRIMARY KEY (`idConta`,`idPedido`), ADD KEY `idPedido` (`idPedido`);
 
 --
 -- Indexes for table `pedido`
@@ -1592,7 +1602,7 @@ ALTER TABLE `comanda`
 -- AUTO_INCREMENT for table `conta`
 --
 ALTER TABLE `conta`
-  MODIFY `idconta` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=25;
+  MODIFY `idconta` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=44;
 --
 -- AUTO_INCREMENT for table `despesa`
 --
@@ -1607,7 +1617,7 @@ ALTER TABLE `mesa`
 -- AUTO_INCREMENT for table `pedido`
 --
 ALTER TABLE `pedido`
-  MODIFY `idPedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
+  MODIFY `idPedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=107;
 --
 -- AUTO_INCREMENT for table `produto`
 --
@@ -1637,7 +1647,7 @@ ALTER TABLE `situacaopedido`
 -- AUTO_INCREMENT for table `tipopagamento`
 --
 ALTER TABLE `tipopagamento`
-  MODIFY `idTipoPagamento` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idTipoPagamento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `user`
 --

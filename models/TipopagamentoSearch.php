@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Pagamento;
+use app\models\Tipopagamento;
 
 /**
- * PagamentoSearch represents the model behind the search form about `app\models\Pagamento`.
+ * TipopagamentoSearch represents the model behind the search form about `app\models\Tipopagamento`.
  */
-class PagamentoSearch extends Pagamento
+class TipopagamentoSearch extends Tipopagamento
 {
     /**
      * @inheritdoc
@@ -18,7 +18,8 @@ class PagamentoSearch extends Pagamento
     public function rules()
     {
         return [
-            [['idTipoPagamento', 'idConta', 'idPedido'], 'integer'],
+            [['idTipoPagamento'], 'integer'],
+            [['titulo', 'descricao'], 'safe'],
         ];
     }
 
@@ -40,7 +41,7 @@ class PagamentoSearch extends Pagamento
      */
     public function search($params)
     {
-        $query = Pagamento::find();
+        $query = Tipopagamento::find();
 
         // add conditions that should always apply here
 
@@ -59,9 +60,10 @@ class PagamentoSearch extends Pagamento
         // grid filtering conditions
         $query->andFilterWhere([
             'idTipoPagamento' => $this->idTipoPagamento,
-            'idConta' => $this->idConta,
-            'idPedido' => $this->idPedido,
         ]);
+
+        $query->andFilterWhere(['like', 'titulo', $this->titulo])
+            ->andFilterWhere(['like', 'descricao', $this->descricao]);
 
         return $dataProvider;
     }

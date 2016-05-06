@@ -157,17 +157,19 @@ class ContaController extends Controller
      */
     public function actionDelete($id)
     {
+     $idpedido = Pagamento::find()->where(['idconta'=>$id])->one();
+     if (isset($idpedido)) {
+         $itenspedido = Itempedido::find()->where(['idPedido'=>$idpedido->idPedido])->all();
 
-        $idpedido = Pagamento::find()->where(['idconta'=>$id])->one()->idPedido;
-        $itenspedido = Itempedido::find()->where(['idPedido'=>$idpedido])->all();
-
-        foreach ($itenspedido as  $p) {
+         foreach ($itenspedido as  $p) {
            Insumos::atualizaQtdNoEstoqueDelete($p->idProduto,$p->quantidade);
        }
-       $this->findModel($id)->delete();
 
-       return $this->redirect(['index']);
    }
+   $this->findModel($id)->delete();
+
+   return $this->redirect(['index']);
+}
 
     /**
      * Finds the Conta model based on its primary key value.

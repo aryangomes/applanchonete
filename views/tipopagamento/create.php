@@ -4,13 +4,13 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Pagamento */
+/* @var $model app\models\Tipopagamento */
 
-$this->title = Yii::t('app', 'Create Pagamento');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pagamentos'), 'url' => ['index']];
+$this->title = Yii::t('app', 'Create Tipopagamento');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tipopagamentos'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="pagamento-create">
+<div class="tipopagamento-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

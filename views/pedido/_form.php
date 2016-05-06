@@ -22,6 +22,14 @@ use kartik\money\MaskMoney;
 
 		<?= $form->field($model, 'idSituacaoAtual')->dropDownList($situacaopedido, ['prompt'=>'Selecione a situação do pedido']) ?>
 
+
+		<?php 
+		if (Yii::$app->controller->action->id == 'update') {
+			echo $form->field($tipoPagamento, 'idTipoPagamento')->dropDownList($tiposPagamento, ['prompt'=>'Selecione a forma de  pagamento']);
+		}
+		?>
+
+
 		<div class="form-group">
 			<?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 		</div>

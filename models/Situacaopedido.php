@@ -43,7 +43,7 @@ class Situacaopedido extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-        'idSituacaoPedido' => 'Id Situacao Pedido',
+        'idSituacaoPedido' => 'Situação Pedido',
         'titulo' => 'Título',
         'descricao' => 'Descrição',
         ];

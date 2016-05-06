@@ -3,16 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Pagamento;
-use app\models\PagamentoSearch;
+use app\models\Tipopagamento;
+use app\models\TipopagamentoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * PagamentoController implements the CRUD actions for Pagamento model.
+ * TipopagamentoController implements the CRUD actions for Tipopagamento model.
  */
-class PagamentoController extends Controller
+class TipopagamentoController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +30,12 @@ class PagamentoController extends Controller
     }
 
     /**
-     * Lists all Pagamento models.
+     * Lists all Tipopagamento models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new PagamentoSearch();
+        $searchModel = new TipopagamentoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,29 +45,28 @@ class PagamentoController extends Controller
     }
 
     /**
-     * Displays a single Pagamento model.
-     * @param integer $idConta
-     * @param integer $idPedido
+     * Displays a single Tipopagamento model.
+     * @param integer $id
      * @return mixed
      */
-    public function actionView($idConta, $idPedido)
+    public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($idConta, $idPedido),
+            'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new Pagamento model.
+     * Creates a new Tipopagamento model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Pagamento();
+        $model = new Tipopagamento();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'idConta' => $model->idConta, 'idPedido' => $model->idPedido]);
+            return $this->redirect(['view', 'id' => $model->idTipoPagamento]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -76,18 +75,17 @@ class PagamentoController extends Controller
     }
 
     /**
-     * Updates an existing Pagamento model.
+     * Updates an existing Tipopagamento model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $idConta
-     * @param integer $idPedido
+     * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($idConta, $idPedido)
+    public function actionUpdate($id)
     {
-        $model = $this->findModel($idConta, $idPedido);
+        $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'idConta' => $model->idConta, 'idPedido' => $model->idPedido]);
+            return $this->redirect(['view', 'id' => $model->idTipoPagamento]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -96,30 +94,28 @@ class PagamentoController extends Controller
     }
 
     /**
-     * Deletes an existing Pagamento model.
+     * Deletes an existing Tipopagamento model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $idConta
-     * @param integer $idPedido
+     * @param integer $id
      * @return mixed
      */
-    public function actionDelete($idConta, $idPedido)
+    public function actionDelete($id)
     {
-        $this->findModel($idConta, $idPedido)->delete();
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Pagamento model based on its primary key value.
+     * Finds the Tipopagamento model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $idConta
-     * @param integer $idPedido
-     * @return Pagamento the loaded model
+     * @param integer $id
+     * @return Tipopagamento the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($idConta, $idPedido)
+    protected function findModel($id)
     {
-        if (($model = Pagamento::findOne(['idConta' => $idConta, 'idPedido' => $idPedido])) !== null) {
+        if (($model = Tipopagamento::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

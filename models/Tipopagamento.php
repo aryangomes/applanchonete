@@ -10,8 +10,6 @@ use Yii;
  * @property integer $idTipoPagamento
  * @property string $titulo
  * @property string $descricao
- *
- * @property Pagamento[] $pagamentos
  */
 class Tipopagamento extends \yii\db\ActiveRecord
 {
@@ -29,9 +27,9 @@ class Tipopagamento extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['titulo'], 'required'],
-            [['descricao'], 'string'],
-            [['titulo'], 'string', 'max' => 45]
+        [['titulo'], 'required'],
+        [['descricao'], 'string'],
+        [['titulo'], 'string', 'max' => 45],
         ];
     }
 
@@ -41,17 +39,9 @@ class Tipopagamento extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idTipoPagamento' => 'Id Tipo Pagamento',
-            'titulo' => 'Titulo',
-            'descricao' => 'Descricao',
+        'idTipoPagamento' => Yii::t('app', 'Tipo Pagamento'),
+        'titulo' => Yii::t('app', 'Titulo'),
+        'descricao' => Yii::t('app', 'Descricao'),
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPagamentos()
-    {
-        return $this->hasMany(Pagamento::className(), ['tipoPagamento_idTipoPagamento' => 'idTipoPagamento']);
     }
 }

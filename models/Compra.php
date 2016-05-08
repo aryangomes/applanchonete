@@ -8,15 +8,9 @@ use Yii;
  * This is the model class for table "compra".
  *
  * @property integer $idconta
- * @property double $valor
- * @property string $descricao
- * @property string $tipoConta
- * @property integer $situacaoPagamento
- * @property string $dataVencimento
  * @property string $dataCompra
  *
- * @property Compraproduto[] $compraprodutos
- * @property Produto[] $idProdutos
+ * @property Conta $idconta0
  */
 class Compra extends \yii\db\ActiveRecord
 {
@@ -34,12 +28,10 @@ class Compra extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idconta', 'valor', 'tipoConta', 'situacaoPagamento', 'dataCompra'], 'required'],
-            [['idconta', 'situacaoPagamento'], 'integer'],
-            [['valor'], 'number'],
-            [['descricao'], 'string'],
-            [['dataVencimento', 'dataCompra'], 'safe'],
-            [['tipoConta'], 'string', 'max' => 50],
+            [['idconta', 'dataCompra'], 'required'],
+            [['idconta'], 'integer'],
+            [['dataCompra'], 'safe'],
+            [['idconta'], 'exist', 'skipOnError' => true, 'targetClass' => Conta::className(), 'targetAttribute' => ['idconta' => 'idconta']],
         ];
     }
 
@@ -50,11 +42,6 @@ class Compra extends \yii\db\ActiveRecord
     {
         return [
             'idconta' => Yii::t('app', 'Idconta'),
-            'valor' => Yii::t('app', 'Valor'),
-            'descricao' => Yii::t('app', 'Descricao'),
-            'tipoConta' => Yii::t('app', 'Tipo Conta'),
-            'situacaoPagamento' => Yii::t('app', 'Situacao Pagamento'),
-            'dataVencimento' => Yii::t('app', 'Data Vencimento'),
             'dataCompra' => Yii::t('app', 'Data Compra'),
         ];
     }
@@ -62,16 +49,8 @@ class Compra extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCompraprodutos()
+    public function getIdconta0()
     {
-        return $this->hasMany(Compraproduto::className(), ['idCompra' => 'idconta']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getIdProdutos()
-    {
-        return $this->hasMany(Produto::className(), ['idProduto' => 'idProduto'])->viaTable('compraproduto', ['idCompra' => 'idconta']);
+        return $this->hasOne(Conta::className(), ['idconta' => 'idconta']);
     }
 }

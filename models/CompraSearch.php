@@ -18,9 +18,8 @@ class CompraSearch extends Compra
     public function rules()
     {
         return [
-            [['idconta', 'situacaoPagamento'], 'integer'],
-            [['valor'], 'number'],
-            [['descricao', 'tipoConta', 'dataVencimento', 'dataCompra'], 'safe'],
+            [['idconta'], 'integer'],
+            [['dataCompra'], 'safe'],
         ];
     }
 
@@ -61,14 +60,8 @@ class CompraSearch extends Compra
         // grid filtering conditions
         $query->andFilterWhere([
             'idconta' => $this->idconta,
-            'valor' => $this->valor,
-            'situacaoPagamento' => $this->situacaoPagamento,
-            'dataVencimento' => $this->dataVencimento,
             'dataCompra' => $this->dataCompra,
         ]);
-
-        $query->andFilterWhere(['like', 'descricao', $this->descricao])
-            ->andFilterWhere(['like', 'tipoConta', $this->tipoConta]);
 
         return $dataProvider;
     }

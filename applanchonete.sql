@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 06-Maio-2016 às 04:55
+-- Generation Time: 08-Maio-2016 às 04:13
 -- Versão do servidor: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -598,15 +598,14 @@ CREATE TABLE IF NOT EXISTS `caixa` (
   `valoremcaixa` double NOT NULL,
   `valorlucro` float NOT NULL,
   `user_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `caixa`
 --
 
 INSERT INTO `caixa` (`idcaixa`, `valorapurado`, `valoremcaixa`, `valorlucro`, `user_id`) VALUES
-(4, 2211.11, 3.13, 0.22, 84),
-(6, 0.01, 0.02, 0.03, 109);
+(7, 0, 0, 0, 84);
 
 -- --------------------------------------------------------
 
@@ -675,22 +674,8 @@ INSERT INTO `comanda` (`idComanda`, `desconto`, `totalPago`, `dataHoraAbertura`,
 
 CREATE TABLE IF NOT EXISTS `compra` (
   `idconta` int(11) NOT NULL,
-  `valor` double NOT NULL,
-  `descricao` text,
-  `tipoConta` varchar(100) NOT NULL,
-  `situacaoPagamento` tinyint(1) NOT NULL,
-  `dataVencimento` date DEFAULT NULL,
   `dataCompra` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `compra`
---
-
-INSERT INTO `compra` (`idconta`, `valor`, `descricao`, `tipoConta`, `situacaoPagamento`, `dataVencimento`, `dataCompra`) VALUES
-(1, 0, NULL, 'Compra', 1, NULL, '2016-04-03'),
-(2, 0, NULL, 'Compra', 1, NULL, '2016-04-03'),
-(3, 0, NULL, 'Compra', 1, NULL, '2016-04-04');
 
 -- --------------------------------------------------------
 
@@ -748,7 +733,7 @@ CREATE TABLE IF NOT EXISTS `conta` (
   `valor` double NOT NULL DEFAULT '0',
   `descricao` text,
   `tipoConta` varchar(100) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `conta`
@@ -1055,7 +1040,7 @@ CREATE TABLE IF NOT EXISTS `pedido` (
   `idPedido` int(11) NOT NULL,
   `totalPedido` double NOT NULL DEFAULT '0',
   `idSituacaoAtual` int(11) NOT NULL COMMENT 'Situação atual do staus do pedido, \nfacilitar na busca do status do pedido'
-) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `pedido`
@@ -1286,7 +1271,7 @@ INSERT INTO `user` (`id`, `role_id`, `status`, `email`, `username`, `password`, 
 (43, 3, 1, 'funcionario1@sigir.com', 'funcionario01', '$2y$13$MR/pQJFMZRJZkZj4.xg0qOtdjJK6NMaMo5jF4bVt1tPHf7sjr0QHi', 'JoIVj9p9IWlVklx1TZ00otnbcr-Gmao7', 'hAYvnkL8pFzP6FGMH7eKw7UmisflzyjX', '::1', '2016-02-05 03:48:25', '::1', '2016-02-01 01:00:46', '2016-02-01 04:23:48', NULL, NULL),
 (44, 2, 1, 'gerente1@sigir.com', 'gerente', '$2y$13$mujgA7j0OsPxUr0gYAao3OSk1yykiEFfxqXis7m.lzvZ3EWID1jOG', 'c4rPsYI-Q-WNI9GgYyTvbZr_ynwyuAlY', 'nAzvxmIB3bTRTW9d23dn1isBFBr6s7RI', '::1', '2016-02-09 23:37:54', '::1', '2016-02-01 01:01:26', '2016-02-09 07:11:09', NULL, NULL),
 (80, 2, 1, 'teste@teste.com', NULL, '$2y$13$Up2wVYVIsBKk3oij/H/8l.5hPym80.3NTFpGlc97cSJg32EqNGn4y', 'EXAFyYZpG5QVTcGx6yeFrlDOl9OizMuM', 'ZdjGbu9FKlXtF5mYt1A4CcShpkEaTd9i', '::1', '2016-02-08 01:22:20', '::1', '2016-02-05 03:30:47', '2016-02-05 05:19:16', NULL, NULL),
-(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-05-06 03:23:01', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
+(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-05-07 05:39:19', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
 (85, 2, 1, 'compras@compras.com', 'Compra', '$2y$13$fcSVvuFUmhH.3iZ0wTtoZOpkVTt1tjAg2fO2thZog9QwMUIEUUzKu', 'tVH-bh0RpqSA1RgMqIR4rqcKtKiGhvPB', '165xJKTAkwnR1QcUd6wQ-fkU8Q98od2O', '::1', '2016-02-12 04:37:12', '::1', '2016-02-10 06:13:27', '2016-02-13 17:20:37', NULL, NULL),
 (104, 2, 1, 'teste3@teste.com', 'teste3', '$2y$13$4MrmhHyYwYzQ5uFHtr8rpeUNCgFCZiHR0410sdcJBABbm/zl/1Z..', 'ndzPwraET0uG3RZMtH23_-7IdxZtiRaH', 'nO74vFAzRakvIVNVrrJLrl4CU9718fzh', '::1', '2016-02-14 05:59:05', '::1', '2016-02-14 05:09:25', '2016-02-14 06:02:05', NULL, NULL),
 (108, 2, 1, 'teste4@teste.com', 'teste44', '$2y$13$COZu07CnXAVlfSQJwK6ng.LnOd43dGyN29Tw/FH13Mtoa/zTtlGwy', 'Hs7QEYX6yxldLcpIVPjwNoBNBY5zWDSa', 'Ib_71XRL0h05Yr1STAjJwv9Y3sfJOIW4', '::1', '2016-02-14 06:35:23', '::1', '2016-02-14 06:30:37', '2016-02-14 06:35:48', NULL, NULL),
@@ -1582,7 +1567,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `caixa`
 --
 ALTER TABLE `caixa`
-  MODIFY `idcaixa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `idcaixa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `cardapio`
 --
@@ -1602,7 +1587,7 @@ ALTER TABLE `comanda`
 -- AUTO_INCREMENT for table `conta`
 --
 ALTER TABLE `conta`
-  MODIFY `idconta` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=44;
+  MODIFY `idconta` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=43;
 --
 -- AUTO_INCREMENT for table `despesa`
 --
@@ -1617,7 +1602,7 @@ ALTER TABLE `mesa`
 -- AUTO_INCREMENT for table `pedido`
 --
 ALTER TABLE `pedido`
-  MODIFY `idPedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=107;
+  MODIFY `idPedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=106;
 --
 -- AUTO_INCREMENT for table `produto`
 --
@@ -1699,22 +1684,21 @@ ALTER TABLE `auth_rule`
 ADD CONSTRAINT `auth_rule_ibfk_1` FOREIGN KEY (`name`) REFERENCES `auth_item` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Limitadores para a tabela `caixa`
---
-ALTER TABLE `caixa`
-ADD CONSTRAINT `caixa_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
 -- Limitadores para a tabela `comanda`
 --
 ALTER TABLE `comanda`
 ADD CONSTRAINT `fk_comanda_mesa10` FOREIGN KEY (`mesaIdMesa`) REFERENCES `mesa` (`idMesa`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
+-- Limitadores para a tabela `compra`
+--
+ALTER TABLE `compra`
+ADD CONSTRAINT `compra_ibfk_1` FOREIGN KEY (`idconta`) REFERENCES `conta` (`idconta`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Limitadores para a tabela `compraproduto`
 --
 ALTER TABLE `compraproduto`
-ADD CONSTRAINT `compraproduto_ibfk_1` FOREIGN KEY (`idCompra`) REFERENCES `compra` (`idconta`) ON DELETE NO ACTION ON UPDATE NO ACTION,
 ADD CONSTRAINT `compraproduto_ibfk_2` FOREIGN KEY (`idProduto`) REFERENCES `produto` (`idProduto`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --

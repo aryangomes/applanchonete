@@ -1,60 +1,31 @@
 <?php
 
 namespace app\controllers;
-use yii\web\HttpException;
+
 use Yii;
 use app\models\Compra;
-use app\models\Fornecedor;
 use app\models\CompraSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\ArrayHelper;
-use \yii\filters\AccessControl;
-use yii\web\ForbiddenHttpException;
-use app\components\AccessFilter;
+
 /**
  * CompraController implements the CRUD actions for Compra model.
  */
 class CompraController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
-     /*   'access' =>[
-        'class' => AccessControl::classname(),
-        'only'=> ['create','update','view','delete','index'],
-        'rules'=> [
-        ['allow'=>true,
-        'roles' => ['compra','index-compra'],
-        ],
-        ]
-        ],*/
-        'verbs' => [
-        'class' => VerbFilter::className(),
-        'actions' => [
-        'delete' => ['post'],
-        ],
-        ],
-        'autorizacao'=>[
-        'class'=>AccessFilter::className(),
-        'actions'=>[
-
-        'compra'=>[
-        'index-compra',
-        'update-compra',
-        'delete-compra',
-        'view-compra',
-        'create-compra',
-        ],
-
-        'index'=>'index-compra',
-        'update'=>'update-compra',
-        'delete'=>'delete-compra',
-        'view'=>'view-compra',
-        'create'=>'create-compra',
-        ],
-        ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
         ];
     }
 
@@ -64,16 +35,13 @@ class CompraController extends Controller
      */
     public function actionIndex()
     {
-
         $searchModel = new CompraSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            ]);
-
-
+        ]);
     }
 
     /**
@@ -83,19 +51,9 @@ class CompraController extends Controller
      */
     public function actionView($id)
     {
-
-        $compra = new Compra();
-
-        //var_dump($id);
-       // var_dump($idFornecedor->fornecedor_idFornecedor);
-        $formatter = \Yii::$app->formatter;
         return $this->render('view', [
             'model' => $this->findModel($id),
-
-            'formatter'=>$formatter,
-            ]);
-
-
+        ]);
     }
 
     /**
@@ -105,19 +63,16 @@ class CompraController extends Controller
      */
     public function actionCreate()
     {
+        $model = new Compra();
 
-      $model = new Compra();
-
-      if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        return $this->redirect(['view', 'id' => $model->idcompra]);
-    } else {
-        return $this->render('create', [
-            'model' => $model,
-            
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->idconta]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
             ]);
+        }
     }
-
-}
 
     /**
      * Updates an existing Compra model.
@@ -127,22 +82,16 @@ class CompraController extends Controller
      */
     public function actionUpdate($id)
     {
+        $model = $this->findModel($id);
 
-     /*  $fornecedores= ArrayHelper::map(
-        Fornecedor::find()->all(), 
-        'idFornecedor','nome');*/
-$model = $this->findModel($id);
-
-if ($model->load(Yii::$app->request->post()) && $model->save()) {
-    return $this->redirect(['view', 'id' => $model->idconta]);
-} else {
-    return $this->render('update', [
-        'model' => $model,
-        //    'fornecedores'=>$fornecedores,
-        ]);
-}
-
-}
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->idconta]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
 
     /**
      * Deletes an existing Compra model.
@@ -152,11 +101,9 @@ if ($model->load(Yii::$app->request->post()) && $model->save()) {
      */
     public function actionDelete($id)
     {
-
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-
     }
 
     /**

@@ -15,13 +15,9 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'datacompra') ?>
+    <?= $form->field($model, 'idconta') ?>
 
-    <?= $form->field($model, 'totalcompra') ?>
-
-    <?= $form->field($model, 'idcompra') ?>
-
-    <?= $form->field($model, 'fornecedor_idFornecedor') ?>
+    <?= $form->field($model, 'dataCompra') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

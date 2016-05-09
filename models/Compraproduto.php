@@ -43,10 +43,10 @@ class Compraproduto extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-        'idCompra' => Yii::t('app', 'Id Compra'),
-        'idProduto' => Yii::t('app', 'Id Produto'),
+        'idCompra' => Yii::t('app', 'Compra'),
+        'idProduto' => Yii::t('app', 'Produto'),
         'quantidade' => Yii::t('app', 'Quantidade'),
-        'valorCompra' => Yii::t('app', 'Valor Compra'),
+        'valorCompra' => Yii::t('app', 'Valor da Compra'),
         ];
     }
 

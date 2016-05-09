@@ -8,7 +8,10 @@ use app\models\CompraSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\models\Conta;
+use app\models\Compraproduto;
+use app\models\Produto;
+use yii\helpers\ArrayHelper;
 /**
  * CompraController implements the CRUD actions for Compra model.
  */
@@ -64,12 +67,46 @@ class CompraController extends Controller
     public function actionCreate()
     {
         $model = new Compra();
+        $conta = new Conta();
+        $compraProduto = new Compraproduto();
+        $produtos = ArrayHelper::map(Produto::find()->all(),
+            'idProduto','nome');
+        if ((Yii::$app->request->post()) ) {
+           
+            $conta->tipoConta = 'contasapagar';
+           
+            if ( $conta->save()) {
+                $model->idconta = $conta->idconta;
+            $model->dataCompra = Yii::$app->request->post()['Compra']['dataCompra'];
+             $model->save();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $compraprodutos = Yii::$app->request->post()['Compraproduto'];
+            $valorescompraprodutos = Yii::$app->request->post()['compraproduto-valorcompra-disp'];
+
+          for ($i=0; $i < count($compraprodutos['idProduto']); $i++) {
+            $cp = new Compraproduto();
+          $cp->idCompra =  $model->idconta;
+          $cp->idProduto= $compraprodutos['idProduto'][$i];
+          $cp->quantidade= $compraprodutos['quantidade'][$i]; 
+
+          if($i <= 0) {
+                 $cp->valorCompra= $compraprodutos['valorCompra'][0]; 
+             }else{
+                $cp->valorCompra=( substr($valorescompraprodutos[$i-1], 4));
+             }
+        
+        
+             $cp->save();
+          }
+
             return $this->redirect(['view', 'id' => $model->idconta]);
+            }
+          
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'compraProduto'=>$compraProduto,
+                'produtos'=>$produtos,
             ]);
         }
     }

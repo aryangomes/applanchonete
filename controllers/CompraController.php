@@ -54,8 +54,11 @@ class CompraController extends Controller
      */
     public function actionView($id)
     {
+        $compraProdutos = Compraproduto::find()->where(['idCompra'=>$id])
+        ->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'compraProdutos'=>$compraProdutos,
         ]);
     }
 
@@ -120,12 +123,39 @@ class CompraController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+ $compraProduto = new Compraproduto();
+  $produtos = ArrayHelper::map(Produto::find()->all(),
+            'idProduto','nome');
+  $produtosDaCompras = 
+    Compraproduto::find()->where(['idCompra'=>$id])->all();
+    if(Yii::$app->request->post()){
+        $compraProdutoAux = (Yii::$app->request->post()['Compraproduto']);
+ Yii::$app->db->createCommand(
+            "DELETE FROM compraproduto WHERE idCompra = :idCompra", [
+            ':idCompra' => $id,
+            ])->execute();
+       for ($i=0; $i < count($compraProdutoAux['idProduto']); $i++) { 
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idconta]);
+       
+          $cp = new Compraproduto();
+
+         $cp->idCompra = $id;
+          $cp->idProduto = $compraProdutoAux['idProduto'][$i];
+            $cp->quantidade = $compraProdutoAux['quantidade'][$i];
+            $cp->valorCompra = $compraProdutoAux['valorCompra'][$i];
+
+            $cp->save();
+           
+       
+        }
+      //  if ($model->load(Yii::$app->request->post()) && $model->save()) {
+          return $this->redirect(['view', 'id' => $model->idconta]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'compraProduto'=>$compraProduto,
+                'produtos'=>$produtos,
+                'produtosDaCompras'=>$produtosDaCompras,
             ]);
         }
     }

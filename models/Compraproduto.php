@@ -17,6 +17,8 @@ use Yii;
  */
 class Compraproduto extends \yii\db\ActiveRecord
 {
+
+
     /**
      * @inheritdoc
      */
@@ -65,4 +67,16 @@ class Compraproduto extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Produto::className(), ['idProduto' => 'idProduto']);
     }
+
+ public function getConta()
+    {
+        return $this->hasOne(Conta::className(), ['idconta' => 'idCompra']);
+    }
+
+    public function getProduto()
+    {
+        return $this->hasOne(Produto::className(), ['idProduto' => 'idProduto']);
+    }
 }
+
+

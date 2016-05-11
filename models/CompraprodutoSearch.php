@@ -12,6 +12,9 @@ use app\models\Compraproduto;
  */
 class CompraprodutoSearch extends Compraproduto
 {
+
+     public $produto;
+     public $conta;
     /**
      * @inheritdoc
      */
@@ -20,6 +23,7 @@ class CompraprodutoSearch extends Compraproduto
         return [
             [['idCompra', 'idProduto'], 'integer'],
             [['quantidade', 'valorCompra'], 'number'],
+            [['produto','conta'], 'safe'],
         ];
     }
 

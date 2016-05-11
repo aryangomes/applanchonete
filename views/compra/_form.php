@@ -16,6 +16,9 @@ use kartik\money\MaskMoney;
 
     <?php //$form->field($model, 'idconta')->textInput() ?>
 
+<?php if (Yii::$app->controller->action->id == 'create') {
+	
+ ?>
     <?= $form->field($model, 'dataCompra')->widget(DateControl::classname(), [
 			'type'=>DateControl::FORMAT_DATE,
 			'ajaxConversion'=>false,
@@ -41,7 +44,7 @@ use kartik\money\MaskMoney;
 		?>
 
 		<?= 
-	$form->field($compraProduto, 'quantidade[]')->textInput([ 'type' => 'number', 'value'=>0]); 
+	$form->field($compraProduto, 'quantidade[]')->textInput([ 'type' => 'number', 'value'=>1,'min'=>0]); 
 
 		?>
 
@@ -55,7 +58,87 @@ use kartik\money\MaskMoney;
 		]);
 
 		?>
+<?php }
+else{
+	
+	echo $form->field($model, 'dataCompra')->widget(DateControl::classname(), [
+			'type'=>DateControl::FORMAT_DATE,
+			'ajaxConversion'=>false,
+			'options' => [
+			
+			'pluginOptions' => [
+			'autoclose' => true
+			]
+			],
+			'displayFormat' => 'dd/MM/yyyy',
+			'language'=>'pt',
+			]);
+	for ($i=0; $i < count($produtosDaCompras); $i++) { 
+	
+?><div class "form-group field-insumos-idprodutoinsumo required" id="<?= 'inputinsumo' .$i ?>"> 
+				<?php
+			/*echo $form->field($models[$i], $idprodutoInsumo)->widget(Select2::classname(), [
+				//'name'=>'insumos[]',
+				'data' => $insumos,
+				'value'=>[77777777777777777],
+				'options' => ['placeholder' => 'Selecione o insumo',
+				'id'=>'idinsumo'.$i,
 
+				],
+				'pluginOptions' => [
+				'allowClear'=>true,
+
+				],
+				]);*/
+echo Html::activeLabel($produtosDaCompras[$i], 'idProduto', ['class'=>'control-label']);
+echo Select2::widget([
+	'model'=>$produtosDaCompras[$i],
+	'name' =>'Compraproduto[idProduto][]',
+    'value' => $produtosDaCompras[$i]->idProduto, // initial value
+    'data' => $produtos,
+    
+    'options' => ['placeholder' => 'Selecione o insumo',
+    'id'=>'idinsumo'.$i,
+
+    ],
+    'pluginOptions' => [
+    'allowClear'=>true,
+    ],
+    'pluginEvents'=>[
+    "change" => "function() {
+    	var s = $(\"#idinsumo".$i."\").val();
+    	console.log(s); 
+    	if (s == \"\" || s == null) {
+    		$(\".help-block-insumo".$i."\").append('</br><div class=\"alert alert-danger\">\"Insumo\" não pode ficar em branco.</div>');
+    		//alert('Escolha um insumo ou remova-o');
+    	}else{
+    		$(\".help-block-insumo".$i."\").remove();
+    	}
+    }",
+    ],
+    ]);
+?><div class="help-block-insumo<?= $i?>"> </div><?php
+echo "</br>";
+
+echo $form->field($compraProduto, 'quantidade[]')->textInput([ 'type' => 'number', 'value'=>$produtosDaCompras[$i]->quantidade,'min'=>0]); 
+
+echo $form->field($compraProduto, 'valorCompra[]')->widget(MaskMoney::classname(), [
+	'options'=>[
+	'id'=>'valorCompra'.$produtosDaCompras[$i]->idProduto,
+	'value'=>$produtosDaCompras[$i]->valorCompra,
+	],
+		'pluginOptions' => [
+		'prefix' => 'R$ ',
+		
+		'allowNegative' => false,
+		]
+		]);
+?>
+<input class="btn btn-danger" onclick="removeins(<?= $i?>)" type='button' value="Remover Insumo"> </div></br><?php 
+	}
+}
+
+ ?>
 		<div class="table-responsive" id="input-dinamico">
 
 		</div>
@@ -80,7 +163,7 @@ $this->registerJs('var i = 1; $("#btnadprodutocompra").on("click",function(){'
 		?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 
         <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar Produto">
     </div>

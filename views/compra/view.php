@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Compra */
 
-$this->title = $model->idconta;
+$this->title = 'Compra do dia '.$model->dataCompra;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Compras'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -15,22 +15,43 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->idconta], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->idconta], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->idconta], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
             ],
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
+
+</br>
+<table id="w0" class="table table-striped table-bordered detail-view">
+<p><thead><b>Lista de Produtos comprados</b></thead></p>
+<tbody>
+<th>Produto</th>
+<th>Quantidade</th>
+<th>Preço Unitário</th>
+<?php foreach ($compraProdutos as $key => $cp) {
+ ?>
+
+<tr>
+
+<td><?= $cp->produto->nome ?></td>
+<td><?= $cp->quantidade ?></td>
+<td><?= $cp->valorCompra ?></td>
+</tr>
+<?php } ?>
+</tbody>
+</table>
+
+    <?php /* DetailView::widget([
         'model' => $model,
         'attributes' => [
             'idconta',
             'dataCompra',
         ],
-    ]) ?>
+    ])*/ ?>
 
 </div>

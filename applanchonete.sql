@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.3.11
+-- version 4.5.2
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: 08-Maio-2016 às 04:13
--- Versão do servidor: 5.6.24
--- PHP Version: 5.6.8
+-- Host: localhost
+-- Generation Time: 11-Maio-2016 às 13:17
+-- Versão do servidor: 10.1.10-MariaDB
+-- PHP Version: 5.6.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `applanchonete`
@@ -24,8 +24,7 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `add_permissao_insert`(IN `id` INT, IN `role_id` INT)
-    NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_permissao_insert` (IN `id` INT, IN `role_id` INT)  NO SQL
 BEGIN
 
 DECLARE item_name VARCHAR(64);
@@ -43,8 +42,7 @@ insert into auth_assignment (item_name, user_id) VALUES (item_name, id);
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `adicionaupdate_qtdprodutoestoque`(IN `idProdutoCompra` INT, IN `novaqtd` FLOAT, IN `antigaqtd` FLOAT)
-    NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `adicionaupdate_qtdprodutoestoque` (IN `idProdutoCompra` INT, IN `novaqtd` FLOAT, IN `antigaqtd` FLOAT)  NO SQL
 BEGIN
 
 DECLARE auxqtd ,
@@ -63,8 +61,7 @@ UPDATE produto set quantidadeEstoque = (quantidadeEstoque - diferenca) WHERE pro
 END IF;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `adiciona_qtdprodutoestoque`(IN `idProdutoCompra` INT, IN `novaqtd` FLOAT)
-    NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `adiciona_qtdprodutoestoque` (IN `idProdutoCompra` INT, IN `novaqtd` FLOAT)  NO SQL
 BEGIN
 
 UPDATE produto set quantidadeEstoque = (quantidadeEstoque + novaqtd) WHERE produto.idProduto = idProdutoCompra;
@@ -72,8 +69,7 @@ UPDATE produto set quantidadeEstoque = (quantidadeEstoque + novaqtd) WHERE produ
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizaContaPedido`(IN `iddoPedido` INT, IN `total` FLOAT)
-    NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizaContaPedido` (IN `iddoPedido` INT, IN `total` FLOAT)  NO SQL
 BEGIN
 DECLARE idconta int;
 
@@ -83,8 +79,7 @@ SELECT idConta into idconta from pagamento where pagamento.idPedido = iddoPedido
 update conta set valor = total where idConta = idconta;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizaQtdInsumoNoEstoque`(IN `idProdVnd` INT, IN `qtdProdutoVenda` INT)
-    NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizaQtdInsumoNoEstoque` (IN `idProdVnd` INT, IN `qtdProdutoVenda` INT)  NO SQL
 BEGIN
 declare
 idproduto_insumo,idproduto_venda int;
@@ -93,8 +88,7 @@ idproduto_insumo,idproduto_venda int;
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizaTotalContaUpdate`(IN `iddoPedido` INT)
-    NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizaTotalContaUpdate` (IN `iddoPedido` INT)  NO SQL
 BEGIN
 
 DECLARE 
@@ -112,16 +106,14 @@ UPDATE conta set valor = totalped where idconta = idcta;
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizaTotalPedidoDelete`(IN `iddoPedido` INT, IN `totalProduto` FLOAT)
-    NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizaTotalPedidoDelete` (IN `iddoPedido` INT, IN `totalProduto` FLOAT)  NO SQL
 BEGIN
 
 UPDATE pedido set totalPedido = (totalPedido- totalProduto) WHERE idPedido = iddoPedido;
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizaTotalPedidoInsert`(IN `iddoPedido` INT, IN `totalProduto` FLOAT)
-    NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizaTotalPedidoInsert` (IN `iddoPedido` INT, IN `totalProduto` FLOAT)  NO SQL
 BEGIN
 
 
@@ -131,16 +123,14 @@ UPDATE pedido set totalPedido = (totalPedido + totalProduto) WHERE idPedido = id
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizaTotalPedidoUpdate`(IN `iddoPedido` INT, IN `totalProduto` FLOAT, IN `oldTotalProduto` INT)
-    NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizaTotalPedidoUpdate` (IN `iddoPedido` INT, IN `totalProduto` FLOAT, IN `oldTotalProduto` INT)  NO SQL
 BEGIN
 
 IF (totalProduto > oldTotalProduto) THEN
 UPDATE pedido set totalPedido = (totalPedido + (totalProduto - oldTotalProduto )) WHERE idPedido = iddoPedido;
 ELSEIF(totalProduto < oldTotalProduto) THEN 
 UPDATE pedido set totalPedido = (totalPedido - (oldTotalProduto - totalProduto )) WHERE idPedido = iddoPedido;
-/*ELSE 
-UPDATE pedido set totalPedido = (totalPedido + totalProduto) WHERE idPedido = iddoPedido;*/
+
 END IF;
 
 
@@ -149,8 +139,7 @@ END IF;
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteContaPedido`(IN `iddaConta` INT)
-    NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteContaPedido` (IN `iddaConta` INT)  NO SQL
 BEGIN
 
 DECLARE  iddoPedido int;
@@ -166,8 +155,7 @@ DELETE FROM pedido where idPedido = iddoPedido;
 end if;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deletePedidoConta`(IN `iddoPedido` INT)
-    NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deletePedidoConta` (IN `iddoPedido` INT)  NO SQL
 BEGIN
 declare iddaconta int;
 DECLARE auxidconta int;
@@ -181,8 +169,15 @@ DELETE from conta where idconta = iddaconta;
 end if;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insereContaPedido`(IN `idPedido` INT)
-    NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insereContaAPagar` (IN `iddaconta` INT, IN `datacompra` DATE)  NO SQL
+BEGIN
+INSERT INTO contasapagar (idconta) VALUES (iddaconta);
+
+
+UPDATE conta SET descricao = concat("Compra de " , datacompra) WHERE idconta = iddaconta;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insereContaPedido` (IN `idPedido` INT)  NO SQL
 BEGIN
 
 
@@ -203,7 +198,7 @@ DELIMITER ;
 -- Estrutura da tabela `auth_assignment`
 --
 
-CREATE TABLE IF NOT EXISTS `auth_assignment` (
+CREATE TABLE `auth_assignment` (
   `item_name` varchar(64) NOT NULL,
   `user_id` int(64) NOT NULL,
   `created_at` int(11) DEFAULT NULL
@@ -285,7 +280,7 @@ INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 -- Estrutura da tabela `auth_item`
 --
 
-CREATE TABLE IF NOT EXISTS `auth_item` (
+CREATE TABLE `auth_item` (
   `name` varchar(64) NOT NULL,
   `type` int(11) NOT NULL,
   `description` text,
@@ -446,7 +441,7 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 -- Estrutura da tabela `auth_item_child`
 --
 
-CREATE TABLE IF NOT EXISTS `auth_item_child` (
+CREATE TABLE `auth_item_child` (
   `parent` varchar(64) NOT NULL,
   `child` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -456,121 +451,121 @@ CREATE TABLE IF NOT EXISTS `auth_item_child` (
 --
 
 INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
+('admin', 'user'),
+('caixa', 'create-caixa'),
+('caixa', 'delete-caixa'),
+('caixa', 'index-caixa'),
+('caixa', 'update-caixa'),
+('caixa', 'view-caixa'),
+('cardapio', 'create-cardapio'),
+('cardapio', 'delete-cardapio'),
+('cardapio', 'index-cardapio'),
+('cardapio', 'update-cardapio'),
+('cardapio', 'view-cardapio'),
+('categoria', 'create-categoria'),
+('categoria', 'delete-categoria'),
+('categoria', 'index-categoria'),
+('categoria', 'update-categoria'),
+('categoria', 'view-categoria'),
+('comanda', 'create-comanda'),
+('comanda', 'index-comanda'),
+('comanda', 'update-comanda'),
+('comanda', 'view-comanda'),
+('compra', 'create-compra'),
+('compra', 'delete-compra'),
+('compra', 'index-compra'),
+('compra', 'update-compra'),
+('compra', 'view-compra'),
+('conta', 'create-conta'),
+('conta', 'delete-conta'),
+('conta', 'index-conta'),
+('conta', 'update-conta'),
+('conta', 'view-conta'),
+('contasapagar', 'create-contasapagar'),
+('contasapagar', 'delete-contasapagar'),
+('contasapagar', 'index-contasapagar'),
+('contasapagar', 'update-contasapagar'),
+('contasapagar', 'view-contasapagar'),
+('contasareceber', 'create-contasareceber'),
+('contasareceber', 'delete-contasareceber'),
+('contasareceber', 'index-contasareceber'),
+('contasareceber', 'update-contasareceber'),
+('contasareceber', 'view-contasareceber'),
+('despesa', 'create-despesa'),
+('despesa', 'delete-despesa'),
+('despesa', 'index-despesa'),
+('despesa', 'update-despesa'),
+('despesa', 'view-despesa'),
+('destaque', 'create-destaque'),
+('destaque', 'delete-destaque'),
+('destaque', 'index-destaque'),
+('destaque', 'update-destaque'),
+('destaque', 'view-destaque'),
+('fornecedor', 'create-fornecedor'),
+('fornecedor', 'delete-fornecedor'),
+('fornecedor', 'index-fornecedor'),
+('fornecedor', 'update-fornecedor'),
+('fornecedor', 'view-fornecedor'),
+('historicosituacao', 'create-historicosituacao'),
+('historicosituacao', 'delete-historicosituacao'),
+('historicosituacao', 'index-historicosituacao'),
+('historicosituacao', 'update-historicosituacao'),
+('historicosituacao', 'view-historicosituacao'),
+('insumos', 'create-insumos'),
+('insumos', 'delete-insumos'),
+('insumos', 'index-insumos'),
+('insumos', 'update-insumos'),
+('insumos', 'view-insumos'),
+('itemcardapio', 'create-itemcardapio'),
+('itemcardapio', 'delete-itemcardapio'),
+('itemcardapio', 'index-itemcardapio'),
+('itemcardapio', 'update-itemcardapio'),
+('itemcardapio', 'view-itemcardapio'),
+('itempedido', 'create-itempedido'),
+('itempedido', 'delete-itempedido'),
+('itempedido', 'index-itempedido'),
+('itempedido', 'update-itempedido'),
+('itempedido', 'view-itempedido'),
+('loja', 'create-loja'),
+('loja', 'delete-loja'),
+('loja', 'index-loja'),
+('loja', 'update-loja'),
+('loja', 'view-loja'),
+('mesa', 'create-mesa'),
+('mesa', 'delete-mesa'),
+('mesa', 'index-mesa'),
+('mesa', 'update-mesa'),
+('mesa', 'view-mesa'),
+('pagamento', 'create-pagamento'),
+('pagamento', 'delete-pagamento'),
+('pagamento', 'index-pagamento'),
+('pagamento', 'update-pagamento'),
+('pagamento', 'view-pagamento'),
+('pedido', 'create-pedido'),
+('pedido', 'delete-pedido'),
+('pedido', 'index-pedido'),
+('pedido', 'update-pedido'),
+('pedido', 'view-pedido'),
 ('produto', 'alterarprodutovenda'),
 ('produto', 'avaliacaoproduto'),
 ('produto', 'cadastrarprodutovenda'),
-('caixa', 'create-caixa'),
-('cardapio', 'create-cardapio'),
-('categoria', 'create-categoria'),
-('comanda', 'create-comanda'),
-('compra', 'create-compra'),
-('conta', 'create-conta'),
-('contasapagar', 'create-contasapagar'),
-('contasareceber', 'create-contasareceber'),
-('despesa', 'create-despesa'),
-('destaque', 'create-destaque'),
-('fornecedor', 'create-fornecedor'),
-('historicosituacao', 'create-historicosituacao'),
-('insumos', 'create-insumos'),
-('itemcardapio', 'create-itemcardapio'),
-('itempedido', 'create-itempedido'),
-('loja', 'create-loja'),
-('mesa', 'create-mesa'),
-('pagamento', 'create-pagamento'),
-('pedido', 'create-pedido'),
 ('produto', 'create-produto'),
-('relatorio', 'create-relatorio'),
-('user', 'create-user'),
-('caixa', 'delete-caixa'),
-('cardapio', 'delete-cardapio'),
-('categoria', 'delete-categoria'),
-('compra', 'delete-compra'),
-('conta', 'delete-conta'),
-('contasapagar', 'delete-contasapagar'),
-('contasareceber', 'delete-contasareceber'),
-('despesa', 'delete-despesa'),
-('destaque', 'delete-destaque'),
-('fornecedor', 'delete-fornecedor'),
-('historicosituacao', 'delete-historicosituacao'),
-('insumos', 'delete-insumos'),
-('itemcardapio', 'delete-itemcardapio'),
-('itempedido', 'delete-itempedido'),
-('loja', 'delete-loja'),
-('mesa', 'delete-mesa'),
-('pagamento', 'delete-pagamento'),
-('pedido', 'delete-pedido'),
 ('produto', 'delete-produto'),
-('relatorio', 'delete-relatorio'),
-('user', 'delete-user'),
-('caixa', 'index-caixa'),
-('cardapio', 'index-cardapio'),
-('categoria', 'index-categoria'),
-('comanda', 'index-comanda'),
-('compra', 'index-compra'),
-('conta', 'index-conta'),
-('contasapagar', 'index-contasapagar'),
-('contasareceber', 'index-contasareceber'),
-('despesa', 'index-despesa'),
-('destaque', 'index-destaque'),
-('fornecedor', 'index-fornecedor'),
-('historicosituacao', 'index-historicosituacao'),
-('insumos', 'index-insumos'),
-('itemcardapio', 'index-itemcardapio'),
-('itempedido', 'index-itempedido'),
-('loja', 'index-loja'),
-('mesa', 'index-mesa'),
-('pagamento', 'index-pagamento'),
-('pedido', 'index-pedido'),
 ('produto', 'index-produto'),
-('relatorio', 'index-relatorio'),
-('user', 'index-user'),
 ('produto', 'listadeinsumos'),
 ('produto', 'listadeprodutosporinsumo'),
 ('produto', 'produtosvenda'),
-('caixa', 'update-caixa'),
-('cardapio', 'update-cardapio'),
-('categoria', 'update-categoria'),
-('comanda', 'update-comanda'),
-('compra', 'update-compra'),
-('conta', 'update-conta'),
-('contasapagar', 'update-contasapagar'),
-('contasareceber', 'update-contasareceber'),
-('despesa', 'update-despesa'),
-('destaque', 'update-destaque'),
-('fornecedor', 'update-fornecedor'),
-('historicosituacao', 'update-historicosituacao'),
-('insumos', 'update-insumos'),
-('itemcardapio', 'update-itemcardapio'),
-('itempedido', 'update-itempedido'),
-('loja', 'update-loja'),
-('mesa', 'update-mesa'),
-('pagamento', 'update-pagamento'),
-('pedido', 'update-pedido'),
 ('produto', 'update-produto'),
-('relatorio', 'update-relatorio'),
-('user', 'update-user'),
-('admin', 'user'),
-('caixa', 'view-caixa'),
-('cardapio', 'view-cardapio'),
-('categoria', 'view-categoria'),
-('comanda', 'view-comanda'),
-('compra', 'view-compra'),
-('conta', 'view-conta'),
-('contasapagar', 'view-contasapagar'),
-('contasareceber', 'view-contasareceber'),
-('despesa', 'view-despesa'),
-('destaque', 'view-destaque'),
-('fornecedor', 'view-fornecedor'),
-('historicosituacao', 'view-historicosituacao'),
-('insumos', 'view-insumos'),
-('itemcardapio', 'view-itemcardapio'),
-('itempedido', 'view-itempedido'),
-('loja', 'view-loja'),
-('mesa', 'view-mesa'),
-('pagamento', 'view-pagamento'),
-('pedido', 'view-pedido'),
 ('produto', 'view-produto'),
+('relatorio', 'create-relatorio'),
+('relatorio', 'delete-relatorio'),
+('relatorio', 'index-relatorio'),
+('relatorio', 'update-relatorio'),
 ('relatorio', 'view-relatorio'),
+('user', 'create-user'),
+('user', 'delete-user'),
+('user', 'index-user'),
+('user', 'update-user'),
 ('user', 'view-user');
 
 -- --------------------------------------------------------
@@ -579,7 +574,7 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 -- Estrutura da tabela `auth_rule`
 --
 
-CREATE TABLE IF NOT EXISTS `auth_rule` (
+CREATE TABLE `auth_rule` (
   `name` varchar(64) NOT NULL,
   `data` text,
   `created_at` int(11) DEFAULT NULL,
@@ -592,13 +587,13 @@ CREATE TABLE IF NOT EXISTS `auth_rule` (
 -- Estrutura da tabela `caixa`
 --
 
-CREATE TABLE IF NOT EXISTS `caixa` (
+CREATE TABLE `caixa` (
   `idcaixa` int(11) NOT NULL,
   `valorapurado` float NOT NULL,
   `valoremcaixa` double NOT NULL,
   `valorlucro` float NOT NULL,
   `user_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `caixa`
@@ -613,7 +608,7 @@ INSERT INTO `caixa` (`idcaixa`, `valorapurado`, `valoremcaixa`, `valorlucro`, `u
 -- Estrutura da tabela `cardapio`
 --
 
-CREATE TABLE IF NOT EXISTS `cardapio` (
+CREATE TABLE `cardapio` (
   `idCardapio` int(11) NOT NULL,
   `data` date NOT NULL,
   `titulo` varchar(45) NOT NULL
@@ -625,10 +620,10 @@ CREATE TABLE IF NOT EXISTS `cardapio` (
 -- Estrutura da tabela `categoria`
 --
 
-CREATE TABLE IF NOT EXISTS `categoria` (
+CREATE TABLE `categoria` (
   `idCategoria` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `categoria`
@@ -645,7 +640,7 @@ INSERT INTO `categoria` (`idCategoria`, `nome`) VALUES
 -- Estrutura da tabela `comanda`
 --
 
-CREATE TABLE IF NOT EXISTS `comanda` (
+CREATE TABLE `comanda` (
   `idComanda` int(11) NOT NULL,
   `desconto` decimal(10,0) NOT NULL DEFAULT '0',
   `totalPago` decimal(10,0) NOT NULL,
@@ -655,7 +650,7 @@ CREATE TABLE IF NOT EXISTS `comanda` (
   `status` tinyint(4) NOT NULL DEFAULT '0',
   `totalPedidos` decimal(10,0) NOT NULL DEFAULT '0',
   `mesaIdMesa` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `comanda`
@@ -672,10 +667,29 @@ INSERT INTO `comanda` (`idComanda`, `desconto`, `totalPago`, `dataHoraAbertura`,
 -- Estrutura da tabela `compra`
 --
 
-CREATE TABLE IF NOT EXISTS `compra` (
+CREATE TABLE `compra` (
   `idconta` int(11) NOT NULL,
   `dataCompra` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `compra`
+--
+
+INSERT INTO `compra` (`idconta`, `dataCompra`) VALUES
+(79, '2016-06-02'),
+(80, '2016-06-05');
+
+--
+-- Acionadores `compra`
+--
+DELIMITER $$
+CREATE TRIGGER `tgr_insereContaAPagar` AFTER INSERT ON `compra` FOR EACH ROW BEGIN
+CALL insereContaAPagar(new.idconta, new.dataCompra);
+
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -683,7 +697,7 @@ CREATE TABLE IF NOT EXISTS `compra` (
 -- Estrutura da tabela `compraproduto`
 --
 
-CREATE TABLE IF NOT EXISTS `compraproduto` (
+CREATE TABLE `compraproduto` (
   `idCompra` int(11) NOT NULL,
   `idProduto` int(11) NOT NULL,
   `quantidade` float NOT NULL,
@@ -695,28 +709,26 @@ CREATE TABLE IF NOT EXISTS `compraproduto` (
 --
 
 INSERT INTO `compraproduto` (`idCompra`, `idProduto`, `quantidade`, `valorCompra`) VALUES
-(1, 7, 15, 10),
-(1, 9, 20, 8),
-(1, 12, 20, 12),
-(1, 13, 20, 6),
-(2, 7, 20, 11),
-(2, 9, 20, 9),
-(3, 7, 5, 5),
-(3, 13, 15, 7);
+(76, 7, 2, 0.02),
+(76, 9, 1, 0.51),
+(78, 7, 2, 5.67),
+(78, 9, 1, 1.23),
+(79, 9, 3, 7.89),
+(80, 7, 3, 1.23),
+(80, 9, 1, 0),
+(80, 13, 4, 5.62);
 
 --
 -- Acionadores `compraproduto`
 --
 DELIMITER $$
-CREATE TRIGGER `trg_adiciona_qtdprodutoestoque` AFTER INSERT ON `compraproduto`
- FOR EACH ROW BEGIN
+CREATE TRIGGER `trg_adiciona_qtdprodutoestoque` AFTER INSERT ON `compraproduto` FOR EACH ROW BEGIN
 call adiciona_qtdprodutoestoque(NEW.idProduto,NEW.quantidade);
 END
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `trg_adicionaupdate_qtdprodutoestoque` AFTER UPDATE ON `compraproduto`
- FOR EACH ROW BEGIN
+CREATE TRIGGER `trg_adicionaupdate_qtdprodutoestoque` AFTER UPDATE ON `compraproduto` FOR EACH ROW BEGIN
 call adicionaupdate_qtdprodutoestoque(NEW.idProduto,NEW.quantidade,OLD.quantidade);
 END
 $$
@@ -728,12 +740,12 @@ DELIMITER ;
 -- Estrutura da tabela `conta`
 --
 
-CREATE TABLE IF NOT EXISTS `conta` (
+CREATE TABLE `conta` (
   `idconta` int(11) NOT NULL,
   `valor` double NOT NULL DEFAULT '0',
   `descricao` text,
   `tipoConta` varchar(100) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `conta`
@@ -746,14 +758,17 @@ INSERT INTO `conta` (`idconta`, `valor`, `descricao`, `tipoConta`) VALUES
 (6, 10.3100004196167, 'Água', 'contasapagar'),
 (13, 5.67, 'receber', 'contasareceber'),
 (14, 8.9, 'pagar', 'contasapagar'),
-(42, 0, 'Pedido', 'contasareceber');
+(42, 0, 'Pedido', 'contasareceber'),
+(77, 0, 'Compra de 2016-06-02', 'contasapagar'),
+(78, 0, 'Compra de 2016-06-03', 'contasapagar'),
+(79, 0, 'Compra de 2016-06-02', 'contasapagar'),
+(80, 0, 'Compra de 2016-06-05', 'contasapagar');
 
 --
 -- Acionadores `conta`
 --
 DELIMITER $$
-CREATE TRIGGER `tgr_deleteContaPedido` AFTER DELETE ON `conta`
- FOR EACH ROW BEGIN
+CREATE TRIGGER `tgr_deleteContaPedido` AFTER DELETE ON `conta` FOR EACH ROW BEGIN
 
 call deleteContaPedido(OLD.idconta);
 END
@@ -766,9 +781,9 @@ DELIMITER ;
 -- Estrutura da tabela `contasapagar`
 --
 
-CREATE TABLE IF NOT EXISTS `contasapagar` (
+CREATE TABLE `contasapagar` (
   `idconta` int(11) NOT NULL,
-  `situacaoPagamento` tinyint(1) NOT NULL,
+  `situacaoPagamento` tinyint(1) NOT NULL DEFAULT '0',
   `dataVencimento` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -779,7 +794,11 @@ CREATE TABLE IF NOT EXISTS `contasapagar` (
 INSERT INTO `contasapagar` (`idconta`, `situacaoPagamento`, `dataVencimento`) VALUES
 (3, 1, NULL),
 (6, 0, '2016-04-30'),
-(14, 0, '2016-05-18');
+(14, 0, '2016-05-18'),
+(77, 0, NULL),
+(78, 0, NULL),
+(79, 0, NULL),
+(80, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -787,7 +806,7 @@ INSERT INTO `contasapagar` (`idconta`, `situacaoPagamento`, `dataVencimento`) VA
 -- Estrutura da tabela `contasareceber`
 --
 
-CREATE TABLE IF NOT EXISTS `contasareceber` (
+CREATE TABLE `contasareceber` (
   `idconta` int(11) NOT NULL,
   `dataHora` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -807,13 +826,13 @@ INSERT INTO `contasareceber` (`idconta`, `dataHora`) VALUES
 -- Estrutura da tabela `despesa`
 --
 
-CREATE TABLE IF NOT EXISTS `despesa` (
+CREATE TABLE `despesa` (
   `iddespesa` int(11) NOT NULL,
   `nomedespesa` varchar(100) NOT NULL,
   `valordespesa` float NOT NULL,
   `situacaopagamento` tinyint(1) NOT NULL,
   `datavencimento` date DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `despesa`
@@ -831,7 +850,7 @@ INSERT INTO `despesa` (`iddespesa`, `nomedespesa`, `valordespesa`, `situacaopaga
 -- Estrutura da tabela `destaques`
 --
 
-CREATE TABLE IF NOT EXISTS `destaques` (
+CREATE TABLE `destaques` (
   `idDestaques` int(11) NOT NULL,
   `titulo` varchar(45) NOT NULL,
   `dataEntrada` datetime NOT NULL,
@@ -843,10 +862,30 @@ CREATE TABLE IF NOT EXISTS `destaques` (
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `formapagamento`
+--
+
+CREATE TABLE `formapagamento` (
+  `idTipoPagamento` int(11) NOT NULL,
+  `titulo` varchar(45) NOT NULL,
+  `descricao` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `formapagamento`
+--
+
+INSERT INTO `formapagamento` (`idTipoPagamento`, `titulo`, `descricao`) VALUES
+(1, 'Dinheiro', ''),
+(2, 'Cartão', '');
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `historicosituacao`
 --
 
-CREATE TABLE IF NOT EXISTS `historicosituacao` (
+CREATE TABLE `historicosituacao` (
   `idPedido` int(11) NOT NULL,
   `idSituacaoPedido` int(11) NOT NULL,
   `dataHora` datetime NOT NULL
@@ -858,7 +897,7 @@ CREATE TABLE IF NOT EXISTS `historicosituacao` (
 -- Estrutura da tabela `insumos`
 --
 
-CREATE TABLE IF NOT EXISTS `insumos` (
+CREATE TABLE `insumos` (
   `idprodutoVenda` int(11) NOT NULL,
   `idprodutoInsumo` int(11) NOT NULL,
   `quantidade` float NOT NULL,
@@ -891,7 +930,7 @@ INSERT INTO `insumos` (`idprodutoVenda`, `idprodutoInsumo`, `quantidade`, `unida
 -- Estrutura da tabela `itemcardapio`
 --
 
-CREATE TABLE IF NOT EXISTS `itemcardapio` (
+CREATE TABLE `itemcardapio` (
   `idCardapio` int(11) NOT NULL,
   `idProduto` int(11) NOT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '0',
@@ -904,7 +943,7 @@ CREATE TABLE IF NOT EXISTS `itemcardapio` (
 -- Estrutura da tabela `itempedido`
 --
 
-CREATE TABLE IF NOT EXISTS `itempedido` (
+CREATE TABLE `itempedido` (
   `idPedido` int(11) NOT NULL,
   `idProduto` int(11) NOT NULL,
   `quantidade` decimal(10,0) NOT NULL DEFAULT '1',
@@ -925,24 +964,21 @@ INSERT INTO `itempedido` (`idPedido`, `idProduto`, `quantidade`, `total`) VALUES
 -- Acionadores `itempedido`
 --
 DELIMITER $$
-CREATE TRIGGER `trg_atualizaTotalPedidoDelete` AFTER DELETE ON `itempedido`
- FOR EACH ROW BEGIN
+CREATE TRIGGER `trg_atualizaTotalPedidoDelete` AFTER DELETE ON `itempedido` FOR EACH ROW BEGIN
 
 CALL atualizaTotalPedidoDelete(old.idPedido,old.total);
 END
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `trg_atualizaTotalPedidoInsert` AFTER INSERT ON `itempedido`
- FOR EACH ROW BEGIN
+CREATE TRIGGER `trg_atualizaTotalPedidoInsert` AFTER INSERT ON `itempedido` FOR EACH ROW BEGIN
 call atualizaTotalPedidoInsert(NEW.idPedido,NEW.total);
 
 END
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `trg_atualizaTotalPedidoUpdate` AFTER UPDATE ON `itempedido`
- FOR EACH ROW BEGIN
+CREATE TRIGGER `trg_atualizaTotalPedidoUpdate` AFTER UPDATE ON `itempedido` FOR EACH ROW BEGIN
 call atualizaTotalPedidoUpdate(NEW.idPedido,NEW.total,OLD.total);
 END
 $$
@@ -954,7 +990,7 @@ DELIMITER ;
 -- Estrutura da tabela `loja`
 --
 
-CREATE TABLE IF NOT EXISTS `loja` (
+CREATE TABLE `loja` (
   `endereco` varchar(100) NOT NULL,
   `user_id` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL
@@ -974,7 +1010,7 @@ INSERT INTO `loja` (`endereco`, `user_id`, `nome`) VALUES
 -- Estrutura da tabela `mesa`
 --
 
-CREATE TABLE IF NOT EXISTS `mesa` (
+CREATE TABLE `mesa` (
   `idMesa` int(11) NOT NULL,
   `descricao` varchar(45) NOT NULL,
   `disponivel` tinyint(4) NOT NULL COMMENT 'Status da mesa como ocupado/livre',
@@ -982,7 +1018,7 @@ CREATE TABLE IF NOT EXISTS `mesa` (
   `qrcode` varchar(100) NOT NULL COMMENT 'localização ',
   `chave` varchar(45) NOT NULL COMMENT 'chave da mesa, criada no momento da criação da mesma',
   `cont` int(11) NOT NULL DEFAULT '0' COMMENT 'valor de iniciação do algoritimo de chaves\n'
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `mesa`
@@ -997,7 +1033,7 @@ INSERT INTO `mesa` (`idMesa`, `descricao`, `disponivel`, `alerta`, `qrcode`, `ch
 -- Estrutura da tabela `migration`
 --
 
-CREATE TABLE IF NOT EXISTS `migration` (
+CREATE TABLE `migration` (
   `version` varchar(180) NOT NULL,
   `apply_time` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1016,7 +1052,7 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 -- Estrutura da tabela `pagamento`
 --
 
-CREATE TABLE IF NOT EXISTS `pagamento` (
+CREATE TABLE `pagamento` (
   `idTipoPagamento` int(11) DEFAULT NULL,
   `idConta` int(11) NOT NULL,
   `idPedido` int(11) NOT NULL
@@ -1036,11 +1072,11 @@ INSERT INTO `pagamento` (`idTipoPagamento`, `idConta`, `idPedido`) VALUES
 -- Estrutura da tabela `pedido`
 --
 
-CREATE TABLE IF NOT EXISTS `pedido` (
+CREATE TABLE `pedido` (
   `idPedido` int(11) NOT NULL,
   `totalPedido` double NOT NULL DEFAULT '0',
   `idSituacaoAtual` int(11) NOT NULL COMMENT 'Situação atual do staus do pedido, \nfacilitar na busca do status do pedido'
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `pedido`
@@ -1058,23 +1094,20 @@ INSERT INTO `pedido` (`idPedido`, `totalPedido`, `idSituacaoAtual`) VALUES
 -- Acionadores `pedido`
 --
 DELIMITER $$
-CREATE TRIGGER `trg_atualizaContaPedido` AFTER UPDATE ON `pedido`
- FOR EACH ROW BEGIN
+CREATE TRIGGER `trg_atualizaContaPedido` AFTER UPDATE ON `pedido` FOR EACH ROW BEGIN
 call atualizaTotalContaUpdate(new.idPedido);
 END
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `trg_deletePedidoConta` AFTER DELETE ON `pedido`
- FOR EACH ROW BEGIN
+CREATE TRIGGER `trg_deletePedidoConta` AFTER DELETE ON `pedido` FOR EACH ROW BEGIN
 call deletePedidoConta(OLD.idPedido);
 
 END
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `trg_insereContaPedido` AFTER INSERT ON `pedido`
- FOR EACH ROW BEGIN
+CREATE TRIGGER `trg_insereContaPedido` AFTER INSERT ON `pedido` FOR EACH ROW BEGIN
 CALL insereContaPedido(new.idPedido);
 END
 $$
@@ -1086,7 +1119,7 @@ DELIMITER ;
 -- Estrutura da tabela `produto`
 --
 
-CREATE TABLE IF NOT EXISTS `produto` (
+CREATE TABLE `produto` (
   `idProduto` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `valorVenda` float(10,0) NOT NULL,
@@ -1094,24 +1127,24 @@ CREATE TABLE IF NOT EXISTS `produto` (
   `quantidadeMinima` float NOT NULL DEFAULT '0',
   `idCategoria` int(11) NOT NULL,
   `quantidadeEstoque` float DEFAULT '0' COMMENT 'Valor deve ser maior que 0'
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `produto`
 --
 
 INSERT INTO `produto` (`idProduto`, `nome`, `valorVenda`, `isInsumo`, `quantidadeMinima`, `idCategoria`, `quantidadeEstoque`) VALUES
-(7, 'Tomate', 20, 1, 0, 4, 0),
+(7, 'Tomate', 20, 1, 0, 4, 62),
 (8, 'Sanduíche A', 4, 0, 0, 5, 0),
-(9, 'Pão', 0, 1, 0, 3, 26),
+(9, 'Pão', 0, 1, 0, 3, 45),
 (10, 'Refrigerante', 2, 0, 0, 5, 10),
 (11, 'Sanduíche B', 3, 0, 0, 5, 0),
-(12, 'Hambúrguer ', 0, 1, 0, 3, 19),
-(13, 'Ovo', 0, 1, 0, 3, 35),
+(12, 'Hambúrguer ', 0, 1, 0, 3, 26),
+(13, 'Ovo', 0, 1, 0, 3, 62),
 (14, 'Sanduíche C', 2, 0, 0, 5, 0),
 (15, 'Sanduíche D', 2, 0, 0, 5, 0),
 (16, 'Sanduíche E', 2, 0, 0, 5, 0),
-(18, 'Insumo Teste', 0, 1, 0, 4, 0);
+(18, 'Insumo Teste', 0, 1, 0, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -1119,13 +1152,13 @@ INSERT INTO `produto` (`idProduto`, `nome`, `valorVenda`, `isInsumo`, `quantidad
 -- Estrutura da tabela `profile`
 --
 
-CREATE TABLE IF NOT EXISTS `profile` (
+CREATE TABLE `profile` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `full_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `profile`
@@ -1153,7 +1186,7 @@ INSERT INTO `profile` (`id`, `user_id`, `created_at`, `updated_at`, `full_name`)
 -- Estrutura da tabela `relatorio`
 --
 
-CREATE TABLE IF NOT EXISTS `relatorio` (
+CREATE TABLE `relatorio` (
   `idrelatorio` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `datageracao` date NOT NULL,
@@ -1161,7 +1194,7 @@ CREATE TABLE IF NOT EXISTS `relatorio` (
   `inicio_intervalo` date DEFAULT NULL,
   `fim_intervalo` date NOT NULL,
   `usuario_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `relatorio`
@@ -1178,13 +1211,13 @@ INSERT INTO `relatorio` (`idrelatorio`, `nome`, `datageracao`, `tipo`, `inicio_i
 -- Estrutura da tabela `role`
 --
 
-CREATE TABLE IF NOT EXISTS `role` (
+CREATE TABLE `role` (
   `id` int(11) NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `can_admin` smallint(6) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `role`
@@ -1201,11 +1234,11 @@ INSERT INTO `role` (`id`, `name`, `created_at`, `updated_at`, `can_admin`) VALUE
 -- Estrutura da tabela `situacaopedido`
 --
 
-CREATE TABLE IF NOT EXISTS `situacaopedido` (
+CREATE TABLE `situacaopedido` (
   `idSituacaoPedido` int(11) NOT NULL,
   `titulo` varchar(45) NOT NULL,
   `descricao` text NOT NULL COMMENT 'ESTARA INCLUSO NA TABELA DE SISTEMA\n'
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `situacaopedido`
@@ -1219,30 +1252,10 @@ INSERT INTO `situacaopedido` (`idSituacaoPedido`, `titulo`, `descricao`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `tipopagamento`
---
-
-CREATE TABLE IF NOT EXISTS `tipopagamento` (
-  `idTipoPagamento` int(11) NOT NULL,
-  `titulo` varchar(45) NOT NULL,
-  `descricao` text
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
---
--- Extraindo dados da tabela `tipopagamento`
---
-
-INSERT INTO `tipopagamento` (`idTipoPagamento`, `titulo`, `descricao`) VALUES
-(1, 'Dinheiro', ''),
-(2, 'Cartão', '');
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `user`
 --
 
-CREATE TABLE IF NOT EXISTS `user` (
+CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `role_id` int(11) NOT NULL,
   `status` smallint(6) NOT NULL,
@@ -1258,7 +1271,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `banned_at` timestamp NULL DEFAULT NULL,
   `banned_reason` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `user`
@@ -1271,7 +1284,7 @@ INSERT INTO `user` (`id`, `role_id`, `status`, `email`, `username`, `password`, 
 (43, 3, 1, 'funcionario1@sigir.com', 'funcionario01', '$2y$13$MR/pQJFMZRJZkZj4.xg0qOtdjJK6NMaMo5jF4bVt1tPHf7sjr0QHi', 'JoIVj9p9IWlVklx1TZ00otnbcr-Gmao7', 'hAYvnkL8pFzP6FGMH7eKw7UmisflzyjX', '::1', '2016-02-05 03:48:25', '::1', '2016-02-01 01:00:46', '2016-02-01 04:23:48', NULL, NULL),
 (44, 2, 1, 'gerente1@sigir.com', 'gerente', '$2y$13$mujgA7j0OsPxUr0gYAao3OSk1yykiEFfxqXis7m.lzvZ3EWID1jOG', 'c4rPsYI-Q-WNI9GgYyTvbZr_ynwyuAlY', 'nAzvxmIB3bTRTW9d23dn1isBFBr6s7RI', '::1', '2016-02-09 23:37:54', '::1', '2016-02-01 01:01:26', '2016-02-09 07:11:09', NULL, NULL),
 (80, 2, 1, 'teste@teste.com', NULL, '$2y$13$Up2wVYVIsBKk3oij/H/8l.5hPym80.3NTFpGlc97cSJg32EqNGn4y', 'EXAFyYZpG5QVTcGx6yeFrlDOl9OizMuM', 'ZdjGbu9FKlXtF5mYt1A4CcShpkEaTd9i', '::1', '2016-02-08 01:22:20', '::1', '2016-02-05 03:30:47', '2016-02-05 05:19:16', NULL, NULL),
-(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-05-07 05:39:19', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
+(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-05-11 13:30:21', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
 (85, 2, 1, 'compras@compras.com', 'Compra', '$2y$13$fcSVvuFUmhH.3iZ0wTtoZOpkVTt1tjAg2fO2thZog9QwMUIEUUzKu', 'tVH-bh0RpqSA1RgMqIR4rqcKtKiGhvPB', '165xJKTAkwnR1QcUd6wQ-fkU8Q98od2O', '::1', '2016-02-12 04:37:12', '::1', '2016-02-10 06:13:27', '2016-02-13 17:20:37', NULL, NULL),
 (104, 2, 1, 'teste3@teste.com', 'teste3', '$2y$13$4MrmhHyYwYzQ5uFHtr8rpeUNCgFCZiHR0410sdcJBABbm/zl/1Z..', 'ndzPwraET0uG3RZMtH23_-7IdxZtiRaH', 'nO74vFAzRakvIVNVrrJLrl4CU9718fzh', '::1', '2016-02-14 05:59:05', '::1', '2016-02-14 05:09:25', '2016-02-14 06:02:05', NULL, NULL),
 (108, 2, 1, 'teste4@teste.com', 'teste44', '$2y$13$COZu07CnXAVlfSQJwK6ng.LnOd43dGyN29Tw/FH13Mtoa/zTtlGwy', 'Hs7QEYX6yxldLcpIVPjwNoBNBY5zWDSa', 'Ib_71XRL0h05Yr1STAjJwv9Y3sfJOIW4', '::1', '2016-02-14 06:35:23', '::1', '2016-02-14 06:30:37', '2016-02-14 06:35:48', NULL, NULL),
@@ -1284,9 +1297,8 @@ INSERT INTO `user` (`id`, `role_id`, `status`, `email`, `username`, `password`, 
 -- Acionadores `user`
 --
 DELIMITER $$
-CREATE TRIGGER `add_permissao_trigger_insert` AFTER INSERT ON `user`
- FOR EACH ROW BEGIN
-/*call add_permissao_insert(NEW.id,NEW.role_id);*/
+CREATE TRIGGER `add_permissao_trigger_insert` AFTER INSERT ON `user` FOR EACH ROW BEGIN
+
 END
 $$
 DELIMITER ;
@@ -1297,7 +1309,7 @@ DELIMITER ;
 -- Estrutura da tabela `user_auth`
 --
 
-CREATE TABLE IF NOT EXISTS `user_auth` (
+CREATE TABLE `user_auth` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `provider` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -1313,7 +1325,7 @@ CREATE TABLE IF NOT EXISTS `user_auth` (
 -- Estrutura da tabela `user_token`
 --
 
-CREATE TABLE IF NOT EXISTS `user_token` (
+CREATE TABLE `user_token` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `type` smallint(6) NOT NULL,
@@ -1321,7 +1333,7 @@ CREATE TABLE IF NOT EXISTS `user_token` (
   `data` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `expired_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `user_token`
@@ -1339,7 +1351,7 @@ INSERT INTO `user_token` (`id`, `user_id`, `type`, `token`, `data`, `created_at`
 -- Estrutura da tabela `usuario`
 --
 
-CREATE TABLE IF NOT EXISTS `usuario` (
+CREATE TABLE `usuario` (
   `cpf` varchar(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `tipo` varchar(45) NOT NULL,
@@ -1359,19 +1371,23 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 -- Indexes for table `auth_assignment`
 --
 ALTER TABLE `auth_assignment`
-  ADD PRIMARY KEY (`item_name`,`user_id`), ADD KEY `user_id` (`user_id`);
+  ADD PRIMARY KEY (`item_name`,`user_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `auth_item`
 --
 ALTER TABLE `auth_item`
-  ADD PRIMARY KEY (`name`), ADD KEY `rule_name` (`rule_name`), ADD KEY `type` (`type`);
+  ADD PRIMARY KEY (`name`),
+  ADD KEY `rule_name` (`rule_name`),
+  ADD KEY `type` (`type`);
 
 --
 -- Indexes for table `auth_item_child`
 --
 ALTER TABLE `auth_item_child`
-  ADD PRIMARY KEY (`parent`,`child`), ADD KEY `auth_item_child_ibfk_2` (`child`);
+  ADD PRIMARY KEY (`parent`,`child`),
+  ADD KEY `auth_item_child_ibfk_2` (`child`);
 
 --
 -- Indexes for table `auth_rule`
@@ -1383,7 +1399,8 @@ ALTER TABLE `auth_rule`
 -- Indexes for table `caixa`
 --
 ALTER TABLE `caixa`
-  ADD PRIMARY KEY (`idcaixa`), ADD KEY `caixa_ibfk_1` (`user_id`);
+  ADD PRIMARY KEY (`idcaixa`),
+  ADD KEY `caixa_ibfk_1` (`user_id`);
 
 --
 -- Indexes for table `cardapio`
@@ -1401,7 +1418,8 @@ ALTER TABLE `categoria`
 -- Indexes for table `comanda`
 --
 ALTER TABLE `comanda`
-  ADD PRIMARY KEY (`idComanda`), ADD KEY `fk_comanda_mesa1_idx` (`mesaIdMesa`);
+  ADD PRIMARY KEY (`idComanda`),
+  ADD KEY `fk_comanda_mesa1_idx` (`mesaIdMesa`);
 
 --
 -- Indexes for table `compra`
@@ -1413,7 +1431,8 @@ ALTER TABLE `compra`
 -- Indexes for table `compraproduto`
 --
 ALTER TABLE `compraproduto`
-  ADD PRIMARY KEY (`idCompra`,`idProduto`), ADD KEY `compraproduto_ibfk_2` (`idProduto`);
+  ADD PRIMARY KEY (`idCompra`,`idProduto`),
+  ADD KEY `compraproduto_ibfk_2` (`idProduto`);
 
 --
 -- Indexes for table `conta`
@@ -1446,28 +1465,38 @@ ALTER TABLE `destaques`
   ADD PRIMARY KEY (`idDestaques`);
 
 --
+-- Indexes for table `formapagamento`
+--
+ALTER TABLE `formapagamento`
+  ADD PRIMARY KEY (`idTipoPagamento`);
+
+--
 -- Indexes for table `historicosituacao`
 --
 ALTER TABLE `historicosituacao`
-  ADD PRIMARY KEY (`idPedido`,`idSituacaoPedido`), ADD KEY `fk_historioSituacao_situacaoPedido1_idx` (`idSituacaoPedido`);
+  ADD PRIMARY KEY (`idPedido`,`idSituacaoPedido`),
+  ADD KEY `fk_historioSituacao_situacaoPedido1_idx` (`idSituacaoPedido`);
 
 --
 -- Indexes for table `insumos`
 --
 ALTER TABLE `insumos`
-  ADD PRIMARY KEY (`idprodutoVenda`,`idprodutoInsumo`), ADD KEY `idprodutoInsumo` (`idprodutoInsumo`);
+  ADD PRIMARY KEY (`idprodutoVenda`,`idprodutoInsumo`),
+  ADD KEY `idprodutoInsumo` (`idprodutoInsumo`);
 
 --
 -- Indexes for table `itemcardapio`
 --
 ALTER TABLE `itemcardapio`
-  ADD PRIMARY KEY (`idCardapio`,`idProduto`), ADD KEY `fk_itemcardapio_produto1_idx` (`idProduto`);
+  ADD PRIMARY KEY (`idCardapio`,`idProduto`),
+  ADD KEY `fk_itemcardapio_produto1_idx` (`idProduto`);
 
 --
 -- Indexes for table `itempedido`
 --
 ALTER TABLE `itempedido`
-  ADD PRIMARY KEY (`idPedido`,`idProduto`), ADD KEY `fk_itemPedido_produto1_idx` (`idProduto`);
+  ADD PRIMARY KEY (`idPedido`,`idProduto`),
+  ADD KEY `fk_itemPedido_produto1_idx` (`idProduto`);
 
 --
 -- Indexes for table `loja`
@@ -1491,31 +1520,36 @@ ALTER TABLE `migration`
 -- Indexes for table `pagamento`
 --
 ALTER TABLE `pagamento`
-  ADD PRIMARY KEY (`idConta`,`idPedido`), ADD KEY `idPedido` (`idPedido`);
+  ADD PRIMARY KEY (`idConta`,`idPedido`),
+  ADD KEY `idPedido` (`idPedido`);
 
 --
 -- Indexes for table `pedido`
 --
 ALTER TABLE `pedido`
-  ADD PRIMARY KEY (`idPedido`), ADD KEY `fk_pedido_situacaoPedido1_idx` (`idSituacaoAtual`);
+  ADD PRIMARY KEY (`idPedido`),
+  ADD KEY `fk_pedido_situacaoPedido1_idx` (`idSituacaoAtual`);
 
 --
 -- Indexes for table `produto`
 --
 ALTER TABLE `produto`
-  ADD PRIMARY KEY (`idProduto`), ADD KEY `fk_produto_categoria1_idx` (`idCategoria`);
+  ADD PRIMARY KEY (`idProduto`),
+  ADD KEY `fk_produto_categoria1_idx` (`idCategoria`);
 
 --
 -- Indexes for table `profile`
 --
 ALTER TABLE `profile`
-  ADD PRIMARY KEY (`id`), ADD KEY `profile_user_id` (`user_id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `profile_user_id` (`user_id`);
 
 --
 -- Indexes for table `relatorio`
 --
 ALTER TABLE `relatorio`
-  ADD PRIMARY KEY (`idrelatorio`), ADD KEY `fk_relatorio_usuario1` (`usuario_id`);
+  ADD PRIMARY KEY (`idrelatorio`),
+  ADD KEY `fk_relatorio_usuario1` (`usuario_id`);
 
 --
 -- Indexes for table `role`
@@ -1530,34 +1564,37 @@ ALTER TABLE `situacaopedido`
   ADD PRIMARY KEY (`idSituacaoPedido`);
 
 --
--- Indexes for table `tipopagamento`
---
-ALTER TABLE `tipopagamento`
-  ADD PRIMARY KEY (`idTipoPagamento`);
-
---
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `user_email` (`email`), ADD UNIQUE KEY `user_username` (`username`), ADD KEY `user_role_id` (`role_id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_email` (`email`),
+  ADD UNIQUE KEY `user_username` (`username`),
+  ADD KEY `user_role_id` (`role_id`);
 
 --
 -- Indexes for table `user_auth`
 --
 ALTER TABLE `user_auth`
-  ADD PRIMARY KEY (`id`), ADD KEY `user_auth_provider_id` (`provider_id`), ADD KEY `user_auth_user_id` (`user_id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_auth_provider_id` (`provider_id`),
+  ADD KEY `user_auth_user_id` (`user_id`);
 
 --
 -- Indexes for table `user_token`
 --
 ALTER TABLE `user_token`
-  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `user_token_token` (`token`), ADD KEY `user_token_user_id` (`user_id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_token_token` (`token`),
+  ADD KEY `user_token_user_id` (`user_id`);
 
 --
 -- Indexes for table `usuario`
 --
 ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `cpf_UNIQUE` (`cpf`), ADD KEY `fk_usuario_loja1` (`loja_nome`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `cpf_UNIQUE` (`cpf`),
+  ADD KEY `fk_usuario_loja1` (`loja_nome`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -1567,7 +1604,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `caixa`
 --
 ALTER TABLE `caixa`
-  MODIFY `idcaixa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+  MODIFY `idcaixa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `cardapio`
 --
@@ -1577,67 +1614,67 @@ ALTER TABLE `cardapio`
 -- AUTO_INCREMENT for table `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `idCategoria` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+  MODIFY `idCategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `comanda`
 --
 ALTER TABLE `comanda`
-  MODIFY `idComanda` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `idComanda` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `conta`
 --
 ALTER TABLE `conta`
-  MODIFY `idconta` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=43;
+  MODIFY `idconta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 --
 -- AUTO_INCREMENT for table `despesa`
 --
 ALTER TABLE `despesa`
-  MODIFY `iddespesa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `iddespesa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `formapagamento`
+--
+ALTER TABLE `formapagamento`
+  MODIFY `idTipoPagamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `mesa`
 --
 ALTER TABLE `mesa`
-  MODIFY `idMesa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `idMesa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `pedido`
 --
 ALTER TABLE `pedido`
-  MODIFY `idPedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=106;
+  MODIFY `idPedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
 --
 -- AUTO_INCREMENT for table `produto`
 --
 ALTER TABLE `produto`
-  MODIFY `idProduto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19;
+  MODIFY `idProduto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `profile`
 --
 ALTER TABLE `profile`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=74;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 --
 -- AUTO_INCREMENT for table `relatorio`
 --
 ALTER TABLE `relatorio`
-  MODIFY `idrelatorio` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+  MODIFY `idrelatorio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `situacaopedido`
 --
 ALTER TABLE `situacaopedido`
-  MODIFY `idSituacaoPedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT for table `tipopagamento`
---
-ALTER TABLE `tipopagamento`
-  MODIFY `idTipoPagamento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `idSituacaoPedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=113;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 --
 -- AUTO_INCREMENT for table `user_auth`
 --
@@ -1647,7 +1684,7 @@ ALTER TABLE `user_auth`
 -- AUTO_INCREMENT for table `user_token`
 --
 ALTER TABLE `user_token`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `usuario`
 --
@@ -1661,133 +1698,133 @@ ALTER TABLE `usuario`
 -- Limitadores para a tabela `auth_assignment`
 --
 ALTER TABLE `auth_assignment`
-ADD CONSTRAINT `auth_assignment_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `auth_assignment_ibfk_3` FOREIGN KEY (`item_name`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `auth_assignment_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `auth_assignment_ibfk_3` FOREIGN KEY (`item_name`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `auth_item`
 --
 ALTER TABLE `auth_item`
-ADD CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `auth_item_child`
 --
 ALTER TABLE `auth_item_child`
-ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `auth_rule`
 --
 ALTER TABLE `auth_rule`
-ADD CONSTRAINT `auth_rule_ibfk_1` FOREIGN KEY (`name`) REFERENCES `auth_item` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `auth_rule_ibfk_1` FOREIGN KEY (`name`) REFERENCES `auth_item` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `comanda`
 --
 ALTER TABLE `comanda`
-ADD CONSTRAINT `fk_comanda_mesa10` FOREIGN KEY (`mesaIdMesa`) REFERENCES `mesa` (`idMesa`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_comanda_mesa10` FOREIGN KEY (`mesaIdMesa`) REFERENCES `mesa` (`idMesa`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `compra`
 --
 ALTER TABLE `compra`
-ADD CONSTRAINT `compra_ibfk_1` FOREIGN KEY (`idconta`) REFERENCES `conta` (`idconta`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `compra_ibfk_1` FOREIGN KEY (`idconta`) REFERENCES `conta` (`idconta`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `compraproduto`
 --
 ALTER TABLE `compraproduto`
-ADD CONSTRAINT `compraproduto_ibfk_2` FOREIGN KEY (`idProduto`) REFERENCES `produto` (`idProduto`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `compraproduto_ibfk_2` FOREIGN KEY (`idProduto`) REFERENCES `produto` (`idProduto`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `contasapagar`
 --
 ALTER TABLE `contasapagar`
-ADD CONSTRAINT `contasapagar_ibfk_1` FOREIGN KEY (`idconta`) REFERENCES `conta` (`idconta`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `contasapagar_ibfk_1` FOREIGN KEY (`idconta`) REFERENCES `conta` (`idconta`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `contasareceber`
 --
 ALTER TABLE `contasareceber`
-ADD CONSTRAINT `contasareceber_ibfk_1` FOREIGN KEY (`idconta`) REFERENCES `conta` (`idconta`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `contasareceber_ibfk_1` FOREIGN KEY (`idconta`) REFERENCES `conta` (`idconta`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `historicosituacao`
 --
 ALTER TABLE `historicosituacao`
-ADD CONSTRAINT `fk_historioSituacao_situacaoPedido10` FOREIGN KEY (`idSituacaoPedido`) REFERENCES `situacaopedido` (`idSituacaoPedido`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `historicosituacao_ibfk_1` FOREIGN KEY (`idPedido`) REFERENCES `pedido` (`idPedido`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_historioSituacao_situacaoPedido10` FOREIGN KEY (`idSituacaoPedido`) REFERENCES `situacaopedido` (`idSituacaoPedido`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `historicosituacao_ibfk_1` FOREIGN KEY (`idPedido`) REFERENCES `pedido` (`idPedido`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `insumos`
 --
 ALTER TABLE `insumos`
-ADD CONSTRAINT `insumos_ibfk_1` FOREIGN KEY (`idprodutoVenda`) REFERENCES `produto` (`idProduto`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `insumos_ibfk_2` FOREIGN KEY (`idprodutoInsumo`) REFERENCES `produto` (`idProduto`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `insumos_ibfk_1` FOREIGN KEY (`idprodutoVenda`) REFERENCES `produto` (`idProduto`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `insumos_ibfk_2` FOREIGN KEY (`idprodutoInsumo`) REFERENCES `produto` (`idProduto`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `itemcardapio`
 --
 ALTER TABLE `itemcardapio`
-ADD CONSTRAINT `fk_itemcardapio_cardapio0` FOREIGN KEY (`idCardapio`) REFERENCES `cardapio` (`idCardapio`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_itemcardapio_produto10` FOREIGN KEY (`idProduto`) REFERENCES `produto` (`idProduto`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_itemcardapio_cardapio0` FOREIGN KEY (`idCardapio`) REFERENCES `cardapio` (`idCardapio`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_itemcardapio_produto10` FOREIGN KEY (`idProduto`) REFERENCES `produto` (`idProduto`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `itempedido`
 --
 ALTER TABLE `itempedido`
-ADD CONSTRAINT `fk_itemPedido_produto10` FOREIGN KEY (`idProduto`) REFERENCES `produto` (`idProduto`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `itempedido_ibfk_1` FOREIGN KEY (`idPedido`) REFERENCES `pedido` (`idPedido`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_itemPedido_produto10` FOREIGN KEY (`idProduto`) REFERENCES `produto` (`idProduto`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `itempedido_ibfk_1` FOREIGN KEY (`idPedido`) REFERENCES `pedido` (`idPedido`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `loja`
 --
 ALTER TABLE `loja`
-ADD CONSTRAINT `loja_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `loja_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `pedido`
 --
 ALTER TABLE `pedido`
-ADD CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`idSituacaoAtual`) REFERENCES `situacaopedido` (`idSituacaoPedido`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`idSituacaoAtual`) REFERENCES `situacaopedido` (`idSituacaoPedido`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `produto`
 --
 ALTER TABLE `produto`
-ADD CONSTRAINT `fk_produto_categoria10` FOREIGN KEY (`idCategoria`) REFERENCES `categoria` (`idCategoria`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_produto_categoria10` FOREIGN KEY (`idCategoria`) REFERENCES `categoria` (`idCategoria`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `profile`
 --
 ALTER TABLE `profile`
-ADD CONSTRAINT `profile_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `profile_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `relatorio`
 --
 ALTER TABLE `relatorio`
-ADD CONSTRAINT `fk_relatorio_usuario1` FOREIGN KEY (`usuario_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_relatorio_usuario1` FOREIGN KEY (`usuario_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `user`
 --
 ALTER TABLE `user`
-ADD CONSTRAINT `user_role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
+  ADD CONSTRAINT `user_role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
 
 --
 -- Limitadores para a tabela `user_auth`
 --
 ALTER TABLE `user_auth`
-ADD CONSTRAINT `user_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `user_token`
 --
 ALTER TABLE `user_token`
-ADD CONSTRAINT `user_token_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_token_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -42,7 +42,7 @@ class Compra extends \yii\db\ActiveRecord
     {
         return [
             'idconta' => Yii::t('app', 'Idconta'),
-            'dataCompra' => Yii::t('app', 'Data Compra'),
+            'dataCompra' => Yii::t('app', 'Data da Compra'),
         ];
     }
 

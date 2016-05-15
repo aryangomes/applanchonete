@@ -51,7 +51,7 @@ class Historicosituacao extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdPedido0()
+    public function getPedido()
     {
         return $this->hasOne(Pedido::className(), ['idPedido' => 'idPedido']);
     }
@@ -59,7 +59,7 @@ class Historicosituacao extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdSituacaoPedido0()
+    public function getSituacaoPedido()
     {
         return $this->hasOne(Situacaopedido::className(), ['idSituacaoPedido' => 'idSituacaoPedido']);
     }

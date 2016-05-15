@@ -49,7 +49,7 @@ class Compra extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdconta0()
+    public function getConta()
     {
         return $this->hasOne(Conta::className(), ['idconta' => 'idconta']);
     }

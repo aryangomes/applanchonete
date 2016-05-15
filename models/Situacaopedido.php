@@ -60,16 +60,9 @@ class Situacaopedido extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdPedidos()
+    public function getPedidos()
     {
         return $this->hasMany(Pedido::className(), ['idPedido' => 'idPedido'])->viaTable('historicosituacao', ['idSituacaoPedido' => 'idSituacaoPedido']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPedidos()
-    {
-        return $this->hasMany(Pedido::className(), ['idSituacaoAtual' => 'idSituacaoPedido']);
-    }
 }

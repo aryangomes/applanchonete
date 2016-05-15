@@ -9,7 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Categoria;
-use app\models\Insumos;
+use app\models\Insumo;
 use app\models\Itempedido;
 use yii\helpers\ArrayHelper;
 use yii\web\ForbiddenHttpException;
@@ -95,8 +95,21 @@ class ProdutoController extends Controller
      */
     public function actionView($id)
     {
+        $searchModel = new ProdutoSearch();
+        $listadeinsumos = $searchModel->searchInsumos($id);
+
+        $insumos = array();
+       $produtoVenda = $this->findModel($id);
+
+        foreach ($listadeinsumos as  $insumo) {
+            array_push($insumos,
+                Produto::findOne($insumo->idprodutoInsumo));
+          
+        }
       return $this->render('view', [
         'model' => $this->findModel($id),
+          'insumos'=>$insumos,
+          'produtoVenda'=>$produtoVenda,
         ]);
     }
 
@@ -104,7 +117,7 @@ class ProdutoController extends Controller
     {
       $model = new Produto();
       $produtosVenda = ArrayHelper::map(
-        Produto::find()->join('INNER JOIN','insumos', 'idProduto = idprodutoVenda ')
+        Produto::find()->join('INNER JOIN','insumo', 'idProduto = idprodutoVenda ')
         ->where(['isInsumo'=>0 ])->all(), 
         'idProduto','nome');
       if ((Yii::$app->request->post())) {
@@ -138,7 +151,7 @@ class ProdutoController extends Controller
   {
     $model = new Produto();
     $insumos = ArrayHelper::map(
-      Produto::find()->join('INNER JOIN','insumos', 'idProduto = idprodutoInsumo ')
+      Produto::find()->join('INNER JOIN','insumo', 'idProduto = idprodutoInsumo ')
       ->where(['isInsumo'=>1 ])->all(), 
       'idProduto','nome');
     if ((Yii::$app->request->post())) {
@@ -184,8 +197,23 @@ class ProdutoController extends Controller
         Categoria::find()->all(), 
         'idCategoria','nome');
       if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        return $this->redirect(['view', 'id' => $model->idProduto]);
+       /* return $this->redirect(['view', 'id' => $model->idProduto]);*/
+          $modelInsumo= new Insumo();
+          $produtosvenda = ArrayHelper::map(
+              Produto::findBySql('select * from produto where isInsumo = 0 and  idProduto not in (
+          SELECT idProduto FROM produto RIGHT OUTER join  insumo on idprodutoVenda = idProduto)')->all(),
+              'idProduto','nome');
+          $insumos = ArrayHelper::map(
+              Produto::find()->join('NATURAL JOIN','compraproduto')->where(['isInsumo'=>1])->all(),
+              'idProduto','nome');
 
+          return $this->render('createprodutovenda', [
+              'model' => $modelInsumo,
+              'insumos' => $insumos,
+              'produtosvenda' => $produtosvenda,
+              'idProdutoVenda'=>$model->idProduto,
+              'action'=>'create',
+          ]);
       } else {
         return $this->render('create', [
           'model' => $model,
@@ -318,10 +346,10 @@ class ProdutoController extends Controller
 
     public function actionCadastrarprodutovenda()
     {
-      $model = new Insumos();
+      $model = new Insumo();
       $produtosvenda = ArrayHelper::map(
         Produto::findBySql('select * from produto where isInsumo = 0 and  idProduto not in (
-          SELECT idProduto FROM produto RIGHT OUTER join  insumos on idprodutoVenda = idProduto)')->all(), 
+          SELECT idProduto FROM produto RIGHT OUTER join  insumo on idprodutoVenda = idProduto)')->all(),
         'idProduto','nome');
  /*     $insumos = ArrayHelper::map(
         Produto::find()->where(['isInsumo'=>1])->all(), 
@@ -329,7 +357,7 @@ class ProdutoController extends Controller
 $insumos = ArrayHelper::map(
   Produto::find()->join('NATURAL JOIN','compraproduto')->where(['isInsumo'=>1])->all(), 
   'idProduto','nome');
-$settings = Insumos::find()->indexBy('idprodutoVenda')->all();
+$settings = Insumo::find()->indexBy('idprodutoVenda')->all();
 
 if ((Yii::$app->request->post('numeroinputs')) ) {
 //Para modificar acesse o /views/insumos/_form.php
@@ -346,7 +374,7 @@ if ((Yii::$app->request->post('numeroinputs')) ) {
 
           //  var_dump(Yii::$app->request->post('Insumos')['$i']['quantidade']);
         //  var_dump(Yii::$app->request->post('Insumos'));
-    $aux = Yii::$app->request->post()['Insumos'];
+    $aux = Yii::$app->request->post()['Insumo'];
     $n = count($aux['idprodutoInsumo']);
       //    echo $n;
     for ($i=0; $i < $n ; $i++) { 
@@ -364,7 +392,7 @@ if ((Yii::$app->request->post('numeroinputs')) ) {
 
 
                   Yii::$app->db->createCommand(
-                    "INSERT INTO insumos
+                    "INSERT INTO insumo
                     (idprodutoVenda, idprodutoInsumo,
                       quantidade,unidade ) 
                   VALUES (:idprodutoVenda, :idprodutoInsumo,
@@ -388,7 +416,7 @@ if ((Yii::$app->request->post('numeroinputs')) ) {
            // return $this->redirect(['view', 'idprodutoVenda' => $model->idprodutoVenda, 'idprodutoInsumo' => $model->idprodutoInsumo]);
             } else {
               //Para modificar acesse o /views/insumos/_form.php
-              return $this->render('/insumos/create', [
+              return $this->render('/create', [
                 'model' => $model,
                 'insumos' => $insumos,
                 'produtosvenda' => $produtosvenda,
@@ -400,19 +428,19 @@ if ((Yii::$app->request->post('numeroinputs')) ) {
 
         public function actionAlterarprodutovenda($idprodutoVenda) 
         { 
-         $model = new Insumos();//::findOne(['idprodutoVenda' => $idprodutoVenda, 'idprodutoInsumo' => $idprodutoInsumo]); 
-         $models = Insumos::find()->where(['idprodutoVenda' => $idprodutoVenda])->all();
+         $model = new Insumo();//::findOne(['idprodutoVenda' => $idprodutoVenda, 'idprodutoInsumo' => $idprodutoInsumo]);
+         $models = Insumo::find()->where(['idprodutoVenda' => $idprodutoVenda])->all();
 
          $modelProdutoVenda = $this::findModel($idprodutoVenda);
          $produtosvenda = ArrayHelper::map(
           Produto::findBySql('select * from produto where isInsumo = 0 and  idProduto not in (
-            SELECT idProduto FROM produto RIGHT OUTER join  insumos on idprodutoVenda = idProduto)')->all(), 
+            SELECT idProduto FROM produto RIGHT OUTER join  insumo on idprodutoVenda = idProduto)')->all(),
           'idProduto','nome');
          $insumos = ArrayHelper::map(
           Produto::find()->where(['isInsumo'=>1])->all(), 
           'idProduto','nome');
 
-         $settings = Insumos::find()->indexBy('idprodutoVenda')->all();
+         $settings = Insumo::find()->indexBy('idprodutoVenda')->all();
 
         //if (Insumos::loadMultiple($settings, Yii::$app->request->post())){
          if ($model->load(Yii::$app->request->post()) ) {
@@ -420,12 +448,12 @@ if ((Yii::$app->request->post('numeroinputs')) ) {
          // var_dump(Yii::$app->request->post());
           //  var_dump(Yii::$app->request->post('Insumos')['$i']['quantidade']);
         //  var_dump(Yii::$app->request->post('Insumos'));
-          $aux = Yii::$app->request->post()['Insumos'];
+          $aux = Yii::$app->request->post()['Insumo'];
 
           $n = count($aux['idprodutoInsumo']);
            // echo $n;
           Yii::$app->db->createCommand(
-            "DELETE FROM insumos WHERE idprodutoVenda = :idprodutoVenda", [
+            "DELETE FROM insumo WHERE idprodutoVenda = :idprodutoVenda", [
             ':idprodutoVenda' => $idprodutoVenda,
             ])->execute();
           for ($i=0; $i < $n ; $i++) { 
@@ -442,7 +470,7 @@ if ((Yii::$app->request->post('numeroinputs')) ) {
                 if (($aux['idprodutoInsumo'][$i]) > 0) {
 
                   Yii::$app->db->createCommand(
-                    "INSERT INTO insumos
+                    "INSERT INTO insumo
                     (idprodutoVenda, idprodutoInsumo,
                       quantidade,unidade ) 
                   VALUES (:idprodutoVenda, :idprodutoInsumo,

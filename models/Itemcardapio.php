@@ -52,7 +52,7 @@ class Itemcardapio extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdCardapio0()
+    public function getCardapio()
     {
         return $this->hasOne(Cardapio::className(), ['idCardapio' => 'idCardapio']);
     }
@@ -60,7 +60,7 @@ class Itemcardapio extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdProduto0()
+    public function getProduto()
     {
         return $this->hasOne(Produto::className(), ['idProduto' => 'idProduto']);
     }

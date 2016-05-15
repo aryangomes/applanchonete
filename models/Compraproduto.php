@@ -52,21 +52,7 @@ class Compraproduto extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getIdCompra()
-    {
-        return $this->hasOne(Compra::className(), ['idconta' => 'idCompra']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getIdProduto()
-    {
-        return $this->hasOne(Produto::className(), ['idProduto' => 'idProduto']);
-    }
+   
 
  public function getConta()
     {

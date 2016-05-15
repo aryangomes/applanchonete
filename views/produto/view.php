@@ -64,12 +64,26 @@ $this->params['breadcrumbs'][] = $this->title;
             [
             'label'=>'Preço sugerido',
             'format'=>'text',
-            'value'=> $model->isInsumo ? null :  ($model->calculoprecoproduto($model->idProduto)),
+            'value'=> $model->isInsumo ? null :  ($model->calculoPrecoProduto($model->idProduto)),
             'visible'=>!($model->isInsumo),
             ],
 
             ],
             ]) ?>
+
+    <div class="panel panel-default">
+
+        <?php
+        if (isset($insumos) && !($produtoVenda->isInsumo)) {
+
+            ?> <div class="panel-heading">Insumos de <?= $model->nome ?></div> <?php
+            foreach ($insumos as $insumo) {
+                ?> <div class="panel-body"><?= Html::a($insumo->nome,Url::toRoute(['/insumo/update','idprodutoVenda'=>$produtoVenda->idProduto,'idprodutoInsumo'=>$insumo->idProduto])) ?></div><?php
+            }
+        }
+
+        ?>
+    </div>
 
 
 <?php 

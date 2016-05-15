@@ -59,7 +59,7 @@ class Cardapio extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdProdutos()
+    public function getProdutos()
     {
         return $this->hasMany(Produto::className(), ['idProduto' => 'idProduto'])->viaTable('itemcardapio', ['idCardapio' => 'idCardapio']);
     }

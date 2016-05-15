@@ -55,18 +55,11 @@ class Itempedido extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdPedido()
-    {
-        return $this->hasOne(Pedido::className(), ['idPedido' => 'idPedido']);
-    }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdProduto()
-    {
-        return $this->hasOne(Produto::className(), ['idProduto' => 'idProduto']);
-    }
+
     public function getNomeProduto()
     {
         return Produto::find()->where(['idProduto' => $this->idProduto])->one()->nome;

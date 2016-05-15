@@ -51,10 +51,7 @@ class Contasapagar extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdconta()
-    {
-        return $this->hasOne(Conta::className(), ['idconta' => 'idconta']);
-    }
+  
 
     public function getConta()
     {

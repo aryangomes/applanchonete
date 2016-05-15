@@ -15,13 +15,12 @@ use app\models\ProdutoSearch;
  * @property integer $idCategoria
  * @property double $quantidadeEstoque
  *
- * @property Insumos $insumos
+ * @property Insumo $insumo
  * @property Itemcardapio[] $itemcardapios
  * @property Cardapio[] $idCardapios
  * @property Itempedido[] $itempedidos
  * @property Pedido[] $idPedidos
  * @property ItensProduto[] $itensProdutos
- * @property Categoria $idCategoria
  */
 class Produto extends \yii\db\ActiveRecord
 {
@@ -76,7 +75,7 @@ class Produto extends \yii\db\ActiveRecord
      */
     public function getInsumos()
     {
-        return $this->hasOne(Insumos::className(), ['idprodutoVenda' => 'idProduto']);
+        return $this->hasOne(Insumo::className(), ['idprodutoVenda' => 'idProduto']);
     }
 
     /**
@@ -135,10 +134,10 @@ class Produto extends \yii\db\ActiveRecord
     
     
 
-    public function calculoprecoproduto($idprodutoVenda)
+    public function calculoPrecoProduto($idprodutoVenda)
     {
         $model = new Produto();
-        $insumos =Insumos::find()->where([ 'idprodutoVenda'=>$idprodutoVenda ])->all();
+        $insumos =Insumo::find()->where([ 'idprodutoVenda'=>$idprodutoVenda ])->all();
         $precosugerido = 0;
         $searchModel = new ProdutoSearch();
 
@@ -147,7 +146,7 @@ class Produto extends \yii\db\ActiveRecord
         foreach ($insumos as $key => $insumo) {
             $produtoCompra = ($searchModel->searchProdutosCompra($insumo->idprodutoInsumo));
 
-            $precosugerido += 
+            $precosugerido +=
             (($produtoCompra->valorCompra *$insumo->quantidade)/ $produtoCompra->quantidade);
            /* echo  'Valor da compra: '.$produtoCompra->valorCompra . "</br>";
             echo  'Quantidade Comra: '.$produtoCompra->quantidade . "</br>";

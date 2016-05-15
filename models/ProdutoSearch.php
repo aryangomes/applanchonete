@@ -6,7 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Produto;
-use app\models\Insumos;
+use app\models\Insumo;
 /**
  * ProdutoSearch represents the model behind the search form about `app\models\Produto`.
  */
@@ -70,11 +70,11 @@ class ProdutoSearch extends Produto
         return $dataProvider;
     }
 
-    public function searchInsumos($params)
+    public function searchInsumos($id)
     {
 
-        $query = Insumos::find()->
-        where(['idprodutoVenda'=>$params['produtovenda']] )->all();
+        $query = Insumo::find()->
+        where(['idprodutoVenda'=>$id] )->all();
 
 
 
@@ -84,7 +84,7 @@ class ProdutoSearch extends Produto
     public function searchProdutosVenda($params)
     {
 
-        $query = Insumos::find()->
+        $query = Insumo::find()->
         where(['idprodutoInsumo'=>$params['idinsumo']] )->all();
 
 

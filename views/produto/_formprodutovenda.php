@@ -40,7 +40,7 @@ switch ($action) {
 
 
 	<?= 
-	$form->field($model, 'idprodutoVenda')->hiddenInput(['value'=>$idProdutoVenda]);/*->widget(Select2::classname(), [
+	$form->field($model, 'idprodutoVenda')->hiddenInput(['value'=>$idProdutoVenda])->label(false);/*->widget(Select2::classname(), [
 		'data' => $produtosvenda,
 		'disabled'=>($action == 'update') ? true : false,
 		'options' => ['placeholder' => 'Selecione o produto de venda'],

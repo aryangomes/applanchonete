@@ -45,7 +45,7 @@ class Produto extends \yii\db\ActiveRecord
         return [
         [['nome', 'valorVenda', 'isInsumo', 'idCategoria']
         , 'required'],
-        [['valorVenda', 'quantidadeMinima', 'quantidadeEstoque'], 'number'],
+        [['quantidadeMinima', 'quantidadeEstoque'], 'number'],
         [['isInsumo', 'idCategoria'], 'integer'],
         [['nome'], 'string', 'max' => 100]
         ];

@@ -483,7 +483,7 @@ if (count($loja) > 0) {
 
                                     </li>
                                     <li>
-                                        <?= Html::a('<i class="glyphicon glyphicon-grain"></i> Todos os Insumos', ['/insumos/index']) ?>
+                                        <?= Html::a('<i class="glyphicon glyphicon-grain"></i> Todos os Insumos', ['/insumo/index']) ?>
 
                                     </li>
 

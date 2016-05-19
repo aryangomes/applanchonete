@@ -92,6 +92,17 @@ class ProdutoSearch extends Produto
         return $query;
     }
 
+    public function searchInsumosProdutosVenda($idProdutoVenda)
+    {
+
+        $query = Insumo::find()->
+        where(['idprodutoVenda'=>$idProdutoVenda] )->all();
+
+
+
+        return $query;
+    }
+
 
     public function searchProdutosVendaIndex($params)
     {

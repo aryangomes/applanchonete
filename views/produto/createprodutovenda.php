@@ -9,6 +9,7 @@ use yii\helpers\Html;
 $this->title = Yii::t('app', 'Create {model}', ['model'=>'Produto Venda']);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Produtos de Venda'), 'url' => ['/produto/produtosvenda']];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 

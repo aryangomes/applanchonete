@@ -68,7 +68,7 @@ class Itempedido extends \yii\db\ActiveRecord
    /**
      * @return \yii\db\ActiveQuery
      */
-   public function getpedidos()
+   public function getPedido()
    {
     return $this->hasOne(Pedido::className(), ['idPedido' => 'idPedido']);
 }
@@ -76,9 +76,11 @@ class Itempedido extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getprodutos()
+    public function getProduto()
     {
         return $this->hasOne(Produto::className(), ['idProduto' => 'idProduto']);
     }
+
+
 
 }

@@ -90,4 +90,13 @@ class Pedido extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Situacaopedido::className(), ['idSituacaoPedido' => 'idSituacaoAtual']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+
+    public function getPagamento()
+    {
+        return $this->hasOne(Pagamento::className(), ['idPedido' => 'idPedido']);
+    }
 }

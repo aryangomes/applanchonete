@@ -104,9 +104,11 @@ class ProdutoController extends Controller
 
         foreach ($listadeinsumos as $insumo) {
             array_push($insumos,
-                Produto::findOne($insumo->idprodutoInsumo));
+                $insumo);
 
         }
+
+
         return $this->render('view', [
             'model' => $this->findModel($id),
             'insumos' => $insumos,
@@ -239,6 +241,13 @@ class ProdutoController extends Controller
         }
     }
 
+    /**
+     * Updates an existing Produto model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -256,6 +265,11 @@ class ProdutoController extends Controller
         }
         if ((Yii::$app->request->post())) {
             if(!$model->isInsumo) {
+                if (isset(Yii::$app->request->post()['produto-valorvenda-disp'])){
+                    $model->valorVenda =  Yii::$app->request->post()['Produto']['valorVenda'];
+                    $model->idCategoria =  Yii::$app->request->post()['Produto']['idCategoria'];
+                    $model->save();
+                }
                 $aux = Yii::$app->request->post()['Insumo'];
 
                 $n = count($aux['idprodutoInsumo']);
@@ -287,34 +301,7 @@ class ProdutoController extends Controller
                 $model->save();
             }
             return $this->redirect(['produto/view', 'id' => $id]);
-            /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
-                if (!Yii::$app->request->post()['Produto']['isInsumo']) {
-                    $aux = Yii::$app->request->post()['Insumo'];
-                    $n = count($aux['idprodutoInsumo']);
-
-                    for ($i = 0; $i < $n; $i++) {
-
-                        if (($aux['idprodutoInsumo'][$i]) > 0) {
-
-
-                            Yii::$app->db->createCommand(
-                                "INSERT INTO insumo
-                        (idprodutoVenda, idprodutoInsumo,
-                          quantidade,unidade )
-                      VALUES (:idprodutoVenda, :idprodutoInsumo,
-                        :quantidade,:unidade)", [
-                                ':idprodutoVenda' => $model->idProduto,
-                                ':idprodutoInsumo' => $aux['idprodutoInsumo'][$i],
-                                ':quantidade' => $aux['quantidade'][$i],
-                                ':unidade' => $aux['unidade'][$i],
-                            ])->execute();
-                        }
-
-                    }
-                }
-
-                return $this->redirect(['view', 'id' => $model->idProduto]);*/
         } else {
             if(!$model->isInsumo) {
                 return $this->render('update', [
@@ -338,27 +325,7 @@ class ProdutoController extends Controller
     }
 
 
-    /**
-     * Updates an existing Produto model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    /* public function actionUpdate($id)
-     {
-         $model = $this->findModel($id);
-         $categorias = ArrayHelper::map(
-             Categoria::find()->all(),
-             'idCategoria', 'nome');
-         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-             return $this->redirect(['view', 'id' => $model->idProduto]);
-         } else {
-             return $this->render('update', [
-                 'model' => $model,
-                 'categorias' => $categorias,
-             ]);
-         }
-     }*/
+
 
     /**
      * Deletes an existing Produto model.
@@ -379,60 +346,64 @@ class ProdutoController extends Controller
         $model = $this->findModel($idproduto);
         if (Yii::$app->request->post()) {
             // var_dump(Yii::$app->request->post());
-            $groupbyavaliacao = Yii::$app->request->post()['Produto']['groupbyavaliacao'];
-            $datainicioavaliacao = Yii::$app->request->post()['Produto']['datainicioavaliacao'];
-            $datafimavaliacao = Yii::$app->request->post()['Produto']['datafimavaliacao'];
+          $groupbyavaliacao = Yii::$app->request->post()['Produto']['groupbyavaliacao'];
+            $datainicioavaliacao = Yii::$app->request->post()['datainicioavaliacao'];
+            $datafimavaliacao = Yii::$app->request->post()['datafimavaliacao'];
 
-            switch ($groupbyavaliacao) {
-                case 'DAY':
-                    $formatdate = 'd';
-                    break;
+             switch ($groupbyavaliacao) {
+               case 'DAY':
+                   $formatdate = 'd';
+                   break;
 
-                case 'MONTH':
-                    $formatdate = 'm';
-                    break;
+               case 'MONTH':
+                   $formatdate = 'm';
+                   break;
 
-                case 'YEAR':
-                    $formatdate = 'Y';
-                    break;
-                default:
-                    $formatdate = 'd';
-                    break;
-            }
+               case 'YEAR':
+                   $formatdate = 'Y';
+                   break;
+               default:
+                   $formatdate = 'd';
+                   break;
+           }
 
-            $vendas = Itempedido::find();
+           $vendas = Itempedido::find();
 
-            $vendas
-                ->select('*, sum(quantidade) as total, ' . $groupbyavaliacao . '(dataHoraFechamento) as periodo')
-                ->joinWith('produtos')
-                ->joinWith('pedidos')
-                ->andFilterWhere(['produto.idProduto' => $idproduto,])
-                ->andFilterWhere(['>=', 'dataHoraFechamento', $datainicioavaliacao])
-                ->andFilterWhere(['<=', 'dataHoraFechamento', $datafimavaliacao])
-                ->groupBy('periodo');
+           $vendas
+               ->select('*, sum(quantidade) as total, ' . $groupbyavaliacao . '(dataHora) as periodo')
+               ->joinWith('produto')
+               ->joinWith('pedido.pagamento.contasareceber.conta')
+               ->andFilterWhere(['produto.idProduto' => $idproduto,])
+               ->andFilterWhere(['>=', 'dataHora', $datainicioavaliacao])
+               ->andFilterWhere(['<=', 'dataHora', $datafimavaliacao])
+               ->groupBy('periodo');
 
-            $qtdvendas = array();
-            $datasvendas = array();
-            foreach ($vendas->all() as $key => $v) {
-                array_push($qtdvendas, intval($v->total));
-                if ($formatdate == 'm') {
-                    array_push($datasvendas, Yii::t('app', date('F', strtotime($v->pedidos->comandas->dataHoraFechamento))));
+           $qtdvendas = array();
+           $datasvendas = array();
+//var_dump($vendas->all());
+           foreach ($vendas->all() as $key => $v) {
+               array_push($qtdvendas, intval($v->total));
+               if ($formatdate == 'm') {
+                   array_push($datasvendas, Yii::t('app', date('F',
+                       strtotime($v->pedido->pagamento->contasareceber->dataHora))));
 
-                } elseif ($formatdate == 'Y') {
-                    array_push($datasvendas, date('Y', strtotime($v->pedidos->comandas->dataHoraFechamento)));
+               } elseif ($formatdate == 'Y') {
+                   array_push($datasvendas, date('Y',
+                       strtotime($v->pedido->pagamento->contasareceber->dataHora)));
 
-                } else {
-                    array_push($datasvendas, date('d/m/Y', strtotime($v->pedidos->comandas->dataHoraFechamento)));
-                }
-            }
-            return $this->render('avaliacaoproduto', [
-                'qtdvendas' => $qtdvendas,
-                'datasvendas' => $datasvendas,
-                'datainicioavaliacao' => date('d/m/Y', strtotime($datainicioavaliacao)),
-                'datafimavaliacao' => date('d/m/Y', strtotime($datafimavaliacao)),
-                'model' => $model,
+               } else {
+                   array_push($datasvendas, date('d/m/Y',
+                       strtotime($v->pedido->pagamento->contasareceber->dataHora)));
+               }
+           }
+           return $this->render('avaliacaoproduto', [
+               'qtdvendas' => $qtdvendas,
+               'datasvendas' => $datasvendas,
+               'datainicioavaliacao' => date('d/m/Y', strtotime($datainicioavaliacao)),
+               'datafimavaliacao' => date('d/m/Y', strtotime($datafimavaliacao)),
+               'model' => $model,
 
-            ]);
+           ]);
         } else {
             return $this->render('avaliacaoproduto', [
                 'model' => $model,

@@ -43,4 +43,13 @@ class Pagamento extends \yii\db\ActiveRecord
             'idPedido' => Yii::t('app', 'Id Pedido'),
         ];
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+
+    public function getContasareceber()
+    {
+        return $this->hasOne(Contasareceber::className(), ['idconta' => 'idConta']);
+    }
 }

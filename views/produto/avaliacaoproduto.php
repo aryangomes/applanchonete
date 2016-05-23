@@ -19,34 +19,42 @@ $this->params['breadcrumbs'][] = $this->title;
 
   <div class="produto-form">
     <?php $form = ActiveForm::begin(); ?>
-    <?= $form->field($model, 'datainicioavaliacao')->widget(DateControl::classname(), [
-      'type'=>DateControl::FORMAT_DATE,
-      'ajaxConversion'=>false,
-      'options' => [
-      'pluginOptions' => [
-      'autoclose' => true,
-      ]
-      ],
+      <div class="form-group datainicioavaliacao">
+          <?= Html::label("De") ?>
+    <?=  DateControl::widget([
+        'name'=>'datainicioavaliacao',
+        'value'=>time(),
+        'type'=>DateControl::FORMAT_DATE,
+    'ajaxConversion'=>false,
+		'options' => [
 
-      'displayFormat' => 'dd/MM/yyyy',
-      'language'=>'pt',
-      ]);?>
+		'pluginOptions' => [
+		'autoclose' => true
+		]
+		],
+		'displayFormat' => 'dd/MM/yyyy',
+		'language'=>'pt',
 
-    <?= $form->field($model, 'datafimavaliacao')->widget(DateControl::classname(), [
-      'type'=>DateControl::FORMAT_DATE,
-      'ajaxConversion'=>false,
-      'options' => [
-      'pluginOptions' => [
-      'autoclose' => true
-      ]
-      ],
-      'displayFormat' => 'dd/MM/yyyy',
-      'language'=>'pt',
-      ]);
+])?>
+</div>
+      <div class="form-group datafimavaliacao">
+          <?= Html::label("Até") ?>
+    <?= DateControl::widget([
+        'name'=>'datafimavaliacao',
+        'value'=>time(),
+        'type'=>DateControl::FORMAT_DATE,
+    'ajaxConversion'=>false,
+		'options' => [
 
-
-
+		'pluginOptions' => [
+		'autoclose' => true
+		]
+		],
+		'displayFormat' => 'dd/MM/yyyy',
+		'language'=>'pt',
+    ])
       ?>
+          </div>
       <?= $form->field($model, 'groupbyavaliacao')->dropdownList(['DAY'=>'Dia','MONTH'=>'Mês','YEAR'=>'Ano']); ?>
       <div class="form-group">
         <?= Html::submitButton('Gerar gráfico <i class="fa fa-line-chart"></i>', ['class' =>  'btn btn-primary btn-block']) ?>

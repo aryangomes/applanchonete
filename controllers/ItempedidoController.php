@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Itempedido;
-use app\models\Insumos;
+use app\models\Insumo;
 use app\models\Produto;
 use app\models\Pedido;
 use app\models\ItempedidoSearch;
@@ -99,11 +99,11 @@ class ItempedidoController extends Controller
 
      if ($model->load(Yii::$app->request->post())) {
        $itempedido = (Yii::$app->request->post()['Itempedido']);
-       $produtoVenda = Produto::find()->where(['idProduto'=>  $itempedido['idProduto']])->one();
+      $produtoVenda = Produto::find()->where(['idProduto'=>  $itempedido['idProduto']])->one();
        $model->total = $produtoVenda->valorVenda * $itempedido['quantidade'];
        $model->save();
 
-       Insumos::atualizaQtdNoEstoqueInsert(
+       Insumo::atualizaQtdNoEstoqueInsert(
         $itempedido['idProduto'],$itempedido['quantidade']);
        return $this->redirect(['view', 'idPedido' => $model->idPedido, 'idProduto' => $model->idProduto]);
    } else {

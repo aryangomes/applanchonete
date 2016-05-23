@@ -81,6 +81,14 @@ class Produto extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getIdprodutoInsumo()
+    {
+        return $this->hasOne(Insumo::className(), ['idprodutoInsumo' => 'idProduto']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getItemcardapios()
     {
         return $this->hasMany(Itemcardapio::className(), ['idProduto' => 'idProduto']);
@@ -148,12 +156,7 @@ class Produto extends \yii\db\ActiveRecord
 
             $precosugerido +=
             (($produtoCompra->valorCompra *$insumo->quantidade)/ $produtoCompra->quantidade);
-           /* echo  'Valor da compra: '.$produtoCompra->valorCompra . "</br>";
-            echo  'Quantidade Comra: '.$produtoCompra->quantidade . "</br>";
-            echo  'Insumo quantidade : '.$insumo->quantidade . "</br>";
-            echo   'Preço parcial: '.(($produtoCompra->valorCompra *$insumo->quantidade)/ $produtoCompra->quantidade). "</br>";
-            echo  'Preço sugerido: '.$precosugerido . "</br>";
-            echo  "</br>";*/
+
         }
         return $precosugerido;
 

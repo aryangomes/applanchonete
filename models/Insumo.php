@@ -65,7 +65,7 @@ class Insumo extends \yii\db\ActiveRecord
         return $this->hasOne(Produto::className(), ['idProduto' => 'idprodutoVenda']);
     }
 
-    public function getIdprodutoInsumo()
+    public function getProdutoInsumo()
     {
         return $this->hasOne(Produto::className(), ['idProduto' => 'idprodutoInsumo']);
     }

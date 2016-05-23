@@ -73,7 +73,7 @@ class ProdutoSearch extends Produto
     public function searchInsumos($id)
     {
 
-        $query = Insumo::find()->
+        $query = Insumo::find()->joinWith('produtoInsumo')->
         where(['idprodutoVenda'=>$id] )->all();
 
 
@@ -95,7 +95,7 @@ class ProdutoSearch extends Produto
     public function searchInsumosProdutosVenda($idProdutoVenda)
     {
 
-        $query = Insumo::find()->
+        $query = Insumo::find()->joinWith('idprodutoInsumo')->
         where(['idprodutoVenda'=>$idProdutoVenda] )->all();
 
 

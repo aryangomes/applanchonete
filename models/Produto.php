@@ -134,14 +134,19 @@ class Produto extends \yii\db\ActiveRecord
         return $this->hasOne(Categoria::className(), ['idCategoria' => 'idCategoria']);
     }
 
-
+    /**
+     * @return string
+     * Retorna o nome da Categoria do Produto
+     */
     public function getNomeCategoria()
     {
         return Categoria::find()->where(['idCategoria' => $this->idCategoria])->one()->nome;
     }
-    
-    
 
+    /**
+     * @param $idprodutoVenda
+     * @return float|int
+     */
     public function calculoPrecoProduto($idprodutoVenda)
     {
         $model = new Produto();

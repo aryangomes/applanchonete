@@ -94,7 +94,12 @@ $this->params['breadcrumbs'][] = $this->title;
                            'idprodutoVenda' => $produtoVenda->idProduto,
                             'id' => $insumo->idprodutoInsumo]))
                         ?></td>
-                      <td><?= $insumo->quantidade ?></td>
+                      <td><?php
+                          echo
+                            ($insumo->quantidade>1) ? $insumo->quantidade .' '. $insumo->unidade.'s':
+                                $insumo->quantidade .' '. $insumo->unidade;
+                          ?></td>
+
                 </tr>
 
                 <?php

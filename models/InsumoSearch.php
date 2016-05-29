@@ -77,7 +77,7 @@ class InsumoSearch extends Insumo
             'query' => $query,
             ]);
 
-        $query->joinWith('idprodutoInsumo');
+        $query->joinWith('produtoInsumo');
 
         $query->andFilterWhere([
             'isInsumo' => 1,

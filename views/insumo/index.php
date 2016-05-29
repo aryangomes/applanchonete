@@ -27,7 +27,16 @@ $this->params['breadcrumbs'][] = 'Insumos';
      //   ['class' => 'yii\grid\SerialColumn'],
 
         //'idprodutoVenda',
-        'nomeInsumo',
+            [
+                'attribute'=>'nomeInsumo',
+                'format'=>'raw',
+                'value' =>function($model){
+
+                    return Html::a($model->nomeInsumo,['view',
+                        'idprodutoVenda'=>$model->idprodutoVenda,
+                        'idprodutoInsumo'=>$model->idprodutoInsumo]);
+                },
+            ],
         [
         'label'=>'Produto de Venda',
         'value' =>'nomeprodutovenda',
@@ -42,7 +51,7 @@ $this->params['breadcrumbs'][] = 'Insumos';
      /*   'quantidade',
      'unidade',*/
 
-     ['class' => 'yii\grid\ActionColumn',
+    /* ['class' => 'yii\grid\ActionColumn',
      'template' => '{view} {update} {alterarinsumo} {delete} ',
      'buttons' => [
      'update' => function ($url, $model) {
@@ -61,7 +70,7 @@ $this->params['breadcrumbs'][] = 'Insumos';
             ]);
     }
     ],
-    ],
+    ],*/
     ],
     ]); ?>
 

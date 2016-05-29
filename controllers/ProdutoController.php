@@ -45,6 +45,7 @@ class ProdutoController extends Controller
                         'produtosvenda',
                         'cadastrarprodutovenda',
                         'alterarprodutovenda',
+                        'definirvalorvenda',
                     ],
 
                     'index' => 'index-produto',
@@ -58,6 +59,7 @@ class ProdutoController extends Controller
                     'produtosvenda' => 'produtosvenda',
                     'cadastrarprodutovenda' => 'cadastrarprodutovenda',
                     'alterarprodutovenda' => 'alterarprodutovenda',
+                    'definirvalorvenda' =>'definirvalorvenda',
                 ],
             ],
         ];
@@ -98,14 +100,13 @@ class ProdutoController extends Controller
     {
         $searchModel = new ProdutoSearch();
         $model = $this->findModel($id);
-        if($model->isInsumo){
+        if ($model->isInsumo) {
             return $this->render('view', [
                 'model' => $model,
 
             ]);
 
-        }
-        else{
+        } else {
             $listadeinsumos = $searchModel->searchInsumos($id);
 
             $insumos = array();
@@ -132,6 +133,7 @@ class ProdutoController extends Controller
     }
 
     /**
+     * Retorna a lista de Insumos de um Produto Venda
      * @return string
      * @throws NotFoundHttpException
      */
@@ -149,7 +151,7 @@ class ProdutoController extends Controller
             $listadeinsumos = $searchModel->searchInsumos(Yii::$app->request->post());
 
             $insumos = array();
-            $produtoVenda = $this->findModel(Yii::$app->request->post()['produtovenda']);
+            $model = $this->findModel(Yii::$app->request->post()['produtovenda']);
             foreach ($listadeinsumos as $insumo) {
                 array_push($insumos,
                     $model::findOne($insumo->idprodutoInsumo));
@@ -158,7 +160,7 @@ class ProdutoController extends Controller
             return $this->render('listadeinsumos', [
                 'insumos' => $insumos,
                 'produtosVenda' => $produtosVenda,
-                'produtoVenda' => $produtoVenda,
+                'model' => $model,
             ]);
         } else {
 
@@ -170,6 +172,7 @@ class ProdutoController extends Controller
     }
 
     /**
+     * Retorna a lista de Produtos Venda que possuem um determinado Insumo
      * @return string
      * @throws NotFoundHttpException
      */
@@ -229,6 +232,8 @@ class ProdutoController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
+
+
             if (!Yii::$app->request->post()['Produto']['isInsumo']) {
                 $aux = Yii::$app->request->post()['Insumo'];
                 $n = count($aux['idprodutoInsumo']);
@@ -252,6 +257,10 @@ class ProdutoController extends Controller
                     }
 
                 }
+
+                $model->valorVenda = $model->calculoPrecoProduto($model->idProduto);
+                $model->save(false);
+                return $this->redirect(['definirvalorvenda', 'idProduto' => $model->idProduto]);
             }
 
             return $this->redirect(['view', 'id' => $model->idProduto]);
@@ -320,6 +329,8 @@ class ProdutoController extends Controller
                     }
 
                 }
+                $model->valorVenda = $model->calculoPrecoProduto($model->idProduto);
+                $model->save(false);
             } else {
                 $model->load(Yii::$app->request->post());
                 $model->save();
@@ -365,6 +376,7 @@ class ProdutoController extends Controller
 
 
     /**
+     * Gera um gráfico com as vendas de um Produto Venda
      * @param $idproduto
      * @return string
      * @throws NotFoundHttpException
@@ -405,7 +417,8 @@ class ProdutoController extends Controller
                 ->andFilterWhere(['produto.idProduto' => $idproduto,])
                 ->andFilterWhere(['>=', 'dataHora', $datainicioavaliacao])
                 ->andFilterWhere(['<=', 'dataHora', $datafimavaliacao])
-                ->groupBy('periodo');
+                ->groupBy('periodo')
+                ->orderBy('dataHora ASC');
 
             $qtdvendas = array();
             $datasvendas = array();
@@ -425,9 +438,13 @@ class ProdutoController extends Controller
                         strtotime($v->pedido->pagamento->contasareceber->dataHora)));
                 }
             }
+            
+            
             return $this->render('avaliacaoproduto', [
                 'qtdvendas' => $qtdvendas,
                 'datasvendas' => $datasvendas,
+                'datainicio' => ($datainicioavaliacao),
+                'datafim' => ($datafimavaliacao),
                 'datainicioavaliacao' => date('d/m/Y', strtotime($datainicioavaliacao)),
                 'datafimavaliacao' => date('d/m/Y', strtotime($datafimavaliacao)),
                 'model' => $model,
@@ -454,76 +471,29 @@ class ProdutoController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
 
+    }
 
     /**
-     * @param $idprodutoVenda
+     * @param $idProduto
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException
-     * @throws \yii\db\Exception
      */
-
-    public function actionAlterarprodutovenda($idprodutoVenda)
+    public function actionDefinirvalorvenda($idProduto)
     {
-        $model = new Insumo();//::findOne(['idprodutoVenda' => $idprodutoVenda, 'idprodutoInsumo' => $idprodutoInsumo]);
-        $models = Insumo::find()->where(['idprodutoVenda' => $idprodutoVenda])->all();
 
-        $modelProdutoVenda = $this::findModel($idprodutoVenda);
-        $produtosvenda = ArrayHelper::map(
-            Produto::findBySql('select * from produto where isInsumo = 0 and  idProduto not in (
-            SELECT idProduto FROM produto RIGHT OUTER join  insumo on idprodutoVenda = idProduto)')->all(),
-            'idProduto', 'nome');
-        $insumos = ArrayHelper::map(
-            Produto::find()->where(['isInsumo' => 1])->all(),
-            'idProduto', 'nome');
-
-        $settings = Insumo::find()->indexBy('idprodutoVenda')->all();
-
-
-        if ($model->load(Yii::$app->request->post())) {
-
-
-            $aux = Yii::$app->request->post()['Insumo'];
-
-            $n = count($aux['idprodutoInsumo']);
-
-            Yii::$app->db->createCommand(
-                "DELETE FROM insumo WHERE idprodutoVenda = :idprodutoVenda", [
-                ':idprodutoVenda' => $idprodutoVenda,
-            ])->execute();
-            for ($i = 0; $i < $n; $i++) {
-
-                if (($aux['idprodutoInsumo'][$i]) > 0) {
-
-                    Yii::$app->db->createCommand(
-                        "INSERT INTO insumo
-                    (idprodutoVenda, idprodutoInsumo,
-                      quantidade,unidade ) 
-                  VALUES (:idprodutoVenda, :idprodutoInsumo,
-                    :quantidade,:unidade)", [
-                        ':idprodutoVenda' => $idprodutoVenda,
-                        ':idprodutoInsumo' => $aux['idprodutoInsumo'][$i],
-                        ':quantidade' => $aux['quantidade'][$i],
-                        ':unidade' => $aux['unidade'][$i],
-                    ])->execute();
-                }
-
-            }
-
-            return $this->redirect(['produto/view', 'id' => $idprodutoVenda]);
-
+        $model = $this->findModel($idProduto);
+        if (Yii::$app->request->post()) {
+            $porcentagemLucro = (Yii::$app->request->post()['porcentagemLucro']);
+            $model->valorVenda += ( $model->valorVenda * (  $porcentagemLucro /100));
+             if ($model->save()) {
+            return $this->redirect(['view', 'id' => $model->idProduto]);
+             }
         } else {
-
-
-            return $this->render('/produto/alterarprodutovenda', [
-                'models' => $models,
-                'modelProdutoVenda' => $modelProdutoVenda,
-                'insumos' => $insumos,
-                'produtosvenda' => $produtosvenda,
-                'idprodutoVenda' => $idprodutoVenda,
+            return $this->render('definirvalorvenda', [
+                'model' => $model,
             ]);
         }
-
     }
+
 }

@@ -24,6 +24,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+
+        <?php
+        echo  (!$model->isInsumo) ?
+        Html::a(Yii::t('app', 'Alterar valor de venda'), ['definirvalorvenda', 'idProduto' => $model->idProduto],
+            ['class' => 'btn btn-success']) : ''?>
     </p>
 
     <?= DetailView::widget([
@@ -35,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'valorVenda',
                 'format' => 'text',
-                'value' => $model->valorVenda,
+                'value' => 'R$ ' .\Yii::$app->formatter->asDecimal($model->valorVenda,2),
                 'visible' => !($model->isInsumo),
             ],
             [
@@ -63,9 +68,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'visible' => $model->isInsumo,
             ],
             [
-                'label' => 'Preço sugerido',
+                'label' => 'Preço de custo',
                 'format' => 'text',
-                'value' => $model->isInsumo ? null : ($model->calculoPrecoProduto($model->idProduto)),
+                'value' => $model->isInsumo ? null :
+                    'R$ ' .\Yii::$app->formatter
+                        ->asDecimal(($model->calculoPrecoProduto($model->idProduto)),2)  ,
                 'visible' => !($model->isInsumo),
             ],
 

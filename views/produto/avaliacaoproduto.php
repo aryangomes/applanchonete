@@ -9,9 +9,12 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Produto */
 
-$this->title =  'Avaliação Produto';//$model->idProduto;
+$this->title =  'Avaliação Produto: ' . $model->nome;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Produtos'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+
+
 ?>
 <div class="produto-view">
 
@@ -23,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
           <?= Html::label("De") ?>
     <?=  DateControl::widget([
         'name'=>'datainicioavaliacao',
-        'value'=>time(),
+              'value'=>(isset($datainicio)) ? $datainicio : date('Y-m-d'),
         'type'=>DateControl::FORMAT_DATE,
     'ajaxConversion'=>false,
 		'options' => [
@@ -41,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
           <?= Html::label("Até") ?>
     <?= DateControl::widget([
         'name'=>'datafimavaliacao',
-        'value'=>time(),
+       'value'=>(isset($datafim)) ? $datafim : date('Y-m-d'),
         'type'=>DateControl::FORMAT_DATE,
     'ajaxConversion'=>false,
 		'options' => [

@@ -7,7 +7,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\money\MaskMoney;
-use kartik\widgets\SwitchInput;
+
 use kartik\widgets\Select2;
 
 /* @var $this yii\web\View */
@@ -45,28 +45,10 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
 
         <?= $form->field($model, 'nome')->textInput(['maxlength' => true]) ?>
 
-        <?php
-        /**
-         * Verifica se há um Produto e se ele é um Insumo
-         *
-         * Caso seja, o campo de valorVenda(atributo de um Produto Venda) é escondido do usuário
-         */
-        if (isset($model) && $model->isInsumo) {
-            $this->registerJs("$(\"[class~='field-produto-valorvenda']\").hide(); ");
-        }
 
-
-        echo $form->field($model, 'valorVenda')->widget(MaskMoney::classname(), [
-            'pluginOptions' => [
-                'prefix' => 'R$ ',
-
-                'allowNegative' => false,
-            ]
-        ]);
-        ?>
 
         <?php
-        //TODO:Usando o dropDownList pois o SwitchInput está bugado
+       
         echo $form->field($model, 'isInsumo')->dropDownList([1 => 'Sim', 0 => 'Não'],
             ['prompt' => 'Informe se o produto cadastrado é insumo']);
         ?>
@@ -210,23 +192,6 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
     ?>
 
 
-    <?php
-
-    /**
-     * Verifica se o Produto é um Produto Venda
-     *
-     * Caso ele seja, o campo de valorVenda é mostrado do usuário
-     *
-     */
-    echo (!$model->isInsumo) ? $form->field($model, 'valorVenda')->widget(MaskMoney::classname(), [
-        'pluginOptions' => [
-            'prefix' => 'R$ ',
-
-            'allowNegative' => false,
-        ]
-    ]) : '';
-    ?>
-
     <?=
     $form->field($model, 'idCategoria')->widget(Select2::classname(), [
         'data' => $categorias,
@@ -344,9 +309,9 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
         if (ins == 0) {
             $("[class~='field-produto-quantidademinima']").hide();
             $("[class~='field-produto-quantidadeestoque']").hide();
-            $("[class~='field-produto-valorvenda']").show();
+
             $("#form-insumos-produtovenda").show();
-            $("#produto-valorvenda-disp").prop('disabled', '');
+
             $("#insumo-idprodutoinsumo").prop('disabled', '');
             $("#quantidade0").prop('disabled', '');
             $("#insumo-unidade").prop('disabled', '');
@@ -356,9 +321,9 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
             $("#btcadastrar").show();
             $("[class~='field-produto-quantidademinima']").show();
             $("[class~='field-produto-quantidadeestoque']").show();
-            $("[class~='field-produto-valorvenda']").hide();
+
             $("#btnaddinsumo").hide();
-            $("#produto-valorvenda-disp").prop('disabled', 'disabled');
+
             $("#insumo-idprodutoinsumo").prop('disabled', 'disabled');
             $("#quantidade0").prop('disabled', 'disabled');
             $("#insumo-unidade").prop('disabled', 'disabled');

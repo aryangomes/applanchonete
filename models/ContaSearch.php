@@ -18,7 +18,7 @@ class ContaSearch extends Conta
     public function rules()
     {
         return [
-            [['idconta'], 'integer'],
+            [['idconta', 'situacaoPagamento'], 'integer'],
             [['valor'], 'number'],
             [['descricao', 'tipoConta'], 'safe'],
         ];
@@ -62,6 +62,7 @@ class ContaSearch extends Conta
         $query->andFilterWhere([
             'idconta' => $this->idconta,
             'valor' => $this->valor,
+            'situacaoPagamento' => $this->situacaoPagamento,
         ]);
 
         $query->andFilterWhere(['like', 'descricao', $this->descricao])

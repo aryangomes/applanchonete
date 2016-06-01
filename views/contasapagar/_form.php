@@ -16,8 +16,8 @@ use kartik\datecontrol\DateControl;
 	<?= $form->field($model, 'idconta')->hiddenInput([$model->idconta])->label(false) ?>
 
 
-	<?= $form->field($model, 'situacaoPagamento')->dropDownList(
-	[1=>'Paga',0=>'Não paga'],['prompt'=>'Seleciona a situação do pagamento']) ?>
+	<?/*= $form->field($model, 'situacaoPagamento')->dropDownList(
+	[1=>'Paga',0=>'Não paga'],['prompt'=>'Seleciona a situação do pagamento']) */?>
 
 	<?= $form->field($model, 'dataVencimento')->widget(DateControl::classname(), [
 		'type'=>DateControl::FORMAT_DATE,

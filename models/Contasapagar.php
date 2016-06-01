@@ -29,12 +29,13 @@ class Contasapagar extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-        [['idconta', 'situacaoPagamento'], 'required'],
-        [['idconta', 'situacaoPagamento'], 'integer'],
-        [['dataVencimento'], 'safe'],
-        [['idconta'], 'exist', 'skipOnError' => true, 'targetClass' => Conta::className(), 'targetAttribute' => ['idconta' => 'idconta']],
+            [['idconta'], 'required'],
+            [['idconta'], 'integer'],
+            [['dataVencimento'], 'safe'],
+            [['idconta'], 'exist', 'skipOnError' => true, 'targetClass' => Conta::className(), 'targetAttribute' => ['idconta' => 'idconta']],
         ];
     }
+
 
     /**
      * @inheritdoc
@@ -43,7 +44,6 @@ class Contasapagar extends \yii\db\ActiveRecord
     {
         return [
         'idconta' => Yii::t('app', 'Conta'),
-        'situacaoPagamento' => Yii::t('app', 'Situação Pagamento'),
         'dataVencimento' => Yii::t('app', 'Data Vencimento'),
         ];
     }

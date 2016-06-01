@@ -34,10 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'value'=>$model->conta->descricao
 
             ],
-            ['attribute'=>'situacaoPagamento',
-            'format'=>'text',
-            'value'=>$model->situacaoPagamento ? 'Paga' : 'Não paga'
-            ],
+          
             ['attribute'=>'dataVencimento',
             'format'=>'text',
             'value'=>

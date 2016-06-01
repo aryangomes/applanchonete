@@ -100,7 +100,7 @@ class ContaController extends Controller
             $contasareceber = Yii::$app->request->post()['Contasareceber'];
             if ($conta['tipoConta'] == 'contasapagar' ) {
                 $modelContaapagar->idconta = $model->idconta;
-                $modelContaapagar->situacaoPagamento = $contasapagar['situacaoPagamento'];
+//                $modelContaapagar->situacaoPagamento = $contasapagar['situacaoPagamento'];
                 $modelContaapagar->dataVencimento = $contasapagar['dataVencimento'];
                 $modelContaapagar->save();
             }else if ($conta['tipoConta'] == 'contasareceber') {

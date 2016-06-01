@@ -11,7 +11,9 @@ use Yii;
  * @property double $valor
  * @property string $descricao
  * @property string $tipoConta
+ * @property integer $situacaoPagamento
  *
+ * @property Compra $compra
  * @property Contasapagar $contasapagar
  * @property Contasareceber $contasareceber
  */
@@ -34,6 +36,7 @@ class Conta extends \yii\db\ActiveRecord
             [['valor'], 'number'],
             [['descricao'], 'string'],
             [['tipoConta'], 'required'],
+            [['situacaoPagamento'], 'integer'],
             [['tipoConta'], 'string', 'max' => 100],
         ];
     }
@@ -44,11 +47,20 @@ class Conta extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-        'idconta' => Yii::t('app', 'Idconta'),
+            'idconta' => Yii::t('app', 'Idconta'),
             'valor' => Yii::t('app', 'Valor'),
             'descricao' => Yii::t('app', 'Descricao'),
             'tipoConta' => Yii::t('app', 'Tipo Conta'),
+            'situacaoPagamento' => Yii::t('app', 'Situacao Pagamento'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCompra()
+    {
+        return $this->hasOne(Compra::className(), ['idconta' => 'idconta']);
     }
 
     /**

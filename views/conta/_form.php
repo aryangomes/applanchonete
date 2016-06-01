@@ -29,7 +29,7 @@ use kartik\datecontrol\DateControl;
 		['contasapagar'=>'Conta a pagar','contasareceber'=>'Conta a receber'],
 		['prompt'=>'Selecione o tipo de conta']) ?>
 
-	<?= $form->field($modelContaapagar, 'situacaoPagamento')->dropDownList(
+	<?= $form->field($model, 'situacaoPagamento')->dropDownList(
 	[1=>'Paga',0=>'Não paga'],['prompt'=>'Seleciona a situação do pagamento']) ?>
 
 	<?= $form->field($modelContaapagar, 'dataVencimento')->widget(DateControl::classname(), [

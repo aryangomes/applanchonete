@@ -199,7 +199,7 @@ $(document).ready(function(){
 
 
   var foo = []; 
-  $("#user-role_id").change(function(){
+  $("#w0").change(function(){
     console.log('#user-role_id option:selected: ' +  $("option:selected").map(function(){
      return this.value 
    }).get().join(", "));

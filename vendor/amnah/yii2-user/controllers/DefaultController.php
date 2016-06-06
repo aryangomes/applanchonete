@@ -24,7 +24,7 @@ class DefaultController extends Controller
      * @inheritdoc
      */
     public $module;
-   private   $authitems ;//= ['despesa', 'caixa', 'fornecedor','relatorio','compra','user'];
+    private $authitems;//= ['despesa', 'caixa', 'fornecedor','relatorio','compra','user'];
 
     /**
      * @inheritdoc
@@ -32,32 +32,32 @@ class DefaultController extends Controller
     public function behaviors()
     {
         return [
-        'access' => [
-        'class' => AccessControl::className(),
-        'rules' => [
-        [
-        'actions' => ['index', 'confirm', 'resend', 'logout'],
-        'allow' => true,
-        'roles' => ['?', '@','user'],
-        ],
-        [
-        'actions' => ['account', 'profile', 'resend-change', 'cancel'],
-        'allow' => true,
-        'roles' => ['@'],
-        ],
-        [
-        'actions' => ['login', 'register', 'forgot', 'reset', 'login-email', 'login-callback'],
-        'allow' => true,
-        'roles' => ['?'],
-        ],
-        ],
-        ],
-        'verbs' => [
-        'class' => VerbFilter::className(),
-        'actions' => [
-        'logout' => ['post'],
-        ],
-        ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index', 'confirm', 'resend', 'logout'],
+                        'allow' => true,
+                        'roles' => ['?', '@', 'user'],
+                    ],
+                    [
+                        'actions' => ['account', 'profile', 'resend-change', 'cancel'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['login', 'register', 'forgot', 'reset', 'login-email', 'login-callback'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
         ];
     }
 
@@ -69,30 +69,30 @@ class DefaultController extends Controller
         if (defined('YII_DEBUG') && YII_DEBUG) {
             $actions = $this->module->getActions();
             if (
-                Yii::$app->user->can("admin") ) {
+            Yii::$app->user->can("admin")
+            ) {
 
                 return $this->render('index', ["actions" => $actions]);
+            } else if (Yii::$app->user->can("index-user") ||
+                Yii::$app->user->can("user")
+            ) {
+                $searchModel = $this->module->model("UserSearch");
+                $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                ]);
+            } else {
+                throw new ForbiddenHttpException("Acesso negado!");
+            }
+
+        } elseif (Yii::$app->user->isGuest) {
+            return $this->redirect(["/user/login"]);
+        } else {
+            return $this->redirect(["/user/account"]);
         }
-        else if (Yii::$app->user->can("index-user") ||
-            Yii::$app->user->can("user")) {
-            $searchModel = $this->module->model("UserSearch");
-        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            ]);
     }
-    else{
-        throw new ForbiddenHttpException("Acesso negado!");
-    }
-
-} elseif (Yii::$app->user->isGuest) {
-    return $this->redirect(["/user/login"]);
-} else {
-    return $this->redirect(["/user/account"]);
-}
-}
 
     /**
      * Display login page
@@ -125,7 +125,7 @@ class DefaultController extends Controller
         if ($loginEmailForm->load($post) && $loginEmailForm->sendEmail()) {
             $user = $loginEmailForm->getUser();
             $message = $user ? "Login link sent" : "Registration link sent";
-          //  $message .= " - Please check your email";
+            //  $message .= " - Please check your email";
             Yii::$app->session->setFlash("Login-success", Yii::t("user", $message));
         }
 
@@ -218,37 +218,52 @@ class DefaultController extends Controller
     public function permissoesSortable()
     {
 
-     $aux = []; //Array auxiliar para receber as permissões de cada tipo(agrupados)
-     $roles_permission = []; // Array que irá guardar um conjunto de um tipo de permissão
-     $roles = [];
+        $aux = []; //Array auxiliar para receber as permissões de cada tipo(agrupados)
+        $roles_permission = []; // Array que irá guardar um conjunto de um tipo de permissão
+        $roles = [];
         /*$authitem = AuthItem::find()
         ->where("name <> 'admin' ")->orderBy('type ASC')->all();*/
 
         $this->authitems = AuthItem::find()
-        ->where("name not like '%-%' and name <> 'admin' and name <> 'alterarprodutovenda'   and name <> 'produtosvenda'   and name <> 'cadastrarprodutovenda'
+            ->where("name not like '%-%' and name <> 'admin' and name <> 'alterarprodutovenda'  
+            and name <> 'produtosvenda'   and name <> 'cadastrarprodutovenda'
             and name <> 'avaliacaoproduto'
             and name <> 'listadeinsumos'
             and name <> 'listadeprodutosporinsumo'")->orderBy('type ASC')->all();
-        foreach ( $this->authitems as  $ai) {
+        foreach ($this->authitems as $ai) {
 
 
-
-          $aux = AuthItem::find()
-          ->where("name <> 'admin' and name like '%" . $ai->name ."%' ")->orderBy('type ASC')->all();
-          foreach ($aux as  $p) {
+            $aux = AuthItem::find()
+                ->where("name <> 'admin' and name like '%" . $ai->name . "%' ")->orderBy('type ASC')->all();
+            $r = ArrayHelper::map(
+              $aux,
+                'type', 'description');
+           /* foreach ($aux as $p) {
+                ArrayHelper::map(
+                    $roles_permission[$p->name] ,
+                    'type', 'description');
               $roles_permission[$p->name] = [
-              'content' => $p->description,
-              'options' => ['data' => ['name'=>$p->name]],
-              ];
-          }
-          array_push($roles, $roles_permission);
-          $aux = [];
-          $roles_permission = [];
-      }
+                    'content' => $p->description,
+                    'options' => ['data' => ['name' => $p->name]],
 
-      return $roles;
+            }*/
+            array_push($roles, $r);
+            $aux = [];
+            $roles_permission = [];
+        }
 
-  }
+        /* $roles = ArrayHelper::map(
+            AuthItem::find()
+                ->where("name <> 'admin' and name <> 'alterarprodutovenda'   and name <> 'produtosvenda'   and name <> 'cadastrarprodutovenda'
+            and name <> 'avaliacaoproduto'
+            and name <> 'listadeinsumos'
+            and name <> 'listadeprodutosporinsumo'")->orderBy('type ASC')->all(),
+            'type', 'description');*/
+
+
+        return $roles;
+
+    }
 
     /**
      * Display registration page
@@ -262,90 +277,87 @@ class DefaultController extends Controller
 
         // AuthAssigment
         $AuthItem = new AuthItem();
-       /* $permissoes = ArrayHelper::map(
-            AuthItem::find()->
-            where("name <> 'admin' " )->orderBy('type ASC')->all(), 
-            'name','description');*/
-$permissoes = $this->permissoesSortable();
+        /* $permissoes = ArrayHelper::map(
+             AuthItem::find()->
+             where("name <> 'admin' " )->orderBy('type ASC')->all(),
+             'name','description');*/
+        $permissoes = $this->permissoesSortable();
 
 
         // set up new user/profile objects
-$user = $this->module->model("User", ["scenario" => "register"]);
-$profile = $this->module->model("Profile");
+        $user = $this->module->model("User", ["scenario" => "register"]);
+        $profile = $this->module->model("Profile");
 
         // load post data
-$post = Yii::$app->request->post();
+        $post = Yii::$app->request->post();
 //var_dump($this->permissoesSortable());
-if ($user->load($post)) {
+        if ($user->load($post)) {
 
             // ensure profile data gets loaded
-   $profile->load($post);
-
+            $profile->load($post);
 
 
             // validate for ajax request
-   if (Yii::$app->request->isAjax) {
-    Yii::$app->response->format = Response::FORMAT_JSON;
-    return ActiveForm::validate($user, $profile);
-}
+            if (Yii::$app->request->isAjax) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($user, $profile);
+            }
 
-if (isset($post['User']['role_id'])) {
-    $aux = $post['User']['role_id'];
-    $roles = explode(',', $aux);
+            if (isset($post['User']['role_id'])) {
+                $aux = $post['User']['role_id'];
+                $roles = explode(',', $aux);
 
 
-           // var_dump($post['User']['role_id']);
-   // $roles = $post['User']['role_id'];
+                // var_dump($post['User']['role_id']);
+                // $roles = $post['User']['role_id'];
 
-}
+            }
 
 
             // validate for normal request
-if ($user->validate() && $profile->validate()) {
+            if ($user->validate() && $profile->validate()) {
 
-            // perform registration
-    $role = $this->module->model("Role");
-        // VEJA AQUI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    $user->setRegisterAttributes($role::ROLE_USER, $user::STATUS_ACTIVE)->save();
+                // perform registration
+                $role = $this->module->model("Role");
+                // VEJA AQUI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                $user->setRegisterAttributes($role::ROLE_USER, $user::STATUS_ACTIVE)->save();
 
-       // $user->setPermissoes(1,$user->id);
-    $profile->setUser($user->id)->save();
+                // $user->setPermissoes(1,$user->id);
+                $profile->setUser($user->id)->save();
 
-    $idUser = $user->id;
-           // var_dump($idUser);
-    foreach ( $roles as $role) {
+                $idUser = $user->id;
+                // var_dump($idUser);
+                foreach ($roles as $role) {
 
-      $user->setPermissoes($role,$idUser);
-  }
-     // $this->afterRegister($user);
+                    $user->setPermissoes($role, $idUser);
+                }
+                // $this->afterRegister($user);
                 // set flash
                 // don't use $this->refresh() because user may automatically be logged in and get 403 forbidden
-  $successText = Yii::t("user", "Successfully registered [ {displayName} ]", ["displayName" => $user->getDisplayName()]);
-  $guestText = "";
-  if (Yii::$app->user->isGuest) {
-    //$guestText = Yii::t("user", " - Please check your email to confirm your account");
-  }
-  Yii::$app->session->setFlash("Register-success", $successText . $guestText);
-}
-}
+                $successText = Yii::t("user", "Successfully registered [ {displayName} ]", ["displayName" => $user->getDisplayName()]);
+                $guestText = "";
+                if (Yii::$app->user->isGuest) {
+                    //$guestText = Yii::t("user", " - Please check your email to confirm your account");
+                }
+                Yii::$app->session->setFlash("Register-success", $successText . $guestText);
+            }
+        }
 
-$this->authitems = AuthItem::find()
-->where("name not like '%-%' and name <> 'admin' and name <> 'alterarprodutovenda'   and name <> 'produtosvenda'   and name <> 'cadastrarprodutovenda'
+        $this->authitems = AuthItem::find()
+            ->where("name not like '%-%' and name <> 'admin' and name <> 'alterarprodutovenda'   and name <> 'produtosvenda'   and name <> 'cadastrarprodutovenda'
     and name <> 'avaliacaoproduto'
     and name <> 'listadeinsumos'
     and name <> 'listadeprodutosporinsumo'")->orderBy('type ASC')->all();
-$macroauthitems = array();
-foreach ( $this->authitems as  $ai) {
+        $macroauthitems = array();
+        foreach ($this->authitems as $ai) {
 
 
+            array_push($macroauthitems, $ai->name);
 
+        }
 
-  array_push($macroauthitems, $ai->name);
-
-}
-
-return $this->render("register", compact("user", "profile","permissoes", "macroauthitems"));
-}
+        return $this->render("register", compact("user", "profile", "permissoes", "macroauthitems"));
+    }
 
     /**
      * Process data after registration

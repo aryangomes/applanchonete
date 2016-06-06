@@ -59,7 +59,7 @@ class ProdutoController extends Controller
                     'produtosvenda' => 'produtosvenda',
                     'cadastrarprodutovenda' => 'cadastrarprodutovenda',
                     'alterarprodutovenda' => 'alterarprodutovenda',
-                    'definirvalorvenda' =>'definirvalorvenda',
+                    'definirvalorprodutovenda' =>'definirvalorprodutovenda',
                 ],
             ],
         ];

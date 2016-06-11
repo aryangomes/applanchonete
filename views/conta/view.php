@@ -19,24 +19,51 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->idconta], [
             'class' => 'btn btn-danger',
             'data' => [
-            'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-            'method' => 'post',
+                'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                'method' => 'post',
             ],
-            ]) ?>
-        </p>
+        ]) ?>
+    </p>
 
-        <?= DetailView::widget([
-            'model' => $model,
-            'attributes' => [
-           // 'idconta',
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            // 'idconta',
             'valor',
             'descricao:ntext',
             'tipoConta',
-                ['attribute'=>'situacaoPagamento',
-                    'format'=>'text',
-                    'value'=>$model->situacaoPagamento ? 'Paga' : 'Não paga'
-                ],
+            ['label' => 'Consumo',
+                'visible'=> ($model->tipoConta == 'custofixo')? true:false,
+                'format' => 'text',
+                'value' => ($model->tipoConta == 'custofixo')?
+                    $model->getCustofixo($model->idconta)->consumo :'',
             ],
-            ]) ?>
+            ['label' => 'Tipo de Custo Fixo',
+                'visible'=> ($model->tipoConta == 'custofixo')? true:false,
+                'format' => 'text',
+                'value' => ($model->tipoConta == 'custofixo')? $model->getCustofixo($model->idconta)->getTipocustofixo($model->getCustofixo($model->idconta)->tipocustofixo_idtipocustofixo)
+                ->tipocustofixo : null,
+            ],
+            ['label' => 'Data de Vencimento',
+                'visible'=> ($model->tipoConta == 'contasapagar')? true:false,
+                'format' => 'text',
+                'value' => ($model->tipoConta == 'contasapagar')?
+                    date('d/m/Y',strtotime($model->getContaapagar($model->idconta)->dataVencimento))
+                    : null,
+            ],
 
-        </div>
+            ['label' => 'Data de Vencimento',
+                'visible'=> ($model->tipoConta == 'contasareceber')? true:false,
+                'format' => 'text',
+                'value' => ($model->tipoConta == 'contasareceber')?
+                    date('d/m/Y H:i',strtotime($model->getContaareceber($model->idconta)->dataHora))
+                    : null,
+            ],
+            ['attribute'=>'situacaoPagamento',
+                'format'=>'text',
+                'value'=>$model->situacaoPagamento ? 'Paga' : 'Não paga'
+            ],
+        ],
+    ]) ?>
+
+</div>

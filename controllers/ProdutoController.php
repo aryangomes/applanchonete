@@ -45,7 +45,7 @@ class ProdutoController extends Controller
                         'produtosvenda',
                         'cadastrarprodutovenda',
                         'alterarprodutovenda',
-                        'definirvalorvenda',
+                        'definirvalorprodutovenda',
                     ],
 
                     'index' => 'index-produto',
@@ -260,7 +260,7 @@ class ProdutoController extends Controller
 
                 $model->valorVenda = $model->calculoPrecoProduto($model->idProduto);
                 $model->save(false);
-                return $this->redirect(['definirvalorvenda', 'idProduto' => $model->idProduto]);
+                return $this->redirect(['definirvalorprodutovenda', 'idProduto' => $model->idProduto]);
             }
 
             return $this->redirect(['view', 'id' => $model->idProduto]);
@@ -479,7 +479,7 @@ class ProdutoController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException
      */
-    public function actionDefinirvalorvenda($idProduto)
+    public function actionDefinirvalorprodutovenda($idProduto)
     {
 
         $model = $this->findModel($idProduto);
@@ -490,7 +490,7 @@ class ProdutoController extends Controller
             return $this->redirect(['view', 'id' => $model->idProduto]);
              }
         } else {
-            return $this->render('definirvalorvenda', [
+            return $this->render('definirvalorprodutovenda', [
                 'model' => $model,
             ]);
         }

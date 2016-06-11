@@ -25,6 +25,7 @@ return [
 'Valor Venda'=>'Valor de venda', 
 'Quantidade Minima'=>'Quantidade mínima', 
 'Users'=>'Usuários',
+'Tipocustofixo'=>'Tipo de Custo Fixo',
 ];
 
 

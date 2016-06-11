@@ -2,9 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\Custofixo;
+use app\models\Tipocustofixo;
 use Yii;
 use app\models\Conta;
 use app\models\ContaSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -90,7 +93,12 @@ class ContaController extends Controller
         $model = new Conta();
         $modelContaapagar = new Contasapagar();
         $modelContasareceber = new Contasareceber();
-        $tiposConta =['Pagamento'=>'Pagamento','Compra'=>'Compra'];
+        $modelCustofixo = new Custofixo();
+        $tiposConta =['contasapagar'=>'Conta a pagar','contasareceber'=>'Conta a receber',
+        'custofixo'=>'Custo Fixo'];
+
+        $tiposCustoFixo = ArrayHelper::map(Tipocustofixo::find()->all(),
+            'idtipocustofixo','tipocustofixo');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
 
@@ -98,6 +106,7 @@ class ContaController extends Controller
 
             $contasapagar = Yii::$app->request->post()['Contasapagar'];
             $contasareceber = Yii::$app->request->post()['Contasareceber'];
+            $custofixo = Yii::$app->request->post()['Custofixo'];
             if ($conta['tipoConta'] == 'contasapagar' ) {
                 $modelContaapagar->idconta = $model->idconta;
 //                $modelContaapagar->situacaoPagamento = $contasapagar['situacaoPagamento'];
@@ -106,11 +115,22 @@ class ContaController extends Controller
             }else if ($conta['tipoConta'] == 'contasareceber') {
               $modelContasareceber->idconta = $model->idconta;
               if (($contasareceber['dataHora']) != null) {
-               $modelContasareceber->dataHora = $contasareceber['dataHora'];
-           }
+                  $modelContasareceber->dataHora = $contasareceber['dataHora'];
+                  $modelContasareceber->save();
+              }
+           }else if ($conta['tipoConta'] == 'custofixo') {
 
-           $modelContasareceber->save();
-       }
+                  $modelCustofixo->idconta = $model->idconta;
+                  $modelContaapagar->idconta = $model->idconta;
+                  $modelContaapagar->dataVencimento = $contasapagar['dataVencimento'];
+                  $modelCustofixo->consumo = $custofixo['consumo'];
+                  $modelCustofixo->tipocustofixo_idtipocustofixo = $custofixo['tipocustofixo_idtipocustofixo'];
+                  $modelContaapagar->save();
+                  $modelCustofixo->save();
+
+              }
+
+
 
        return $this->redirect(['view', 'id' => $model->idconta]);
         /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -121,6 +141,8 @@ class ContaController extends Controller
                 'tiposConta'=>$tiposConta,
                 'modelContaapagar'=>$modelContaapagar,
                 'modelContasareceber'=>$modelContasareceber,
+                'modelCustofixo'=>$modelCustofixo,
+                'tiposCustoFixo'=>$tiposCustoFixo,
                 ]);
         }
     }
@@ -134,10 +156,57 @@ class ContaController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $tiposConta =['Pagamento'=>'Pagamento','Compra'=>'Compra'];
-        $modelContaapagar = new Contasapagar();
-        $modelContasareceber = new Contasareceber();
+        $tiposConta =['contasapagar'=>'Conta a pagar','contasareceber'=>'Conta a receber',
+            'custofixo'=>'Custo Fixo'];
+        if(Contasapagar::findOne($id)){
+            $modelContaapagar = Contasapagar::findOne($id);
+        }else{
+            $modelContaapagar = new Contasapagar();
+        }
+
+        if(Contasareceber::findOne($id)){
+            $modelContasareceber = Contasareceber::findOne($id);
+        }else{
+            $modelContasareceber = new Contasareceber();
+        }
+
+        if(Custofixo::findOne($id)){
+            $modelCustofixo = Custofixo::findOne($id);
+        }else{
+            $modelCustofixo = new Custofixo();
+        }
+
+        $tiposCustoFixo = ArrayHelper::map(Tipocustofixo::find()->all(),
+            'idtipocustofixo','tipocustofixo');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            $conta = Yii::$app->request->post()['Conta'];
+
+            $contasapagar = Yii::$app->request->post()['Contasapagar'];
+            $contasareceber = Yii::$app->request->post()['Contasareceber'];
+            $custofixo = Yii::$app->request->post()['Custofixo'];
+            if ($conta['tipoConta'] == 'contasapagar' ) {
+                $modelContaapagar->idconta = $model->idconta;
+
+                $modelContaapagar->dataVencimento = $contasapagar['dataVencimento'];
+                $modelContaapagar->save();
+            }else if ($conta['tipoConta'] == 'contasareceber') {
+                $modelContasareceber->idconta = $model->idconta;
+                if (($contasareceber['dataHora']) != null) {
+                    $modelContasareceber->dataHora = $contasareceber['dataHora'];
+                    $modelContasareceber->save();
+                }
+            }else if ($conta['tipoConta'] == 'custofixo') {
+
+                $modelCustofixo->idconta = $model->idconta;
+                $modelContaapagar->idconta = $model->idconta;
+                $modelContaapagar->dataVencimento = $contasapagar['dataVencimento'];
+                $modelCustofixo->consumo = $custofixo['consumo'];
+                $modelCustofixo->tipocustofixo_idtipocustofixo = $custofixo['tipocustofixo_idtipocustofixo'];
+                $modelContaapagar->save();
+                $modelCustofixo->save();
+
+            }
             return $this->redirect(['view', 'id' => $model->idconta]);
         } else {
             return $this->render('update', [
@@ -145,6 +214,8 @@ class ContaController extends Controller
                 'tiposConta'=>$tiposConta,
                 'modelContaapagar'=>$modelContaapagar,
                 'modelContasareceber'=>$modelContasareceber,
+                'modelCustofixo'=>$modelCustofixo,
+                'tiposCustoFixo'=>$tiposCustoFixo,
                 ]);
         }
     }

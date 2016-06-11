@@ -418,6 +418,20 @@ if (count($loja) > 0) {
                                         <?php
                                     }
                                     ?>
+
+
+                                    <?php
+                                    if (Yii::$app->user->can("index-contasapagar") || Yii::$app->user->can("contasapagar")) {
+
+                                        ?>
+                                        <li>
+                                            <?= Html::a('<i class="glyphicon glyphicon-pushpin"></i> Custos Fixos', ['/custofixo/index']) ?>
+
+                                        </li>
+                                        <?php
+                                    }
+                                    ?>
+
                                     <?php
                                     if (Yii::$app->user->can("index-contasareceber") || Yii::$app->user->can("contasareceber")) {
 

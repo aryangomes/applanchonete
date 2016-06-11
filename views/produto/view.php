@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?php
         echo  (!$model->isInsumo) ?
-        Html::a(Yii::t('app', 'Alterar valor de venda'), ['definirvalorvenda', 'idProduto' => $model->idProduto],
+        Html::a(Yii::t('app', 'Alterar valor de venda'), ['definirvalorprodutovenda', 'idProduto' => $model->idProduto],
             ['class' => 'btn btn-success']) : ''?>
     </p>
 

@@ -19,6 +19,8 @@ use Yii;
  */
 class Conta extends \yii\db\ActiveRecord
 {
+
+
     /**
      * @inheritdoc
      */
@@ -71,11 +73,30 @@ class Conta extends \yii\db\ActiveRecord
         return $this->hasOne(Contasapagar::className(), ['idconta' => 'idconta']);
     }
 
+    public function getContaapagar($idconta)
+    {
+        return Contasapagar::findOne($idconta);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getContasareceber()
     {
         return $this->hasOne(Contasareceber::className(), ['idconta' => 'idconta']);
+    }
+
+    public function getContaareceber($idconta)
+    {
+        return Contasareceber::findOne($idconta);
+    }
+
+    /**
+     * @param $idconta
+     * @return Custofixo
+     */
+    public function getCustofixo($idconta)
+    {
+        return Custofixo::findOne($idconta);
     }
 }

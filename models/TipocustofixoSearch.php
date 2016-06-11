@@ -5,25 +5,21 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Conta;
+use app\models\Tipocustofixo;
 
 /**
- * ContaSearch represents the model behind the search form about `app\models\Conta`.
+ * TipocustofixoSearch represents the model behind the search form about `app\models\Tipocustofixo`.
  */
-class ContaSearch extends Conta
+class TipocustofixoSearch extends Tipocustofixo
 {
-   public $contaapagar;
-   public $contaareceber;
-   public $custofixo;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['idconta', 'situacaoPagamento'], 'integer'],
-            [['valor'], 'number'],
-            [['descricao', 'tipoConta','contaapagar','contaareceber','custofixo'], 'safe'],
+            [['idtipocustofixo'], 'integer'],
+            [['tipocustofixo'], 'safe'],
         ];
     }
 
@@ -45,7 +41,7 @@ class ContaSearch extends Conta
      */
     public function search($params)
     {
-        $query = Conta::find();
+        $query = Tipocustofixo::find();
 
         // add conditions that should always apply here
 
@@ -63,14 +59,10 @@ class ContaSearch extends Conta
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'idconta' => $this->idconta,
-            'valor' => $this->valor,
-            'situacaoPagamento' => $this->situacaoPagamento,
+            'idtipocustofixo' => $this->idtipocustofixo,
         ]);
 
-        $query->andFilterWhere(['like', 'descricao', $this->descricao])
-          
-            ->andFilterWhere(['like', 'tipoConta', $this->tipoConta]);
+        $query->andFilterWhere(['like', 'tipocustofixo', $this->tipocustofixo]);
 
         return $dataProvider;
     }

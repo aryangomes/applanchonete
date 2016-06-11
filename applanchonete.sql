@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 06-Jun-2016 às 06:45
+-- Generation Time: 11-Jun-2016 às 05:07
 -- Versão do servidor: 10.1.10-MariaDB
 -- PHP Version: 5.6.19
 
@@ -228,7 +228,6 @@ INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('delete-fornecedor', 104, NULL),
 ('delete-fornecedor', 110, NULL),
 ('delete-relatorio', 108, NULL),
-('despesa', 84, NULL),
 ('fornecedor', 84, NULL),
 ('fornecedor', 85, NULL),
 ('fornecedor', 104, NULL),
@@ -254,7 +253,6 @@ INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('update-relatorio', 108, NULL),
 ('user', 84, NULL),
 ('view-compra', 85, NULL),
-('view-despesa', 104, NULL),
 ('view-fornecedor', 85, NULL),
 ('view-fornecedor', 104, NULL),
 ('view-fornecedor', 110, NULL),
@@ -282,137 +280,131 @@ CREATE TABLE `auth_item` (
 
 INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`) VALUES
 ('admin', 1, 'Admin', NULL, NULL, NULL, NULL),
-('avaliacaoproduto', 93, 'Avaliar Produto', NULL, NULL, NULL, NULL),
-('caixa', 8, 'Caixa', NULL, NULL, NULL, NULL),
-('cardapio', 38, 'Cardapio', NULL, NULL, NULL, NULL),
-('categoria', 105, 'Categorias', NULL, NULL, NULL, NULL),
-('compra', 26, 'Compra', NULL, NULL, NULL, NULL),
-('conta', 117, 'Conta', NULL, NULL, NULL, NULL),
-('contasapagar', 123, 'Conta a pagar', NULL, NULL, NULL, NULL),
-('contasareceber', 129, 'Conta a receber', NULL, NULL, NULL, NULL),
-('create-caixa', 11, 'Criar Caixa', NULL, NULL, NULL, NULL),
-('create-cardapio', 42, 'Criar Cardapio', NULL, NULL, NULL, NULL),
-('create-categoria', 107, 'Criar Categoria', NULL, NULL, NULL, NULL),
-('create-compra', 29, 'Criar Compra', NULL, NULL, NULL, NULL),
-('create-conta', 119, 'Criar Conta', NULL, NULL, NULL, NULL),
-('create-contasapagar', 125, 'Criar Conta a pagar', NULL, NULL, NULL, NULL),
-('create-contasareceber', 131, 'Criar Conta a receber', NULL, NULL, NULL, NULL),
-('create-despesa', 5, 'Criar Despesa', NULL, NULL, NULL, NULL),
-('create-destaque', 46, 'Criar Destaque', NULL, NULL, NULL, NULL),
-('create-fornecedor', 17, 'Criar Fornecedor', NULL, NULL, NULL, NULL),
-('create-historicosituacao', 52, 'Criar Histórico de Situação', NULL, NULL, NULL, NULL),
-('create-insumo', 101, 'Criar Insumos', NULL, NULL, NULL, NULL),
-('create-itemcardapio', 58, 'Criar Item-Cardapio', NULL, NULL, NULL, NULL),
-('create-itempedido', 113, 'Criar Item Pedido', NULL, NULL, NULL, NULL),
-('create-loja', 64, 'Criar Loja', NULL, NULL, NULL, NULL),
-('create-mesa', 70, 'Criar Mesa', NULL, NULL, NULL, NULL),
-('create-pagamento', 76, 'Criar Pagamento', NULL, NULL, NULL, NULL),
-('create-pedido', 82, 'Criar Pedido', NULL, NULL, NULL, NULL),
-('create-produto', 88, 'Criar Produto', NULL, NULL, NULL, NULL),
-('create-relatorio', 23, 'Criar Relatório', NULL, NULL, NULL, NULL),
-('create-user', 35, 'Criar Usuário', NULL, NULL, NULL, NULL),
-('definirvalorprodutovenda', 98, 'Definir valor de venda de Produto Venda', NULL, NULL, NULL, NULL),
-('delete-caixa', 13, 'Deletar Caixa', NULL, NULL, NULL, NULL),
-('delete-cardapio', 41, 'Deletar Cardapio', NULL, NULL, NULL, NULL),
-('delete-categoria', 110, 'Deletar Categoria', NULL, NULL, NULL, NULL),
-('delete-compra', 31, 'Deletar Compra', NULL, NULL, NULL, NULL),
-('delete-conta', 122, 'Deletar Conta', NULL, NULL, NULL, NULL),
-('delete-contasapagar', 128, 'Deletar Conta a pagar', NULL, NULL, NULL, NULL),
-('delete-contasareceber', 134, 'Deletar Conta a receber', NULL, NULL, NULL, NULL),
-('delete-despesa', 7, 'Deletar Despesa', NULL, NULL, NULL, NULL),
-('delete-destaque', 45, 'Deletar Destaque', NULL, NULL, NULL, NULL),
-('delete-fornecedor', 19, 'Deletar Fornecedor', NULL, NULL, NULL, NULL),
-('delete-historicosituacao', 51, 'Deletar Histórico Situação', NULL, NULL, NULL, NULL),
-('delete-insumo', 104, 'Deletar Insumos', '', '', 0, NULL),
-('delete-itemcardapio', 57, 'Delete Item-Cardapio', NULL, NULL, NULL, NULL),
-('delete-itempedido', 116, 'Deletar Item Pedido', NULL, NULL, NULL, NULL),
-('delete-loja', 63, 'Deletar Loja', NULL, NULL, NULL, NULL),
-('delete-mesa', 69, 'Deletar Mesa', NULL, NULL, NULL, NULL),
-('delete-pagamento', 75, 'Deletar Pagamento', NULL, NULL, NULL, NULL),
-('delete-pedido', 81, 'Deletar Pedido', NULL, NULL, NULL, NULL),
-('delete-produto', 87, 'Deletar Produto', NULL, NULL, NULL, NULL),
-('delete-relatorio', 25, 'Deletar Relatório', NULL, NULL, NULL, NULL),
-('delete-user', 37, 'Deletar Usuário', NULL, NULL, NULL, NULL),
-('despesa', 2, 'Despesa', NULL, NULL, NULL, NULL),
-('destaque', 44, 'Destaque', NULL, NULL, NULL, NULL),
-('fornecedor', 14, 'Fornecedor', NULL, NULL, NULL, NULL),
-('historicosituacao', 50, 'Historico Situação', NULL, NULL, NULL, NULL),
-('index-caixa', 9, 'Listar Caixas', NULL, NULL, NULL, NULL),
-('index-cardapio', 40, 'Listar Cardapio', NULL, NULL, NULL, NULL),
-('index-categoria', 106, 'Listar Categorias', NULL, NULL, NULL, NULL),
-('index-compra', 27, 'Listar Compras', NULL, NULL, NULL, NULL),
-('index-conta', 118, 'Listar Contas', NULL, NULL, NULL, NULL),
-('index-contasapagar', 124, 'Listar Contas a pagar', NULL, NULL, NULL, NULL),
-('index-contasareceber', 130, 'Listar Contas a receber', NULL, NULL, NULL, NULL),
-('index-despesa', 3, 'Listar Despesas', NULL, NULL, NULL, NULL),
-('index-destaque', 47, 'Listar Destaques', NULL, NULL, NULL, NULL),
-('index-fornecedor', 15, 'Listar Fornecedores', NULL, NULL, NULL, NULL),
-('index-historicosituacao', 53, 'Listar Histórico de Situação', NULL, NULL, NULL, NULL),
-('index-insumo', 100, 'Listar Insumos', NULL, NULL, NULL, NULL),
-('index-itemcardapio', 59, 'Listar Item-Cardapio', NULL, NULL, NULL, NULL),
-('index-itempedido', 112, 'Listar Item Pedido', NULL, NULL, NULL, NULL),
-('index-loja', 65, 'Listar Lojas', NULL, NULL, NULL, NULL),
-('index-mesa', 71, 'Listar Mesas', NULL, NULL, NULL, NULL),
-('index-pagamento', 77, 'Listar Pagamentos', NULL, NULL, NULL, NULL),
-('index-pedido', 83, 'Listar Pedidos', NULL, NULL, NULL, NULL),
-('index-produto', 89, 'Listar Produtos', NULL, NULL, NULL, NULL),
-('index-relatorio', 21, 'Listar Relatórios', NULL, NULL, NULL, NULL),
-('index-user', 33, 'Listar Usuários', NULL, NULL, NULL, NULL),
-('insumo', 99, 'Insumos', NULL, NULL, NULL, NULL),
-('itemcardapio', 56, 'Item Cardapio', NULL, NULL, NULL, NULL),
-('itempedido', 111, 'Item Pedido', NULL, NULL, NULL, NULL),
-('listadeinsumos', 92, 'Listar Insumos', NULL, NULL, NULL, NULL),
-('listadeprodutosporinsumo', 94, 'Listar Produtos de Venda por Insumo', NULL, NULL, NULL, NULL),
-('loja', 62, 'Loja', NULL, NULL, NULL, NULL),
-('mesa', 68, 'Mesa', NULL, NULL, NULL, NULL),
-('pagamento', 74, 'Pagamento', NULL, NULL, NULL, NULL),
-('pedido', 80, 'Pedido', NULL, NULL, NULL, NULL),
-('produto', 86, 'Produto', NULL, NULL, NULL, NULL),
-('produtosvenda', 95, 'Listar Produtos Venda', NULL, NULL, NULL, NULL),
-('relatorio', 20, 'Relatório', NULL, NULL, NULL, NULL),
-('update-caixa', 12, 'Editar Caixa', NULL, NULL, NULL, NULL),
-('update-cardapio', 43, 'Atualizar Caradapio', NULL, NULL, NULL, NULL),
-('update-categoria', 109, 'Atualizar Categoria', NULL, NULL, NULL, NULL),
-('update-compra', 30, 'Editar Compra', NULL, NULL, NULL, NULL),
-('update-conta', 121, 'Atualizar Conta', NULL, NULL, NULL, NULL),
-('update-contasapagar', 127, 'Atualizar Conta a pagar', NULL, NULL, NULL, NULL),
-('update-contasareceber', 133, 'Atualizar Conta a receber', NULL, NULL, NULL, NULL),
-('update-despesa', 6, 'Editar Despesa', NULL, NULL, NULL, NULL),
-('update-destaque', 48, 'Atualizar Destaque', NULL, NULL, NULL, NULL),
-('update-fornecedor', 18, 'Editar Fornecedor', NULL, NULL, NULL, NULL),
-('update-historicosituacao', 54, 'Atualizar Histórico de Situação', NULL, NULL, NULL, NULL),
-('update-insumo', 103, 'Atualizar Insumos', NULL, NULL, NULL, NULL),
-('update-itemcardapio', 60, 'Atualizar Item-Cardapio', NULL, NULL, NULL, NULL),
-('update-itempedido', 115, 'Atualizar Item Pedido', NULL, NULL, NULL, NULL),
-('update-loja', 66, 'Atualizar Loja', NULL, NULL, NULL, NULL),
-('update-mesa', 72, 'Atualizar Mesa', NULL, NULL, NULL, NULL),
-('update-pagamento', 78, 'Atualizar Pagamento', NULL, NULL, NULL, NULL),
-('update-pedido', 85, 'Atualizar Pedido', NULL, NULL, NULL, NULL),
-('update-produto', 90, 'Atualizar Produto', NULL, NULL, NULL, NULL),
-('update-relatorio', 24, 'Editar Relatório', NULL, NULL, NULL, NULL),
-('update-user', 36, 'Editar Usuário', NULL, NULL, NULL, NULL),
-('user', 32, 'Usuário', NULL, NULL, NULL, NULL),
-('view-caixa', 10, 'Visualizar Caixa', NULL, NULL, NULL, NULL),
-('view-cardapio', 39, 'Visualizar Cardapio', NULL, NULL, NULL, NULL),
-('view-categoria', 108, 'Visualizar Categoria', NULL, NULL, NULL, NULL),
-('view-compra', 28, 'Visualizar Compra', NULL, NULL, NULL, NULL),
-('view-conta', 120, 'Visualizar Conta', NULL, NULL, NULL, NULL),
-('view-contasapagar', 126, 'Visualizar Conta a pagar', NULL, NULL, NULL, NULL),
-('view-contasareceber', 132, 'Visualizar Conta a receber', NULL, NULL, NULL, NULL),
-('view-despesa', 4, 'Visualizar Despesa', NULL, NULL, NULL, NULL),
-('view-destaque', 49, 'Visualizar Destaque', NULL, NULL, NULL, NULL),
-('view-fornecedor', 16, 'Visualizar Fornecedor', NULL, NULL, NULL, NULL),
-('view-historicosituacao', 55, 'Listar Histórico de Situação', NULL, NULL, NULL, NULL),
-('view-insumo', 102, 'Visualizar Insumos', NULL, NULL, NULL, NULL),
-('view-itemcardapio', 61, 'Visualizar Item-Cardapio', NULL, NULL, NULL, NULL),
-('view-itempedido', 114, 'Visualizar', NULL, NULL, NULL, NULL),
-('view-loja', 67, 'Visualizar Loja', NULL, NULL, NULL, NULL),
-('view-mesa', 73, 'Visualizar Mesa', NULL, NULL, NULL, NULL),
-('view-pagamento', 79, 'Visualizar Pagamentos', NULL, NULL, NULL, NULL),
-('view-pedido', 84, 'Visualizar Pedido', NULL, NULL, NULL, NULL),
-('view-produto', 91, 'Visualizar Produto', NULL, NULL, NULL, NULL),
-('view-relatorio', 22, 'Visualizar Relatório', NULL, NULL, NULL, NULL),
-('view-user', 34, 'Visualizar Usuário', NULL, NULL, NULL, NULL);
+('avaliacaoproduto', 87, 'Avaliar Produto', NULL, NULL, NULL, NULL),
+('caixa', 2, 'Caixa', NULL, NULL, NULL, NULL),
+('cardapio', 32, 'Cardapio', NULL, NULL, NULL, NULL),
+('categoria', 99, 'Categorias', NULL, NULL, NULL, NULL),
+('compra', 20, 'Compra', NULL, NULL, NULL, NULL),
+('conta', 111, 'Conta', NULL, NULL, NULL, NULL),
+('contasapagar', 117, 'Conta a pagar', NULL, NULL, NULL, NULL),
+('contasareceber', 123, 'Conta a receber', NULL, NULL, NULL, NULL),
+('create-caixa', 5, 'Criar Caixa', NULL, NULL, NULL, NULL),
+('create-cardapio', 36, 'Criar Cardapio', NULL, NULL, NULL, NULL),
+('create-categoria', 101, 'Criar Categoria', NULL, NULL, NULL, NULL),
+('create-compra', 23, 'Criar Compra', NULL, NULL, NULL, NULL),
+('create-conta', 113, 'Criar Conta', NULL, NULL, NULL, NULL),
+('create-contasapagar', 119, 'Criar Conta a pagar', NULL, NULL, NULL, NULL),
+('create-contasareceber', 125, 'Criar Conta a receber', NULL, NULL, NULL, NULL),
+('create-destaque', 40, 'Criar Destaque', NULL, NULL, NULL, NULL),
+('create-fornecedor', 11, 'Criar Fornecedor', NULL, NULL, NULL, NULL),
+('create-historicosituacao', 46, 'Criar Histórico de Situação', NULL, NULL, NULL, NULL),
+('create-insumo', 95, 'Criar Insumos', NULL, NULL, NULL, NULL),
+('create-itemcardapio', 52, 'Criar Item-Cardapio', NULL, NULL, NULL, NULL),
+('create-itempedido', 107, 'Criar Item Pedido', NULL, NULL, NULL, NULL),
+('create-loja', 58, 'Criar Loja', NULL, NULL, NULL, NULL),
+('create-mesa', 64, 'Criar Mesa', NULL, NULL, NULL, NULL),
+('create-pagamento', 70, 'Criar Pagamento', NULL, NULL, NULL, NULL),
+('create-pedido', 76, 'Criar Pedido', NULL, NULL, NULL, NULL),
+('create-produto', 82, 'Criar Produto', NULL, NULL, NULL, NULL),
+('create-relatorio', 17, 'Criar Relatório', NULL, NULL, NULL, NULL),
+('create-user', 29, 'Criar Usuário', NULL, NULL, NULL, NULL),
+('definirvalorprodutovenda', 92, 'Definir valor de venda de Produto Venda', NULL, NULL, NULL, NULL),
+('delete-caixa', 7, 'Deletar Caixa', NULL, NULL, NULL, NULL),
+('delete-cardapio', 35, 'Deletar Cardapio', NULL, NULL, NULL, NULL),
+('delete-categoria', 104, 'Deletar Categoria', NULL, NULL, NULL, NULL),
+('delete-compra', 25, 'Deletar Compra', NULL, NULL, NULL, NULL),
+('delete-conta', 116, 'Deletar Conta', NULL, NULL, NULL, NULL),
+('delete-contasapagar', 122, 'Deletar Conta a pagar', NULL, NULL, NULL, NULL),
+('delete-contasareceber', 128, 'Deletar Conta a receber', NULL, NULL, NULL, NULL),
+('delete-destaque', 39, 'Deletar Destaque', NULL, NULL, NULL, NULL),
+('delete-fornecedor', 13, 'Deletar Fornecedor', NULL, NULL, NULL, NULL),
+('delete-historicosituacao', 45, 'Deletar Histórico Situação', NULL, NULL, NULL, NULL),
+('delete-insumo', 98, 'Deletar Insumos', '', '', 0, NULL),
+('delete-itemcardapio', 51, 'Delete Item-Cardapio', NULL, NULL, NULL, NULL),
+('delete-itempedido', 110, 'Deletar Item Pedido', NULL, NULL, NULL, NULL),
+('delete-loja', 57, 'Deletar Loja', NULL, NULL, NULL, NULL),
+('delete-mesa', 63, 'Deletar Mesa', NULL, NULL, NULL, NULL),
+('delete-pagamento', 69, 'Deletar Pagamento', NULL, NULL, NULL, NULL),
+('delete-pedido', 75, 'Deletar Pedido', NULL, NULL, NULL, NULL),
+('delete-produto', 81, 'Deletar Produto', NULL, NULL, NULL, NULL),
+('delete-relatorio', 19, 'Deletar Relatório', NULL, NULL, NULL, NULL),
+('delete-user', 31, 'Deletar Usuário', NULL, NULL, NULL, NULL),
+('destaque', 38, 'Destaque', NULL, NULL, NULL, NULL),
+('fornecedor', 8, 'Fornecedor', NULL, NULL, NULL, NULL),
+('historicosituacao', 44, 'Historico Situação', NULL, NULL, NULL, NULL),
+('index-caixa', 3, 'Listar Caixas', NULL, NULL, NULL, NULL),
+('index-cardapio', 34, 'Listar Cardapio', NULL, NULL, NULL, NULL),
+('index-categoria', 100, 'Listar Categorias', NULL, NULL, NULL, NULL),
+('index-compra', 21, 'Listar Compras', NULL, NULL, NULL, NULL),
+('index-conta', 112, 'Listar Contas', NULL, NULL, NULL, NULL),
+('index-contasapagar', 118, 'Listar Contas a pagar', NULL, NULL, NULL, NULL),
+('index-contasareceber', 124, 'Listar Contas a receber', NULL, NULL, NULL, NULL),
+('index-destaque', 41, 'Listar Destaques', NULL, NULL, NULL, NULL),
+('index-fornecedor', 9, 'Listar Fornecedores', NULL, NULL, NULL, NULL),
+('index-historicosituacao', 47, 'Listar Histórico de Situação', NULL, NULL, NULL, NULL),
+('index-insumo', 94, 'Listar Insumos', NULL, NULL, NULL, NULL),
+('index-itemcardapio', 53, 'Listar Item-Cardapio', NULL, NULL, NULL, NULL),
+('index-itempedido', 106, 'Listar Item Pedido', NULL, NULL, NULL, NULL),
+('index-loja', 59, 'Listar Lojas', NULL, NULL, NULL, NULL),
+('index-mesa', 65, 'Listar Mesas', NULL, NULL, NULL, NULL),
+('index-pagamento', 71, 'Listar Pagamentos', NULL, NULL, NULL, NULL),
+('index-pedido', 77, 'Listar Pedidos', NULL, NULL, NULL, NULL),
+('index-produto', 83, 'Listar Produtos', NULL, NULL, NULL, NULL),
+('index-relatorio', 15, 'Listar Relatórios', NULL, NULL, NULL, NULL),
+('index-user', 27, 'Listar Usuários', NULL, NULL, NULL, NULL),
+('insumo', 93, 'Insumos', NULL, NULL, NULL, NULL),
+('itemcardapio', 50, 'Item Cardapio', NULL, NULL, NULL, NULL),
+('itempedido', 105, 'Item Pedido', NULL, NULL, NULL, NULL),
+('listadeinsumos', 86, 'Listar Insumos', NULL, NULL, NULL, NULL),
+('listadeprodutosporinsumo', 88, 'Listar Produtos de Venda por Insumo', NULL, NULL, NULL, NULL),
+('loja', 56, 'Loja', NULL, NULL, NULL, NULL),
+('mesa', 62, 'Mesa', NULL, NULL, NULL, NULL),
+('pagamento', 68, 'Pagamento', NULL, NULL, NULL, NULL),
+('pedido', 74, 'Pedido', NULL, NULL, NULL, NULL),
+('produto', 80, 'Produto', NULL, NULL, NULL, NULL),
+('produtosvenda', 89, 'Listar Produtos Venda', NULL, NULL, NULL, NULL),
+('relatorio', 14, 'Relatório', NULL, NULL, NULL, NULL),
+('update-caixa', 6, 'Editar Caixa', NULL, NULL, NULL, NULL),
+('update-cardapio', 37, 'Atualizar Caradapio', NULL, NULL, NULL, NULL),
+('update-categoria', 103, 'Atualizar Categoria', NULL, NULL, NULL, NULL),
+('update-compra', 24, 'Editar Compra', NULL, NULL, NULL, NULL),
+('update-conta', 115, 'Atualizar Conta', NULL, NULL, NULL, NULL),
+('update-contasapagar', 121, 'Atualizar Conta a pagar', NULL, NULL, NULL, NULL),
+('update-contasareceber', 127, 'Atualizar Conta a receber', NULL, NULL, NULL, NULL),
+('update-destaque', 42, 'Atualizar Destaque', NULL, NULL, NULL, NULL),
+('update-fornecedor', 12, 'Editar Fornecedor', NULL, NULL, NULL, NULL),
+('update-historicosituacao', 48, 'Atualizar Histórico de Situação', NULL, NULL, NULL, NULL),
+('update-insumo', 97, 'Atualizar Insumos', NULL, NULL, NULL, NULL),
+('update-itemcardapio', 54, 'Atualizar Item-Cardapio', NULL, NULL, NULL, NULL),
+('update-itempedido', 109, 'Atualizar Item Pedido', NULL, NULL, NULL, NULL),
+('update-loja', 60, 'Atualizar Loja', NULL, NULL, NULL, NULL),
+('update-mesa', 66, 'Atualizar Mesa', NULL, NULL, NULL, NULL),
+('update-pagamento', 72, 'Atualizar Pagamento', NULL, NULL, NULL, NULL),
+('update-pedido', 79, 'Atualizar Pedido', NULL, NULL, NULL, NULL),
+('update-produto', 84, 'Atualizar Produto', NULL, NULL, NULL, NULL),
+('update-relatorio', 18, 'Editar Relatório', NULL, NULL, NULL, NULL),
+('update-user', 30, 'Editar Usuário', NULL, NULL, NULL, NULL),
+('user', 26, 'Usuário', NULL, NULL, NULL, NULL),
+('view-caixa', 4, 'Visualizar Caixa', NULL, NULL, NULL, NULL),
+('view-cardapio', 33, 'Visualizar Cardapio', NULL, NULL, NULL, NULL),
+('view-categoria', 102, 'Visualizar Categoria', NULL, NULL, NULL, NULL),
+('view-compra', 22, 'Visualizar Compra', NULL, NULL, NULL, NULL),
+('view-conta', 114, 'Visualizar Conta', NULL, NULL, NULL, NULL),
+('view-contasapagar', 120, 'Visualizar Conta a pagar', NULL, NULL, NULL, NULL),
+('view-contasareceber', 126, 'Visualizar Conta a receber', NULL, NULL, NULL, NULL),
+('view-destaque', 43, 'Visualizar Destaque', NULL, NULL, NULL, NULL),
+('view-fornecedor', 10, 'Visualizar Fornecedor', NULL, NULL, NULL, NULL),
+('view-historicosituacao', 49, 'Listar Histórico de Situação', NULL, NULL, NULL, NULL),
+('view-insumo', 96, 'Visualizar Insumos', NULL, NULL, NULL, NULL),
+('view-itemcardapio', 55, 'Visualizar Item-Cardapio', NULL, NULL, NULL, NULL),
+('view-itempedido', 108, 'Visualizar', NULL, NULL, NULL, NULL),
+('view-loja', 61, 'Visualizar Loja', NULL, NULL, NULL, NULL),
+('view-mesa', 67, 'Visualizar Mesa', NULL, NULL, NULL, NULL),
+('view-pagamento', 73, 'Visualizar Pagamentos', NULL, NULL, NULL, NULL),
+('view-pedido', 78, 'Visualizar Pedido', NULL, NULL, NULL, NULL),
+('view-produto', 85, 'Visualizar Produto', NULL, NULL, NULL, NULL),
+('view-relatorio', 16, 'Visualizar Relatório', NULL, NULL, NULL, NULL),
+('view-user', 28, 'Visualizar Usuário', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -701,12 +693,11 @@ CREATE TABLE `conta` (
 
 INSERT INTO `conta` (`idconta`, `valor`, `descricao`, `tipoConta`, `situacaoPagamento`) VALUES
 (2, 6, 'Luz', 'contasapagar', 0),
-(3, 21, 'Pedido', 'contasareceber', 0),
 (5, 1.23, 'Pedido', 'contasareceber', 0),
 (6, 10.3100004196167, 'Água', 'contasapagar', 0),
 (13, 5.67, 'receber', 'contasareceber', 0),
 (14, 8.9, 'pagar', 'contasapagar', 0),
-(42, 0, 'Pedido', 'contasareceber', 0),
+(42, 5, 'Pedido', 'contasareceber', 0),
 (77, 0, 'Compra de 2016-06-02', 'contasapagar', 0),
 (78, 0, 'Compra de 2016-06-03', 'contasapagar', 0),
 (79, 0, 'Compra de 2016-06-02', 'contasapagar', 0),
@@ -714,7 +705,17 @@ INSERT INTO `conta` (`idconta`, `valor`, `descricao`, `tipoConta`, `situacaoPaga
 (81, 0, 'Pedido', 'contasareceber', 0),
 (82, 7, 'Pedido', 'contasareceber', 0),
 (83, 5, 'Pedido', 'contasareceber', 0),
-(84, 6, 'Pedido', 'contasareceber', 1);
+(84, 6, 'Pedido', 'contasareceber', 1),
+(85, 0, 'Pedido', 'contasareceber', 0),
+(106, 8.88, '888', 'custofixo', 0),
+(107, 8.88, '888', 'custofixo', 0),
+(109, 5.67, '567', 'contasapagar', 0),
+(110, 90.91, '90', 'contasareceber', 0),
+(111, 0.68, 'Custo fixo', 'custofixo', 0),
+(112, 4.35, '-', 'contasapagar', 0),
+(113, 5.55, '--', 'contasapagar', 0),
+(114, 5.55, 'Conta', 'contasapagar', 0),
+(115, 6.57, '-=', 'contasareceber', 0);
 
 --
 -- Acionadores `conta`
@@ -743,13 +744,18 @@ CREATE TABLE `contasapagar` (
 --
 
 INSERT INTO `contasapagar` (`idconta`, `dataVencimento`) VALUES
-(3, NULL),
 (6, '2016-04-30'),
 (14, '2016-05-18'),
 (77, NULL),
 (78, NULL),
 (79, NULL),
-(80, NULL);
+(80, NULL),
+(106, '2016-07-09'),
+(107, '2016-07-09'),
+(109, '2016-06-25'),
+(111, '2016-07-09'),
+(112, '2016-07-07'),
+(114, '2016-07-08');
 
 -- --------------------------------------------------------
 
@@ -773,7 +779,29 @@ INSERT INTO `contasareceber` (`idconta`, `dataHora`) VALUES
 (81, '2016-05-23 00:56:50'),
 (82, '2016-06-03 02:10:00'),
 (83, '2016-05-23 01:16:22'),
-(84, '2017-06-02 22:25:47');
+(84, '2017-06-02 22:25:47'),
+(85, '2016-06-06 22:35:31'),
+(110, '2016-07-02 15:10:00'),
+(115, '2016-06-11 03:15:00');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `custofixo`
+--
+
+CREATE TABLE `custofixo` (
+  `idconta` int(11) NOT NULL,
+  `consumo` varchar(70) NOT NULL,
+  `tipocustofixo_idtipocustofixo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `custofixo`
+--
+
+INSERT INTO `custofixo` (`idconta`, `consumo`, `tipocustofixo_idtipocustofixo`) VALUES
+(111, '23', 1);
 
 -- --------------------------------------------------------
 
@@ -902,6 +930,7 @@ INSERT INTO `itempedido` (`idPedido`, `idProduto`, `quantidade`, `total`) VALUES
 (3, 11, '3', '9'),
 (10, 8, '4', '16'),
 (105, 8, '1', '4'),
+(105, 60, '1', '5'),
 (107, 8, '2', '4'),
 (107, 37, '1', '3'),
 (108, 59, '1', '5'),
@@ -1015,7 +1044,8 @@ INSERT INTO `pagamento` (`idTipoPagamento`, `idConta`, `idPedido`) VALUES
 (2, 43, 106),
 (NULL, 82, 107),
 (NULL, 83, 108),
-(NULL, 84, 109);
+(NULL, 84, 109),
+(NULL, 85, 110);
 
 -- --------------------------------------------------------
 
@@ -1039,11 +1069,12 @@ INSERT INTO `pedido` (`idPedido`, `totalPedido`, `idSituacaoAtual`) VALUES
 (5, 0, 1),
 (8, 0, 1),
 (10, 16, 2),
-(105, 0, 2),
+(105, 5, 2),
 (106, 0, 1),
 (107, 7, 1),
 (108, 5, 1),
-(109, 6, 1);
+(109, 6, 1),
+(110, 0, 1);
 
 --
 -- Acionadores `pedido`
@@ -1091,7 +1122,7 @@ CREATE TABLE `produto` (
 INSERT INTO `produto` (`idProduto`, `nome`, `valorVenda`, `isInsumo`, `quantidadeMinima`, `idCategoria`, `quantidadeEstoque`) VALUES
 (7, 'Tomate', 20, 1, 0, 4, 61),
 (8, 'Sanduíche A', 4.68, 0, 0, 5, 0),
-(9, 'Pão', 0, 1, 0, 3, 36),
+(9, 'Pão', 0, 1, 0, 3, 35),
 (10, 'Refrigerante', 2, 0, 0, 5, 10),
 (11, 'Sanduíche B', 3, 0, 0, 5, 0),
 (12, 'Hambúrguer ', 0, 1, 0, 3, 30.7),
@@ -1107,7 +1138,8 @@ INSERT INTO `produto` (`idProduto`, `nome`, `valorVenda`, `isInsumo`, `quantidad
 (47, 'Sanduiche X-Misto', 3, 0, 0, 5, 0),
 (50, 'Alface', 0, 1, 2, 4, 0),
 (59, 'Sanduiche X-Especial', 5.43, 0, 0, 5, 0),
-(60, 'Misto-Quente', 5.45, 0, 0, 5, 0);
+(60, 'Misto-Quente', 5.45, 0, 0, 5, 0),
+(61, 'Salsicha', NULL, 1, 0, 4, 0);
 
 -- --------------------------------------------------------
 
@@ -1213,6 +1245,24 @@ INSERT INTO `situacaopedido` (`idSituacaoPedido`, `titulo`, `descricao`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `tipocustofixo`
+--
+
+CREATE TABLE `tipocustofixo` (
+  `idtipocustofixo` int(11) NOT NULL,
+  `tipocustofixo` varchar(70) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `tipocustofixo`
+--
+
+INSERT INTO `tipocustofixo` (`idtipocustofixo`, `tipocustofixo`) VALUES
+(1, 'Água');
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `user`
 --
 
@@ -1239,13 +1289,13 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `role_id`, `status`, `email`, `username`, `password`, `auth_key`, `access_token`, `logged_in_ip`, `logged_in_at`, `created_ip`, `created_at`, `updated_at`, `banned_at`, `banned_reason`) VALUES
-(1, 1, 1, 'admin@sigir.com', 'admin', '$2y$13$ZaQ4eZwz1ZevK9oaKksT2uKcUlh1aytLRyqGGUGYJSzNLuBcYJOvO', '4c1Lk1bFV-2gSyrQnXm7661avqoQOC0L', 'W6ELUzLx6Zvva8fQ5NV4nLl8jJInF_BC', '127.0.0.1', '2016-06-06 07:42:24', NULL, '2016-01-26 02:42:06', '2016-01-28 01:27:25', NULL, NULL),
+(1, 1, 1, 'admin@sigir.com', 'admin', '$2y$13$ZaQ4eZwz1ZevK9oaKksT2uKcUlh1aytLRyqGGUGYJSzNLuBcYJOvO', '4c1Lk1bFV-2gSyrQnXm7661avqoQOC0L', 'W6ELUzLx6Zvva8fQ5NV4nLl8jJInF_BC', '127.0.0.1', '2016-06-07 04:45:34', NULL, '2016-01-26 02:42:06', '2016-01-28 01:27:25', NULL, NULL),
 (2, 2, 1, 'gerente@sigir.com', 'gerente2', '$2y$13$SVYrr6CicYYdpMnep5LKtO8ak84X8h6tFHYVpR8j7nGupVOvqnpVa', 'VPd_SzxMvyTgZprvDA-tfT4kPW_IYzZD', 'UyNFyd41oMBIiRVurZPZuvt6kgTe98xy', '::1', '2016-02-07 23:58:31', '::1', '2016-01-26 20:58:10', '2016-01-31 01:28:29', NULL, NULL),
 (3, 3, 1, 'funcionario@sigir.com', 'funcionario', '$2y$13$.gl9ePCdOVOww1C7AZosD.GSsbD6cMERou36tWYrmEN.dtEFkml9i', 't6g9cyhdz2-EKqG3Whb6TC30qNPQ6oU7', 'BAWIuKS9sXShdh2fM3QnwH8ZqdT5mGwv', '::1', '2016-02-02 05:21:59', '::1', '2016-01-26 21:02:42', '2016-01-31 04:37:09', NULL, NULL),
 (43, 3, 1, 'funcionario1@sigir.com', 'funcionario01', '$2y$13$MR/pQJFMZRJZkZj4.xg0qOtdjJK6NMaMo5jF4bVt1tPHf7sjr0QHi', 'JoIVj9p9IWlVklx1TZ00otnbcr-Gmao7', 'hAYvnkL8pFzP6FGMH7eKw7UmisflzyjX', '::1', '2016-02-05 03:48:25', '::1', '2016-02-01 01:00:46', '2016-02-01 04:23:48', NULL, NULL),
 (44, 2, 1, 'gerente1@sigir.com', 'gerente', '$2y$13$mujgA7j0OsPxUr0gYAao3OSk1yykiEFfxqXis7m.lzvZ3EWID1jOG', 'c4rPsYI-Q-WNI9GgYyTvbZr_ynwyuAlY', 'nAzvxmIB3bTRTW9d23dn1isBFBr6s7RI', '::1', '2016-02-09 23:37:54', '::1', '2016-02-01 01:01:26', '2016-02-09 07:11:09', NULL, NULL),
 (80, 2, 1, 'teste@teste.com', NULL, '$2y$13$Up2wVYVIsBKk3oij/H/8l.5hPym80.3NTFpGlc97cSJg32EqNGn4y', 'EXAFyYZpG5QVTcGx6yeFrlDOl9OizMuM', 'ZdjGbu9FKlXtF5mYt1A4CcShpkEaTd9i', '::1', '2016-02-08 01:22:20', '::1', '2016-02-05 03:30:47', '2016-02-05 05:19:16', NULL, NULL),
-(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-06-03 17:07:24', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
+(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-06-11 01:15:26', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
 (85, 2, 1, 'compras@compras.com', 'Compra', '$2y$13$fcSVvuFUmhH.3iZ0wTtoZOpkVTt1tjAg2fO2thZog9QwMUIEUUzKu', 'tVH-bh0RpqSA1RgMqIR4rqcKtKiGhvPB', '165xJKTAkwnR1QcUd6wQ-fkU8Q98od2O', '::1', '2016-02-12 04:37:12', '::1', '2016-02-10 06:13:27', '2016-02-13 17:20:37', NULL, NULL),
 (104, 2, 1, 'teste3@teste.com', 'teste3', '$2y$13$4MrmhHyYwYzQ5uFHtr8rpeUNCgFCZiHR0410sdcJBABbm/zl/1Z..', 'ndzPwraET0uG3RZMtH23_-7IdxZtiRaH', 'nO74vFAzRakvIVNVrrJLrl4CU9718fzh', '::1', '2016-02-14 05:59:05', '::1', '2016-02-14 05:09:25', '2016-02-14 06:02:05', NULL, NULL),
 (108, 2, 1, 'teste4@teste.com', 'teste44', '$2y$13$COZu07CnXAVlfSQJwK6ng.LnOd43dGyN29Tw/FH13Mtoa/zTtlGwy', 'Hs7QEYX6yxldLcpIVPjwNoBNBY5zWDSa', 'Ib_71XRL0h05Yr1STAjJwv9Y3sfJOIW4', '::1', '2016-02-14 06:35:23', '::1', '2016-02-14 06:30:37', '2016-02-14 06:35:48', NULL, NULL),
@@ -1405,6 +1455,14 @@ ALTER TABLE `contasareceber`
   ADD PRIMARY KEY (`idconta`);
 
 --
+-- Indexes for table `custofixo`
+--
+ALTER TABLE `custofixo`
+  ADD PRIMARY KEY (`idconta`),
+  ADD KEY `fk_custofixo_contasapagar1_idx` (`idconta`),
+  ADD KEY `fk_custofixo_tipocustofixo1_idx` (`tipocustofixo_idtipocustofixo`);
+
+--
 -- Indexes for table `destaques`
 --
 ALTER TABLE `destaques`
@@ -1510,6 +1568,12 @@ ALTER TABLE `situacaopedido`
   ADD PRIMARY KEY (`idSituacaoPedido`);
 
 --
+-- Indexes for table `tipocustofixo`
+--
+ALTER TABLE `tipocustofixo`
+  ADD PRIMARY KEY (`idtipocustofixo`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -1565,7 +1629,7 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT for table `conta`
 --
 ALTER TABLE `conta`
-  MODIFY `idconta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `idconta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
 --
 -- AUTO_INCREMENT for table `formapagamento`
 --
@@ -1580,17 +1644,17 @@ ALTER TABLE `mesa`
 -- AUTO_INCREMENT for table `pedido`
 --
 ALTER TABLE `pedido`
-  MODIFY `idPedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
+  MODIFY `idPedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
 --
 -- AUTO_INCREMENT for table `produto`
 --
 ALTER TABLE `produto`
-  MODIFY `idProduto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `idProduto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 --
 -- AUTO_INCREMENT for table `profile`
 --
 ALTER TABLE `profile`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 --
 -- AUTO_INCREMENT for table `relatorio`
 --
@@ -1607,10 +1671,15 @@ ALTER TABLE `role`
 ALTER TABLE `situacaopedido`
   MODIFY `idSituacaoPedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
+-- AUTO_INCREMENT for table `tipocustofixo`
+--
+ALTER TABLE `tipocustofixo`
+  MODIFY `idtipocustofixo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
 --
 -- AUTO_INCREMENT for table `user_auth`
 --
@@ -1666,6 +1735,13 @@ ALTER TABLE `contasapagar`
 --
 ALTER TABLE `contasareceber`
   ADD CONSTRAINT `contasareceber_ibfk_1` FOREIGN KEY (`idconta`) REFERENCES `conta` (`idconta`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `custofixo`
+--
+ALTER TABLE `custofixo`
+  ADD CONSTRAINT `fk_custofixo_contasapagar1` FOREIGN KEY (`idconta`) REFERENCES `contasapagar` (`idconta`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_custofixo_tipocustofixo1` FOREIGN KEY (`tipocustofixo_idtipocustofixo`) REFERENCES `tipocustofixo` (`idtipocustofixo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `historicosituacao`

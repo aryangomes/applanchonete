@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use app\models\ProdutoSearch;
+
 /**
  * This is the model class for table "produto".
  *
@@ -43,11 +44,11 @@ class Produto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-        [['nome', 'isInsumo', 'idCategoria']
-        , 'required'],
-        [['quantidadeMinima', 'quantidadeEstoque'], 'number'],
-        [['isInsumo', 'idCategoria'], 'integer'],
-        [['nome'], 'string', 'max' => 100]
+            [['nome', 'isInsumo', 'idCategoria']
+                , 'required'],
+            [['quantidadeMinima', 'quantidadeEstoque'], 'number'],
+            [['isInsumo', 'idCategoria'], 'integer'],
+            [['nome'], 'string', 'max' => 100]
         ];
     }
 
@@ -57,16 +58,16 @@ class Produto extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-        'idProduto' => Yii::t('app', 'Id Produto'),
-        'nome' => Yii::t('app', 'Nome'),
-        'valorVenda' => Yii::t('app', 'Valor Venda'),
-        'isInsumo' => Yii::t('app', 'Is Insumo'),
-        'quantidadeMinima' => Yii::t('app', 'Quantidade Minima'),
-        'idCategoria' => Yii::t('app', 'Categoria'),
-        'quantidadeEstoque' => Yii::t('app', 'Quantidade em Estoque'),
-        'datainicioavaliacao' => Yii::t('app', 'De'),
-        'datafimavaliacao' => Yii::t('app', 'Até'),
-        'groupbyavaliacao' => Yii::t('app', 'Agrupar por'),
+            'idProduto' => Yii::t('app', 'Id Produto'),
+            'nome' => Yii::t('app', 'Nome'),
+            'valorVenda' => Yii::t('app', 'Valor Venda'),
+            'isInsumo' => Yii::t('app', 'Is Insumo'),
+            'quantidadeMinima' => Yii::t('app', 'Quantidade Minima'),
+            'idCategoria' => Yii::t('app', 'Categoria'),
+            'quantidadeEstoque' => Yii::t('app', 'Quantidade em Estoque'),
+            'datainicioavaliacao' => Yii::t('app', 'De'),
+            'datafimavaliacao' => Yii::t('app', 'Até'),
+            'groupbyavaliacao' => Yii::t('app', 'Agrupar por'),
         ];
     }
 
@@ -146,23 +147,55 @@ class Produto extends \yii\db\ActiveRecord
     /**
      * @param $idprodutoVenda
      * @return float|int
+     * Calcula os custos de um Produto Venda, de acordo com o preço de compra(Valor da compra mais
+     * atual) de um insumo e também de acordo com os custos fixos(Total de produtos vendidos/ total consumo
+     * em um mês)
+     *
      */
     public function calculoPrecoProduto($idprodutoVenda)
     {
-        $model = new Produto();
-        $insumos =Insumo::find()->where([ 'idprodutoVenda'=>$idprodutoVenda ])->all();
+
+        //Busca e guarda todos os insumos do Produto Venda
+        $insumos = Insumo::find()->where(['idprodutoVenda' => $idprodutoVenda])->all();
         $precosugerido = 0;
+
+        //Model para a busca dos dados de Produto
         $searchModel = new ProdutoSearch();
 
+        //Guarda a soma da quantidade de Produtos Venda vendidos no mês
+        $sumQuantidadeVendaProdutoVenda = $searchModel->searchQuantidadeProdutosEmVendas($idprodutoVenda);
 
 
+        //Busca e guarda todos os tipos de Custo Fixo
+        $tiposCustoFixo = Tipocustofixo::find()->all();
+        $consumosCustoFixo = [];
+
+        //Model para a busca dos dados de Custo Fixo
+        $searchModelCustoFixo = new CustofixoSearch();
+
+        //Guarda o consumo mensal de cada tipo de Custo Fixo
+        foreach ($tiposCustoFixo as $custoFixo) {
+            $consumoCustoFixo = $searchModelCustoFixo
+                ->searchConsumoCustoFixoporTipoMensal($custoFixo->idtipocustofixo, date('m'));
+            array_push($consumosCustoFixo, $consumoCustoFixo);
+        }
+
+        //Soma o(s) valor(es) médio(s) de custos fixos do mês ao custo do produto
+        foreach ($consumosCustoFixo as $custo) {
+            $ct = ($sumQuantidadeVendaProdutoVenda / $custo);
+            $precosugerido += $ct;
+        }
+
+        //Soma o(s) valor(es) do(s) insumo(s) do produto venda ao custo do produto
         foreach ($insumos as $key => $insumo) {
             $produtoCompra = ($searchModel->searchProdutosCompra($insumo->idprodutoInsumo));
 
             $precosugerido +=
-            (($produtoCompra->valorCompra *$insumo->quantidade)/ $produtoCompra->quantidade);
+                (($produtoCompra->valorCompra * $insumo->quantidade) / $produtoCompra->quantidade);
 
         }
+
+
         return $precosugerido;
 
     }

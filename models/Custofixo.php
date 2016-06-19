@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "custofixo".
  *
  * @property integer $idconta
- * @property string $consumo
+ * @property double $consumo
  * @property integer $tipocustofixo_idtipocustofixo
  *
  * @property Contasapagar $idconta0
@@ -30,9 +30,9 @@ class Custofixo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            //[[ 'consumo', 'tipocustofixo_idtipocustofixo'], 'required'],
+            [['idconta', 'consumo', 'tipocustofixo_idtipocustofixo'], 'required'],
             [['idconta', 'tipocustofixo_idtipocustofixo'], 'integer'],
-            [['consumo'], 'string', 'max' => 70],
+            [['consumo'], 'number'],
             [['idconta'], 'exist', 'skipOnError' => true, 'targetClass' => Contasapagar::className(), 'targetAttribute' => ['idconta' => 'idconta']],
             [['tipocustofixo_idtipocustofixo'], 'exist', 'skipOnError' => true, 'targetClass' => Tipocustofixo::className(), 'targetAttribute' => ['tipocustofixo_idtipocustofixo' => 'idtipocustofixo']],
         ];
@@ -53,7 +53,7 @@ class Custofixo extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdconta0()
+    public function getIdcontaAPagar()
     {
         return $this->hasOne(Contasapagar::className(), ['idconta' => 'idconta']);
     }
@@ -64,9 +64,5 @@ class Custofixo extends \yii\db\ActiveRecord
     public function getTipocustofixoIdtipocustofixo()
     {
         return $this->hasOne(Tipocustofixo::className(), ['idtipocustofixo' => 'tipocustofixo_idtipocustofixo']);
-    }
-
-    public function getTipocustofixo($idtipocustofixo){
-        return Tipocustofixo::findOne($idtipocustofixo);
     }
 }

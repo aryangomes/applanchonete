@@ -27,7 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'idconta',
             'consumo',
-            'tipocustofixo_idtipocustofixo',
+            
+           [
+               'attribute'=>'tipocustofixoIdtipocustofixo',
+               'label'=>'Tipo de Custo Fixo',
+               'value'=>'tipocustofixoIdtipocustofixo.tipocustofixo'
+
+           ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

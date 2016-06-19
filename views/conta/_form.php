@@ -76,8 +76,8 @@ use kartik\datecontrol\DateControl;
 		$("[class=\'form-group field-contasapagar-datavencimento\']").hide();
 		$("[class=\'form-group field-contasapagar-situacaopagamento required\']").hide();
 		$("[class=\'form-group field-contasareceber-datahora\']").hide();
-		$("[class=\'form-group field-custofixo-consumo\']").hide();	
-		$("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo\']").hide();
+		$("[class=\'form-group field-custofixo-consumo required\']").hide();	
+		$("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").hide();
 		}
 		
 		if (tipo == \'contasapagar\') {
@@ -87,10 +87,10 @@ use kartik\datecontrol\DateControl;
 				$("#contasapagar-situacaopagamento").prop(\'disabled\', false);
 				$("[class=\'form-group field-contasareceber-datahora\']").hide();
 				$("[class=\'form-group field-contasareceber-datahora\']").prop(\'disabled\', true);
-				$("[class=\'form-group field-custofixo-consumo\']").hide();	
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo\']").hide();
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo\']").prop(\'disabled\', true);
-				$("[class=\'form-group field-custofixo-consumo\']").prop(\'disabled\', true);
+				$("[class=\'form-group field-custofixo-consumo required\']").hide();	
+		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").hide();
+		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").prop(\'disabled\', true);
+				$("[class=\'form-group field-custofixo-consumo required\']").prop(\'disabled\', true);
 
 			}else if (tipo == \'contasareceber\') {
 				$("[class=\'form-group field-contasapagar-datavencimento\']").hide();
@@ -99,10 +99,10 @@ use kartik\datecontrol\DateControl;
 				$("#contasapagar-situacaopagamento").prop(\'disabled\', true);
 				$("[class=\'form-group field-contasareceber-datahora\']").show();
 				$("[class=\'form-group field-contasareceber-datahora\']").prop(\'disabled\', false);
-				$("[class=\'form-group field-custofixo-consumo\']").hide();	
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo\']").hide();
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo\']").prop(\'disabled\', true);
-				$("[class=\'form-group field-custofixo-consumo\']").prop(\'disabled\', true);
+				$("[class=\'form-group field-custofixo-consumo required\']").hide();	
+		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").hide();
+		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").prop(\'disabled\', true);
+				$("[class=\'form-group field-custofixo-consumo required\']").prop(\'disabled\', true);
 
 			}
 			else if (tipo == \'custofixo\') {
@@ -111,10 +111,10 @@ use kartik\datecontrol\DateControl;
 				$("#contasapagar-situacaopagamento").prop(\'disabled\', true);
 				$("[class=\'form-group field-contasareceber-datahora\']").hide();
 				$("[class=\'form-group field-contasareceber-datahora\']").prop(\'disabled\', true);
-				$("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo\']").prop(\'disabled\', false);
-				$("[class=\'form-group field-custofixo-consumo\']").prop(\'disabled\', false);
-				$("[class=\'form-group field-custofixo-consumo\']").show();	
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo\']").show();
+				$("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").prop(\'disabled\', false);
+				$("[class=\'form-group field-custofixo-consumo required\']").prop(\'disabled\', false);
+				$("[class=\'form-group field-custofixo-consumo required\']").show();	
+		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").show();
 		        $("[class=\'form-group field-contasapagar-datavencimento\']").show();
 
 			}
@@ -129,10 +129,10 @@ use kartik\datecontrol\DateControl;
 				$("#contasapagar-situacaopagamento").prop(\'disabled\', false);
 				$("[class=\'form-group field-contasareceber-datahora\']").hide();
 				$("[class=\'form-group field-contasareceber-datahora\']").prop(\'disabled\', true);
-				$("[class=\'form-group field-custofixo-consumo\']").hide();	
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo\']").hide();
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo\']").prop(\'disabled\', true);
-				$("[class=\'form-group field-custofixo-consumo\']").prop(\'disabled\', true);
+				$("[class=\'form-group field-custofixo-consumo required\']").hide();	
+		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").hide();
+		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").prop(\'disabled\', true);
+				$("[class=\'form-group field-custofixo-consumo required\']").prop(\'disabled\', true);
 
 			}else if (tipo == \'contasareceber\') {
 				$("[class=\'form-group field-contasapagar-datavencimento\']").hide();
@@ -141,10 +141,10 @@ use kartik\datecontrol\DateControl;
 				$("#contasapagar-situacaopagamento").prop(\'disabled\', true);
 				$("[class=\'form-group field-contasareceber-datahora\']").show();
 				$("[class=\'form-group field-contasareceber-datahora\']").prop(\'disabled\', false);
-				$("[class=\'form-group field-custofixo-consumo\']").hide();	
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo\']").hide();
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo\']").prop(\'disabled\', true);
-				$("[class=\'form-group field-custofixo-consumo\']").prop(\'disabled\', true);
+				$("[class=\'form-group field-custofixo-consumo required\']").hide();	
+		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").hide();
+		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").prop(\'disabled\', true);
+				$("[class=\'form-group field-custofixo-consumo required\']").prop(\'disabled\', true);
 
 			}
 			else if (tipo == \'custofixo\') {
@@ -153,10 +153,10 @@ use kartik\datecontrol\DateControl;
 				$("#contasapagar-situacaopagamento").prop(\'disabled\', true);
 				$("[class=\'form-group field-contasareceber-datahora\']").hide();
 				$("[class=\'form-group field-contasareceber-datahora\']").prop(\'disabled\', true);
-				$("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo\']").prop(\'disabled\', false);
-				$("[class=\'form-group field-custofixo-consumo\']").prop(\'disabled\', false);
-				$("[class=\'form-group field-custofixo-consumo\']").show();	
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo\']").show();
+				$("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").prop(\'disabled\', false);
+				$("[class=\'form-group field-custofixo-consumo required\']").prop(\'disabled\', false);
+				$("[class=\'form-group field-custofixo-consumo required\']").show();	
+		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").show();
 		        $("[class=\'form-group field-contasapagar-datavencimento\']").show();
 
 			}

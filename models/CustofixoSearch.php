@@ -12,7 +12,6 @@ use app\models\Custofixo;
  */
 class CustofixoSearch extends Custofixo
 {
-    public $tipocustofixoIdtipocustofixo;
     /**
      * @inheritdoc
      */
@@ -20,7 +19,7 @@ class CustofixoSearch extends Custofixo
     {
         return [
             [['idconta', 'tipocustofixo_idtipocustofixo'], 'integer'],
-            [['consumo','tipocustofixoIdtipocustofixo'], 'safe'],
+            [['consumo'], 'number'],
         ];
     }
 
@@ -61,11 +60,40 @@ class CustofixoSearch extends Custofixo
         // grid filtering conditions
         $query->andFilterWhere([
             'idconta' => $this->idconta,
+            'consumo' => $this->consumo,
             'tipocustofixo_idtipocustofixo' => $this->tipocustofixo_idtipocustofixo,
         ]);
 
-        $query->andFilterWhere(['like', 'consumo', $this->consumo]);
-
         return $dataProvider;
+    }
+
+
+    /**
+     * @param $idTipoFixoCusto
+     * @return mixed
+     */
+    public function searchConsumoCustoFixoporTipoMensal($idTipoFixoCusto)
+    {
+
+
+        //Guarda o mês atual
+        $mes = date('m');
+
+
+        //Guarda o último dia do mês
+        $lastDayOfMonth = date('t', strtotime(date('Y') . '-' . $mes . '-' . date('d')));
+
+        //Busca os custos fixo no período mensal(Do primeiro até o último dia do mês atual)
+        $query = Custofixo::find()
+            ->joinWith('idcontaAPagar')
+            ->joinWith('idcontaAPagar.conta')
+            ->where(['tipocustofixo_idtipocustofixo'=>$idTipoFixoCusto])
+                ->andWhere(['between','dataVencimento',
+                    date('Y').'-'.$mes.'-'.'01',  date('Y').'-'.$mes.'-'.$lastDayOfMonth]);
+
+        //Guarda o valor médio de um tipo de custo fixo no período mensal(Do primeiro até o último dia do mês atual)
+        $mediaConsumo = $query->average('valor');
+
+        return $mediaConsumo;
     }
 }

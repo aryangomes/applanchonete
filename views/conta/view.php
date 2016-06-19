@@ -41,8 +41,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ['label' => 'Tipo de Custo Fixo',
                 'visible'=> ($model->tipoConta == 'custofixo')? true:false,
                 'format' => 'text',
-                'value' => ($model->tipoConta == 'custofixo')? $model->getCustofixo($model->idconta)->getTipocustofixo($model->getCustofixo($model->idconta)->tipocustofixo_idtipocustofixo)
-                ->tipocustofixo : null,
+                'value' => ($model->tipoConta == 'custofixo')? $model->getCustofixo($model->idconta)
+                    ->tipocustofixoIdtipocustofixo->tipocustofixo: null,
             ],
             ['label' => 'Data de Vencimento',
                 'visible'=> ($model->tipoConta == 'contasapagar')? true:false,

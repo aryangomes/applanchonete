@@ -91,6 +91,8 @@ class Conta extends \yii\db\ActiveRecord
         return Contasareceber::findOne($idconta);
     }
 
+    
+    
     /**
      * @param $idconta
      * @return Custofixo

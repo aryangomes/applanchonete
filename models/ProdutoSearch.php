@@ -7,6 +7,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Produto;
 use app\models\Insumo;
+
 /**
  * ProdutoSearch represents the model behind the search form about `app\models\Produto`.
  */
@@ -18,9 +19,9 @@ class ProdutoSearch extends Produto
     public function rules()
     {
         return [
-        [['idProduto', 'isInsumo', 'idCategoria'], 'integer'],
-        [['nome'], 'safe'],
-        [['valorVenda', 'quantidadeMinima', 'quantidadeEstoque'], 'number'],
+            [['idProduto', 'isInsumo', 'idCategoria'], 'integer'],
+            [['nome'], 'safe'],
+            [['valorVenda', 'quantidadeMinima', 'quantidadeEstoque'], 'number'],
         ];
     }
 
@@ -46,7 +47,7 @@ class ProdutoSearch extends Produto
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            ]);
+        ]);
 
         $this->load($params);
 
@@ -63,7 +64,7 @@ class ProdutoSearch extends Produto
             'quantidadeMinima' => $this->quantidadeMinima,
             'idCategoria' => $this->idCategoria,
             'quantidadeEstoque' => $this->quantidadeEstoque,
-            ]);
+        ]);
 
         $query->andFilterWhere(['like', 'nome', $this->nome]);
 
@@ -74,8 +75,7 @@ class ProdutoSearch extends Produto
     {
 
         $query = Insumo::find()->joinWith('produtoInsumo')->
-        where(['idprodutoVenda'=>$id] )->all();
-
+        where(['idprodutoVenda' => $id])->all();
 
 
         return $query;
@@ -85,8 +85,7 @@ class ProdutoSearch extends Produto
     {
 
         $query = Insumo::find()->
-        where(['idprodutoInsumo'=>$params['idinsumo']] )->all();
-
+        where(['idprodutoInsumo' => $params['idinsumo']])->all();
 
 
         return $query;
@@ -96,8 +95,7 @@ class ProdutoSearch extends Produto
     {
 
         $query = Insumo::find()->joinWith('idprodutoInsumo')->
-        where(['idprodutoVenda'=>$idProdutoVenda] )->all();
-
+        where(['idprodutoVenda' => $idProdutoVenda])->all();
 
 
         return $query;
@@ -106,27 +104,58 @@ class ProdutoSearch extends Produto
 
     public function searchProdutosVendaIndex($params)
     {
-      $query = Produto::find();
+        $query = Produto::find();
 
-      $dataProvider = new ActiveDataProvider([
-        'query' => $query,
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
         ]);
-      $query->joinWith('insumos')
-      ->where(['isInsumo'=>0])->all();
+        $query->joinWith('insumos')
+            ->where(['isInsumo' => 0])->all();
 
 
+        return $dataProvider;
+    }
 
-      return $dataProvider;
-  }
-  public function searchProdutosCompra($idProduto)
-  {
+    public function searchProdutosCompra($idProduto)
+    {
 
-    $query = Compraproduto::find()->join(
-        'INNER JOIN', 'compra', 'idCompra = idconta')->
-    where(['idProduto'=>$idProduto] )->orderBy('dataCompra DESC')->one();
+        $query = Compraproduto::find()->join(
+            'INNER JOIN', 'compra', 'idCompra = idconta')->
+        where(['idProduto' => $idProduto])->orderBy('dataCompra DESC')->one();
 
 
+        return $query;
+    }
 
-    return $query;
-}
+    /**
+     * @param $idProdutoVenda
+     * @return mixed
+     */
+    public function searchQuantidadeProdutosEmVendas($idProdutoVenda)
+    {
+        //Guarda o mês atual
+        $mes = date('m');
+
+
+        //Guarda o último dia do mês
+        $lastDayOfMonth = date('t', strtotime(date('Y') . '-' . $mes . '-' . date('d')));
+
+
+        //Busca os produtos vendidos(produzidos) no período mensal(Do primeiro até o último dia do mês atual)
+        $query =
+            Produto::find()
+                ->joinWith('itempedidos')
+                ->joinWith('itempedidos.pedido')
+                ->joinWith('itempedidos.pedido.pagamento')
+                ->joinWith('itempedidos.pedido.pagamento.contasareceber')
+                ->joinWith('itempedidos.pedido.pagamento.contasareceber.conta')
+                ->where(['produto.idProduto' => $idProdutoVenda])
+                ->andWhere(['between', 'dataHora',
+                    date('Y') . '-' . $mes . '-' . '01', date('Y') . '-' . $mes . '-' . $lastDayOfMonth]);
+
+        //Guarda a soma dos produtos vendidos(produzidos) no período mensal(Do primeiro até o último dia do mês)
+        $sumQuantidade = $query->sum('quantidade');
+
+        return $sumQuantidade;
+    }
 }

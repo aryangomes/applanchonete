@@ -2,13 +2,20 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use miloschuman\highcharts\Highcharts;
+use miloschuman\highcharts\HighchartsAsset;
 use kartik\datecontrol\DateControl;
 /* @var $this yii\web\View */
 /* @var $model app\models\Relatorio */
 /* @var $form yii\widgets\ActiveForm */
+$this->title = $model->isNewRecord ? Yii::t('app', 'Create {model}', ['model'=>'Relatório']) :
+    Yii::t('app', 'View {model}', ['model'=>'Relatório']);
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Relatorios'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
+
+    <h1><?= Html::encode($this->title) ?></h1>
 <div class="relatorio-form">
 
    <?php $form = ActiveForm::begin(); ?>
@@ -57,3 +64,30 @@ use kartik\datecontrol\DateControl;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+if(isset($model->idrelatorio)){
+HighchartsAsset::register($this)->withScripts(['highcharts', 'modules/exporting', 'modules/drilldown', 'highcharts-more',]);
+echo Highcharts::widget([
+
+    'options' => [
+        'chart'=>[
+            'type'=>'column'],
+
+        'title' => ['text' => 'Quantidade de produtos vendidos <b> de ' . $model->inicio_intervalo . ' até ' .$model->fim_intervalo  ],
+        'xAxis' => [
+            'categories' => $datasPagamentos
+        ],
+        'yAxis' => [
+            'title' => ['text' => 'Quantidade de pagamentos feitos por Tipo de Pagamento']
+        ],
+        'credits'=>false,
+        'series' => 
+            $tiposPagamentos
+
+    ]
+]);
+}
+
+
+?>

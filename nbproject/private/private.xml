@@ -3,8 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/applanchonete/controllers/ProdutoController.php</file>
-            <file>file:/var/www/applanchonete/controllers/DestaquesController.php</file>
+            <file>file:/opt/lampp/htdocs/applanchonete/views/relatorio/relatoriocontasareceber.php</file>
+            <file>file:/opt/lampp/htdocs/applanchonete/models/PedidoSearch.php</file>
+            <file>file:/opt/lampp/htdocs/applanchonete/models/ItempedidoSearch.php</file>
+            <file>file:/opt/lampp/htdocs/applanchonete/controllers/RelatorioController.php</file>
         </group>
     </open-files>
 </project-private>

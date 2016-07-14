@@ -2,10 +2,10 @@
 
 namespace app\models;
 
+use app\models\Pedido;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Pedido;
 
 /**
  * PedidoSearch represents the model behind the search form about `app\models\Pedido`.
@@ -69,4 +69,32 @@ class PedidoSearch extends Pedido
 
         return $dataProvider;
     }
+
+    public function searchCountPedidosContasAReceberPorPeriodo($dataInicio,$dataFinal)
+    {
+
+
+        $query = \Yii::$app->db->createCommand("
+        SELECT *, COUNT('idPedido') FROM pedido ped NATURAL JOIN  (pagamento p JOIN contasareceber ON p.idConta = contasareceber.idconta) 
+        JOIN conta on conta.idconta = contasareceber.idconta WHERE contasareceber.dataHora BETWEEN '".$dataInicio."'
+        and '".$dataFinal."' GROUP BY (DATE_FORMAT(contasareceber.dataHora,'%m-%d-%Y')) 
+         ORDER BY 'idPedido, contasareceber.dataHora ASC'
+        
+        ")->queryAll();
+        $pedidosCount = [];
+        $pedidosDatas = [];
+        foreach ($query as $ped){
+            array_push($pedidosDatas,date('d/m/Y',strtotime($ped ["dataHora"])));
+
+            $auxCountPedidos = [
+                'name'=>date('d/m/Y',strtotime($ped ["dataHora"])),
+                'data'=>[intval($ped["COUNT('idPedido')"])],
+            ];
+
+            array_push($pedidosCount,$auxCountPedidos);
+        }
+
+        return [$pedidosCount,$pedidosDatas];
+    }
+
 }

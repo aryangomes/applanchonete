@@ -67,4 +67,35 @@ class ContasareceberSearch extends Contasareceber
 
         return $dataProvider;
     }
+
+    public function searchDatasContasAReceberPorPeriodo($dataInicio,$dataFinal)
+    {
+        $query = Contasareceber::find()->where(['between','dataHora',$dataInicio,$dataFinal])
+            ->orderBy('dataHora ASC')->all();
+
+
+        $datasContasAReceber = [];
+       
+        foreach ($query as $ctareceber){
+            array_push($datasContasAReceber,date("d/m/Y", strtotime($ctareceber->dataHora)));
+        }
+
+        return $datasContasAReceber;
+    }
+
+    public function searchContasAReceberPorPeriodo($dataInicio,$dataFinal)
+    {
+        $query = Contasareceber::find()
+            ->joinWith('conta')
+            ->where(['between','dataHora',$dataInicio,$dataFinal])->all();
+
+
+        $valoresContasAReceber = [];
+      
+        foreach ($query as $ctareceber){
+            array_push($valoresContasAReceber,$ctareceber["conta"]->valor);
+        }
+
+        return $valoresContasAReceber;
+    }
 }

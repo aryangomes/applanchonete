@@ -4,6 +4,7 @@ return [
 'Delete'=>'Excluir',
 'Create {model}'=>'Cadastrar {model}',
 'Update {modelClass}: '=>'Alterar {modelClass}',
+'View {model}'=>'Visualizar {model}',
 'Relatorios'=>'Relatórios',
 'Relatorio'=>'Relatório',
 'Search'=>'Procurar',

@@ -173,18 +173,38 @@ class Produto extends \yii\db\ActiveRecord
         //Model para a busca dos dados de Custo Fixo
         $searchModelCustoFixo = new CustofixoSearch();
 
+        $arrayTipoCustoFixoZero = [];
+
         //Guarda o consumo mensal de cada tipo de Custo Fixo
         foreach ($tiposCustoFixo as $custoFixo) {
             $consumoCustoFixo = $searchModelCustoFixo
                 ->searchConsumoCustoFixoporTipoMensal($custoFixo->idtipocustofixo, date('m'));
             array_push($consumosCustoFixo, $consumoCustoFixo);
+            if($consumoCustoFixo > 0){
+                $ct = ($sumQuantidadeVendaProdutoVenda / $consumoCustoFixo);
+                $precosugerido += $ct;
+            }else{
+                    array_push($arrayTipoCustoFixoZero,$custoFixo->tipocustofixo);
+
+            }
+        }
+
+        if(isset($arrayTipoCustoFixoZero)){
+            Yii::$app->session->setFlash('custofixozerados', "<div class=\"alert alert-warning\">
+   Não foram calculados os custos fixos de ".implode(",",$arrayTipoCustoFixoZero)." pois não
+    há registro(s) dele(s) no mês anterior
+</div>");
         }
 
         //Soma o(s) valor(es) médio(s) de custos fixos do mês ao custo do produto
-        foreach ($consumosCustoFixo as $custo) {
+       /* foreach ($consumosCustoFixo as $custo) {
+            if($custo > 0){
             $ct = ($sumQuantidadeVendaProdutoVenda / $custo);
             $precosugerido += $ct;
-        }
+            }else{
+                echo "Não há vendas no mês anterior";
+            }
+        }*/
 
         //Soma o(s) valor(es) do(s) insumo(s) do produto venda ao custo do produto
         foreach ($insumos as $key => $insumo) {

@@ -2,13 +2,20 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use miloschuman\highcharts\Highcharts;
+use miloschuman\highcharts\HighchartsAsset;
 use kartik\datecontrol\DateControl;
 /* @var $this yii\web\View */
 /* @var $model app\models\Relatorio */
 /* @var $form yii\widgets\ActiveForm */
+$this->title = $model->isNewRecord ? Yii::t('app', 'Create {model}', ['model'=>'Relatório']) :
+    Yii::t('app', 'View {model}', ['model'=>'Relatório']);
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Relatorios'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
+
+    <h1><?= Html::encode($this->title) ?></h1>
 <div class="relatorio-form">
 
    <?php $form = ActiveForm::begin(); ?>
@@ -57,3 +64,31 @@ use kartik\datecontrol\DateControl;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+if(isset($model->idrelatorio)){
+HighchartsAsset::register($this)->withScripts(['highstock', 'modules/exporting', 'modules/drilldown']);
+echo Highcharts::widget([
+
+    'options' => [
+        'chart'=>[
+            'type'=>'area'],
+
+        'title' => ['text' => 'Quantidade de produtos vendidos <b> de ' . $model->inicio_intervalo . ' até ' .$model->fim_intervalo  ],
+        'xAxis' => [
+            'categories' => $datasContasAReceber
+        ],
+        'yAxis' => [
+            'title' => ['text' => 'Valor da conta recebido']
+        ],
+        'credits'=>false,
+        'series' => [
+            ['name' => 'Valor', 'data' =>$valoresContasAReceber
+            ],
+
+        ]
+    ]
+]);
+}
+
+?>

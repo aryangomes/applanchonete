@@ -48,7 +48,7 @@ class Pagamento extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
 
-    public function getContasareceber()
+        public function getContasareceber()
     {
         return $this->hasOne(Contasareceber::className(), ['idconta' => 'idConta']);
     }

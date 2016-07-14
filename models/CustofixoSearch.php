@@ -76,9 +76,8 @@ class CustofixoSearch extends Custofixo
     {
 
 
-        //Guarda o mês atual
-        $mes = date('m');
-
+        //Guarda o mês anterior
+        $mes = (date('m')-1);
 
         //Guarda o último dia do mês
         $lastDayOfMonth = date('t', strtotime(date('Y') . '-' . $mes . '-' . date('d')));

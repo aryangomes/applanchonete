@@ -282,6 +282,22 @@ class DefaultController extends Controller
              where("name <> 'admin' " )->orderBy('type ASC')->all(),
              'name','description');*/
         $permissoes = $this->permissoesSortable();
+        $permissoesRegister = [];
+        $this->authitems = AuthItem::find()
+            ->where("name not like '%-%' and name <> 'admin' and name <> 'alterarprodutovenda'  
+            and name <> 'produtosvenda'   and name <> 'cadastrarprodutovenda'
+            and name <> 'avaliacaoproduto'
+            and name <> 'listadeinsumos'
+            and name <> 'listadeprodutosporinsumo'")->orderBy('type ASC')->all();
+        foreach ($this->authitems as $ai) {
+    array_push($permissoesRegister, AuthItem::find()
+        ->where("name <> 'admin' and name like '%" . $ai->name . "%' ")->orderBy('type ASC')->all());
+
+            /*$permissoesRegister = AuthItem::find()
+                ->where("name <> 'admin' and name like '%" . $ai->name . "%' ")->orderBy('type ASC')->all();
+            */
+
+        }
 
 
         // set up new user/profile objects
@@ -356,7 +372,7 @@ class DefaultController extends Controller
 
         }
 
-        return $this->render("register", compact("user", "profile", "permissoes", "macroauthitems"));
+        return $this->render("register", compact("user", "profile", "permissoes", "macroauthitems","permissoesRegister"));
     }
 
     /**

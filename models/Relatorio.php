@@ -33,7 +33,7 @@ class Relatorio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nome', 'datageracao', 'fim_intervalo', 'usuario_id'], 'required'],
+            [[ 'inicio_intervalo','datageracao', 'fim_intervalo', 'usuario_id'], 'required'],
             [['datageracao', 'inicio_intervalo', 'fim_intervalo'], 'safe'],
             [['usuario_id'], 'integer'],
             [['nome'], 'string', 'max' => 100],
@@ -48,7 +48,7 @@ class Relatorio extends \yii\db\ActiveRecord
     {
         return [
             'idrelatorio' => Yii::t('app', 'Idrelatorio'),
-            'nome' => Yii::t('app', 'Nome'),
+            'nome' => Yii::t('app', 'Título'),
             'datageracao' => Yii::t('app', 'Datageracao'),
             'tipo' => Yii::t('app', 'Tipo'),
             'inicio_intervalo' => Yii::t('app', 'Inicio Intervalo'),

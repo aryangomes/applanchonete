@@ -27,14 +27,20 @@ $this->params['breadcrumbs'][] = $this->title;
         ['class' => 'yii\grid\SerialColumn'],
 
         
-        'nome',
+       [
+           'format'=>'raw',
+           'label'=>'Ação',
+           'value'=>function($model){
+             return  Html::a('Gerar relatório',['relatorio'.strtolower($model->tipo), 'id'=>$model->idrelatorio]);
+           },
+       ],
         'datageracao:date',
         'tipo',
         'inicio_intervalo:date',
         'fim_intervalo:date',
             // 'usuario_id',
 
-        ['class' => 'yii\grid\ActionColumn'],
+      //  ['class' => 'yii\grid\ActionColumn'],
         ],
         ]); ?>
 

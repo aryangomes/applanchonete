@@ -69,10 +69,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'label' => 'Preço de custo',
-                'format' => 'text',
+                'format' => 'raw',
                 'value' => $model->isInsumo ? null :
                     'R$ ' .\Yii::$app->formatter
-                        ->asDecimal(($model->calculoPrecoProduto($model->idProduto)),2)  ,
+                        ->asDecimal(($model->calculoPrecoProduto($model->idProduto)),2) .
+                    Yii::$app->session->getFlash('custofixozerados'),
                 'visible' => !($model->isInsumo),
             ],
 
@@ -80,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
     <div class="panel panel-default">
-
+       
         <?php
         if (isset($insumos) && !($produtoVenda->isInsumo)) {
 

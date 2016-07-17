@@ -96,21 +96,18 @@ if (isset($model->idrelatorio)) {
 
         'options' => [
             'chart' => [
-                'type' => 'area'],
+                'type' => 'column'],
             'title' => ['text' => 'Valores recebidos  de <b>' .
                 $model->formatarDataDiaMesAno($model->inicio_intervalo) . ' até ' .
                 $model->formatarDataDiaMesAno($model->fim_intervalo)],
             'xAxis' => [
-                'categories' => $datasContasAReceber
+                'categories' => ['Data']
             ],
             'yAxis' => [
                 'title' => ['text' => 'Valores']
             ],
             'credits' => false,
-            'series' => [
-                ['name' => 'Valor', 'data' => $valoresContasAReceber
-                ],
-            ]
+            'series' =>  $valoresContasAReceber
         ]
     ]);
 }

@@ -9,6 +9,9 @@ use yii\widgets\DetailView;
 $this->title = $model->descricao;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Contas'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+
+
 ?>
 <div class="conta-view">
 
@@ -55,8 +58,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ['label' => 'Data de Vencimento',
                 'visible'=> ($model->tipoConta == 'contasareceber')? true:false,
                 'format' => 'text',
-                'value' => ($model->tipoConta == 'contasareceber')?
-                    date('d/m/Y H:i',strtotime($model->getContaareceber($model->idconta)->dataHora))
+                'value' => ($model->tipoConta == 'contasareceber') && 
+                 ($model->getContaareceber($model->idconta) != null )?
+                 app\models\Relatorio::formatarDataDiaMesAno(
+                         ($model->getContaareceber($model->idconta)->dataHora))
                     : null,
             ],
             ['attribute'=>'situacaoPagamento',

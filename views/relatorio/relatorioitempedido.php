@@ -81,9 +81,11 @@ echo Highcharts::widget([
         'chart'=>[
             'type'=>'column'],
 
-        'title' => ['text' => 'Quantidade de produtos vendidos <b> de ' . $model->inicio_intervalo . ' até ' .$model->fim_intervalo  ],
+        'title' => ['text' =>  'Produtos vendidos  de <b>' .
+            $model->formatarDataDiaMesAno($model->inicio_intervalo) . ' até ' .
+            $model->formatarDataDiaMesAno($model->fim_intervalo )],
         'xAxis' => [
-            'categories' => ['Produtos de Vendas']
+            'categories' => ['Produtos vendidos']
         ],
         'yAxis' => [
             'title' => ['text' => 'Quantidade']

@@ -64,4 +64,18 @@ class Relatorio extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Usuario::className(), ['id' => 'usuario_id']);
     }
+    
+    /**
+     * 
+     * @param type $data
+     * Formata a data para o formato dia/mes/ano
+     */
+    public static function formatarDataDiaMesAno($data) {
+        $dataFormatada = null;
+        if($data !=null){
+            $dataFormatada = date('d/m/Y',  strtotime($data));
+        }
+        
+        return $dataFormatada;
+    }
 }

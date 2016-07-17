@@ -12,6 +12,12 @@ $this->title = $model->isNewRecord ? Yii::t('app', 'Create {model}', ['model'=>'
     Yii::t('app', 'View {model}', ['model'=>'Relatório']);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Relatorios'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+//var_dump($countTiposPagamentos);
+//echo '<br/>';
+//var_dump($datasPagamentos);
+//echo '<br/>';
+//var_dump($tiposPagamentos);
 ?>
 
 
@@ -74,9 +80,11 @@ echo Highcharts::widget([
         'chart'=>[
             'type'=>'column'],
 
-        'title' => ['text' => 'Quantidade de produtos vendidos <b> de ' . $model->inicio_intervalo . ' até ' .$model->fim_intervalo  ],
+        'title' => ['text' => 'Total de pagamentos de pedidos feitos  de <b>' .
+            $model->formatarDataDiaMesAno($model->inicio_intervalo) . ' até ' .
+            $model->formatarDataDiaMesAno($model->fim_intervalo ) ],
         'xAxis' => [
-            'categories' => $datasPagamentos
+            'categories' =>["Tipos de Pagamento"]
         ],
         'yAxis' => [
             'title' => ['text' => 'Quantidade de pagamentos feitos por Tipo de Pagamento']

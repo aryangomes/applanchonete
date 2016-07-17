@@ -30,7 +30,7 @@ class Custofixo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idconta', 'consumo', 'tipocustofixo_idtipocustofixo'], 'required'],
+            [['idconta', ], 'required'],
             [['idconta', 'tipocustofixo_idtipocustofixo'], 'integer'],
             [['consumo'], 'number'],
             [['idconta'], 'exist', 'skipOnError' => true, 'targetClass' => Contasapagar::className(), 'targetAttribute' => ['idconta' => 'idconta']],

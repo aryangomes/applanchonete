@@ -72,8 +72,8 @@ class ItempedidoSearch extends Itempedido {
         (pagamento p JOIN contasareceber ON p.idConta = contasareceber.idconta))) 
         JOIN conta on conta.idconta = contasareceber.idconta 
         WHERE contasareceber.dataHora BETWEEN '" . $dataInicio . "'
-        and '" . $dataFinal . "' GROUP BY (DATE_FORMAT(contasareceber.dataHora,'%m-%d-%Y')) 
-         ORDER BY 'ip.idProduto, contasareceber.dataHora ASC'
+        and '" . $dataFinal . "' GROUP BY ip.idProduto 
+         ORDER BY ' contasareceber.dataHora ASC'
         
         ")->queryAll();
         $qtdProdutosSum= [];

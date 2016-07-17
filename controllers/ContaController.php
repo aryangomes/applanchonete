@@ -99,6 +99,7 @@ class ContaController extends Controller
 
         $tiposCustoFixo = ArrayHelper::map(Tipocustofixo::find()->all(),
             'idtipocustofixo','tipocustofixo');
+//       
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
 
@@ -109,7 +110,7 @@ class ContaController extends Controller
             $custofixo = Yii::$app->request->post()['Custofixo'];
             if ($conta['tipoConta'] == 'contasapagar' ) {
                 $modelContaapagar->idconta = $model->idconta;
-//                $modelContaapagar->situacaoPagamento = $contasapagar['situacaoPagamento'];
+                $modelContaapagar->situacaoPagamento = $contasapagar['situacaoPagamento'];
                 $modelContaapagar->dataVencimento = $contasapagar['dataVencimento'];
                 $modelContaapagar->save();
             }else if ($conta['tipoConta'] == 'contasareceber') {
@@ -118,6 +119,7 @@ class ContaController extends Controller
                   $modelContasareceber->dataHora = $contasareceber['dataHora'];
                   $modelContasareceber->save();
               }
+            
            }else if ($conta['tipoConta'] == 'custofixo') {
 
                   $modelCustofixo->idconta = $model->idconta;
@@ -169,7 +171,7 @@ class ContaController extends Controller
         }else{
             $modelContasareceber = new Contasareceber();
         }
-
+       
         if(Custofixo::findOne($id)){
             $modelCustofixo = Custofixo::findOne($id);
         }else{
@@ -195,6 +197,7 @@ class ContaController extends Controller
                 if (($contasareceber['dataHora']) != null) {
                     $modelContasareceber->dataHora = $contasareceber['dataHora'];
                     $modelContasareceber->save();
+                
                 }
             }else if ($conta['tipoConta'] == 'custofixo') {
 

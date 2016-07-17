@@ -74,12 +74,14 @@ echo Highcharts::widget([
         'chart'=>[
             'type'=>'area'],
 
-        'title' => ['text' => 'Quantidade de produtos vendidos <b> de ' . $model->inicio_intervalo . ' até ' .$model->fim_intervalo  ],
+        'title' => ['text' => 'Valores recebidos  de <b>' .
+            $model->formatarDataDiaMesAno($model->inicio_intervalo) . ' até ' .
+            $model->formatarDataDiaMesAno($model->fim_intervalo )  ],
         'xAxis' => [
             'categories' => $datasContasAReceber
         ],
         'yAxis' => [
-            'title' => ['text' => 'Valor da conta recebido']
+            'title' => ['text' => 'Valores']
         ],
         'credits'=>false,
         'series' => [

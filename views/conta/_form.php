@@ -64,103 +64,13 @@ use kartik\datecontrol\DateControl;
     <?= $form->field($modelCustofixo, 'consumo')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($modelCustofixo, 'tipocustofixo_idtipocustofixo')->dropDownList($tiposCustoFixo, [
-        'prompt' => 'Selecione o tipo de Custo Fixo'
+        'prompt' => 'Selecione o tipo de Custo Fixo', 'idtipocustofixo'
     ]) ?>
 
     <?php
-    $this->registerJs('
-		
-		var tipo = $("#conta-tipoconta").val();
-			console.log(tipo.length);
-		if (tipo.length == 0) {
-		$("[class=\'form-group field-contasapagar-datavencimento\']").hide();
-		$("[class=\'form-group field-contasapagar-situacaopagamento required\']").hide();
-		$("[class=\'form-group field-contasareceber-datahora\']").hide();
-		$("[class=\'form-group field-custofixo-consumo required\']").hide();	
-		$("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").hide();
-		}
-		
-		if (tipo == \'contasapagar\') {
-				$("[class=\'form-group field-contasapagar-datavencimento\']").show();
-				$("[class=\'form-group field-contasapagar-situacaopagamento required\']").show();
-				$("[class=\'form-group field-contasapagar-datavencimento\']").prop(\'disabled\', false);
-				$("#contasapagar-situacaopagamento").prop(\'disabled\', false);
-				$("[class=\'form-group field-contasareceber-datahora\']").hide();
-				$("[class=\'form-group field-contasareceber-datahora\']").prop(\'disabled\', true);
-				$("[class=\'form-group field-custofixo-consumo required\']").hide();	
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").hide();
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").prop(\'disabled\', true);
-				$("[class=\'form-group field-custofixo-consumo required\']").prop(\'disabled\', true);
-
-			}else if (tipo == \'contasareceber\') {
-				$("[class=\'form-group field-contasapagar-datavencimento\']").hide();
-				$("[class=\'form-group field-contasapagar-situacaopagamento required\']").hide();
-				$("[class=\'form-group field-contasapagar-datavencimento\']").prop(\'disabled\', true);
-				$("#contasapagar-situacaopagamento").prop(\'disabled\', true);
-				$("[class=\'form-group field-contasareceber-datahora\']").show();
-				$("[class=\'form-group field-contasareceber-datahora\']").prop(\'disabled\', false);
-				$("[class=\'form-group field-custofixo-consumo required\']").hide();	
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").hide();
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").prop(\'disabled\', true);
-				$("[class=\'form-group field-custofixo-consumo required\']").prop(\'disabled\', true);
-
-			}
-			else if (tipo == \'custofixo\') {
-				
-				$("[class=\'form-group field-contasapagar-situacaopagamento required\']").hide();
-				$("#contasapagar-situacaopagamento").prop(\'disabled\', true);
-				$("[class=\'form-group field-contasareceber-datahora\']").hide();
-				$("[class=\'form-group field-contasareceber-datahora\']").prop(\'disabled\', true);
-				$("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").prop(\'disabled\', false);
-				$("[class=\'form-group field-custofixo-consumo required\']").prop(\'disabled\', false);
-				$("[class=\'form-group field-custofixo-consumo required\']").show();	
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").show();
-		        $("[class=\'form-group field-contasapagar-datavencimento\']").show();
-
-			}
-		
-		$("#conta-tipoconta").change(function(){
-		tipo = $("#conta-tipoconta").val();
-			console.log(tipo);
-			if (tipo == \'contasapagar\') {
-				$("[class=\'form-group field-contasapagar-datavencimento\']").show();
-				$("[class=\'form-group field-contasapagar-situacaopagamento required\']").show();
-				$("[class=\'form-group field-contasapagar-datavencimento\']").prop(\'disabled\', false);
-				$("#contasapagar-situacaopagamento").prop(\'disabled\', false);
-				$("[class=\'form-group field-contasareceber-datahora\']").hide();
-				$("[class=\'form-group field-contasareceber-datahora\']").prop(\'disabled\', true);
-				$("[class=\'form-group field-custofixo-consumo required\']").hide();	
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").hide();
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").prop(\'disabled\', true);
-				$("[class=\'form-group field-custofixo-consumo required\']").prop(\'disabled\', true);
-
-			}else if (tipo == \'contasareceber\') {
-				$("[class=\'form-group field-contasapagar-datavencimento\']").hide();
-				$("[class=\'form-group field-contasapagar-situacaopagamento required\']").hide();
-				$("[class=\'form-group field-contasapagar-datavencimento\']").prop(\'disabled\', true);
-				$("#contasapagar-situacaopagamento").prop(\'disabled\', true);
-				$("[class=\'form-group field-contasareceber-datahora\']").show();
-				$("[class=\'form-group field-contasareceber-datahora\']").prop(\'disabled\', false);
-				$("[class=\'form-group field-custofixo-consumo required\']").hide();	
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").hide();
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").prop(\'disabled\', true);
-				$("[class=\'form-group field-custofixo-consumo required\']").prop(\'disabled\', true);
-
-			}
-			else if (tipo == \'custofixo\') {
-				
-				$("[class=\'form-group field-contasapagar-situacaopagamento required\']").hide();
-				$("#contasapagar-situacaopagamento").prop(\'disabled\', true);
-				$("[class=\'form-group field-contasareceber-datahora\']").hide();
-				$("[class=\'form-group field-contasareceber-datahora\']").prop(\'disabled\', true);
-				$("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").prop(\'disabled\', false);
-				$("[class=\'form-group field-custofixo-consumo required\']").prop(\'disabled\', false);
-				$("[class=\'form-group field-custofixo-consumo required\']").show();	
-		        $("[class=\'form-group field-custofixo-tipocustofixo_idtipocustofixo required\']").show();
-		        $("[class=\'form-group field-contasapagar-datavencimento\']").show();
-
-			}
-		});');
+    $this->registerJsFile(\Yii::getAlias("@web") . '/js/conta_form.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]);
+   
 
     ?>
 

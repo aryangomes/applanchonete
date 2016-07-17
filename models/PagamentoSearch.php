@@ -115,7 +115,7 @@ class PagamentoSearch extends Pagamento
         SELECT *, COUNT('idTipoPagamento') FROM (pagamento p JOIN contasareceber ON p.idConta = contasareceber.idconta) 
         JOIN conta on conta.idconta = contasareceber.idconta WHERE contasareceber.dataHora BETWEEN '".$dataInicio."'
         and '".$dataFinal."' and idTipoPagamento ="
-                .$fp->idTipoPagamento." GROUP BY (DATE_FORMAT(contasareceber.dataHora,'%m-%d-%Y'))  ORDER BY 'idTipoPagamento, contasareceber.dataHora ASC'
+                .$fp->idTipoPagamento." GROUP BY (idTipoPagamento)  ORDER BY 'idTipoPagamento, contasareceber.dataHora ASC'
         
         ")->queryAll();
 
@@ -141,6 +141,9 @@ class PagamentoSearch extends Pagamento
         $auxTiposPagamentos = [];
         $auxCountTiposPagamentos = [];
         $formasPagamentos = Formapagamento::find()->all();
+        $countTiposPagamentos = $this->searchCountPagamentosContasAReceberPorPeriodo($dataInicio, $dataFinal);
+        
+        var_dump($countTiposPagamentos);
         foreach ($formasPagamentos as $key => $fp) {
             $auxQuery = \Yii::$app->db->createCommand("
         SELECT *, COUNT('idTipoPagamento') FROM (pagamento p JOIN contasareceber ON p.idConta = contasareceber.idconta) 
@@ -149,14 +152,14 @@ class PagamentoSearch extends Pagamento
                 .$fp->idTipoPagamento." GROUP BY (DATE_FORMAT(contasareceber.dataHora,'%m-%d-%Y'))  ORDER BY 'idTipoPagamento, contasareceber.dataHora ASC'
         
         ")->queryAll();
-
+var_dump($key);
             foreach($auxQuery as $aq){
                array_push($auxCountTiposPagamentos,($aq["COUNT('idTipoPagamento')"]));
             }
 
             $auxTiposPagamentos = [
                 'name'=> $fp->titulo,
-                'data'=>$auxCountTiposPagamentos,
+                'data'=> [ intval($countTiposPagamentos[$key])],
             ];
             $auxCountTiposPagamentos =[];
             array_push($tiposPagamentos , $auxTiposPagamentos);

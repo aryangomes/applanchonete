@@ -80,6 +80,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ])
         ?>
+        <?=
+        Html::a('Gerar PDF', 
+                ['pdfpagamento','id'=>$model->idrelatorio], [
+            'class' => 'btn btn-danger',
+            'target' => '_blank',
+            'data-toggle' => 'tooltip',
+            'title' => 'Clique para gerar um PDF'
+        ]);
+        ?>
     </div>
 
 <?php ActiveForm::end(); ?>

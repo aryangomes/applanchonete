@@ -74,7 +74,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ])
         ?>
-       
+       <?=
+        Html::a('Gerar PDF', 
+                ['pdfpedido','id'=>$model->idrelatorio], [
+            'class' => 'btn btn-danger',
+            'target' => '_blank',
+            'data-toggle' => 'tooltip',
+            'title' => 'Clique para gerar um PDF'
+        ]);
+        ?>
     </div>
 
 <?php ActiveForm::end(); ?>
@@ -83,6 +91,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 if (isset($model->idrelatorio) && count($pedidos[0]) > 0) {
+    
     HighchartsAsset::register($this)->withScripts(['highcharts', 'modules/exporting', 'modules/drilldown']);
     echo Highcharts::widget([
 
@@ -90,14 +99,14 @@ if (isset($model->idrelatorio) && count($pedidos[0]) > 0) {
             'chart' => [
                 'type' => 'column'],
             'title' => ['text' =>
-                'Quantidade de produtos vendidos de <b>' .
+                'Quantidade de Pedidos feitos de <b>' .
                 $model->formatarDataDiaMesAno($model->inicio_intervalo) . ' até ' .
                 $model->formatarDataDiaMesAno($model->fim_intervalo)],
             'xAxis' => [
-                'categories' => $pedidos[1]
+                'categories' => ['Data']
             ],
             'yAxis' => [
-                'title' => ['text' => 'Quantidade de pagamentos feitos por Tipo de Pagamento']
+                'title' => ['text' => 'Quantidade']
             ],
             'credits' => false,
             'series' => $pedidos[0]

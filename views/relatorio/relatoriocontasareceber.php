@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ])
         ?>
          <?=
-        Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> Gerar PDF', 
+        Html::a('Gerar PDF', 
                 ['pdfcontasareceber','id'=>$model->idrelatorio], [
             'class' => 'btn btn-danger',
             'target' => '_blank',

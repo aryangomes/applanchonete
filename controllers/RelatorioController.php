@@ -18,6 +18,7 @@ use yii\web\ForbiddenHttpException;
 use app\components\AccessFilter;
 use \app\models\Itempedido;
 use kartik\mpdf\Pdf;
+use \app\models\ItempedidoSearch;
 
 /**
  * RelatorioController implements the CRUD actions for Relatorio model.
@@ -308,7 +309,7 @@ class RelatorioController extends Controller {
             }
 
 
-            $searchItemPedido = new \app\models\ItempedidoSearch();
+            $searchItemPedido = new ItempedidoSearch();
 
             $model = $this->findModel($id);
 
@@ -316,33 +317,153 @@ class RelatorioController extends Controller {
             return $this->render('relatorioitempedido', [
                         'model' => $model,
                         'tiposRelatorio' => $this->tiposRelatorio,
-                        'pedidos' => $searchItemPedido->searchItensPedido($model->inicio_intervalo, $model->fim_intervalo),
+                        'produtosVendidos' => $searchItemPedido->searchItensPedido($model->inicio_intervalo, $model->fim_intervalo),
             ]);
         }
     }
 
     public function actionPdfcontasareceber($id = null) {
         if ($id != null) {
-          
+
             $searchContasAReceber = new ContasareceberSearch();
             $model = $this->findModel($id);
-         $dadosContasAReceber = [$searchContasAReceber->searchDatasContasAReceberPorPeriodo
-                 ($model->inicio_intervalo, $model->fim_intervalo),
-             $searchContasAReceber->searchContasAReceberPorPeriodo
-                 ($model->inicio_intervalo, $model->fim_intervalo)
-             ];
-         
+            $dadosContasAReceber = [$searchContasAReceber->searchDatasContasAReceberPorPeriodo
+                        ($model->inicio_intervalo, $model->fim_intervalo),
+                $searchContasAReceber->searchContasAReceberPorPeriodo
+                        ($model->inicio_intervalo, $model->fim_intervalo)
+            ];
+
 //         Setando a data para o fuso do Brasil
-         date_default_timezone_set('America/Sao_Paulo');
+            date_default_timezone_set('America/Sao_Paulo');
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
                 'content' => $this->renderPartial('pdfcontasareceber', [
-                        'model' => $model,
-                    'dadosContasAReceber'=> $dadosContasAReceber,
-                      
-            ]),
+                    'model' => $model,
+                    'dadosContasAReceber' => $dadosContasAReceber,
+                ]),
                 'options' => [
-                    'title' => 'Relatório Contas a Receber',
+                    'title' => 'Relatório de Contas a Receber',
+                ],
+                'methods' => [
+                    'SetHeader' => ['Gerado pelo Componente "Krajee Pdf" ||Gerado em: ' . date('d/m/Y h:m:s')],
+                    'SetFooter' => ['|Página {PAGENO}|'],
+                ]
+            ]);
+            return $pdf->render();
+        } else {
+            $searchModel = new RelatorioSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+            return $this->render('index', [
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+            ]);
+        }
+    }
+
+    public function actionPdfpagamento($id = null) {
+        if ($id != null) {
+
+            $searchPagamento = new PagamentoSearch();
+
+            $model = $this->findModel($id);
+
+            $dadosPagamento = $searchPagamento->searchPagamentosContasAReceberPorPeriodo
+                    ($model->inicio_intervalo, $model->fim_intervalo);
+
+
+
+//         Setando a data para o fuso do Brasil
+            date_default_timezone_set('America/Sao_Paulo');
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, 
+                'content' => $this->renderPartial('pdfpagamento', [
+                    'model' => $model,
+                    'dadosPagamento' => $dadosPagamento,
+                ]),
+                'options' => [
+                    'title' => 'Relatório de Pagamentos',
+                ],
+                'methods' => [
+                    'SetHeader' => ['Gerado pelo Componente "Krajee Pdf" ||Gerado em: ' . date('d/m/Y h:m:s')],
+                    'SetFooter' => ['|Página {PAGENO}|'],
+                ]
+            ]);
+            return $pdf->render();
+        } else {
+            $searchModel = new RelatorioSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+            return $this->render('index', [
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+            ]);
+        }
+    }
+    
+    public function actionPdfpedido($id = null) {
+        if ($id != null) {
+
+         $searchPedido = new PedidoSearch();
+
+            $model = $this->findModel($id);
+
+            $dadosPedido =  $searchPedido->searchCountPedidosContasAReceberPorPeriodo
+                    ($model->inicio_intervalo, $model->fim_intervalo);
+      
+
+
+
+//         Setando a data para o fuso do Brasil
+            date_default_timezone_set('America/Sao_Paulo');
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, 
+                'content' => $this->renderPartial('pdfpedido', [
+                    'model' => $model,
+                    'dadosPedido' => $dadosPedido ,
+                ]),
+                'options' => [
+                    'title' => 'Relatório de Pedidos Feitos',
+                ],
+                'methods' => [
+                    'SetHeader' => ['Gerado pelo Componente "Krajee Pdf" ||Gerado em: ' . date('d/m/Y h:m:s')],
+                    'SetFooter' => ['|Página {PAGENO}|'],
+                ]
+            ]);
+            return $pdf->render();
+        } else {
+            $searchModel = new RelatorioSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+            return $this->render('index', [
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+            ]);
+        }
+    }
+    
+    public function actionPdfitempedido($id = null) {
+        if ($id != null) {
+
+         $searchItemPedido = new ItempedidoSearch();
+
+            $model = $this->findModel($id);
+
+
+           $dadosItemPedido = $searchItemPedido->searchItensPedido($model->inicio_intervalo, $model->fim_intervalo);
+
+
+
+//         Setando a data para o fuso do Brasil
+            date_default_timezone_set('America/Sao_Paulo');
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, 
+                'content' => $this->renderPartial('pdfitempedido', [
+                    'model' => $model,
+                    'dadosItemPedido' => $dadosItemPedido ,
+                ]),
+                'options' => [
+                    'title' => 'Relatório de Quantidade de Produtos Vendidos',
                 ],
                 'methods' => [
                     'SetHeader' => ['Gerado pelo Componente "Krajee Pdf" ||Gerado em: ' . date('d/m/Y h:m:s')],

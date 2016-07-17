@@ -66,6 +66,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'method' => 'post',
             ],
             ]) ?>
+        <?=
+        Html::a('Gerar PDF', 
+                ['pdfitempedido','id'=>$model->idrelatorio], [
+            'class' => 'btn btn-danger',
+            'target' => '_blank',
+            'data-toggle' => 'tooltip',
+            'title' => 'Clique para gerar um PDF'
+        ]);
+        ?>
     </div>
 
     <?php ActiveForm::end(); ?>
@@ -74,6 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 if(isset($model->idrelatorio)){
+ 
 HighchartsAsset::register($this)->withScripts(['highstock', 'modules/exporting', 'modules/drilldown']);
 echo Highcharts::widget([
 
@@ -91,7 +101,7 @@ echo Highcharts::widget([
             'title' => ['text' => 'Quantidade']
         ],
         'credits'=>false,
-        'series' =>$pedidos
+        'series' =>$produtosVendidos
     ]
 ]);
 }

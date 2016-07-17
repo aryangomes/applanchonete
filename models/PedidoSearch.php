@@ -75,10 +75,11 @@ class PedidoSearch extends Pedido
 
 
         $query = \Yii::$app->db->createCommand("
-        SELECT *, COUNT('idPedido') FROM pedido ped NATURAL JOIN  (pagamento p JOIN contasareceber ON p.idConta = contasareceber.idconta) 
-        JOIN conta on conta.idconta = contasareceber.idconta WHERE contasareceber.dataHora BETWEEN '".$dataInicio."'
+        SELECT *, COUNT('idPedido') FROM pedido ped JOIN (pagamento p JOIN contasareceber 
+        ON p.idConta = contasareceber.idconta) on ped.idPedido = p.idPedido JOIN conta 
+        ON conta.idconta = contasareceber.idconta WHERE contasareceber.dataHora BETWEEN '".$dataInicio."'
         and '".$dataFinal."' GROUP BY (DATE_FORMAT(contasareceber.dataHora,'%m-%d-%Y')) 
-         ORDER BY 'idPedido, contasareceber.dataHora ASC'
+         ORDER BY 'contasareceber.dataHora ASC'
         
         ")->queryAll();
         $pedidosCount = [];

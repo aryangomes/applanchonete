@@ -19,15 +19,15 @@ $this->params['breadcrumbs'][] = $this->title;
 <h1><?= Html::encode($this->title) ?></h1>
 <div class="relatorio-form">
 
-<?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(); ?>
 
     <?/*= $form->field($model, 'nome')->textInput(['maxlength' => true]) */?>
 
     <?= $form->field($model, 'datageracao')->hiddenInput(['value' => date('Y-m-d')])->label(false); ?>
 
     <?=
-    $form->field($model, 'tipo')->dropDownList(
-            $tiposRelatorio, ['prompt' => 'Selecione o tipo de relatório'])
+    $form->field($model, 'tipo')->textInput(
+            ['disabled' => true])
     ?>
 
 
@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'language' => 'pt',
     ]);
     ?>
-        <?= $form->field($model, 'usuario_id')->hiddenInput(['value' => Yii::$app->user->getId()])->label(false); ?>
+    <?= $form->field($model, 'usuario_id')->hiddenInput(['value' => Yii::$app->user->getId()])->label(false); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -74,23 +74,25 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ])
         ?>
-         <?=
-        Html::a('Gerar PDF', 
-                ['pdfcontasareceber','id'=>$model->idrelatorio], [
+        <?=
+        Html::a('Gerar PDF', ['pdfcontasareceber', 'id' => $model->idrelatorio], [
             'class' => 'btn btn-danger',
             'target' => '_blank',
             'data-toggle' => 'tooltip',
-            'title' => 'Clique para gerar um PDF'
+            'title' => 'Clique para gerar um PDF',
+            'disabled' =>
+            (isset($model->idrelatorio) && count($valoresContasAReceber) > 0) ?
+                    false : true,
         ]);
         ?>
     </div>
 
-<?php ActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
 
 </div>
 
 <?php
-if (isset($model->idrelatorio)) {
+if (isset($model->idrelatorio) && count($valoresContasAReceber) > 0) {
     HighchartsAsset::register($this)->withScripts(['highstock', 'modules/exporting', 'modules/drilldown']);
     echo Highcharts::widget([
 
@@ -107,8 +109,14 @@ if (isset($model->idrelatorio)) {
                 'title' => ['text' => 'Valores']
             ],
             'credits' => false,
-            'series' =>  $valoresContasAReceber
+            'series' => $valoresContasAReceber
         ]
     ]);
+} else {
+    ?>
+    <div class="alert alert-warning">
+        <strong>Informação!</strong> Não há registros de Contas a Receber.
+    </div>
+    <?php
 }
 ?>

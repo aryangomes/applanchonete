@@ -25,9 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $form->field($model, 'datageracao')->hiddenInput(['value' => date('Y-m-d')])->label(false); ?>
 
-    <?=
-    $form->field($model, 'tipo')->dropDownList(
-            $tiposRelatorio, ['prompt' => 'Selecione o tipo de relatório'])
+    <?= $form->field($model, 'tipo')->textInput(
+            ['disabled' => true])
     ?>
 
 
@@ -80,7 +79,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'class' => 'btn btn-danger',
             'target' => '_blank',
             'data-toggle' => 'tooltip',
-            'title' => 'Clique para gerar um PDF'
+            'title' => 'Clique para gerar um PDF',
+            'disabled' =>
+            (isset($model->idrelatorio) && count($pedidos[0]) > 0) ?
+                    false : true,
         ]);
         ?>
     </div>
@@ -114,8 +116,8 @@ if (isset($model->idrelatorio) && count($pedidos[0]) > 0) {
     ]);
 } else {
     ?>
-    <div class="alert alert-info">
-        <strong>Informaçao!</strong> Não há registros de Pedidos.
+    <div class="alert alert-warning">
+        <strong>Informação!</strong> Não há registros de Pedidos.
     </div>
     <?php
 }

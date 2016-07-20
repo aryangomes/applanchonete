@@ -15,17 +15,17 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 
-<h1><?= '<p>'.Html::encode($this->title).'</p>' ?></h1>
+<h1><?= '<p>' . Html::encode($this->title) . '</p>' ?></h1>
 <div class="relatorio-form">
 
-   <?=  '<h4><p>Produtos vendidos  de <b>' .
-                $model->formatarDataDiaMesAno($model->inicio_intervalo) . ' até ' .
-                $model->formatarDataDiaMesAno($model->fim_intervalo) .'</p></h4>'?>
-    
-    <?php
+    <?=
+    '<h4><p>Produtos vendidos  de <b>' .
+    $model->formatarDataDiaMesAno($model->inicio_intervalo) . ' até ' .
+    $model->formatarDataDiaMesAno($model->fim_intervalo) . '</p></h4>'
+    ?>
 
+    <?php
     if (isset($model->idrelatorio)) {
-          
         ?>
         <table class="table table-bordered">
             <thead>
@@ -38,22 +38,20 @@ $this->params['breadcrumbs'][] = $this->title;
             </thead>
             <tbody>
                 <?php
-                        for ($i = 0; $i < count($dadosItemPedido) ; $i++){
-                      
-                        ?>
+                for ($i = 0; $i < count($dadosItemPedido); $i++) {
+                    ?>
 
-                        <tr>
-                            <td><?= $dadosItemPedido[$i]['name']?></td>
- <td><?=$dadosItemPedido[$i]['data'][0] ?></td>
-                        </tr>
-                    <?php 
+                    <tr>
+                        <td><?= $dadosItemPedido[$i]['name'] ?></td>
+                        <td><?= $dadosItemPedido[$i]['data'][0] ?></td>
+                    </tr>
+                    <?php
                 }
                 ?>
-                        
+
             </tbody>
         </table>
         <?php
-      
     }
     ?>
 </div>

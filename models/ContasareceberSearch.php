@@ -70,16 +70,17 @@ class ContasareceberSearch extends Contasareceber
 
     public function searchDatasContasAReceberPorPeriodo($dataInicio,$dataFinal)
     {
-        $query = Contasareceber::find()
-            ->joinWith('conta')
-            ->where(['between','dataHora',$dataInicio,$dataFinal])
-                ->groupBy('dataHora')->orderBy('dataHora ASC')->all();
-
+        $sql = "SELECT * from contasareceber cb JOIN conta c on c.idconta = cb.idconta WHERE dataHora BETWEEN '2000-01-01' and '2020-01-01' GROUP BY (DATE_FORMAT(dataHora,'%m-%d-%Y'))";   
+        $query = \Yii::$app->db->createCommand("
+       SELECT *, SUM(valor) from contasareceber cb JOIN conta c on c.idconta = cb.idconta WHERE 
+       dataHora BETWEEN '".$dataInicio."' and '".$dataFinal."' 
+        GROUP BY (DATE_FORMAT(dataHora,'%m-%d-%Y'))      
+        ")->queryAll();
 
         $datasContasAReceber = [];
        
         foreach ($query as $ctareceber){
-            array_push($datasContasAReceber,date("d/m/Y", strtotime($ctareceber->dataHora)));
+            array_push($datasContasAReceber,date('d/m/Y',strtotime($ctareceber ["dataHora"])));
         }
 
        

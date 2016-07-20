@@ -31,11 +31,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $form->field($model, 'datageracao')->hiddenInput(['value' => date('Y-m-d')])->label(false); ?>
 
-    <?=
-    $form->field($model, 'tipo')->dropDownList(
-            $tiposRelatorio, ['prompt' => 'Selecione o tipo de relatório'])
+    <?= $form->field($model, 'tipo')->textInput(
+            ['disabled' => true])
     ?>
-
 
 
     <?=
@@ -86,7 +84,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'class' => 'btn btn-danger',
             'target' => '_blank',
             'data-toggle' => 'tooltip',
-            'title' => 'Clique para gerar um PDF'
+            'title' => 'Clique para gerar um PDF',
+            'disabled' =>
+            (isset($model->idrelatorio) && count($tiposPagamentos) > 0) ?
+                    false : true,
         ]);
         ?>
     </div>
@@ -96,7 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <?php
-if (isset($model->idrelatorio)) {
+if (isset($model->idrelatorio) && count($tiposPagamentos) > 0) {
     HighchartsAsset::register($this)->withScripts(['highcharts', 'modules/exporting', 'modules/drilldown', 'highcharts-more',]);
     echo Highcharts::widget([
 
@@ -107,7 +108,7 @@ if (isset($model->idrelatorio)) {
                 $model->formatarDataDiaMesAno($model->inicio_intervalo) . ' até ' .
                 $model->formatarDataDiaMesAno($model->fim_intervalo)],
             'xAxis' => [
-                'categories' => ["Tipos de Pagamento"]
+                'categories' => ["Tipo de Pagamento"]
             ],
             'yAxis' => [
                 'title' => ['text' => 'Quantidade de pagamentos feitos por Tipo de Pagamento']
@@ -117,5 +118,11 @@ if (isset($model->idrelatorio)) {
             $tiposPagamentos
         ]
     ]);
+}else{
+    ?>
+    <div class="alert alert-warning">
+        <strong>Informação!</strong> Não há registros de Pagamentos.
+    </div>
+    <?php
 }
 ?>

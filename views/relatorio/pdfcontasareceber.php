@@ -15,15 +15,16 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 
-<h1><?= '<p>'.Html::encode($this->title).'</p>' ?></h1>
+<h1><?= '<p>' . Html::encode($this->title) . '</p>' ?></h1>
 <div class="relatorio-form">
 
-   <?=  '<h4><p>Valores recebidos  de <b>' .
-                $model->formatarDataDiaMesAno($model->inicio_intervalo) . ' até ' .
-                $model->formatarDataDiaMesAno($model->fim_intervalo) .'</p></h4>'?>
-    
+    <?=
+    '<h4><p>Valores recebidos  de <b>' .
+    $model->formatarDataDiaMesAno($model->inicio_intervalo) . ' até ' .
+    $model->formatarDataDiaMesAno($model->fim_intervalo) . '</p></h4>'
+    ?>
+
     <?php
-   
     if (isset($model->idrelatorio)) {
         ?>
         <table class="table table-bordered">
@@ -37,18 +38,17 @@ $this->params['breadcrumbs'][] = $this->title;
             </thead>
             <tbody>
                 <?php
-                        for ($i = 0; $i < count($dadosContasAReceber[0]) ; $i++){
-                      
-                        ?>
+                for ($i = 0; $i < count($dadosContasAReceber[0]); $i++) {
+                    ?>
 
-                        <tr>
-                            <td><?= $dadosContasAReceber[0][$i]?></td>
- <td><?= $dadosContasAReceber[1][$i]?></td>
-                        </tr>
-                    <?php 
+                    <tr>
+                        <td><?= $dadosContasAReceber[0][$i] ?></td>
+                        <td><?= $dadosContasAReceber[1][$i]['data'][0] ?></td>
+                    </tr>
+                    <?php
                 }
                 ?>
-                        
+
             </tbody>
         </table>
         <?php

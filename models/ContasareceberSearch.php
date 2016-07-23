@@ -10,26 +10,24 @@ use app\models\Contasareceber;
 /**
  * ContasareceberSearch represents the model behind the search form about `app\models\Contasareceber`.
  */
-class ContasareceberSearch extends Contasareceber
-{
+class ContasareceberSearch extends Contasareceber {
 
     public $conta;
+
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-        [['idconta'], 'integer'],
-        [['dataHora','conta'], 'safe'],
+            [['idconta'], 'integer'],
+            [['dataHora', 'conta'], 'safe'],
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -41,15 +39,14 @@ class ContasareceberSearch extends Contasareceber
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
+    public function search($params) {
         $query = Contasareceber::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            ]);
+        ]);
 
         $this->load($params);
 
@@ -63,59 +60,70 @@ class ContasareceberSearch extends Contasareceber
         $query->andFilterWhere([
             'idconta' => $this->idconta,
             'dataHora' => $this->dataHora,
-            ]);
+        ]);
 
         return $dataProvider;
     }
 
-    public function searchDatasContasAReceberPorPeriodo($dataInicio,$dataFinal)
-    {
-        $sql = "SELECT * from contasareceber cb JOIN conta c on c.idconta = cb.idconta WHERE dataHora BETWEEN '2000-01-01' and '2020-01-01' GROUP BY (DATE_FORMAT(dataHora,'%m-%d-%Y'))";   
+    public function searchDatasContasAReceberPorPeriodo($dataInicio, $dataFinal) {
+        /* $query = \Yii::$app->db->createCommand("
+          SELECT *, SUM(valor) from contasareceber cb JOIN conta c on c.idconta = cb.idconta WHERE
+          dataHora BETWEEN '".$dataInicio."' and '".$dataFinal."'
+          GROUP BY (DATE_FORMAT(dataHora,'%m-%d-%Y'))
+          ")->queryAll(); */
         $query = \Yii::$app->db->createCommand("
-       SELECT *, SUM(valor) from contasareceber cb JOIN conta c on c.idconta = cb.idconta WHERE 
-       dataHora BETWEEN '".$dataInicio."' and '".$dataFinal."' 
-        GROUP BY (DATE_FORMAT(dataHora,'%m-%d-%Y'))      
+       SELECT *, SUM(valor) FROM produto prod NATURAL JOIN (itempedido ip NATURAL JOIN (pedido ped NATURAL JOIN 
+        (pagamento p JOIN contasareceber ON p.idConta = contasareceber.idconta))) 
+        JOIN conta on conta.idconta = contasareceber.idconta 
+        WHERE contasareceber.dataHora BETWEEN '" . $dataInicio . "'
+        and '" . $dataFinal . "' GROUP BY (DATE_FORMAT(contasareceber.dataHora,'%m-%d-%Y'))
+         ORDER BY ' contasareceber.dataHora ASC'
         ")->queryAll();
-
         $datasContasAReceber = [];
-       
-        foreach ($query as $ctareceber){
-            array_push($datasContasAReceber,date('d/m/Y',strtotime($ctareceber ["dataHora"])));
+
+        foreach ($query as $ctareceber) {
+            array_push($datasContasAReceber, date('d/m/Y', strtotime($ctareceber ["dataHora"])));
         }
 
-       
+
         return $datasContasAReceber;
     }
 
-    public function searchContasAReceberPorPeriodo($dataInicio,$dataFinal)
-    {
-         $sql = "SELECT * from contasareceber cb JOIN conta c on c.idconta = cb.idconta WHERE dataHora BETWEEN '2000-01-01' and '2020-01-01' GROUP BY (DATE_FORMAT(dataHora,'%m-%d-%Y'))";   
-        $query = \Yii::$app->db->createCommand("
-       SELECT *, SUM(valor) from contasareceber cb JOIN conta c on c.idconta = cb.idconta WHERE 
-       dataHora BETWEEN '".$dataInicio."' and '".$dataFinal."' 
-        GROUP BY (DATE_FORMAT(dataHora,'%m-%d-%Y'))      
-        ")->queryAll();
-     
+    public function searchContasAReceberPorPeriodo($dataInicio, $dataFinal) {
+        /* $query = \Yii::$app->db->createCommand("
+          SELECT *, SUM(valor) from contasareceber cb JOIN conta c on c.idconta = cb.idconta WHERE
+          dataHora BETWEEN '".$dataInicio."' and '".$dataFinal."'
+          GROUP BY (DATE_FORMAT(dataHora,'%m-%d-%Y'))
+          ")->queryAll(); */
 
+        $query = \Yii::$app->db->createCommand("
+       SELECT *, SUM(valor) FROM produto prod NATURAL JOIN (itempedido ip NATURAL JOIN (pedido ped NATURAL JOIN 
+        (pagamento p JOIN contasareceber ON p.idConta = contasareceber.idconta))) 
+        JOIN conta on conta.idconta = contasareceber.idconta 
+        WHERE contasareceber.dataHora BETWEEN '" . $dataInicio . "'
+        and '" . $dataFinal . "' GROUP BY (DATE_FORMAT(contasareceber.dataHora,'%m-%d-%Y'))
+         ORDER BY ' contasareceber.dataHora ASC'
+        ")->queryAll();
 
         $valoresContasAReceber = [];
-       $aux = [];
+        $aux = [];
 //        foreach ($query as $ctareceber){
 //            array_push($valoresContasAReceber,$ctareceber['SUM(valor)']);
 //        }
-        
-        foreach ($query as $ctareceber){
-         
+
+        foreach ($query as $ctareceber) {
+
 
             $aux = [
-                'name'=>date('d/m/Y',strtotime($ctareceber ["dataHora"])),
-                'data'=>[floatval($ctareceber["SUM(valor)"])],
+                'name' => date('d/m/Y', strtotime($ctareceber ["dataHora"])),
+                'data' => [floatval($ctareceber["SUM(valor)"])],
             ];
 
-            array_push($valoresContasAReceber,$aux);
+            array_push($valoresContasAReceber, $aux);
         }
 
 
         return $valoresContasAReceber;
     }
+
 }

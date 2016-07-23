@@ -76,10 +76,10 @@ class ItempedidoSearch extends Itempedido {
          ORDER BY ' contasareceber.dataHora ASC'
         
         ")->queryAll();
-        $qtdProdutosSum= [];
-      
+        $qtdProdutosSum = [];
+
         foreach ($query as $itemped) {
-           
+
             $auxCountPedidos = [
                 'name' => ($itemped ["nome"]),
                 'data' => [intval($itemped["SUM(ip.quantidade)"])],
@@ -94,6 +94,39 @@ class ItempedidoSearch extends Itempedido {
         }
 
         return $qtdProdutosSum;
+    }
+
+    public function searchLucro($dataInicio, $dataFinal) {
+
+        $query = \Yii::$app->db->createCommand("
+        SELECT *, SUM(conta.valor) FROM produto prod NATURAL JOIN (itempedido ip NATURAL JOIN (pedido ped NATURAL JOIN 
+        (pagamento p JOIN contasareceber ON p.idConta = contasareceber.idconta))) 
+        JOIN conta on conta.idconta = contasareceber.idconta 
+        WHERE contasareceber.dataHora BETWEEN '" . $dataInicio . "'
+        and '" . $dataFinal . "' GROUP BY (DATE_FORMAT(contasareceber.dataHora,'%m-%d-%Y'))
+         ORDER BY ' contasareceber.dataHora ASC'
+        
+        ")->queryAll();
+        $lucroProduto = [];
+
+        foreach ($query as $itemped) {
+            $faturamentoProduto = floatval($itemped["SUM(conta.valor)"]);
+            $custoProduto = intval($itemped["quantidade"]) *
+                    floatval(Produto::findOne($itemped["idProduto"])
+                                    ->calculoPrecoProduto($itemped["idProduto"]));
+            var_dump($faturamentoProduto);
+            var_dump($custoProduto);    
+            $diferenca = $faturamentoProduto - $custoProduto;
+                    $auxLucro = [
+                'name' => date('d/m/Y',strtotime($itemped["dataHora"])),
+                'data' => [floatval(number_format(($diferenca),2))],
+            ];
+
+
+            array_push($lucroProduto, $auxLucro);
+        }
+
+        return $lucroProduto;
     }
 
 }

@@ -74,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ])
         ?>
         <?=
-        Html::a('Gerar PDF', ['pdfitempedido', 'id' => $model->idrelatorio], [
+        Html::a('Gerar PDF', ['pdflucro', 'id' => $model->idrelatorio], [
             'class' => 'btn btn-danger',
             'target' => '_blank',
             'data-toggle' => 'tooltip',
@@ -99,14 +99,14 @@ if (isset($model->idrelatorio) && count($lucros) > 0) {
         'options' => [
             'chart' => [
                 'type' => 'column'],
-            'title' => ['text' => 'Produtos vendidos  de <b>' .
+            'title' => ['text' => 'Lucro por data  <b>' .
                 $model->formatarDataDiaMesAno($model->inicio_intervalo) . ' até ' .
                 $model->formatarDataDiaMesAno($model->fim_intervalo)],
             'xAxis' => [
-                'categories' => ['Produtos vendidos']
+                'categories' => ['Data']
             ],
             'yAxis' => [
-                'title' => ['text' => 'Quantidade']
+                'title' => ['text' => 'Valor']
             ],
             'credits' => false,
             'series' => $lucros

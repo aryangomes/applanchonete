@@ -9,7 +9,7 @@ use kartik\datecontrol\DateControl;
 /* @var $this yii\web\View */
 /* @var $model app\models\Relatorio */
 /* @var $form yii\widgets\ActiveForm */
-$this->title = 'Relatório de Contas A Receber';
+$this->title = 'Relatório de Lucro por Data';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Relatorios'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="relatorio-form">
 
     <?=
-    '<h4><p>Valores recebidos  de <b>' .
+    '<h4><p>Lucro por data de <b>' .
     $model->formatarDataDiaMesAno($model->inicio_intervalo) . ' até ' .
     $model->formatarDataDiaMesAno($model->fim_intervalo) . '</p></h4>'
     ?>
@@ -38,12 +38,12 @@ $this->params['breadcrumbs'][] = $this->title;
             </thead>
             <tbody>
                 <?php
-                for ($i = 0; $i < count($dadosContasAReceber[0]); $i++) {
+                for ($i = 0; $i < count($dadosLucro); $i++) {
                     ?>
 
                     <tr>
-                        <td><?= $dadosContasAReceber[0][$i] ?></td>
-                        <td><?= 'R$ '.$dadosContasAReceber[1][$i]['data'][0] ?></td>
+                        <td><?= $dadosLucro[$i]['name'] ?></td>
+                        <td><?= 'R$ '. $dadosLucro[$i]['data'][0] ?></td>
                     </tr>
                     <?php
                 }

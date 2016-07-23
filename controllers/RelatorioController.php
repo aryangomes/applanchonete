@@ -30,7 +30,8 @@ class RelatorioController extends Controller {
         'Contasareceber' => 'Contas a Receber',
         'Pagamento' => 'Pagamento',
         'Pedido' => 'Pedidos',
-        'Itempedido' => 'Item(ns) Pedido'
+        'Itempedido' => 'Item(ns) Pedido',
+         'Lucro' => 'Lucro',
     ];
 
     public function behaviors() {
@@ -321,6 +322,44 @@ class RelatorioController extends Controller {
             ]);
         }
     }
+    
+      /**
+     * @param null $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
+    public function actionRelatoriolucro($id = null) {
+
+        $model = new Relatorio();
+
+
+
+        if (Yii::$app->request->post()) {
+            $model = $this->findModel($id);
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['relatoriolucro', 'id' => $model->idrelatorio]);
+            }
+        } else {
+            if ($id == null) {
+                return $this->render('relatoriolucro', [
+                            'model' => $model,
+                            'tiposRelatorio' => $this->tiposRelatorio
+                ]);
+            }
+
+
+            $searchItemPedido = new ItempedidoSearch();
+
+            $model = $this->findModel($id);
+
+
+            return $this->render('relatoriolucro', [
+                        'model' => $model,
+                        'tiposRelatorio' => $this->tiposRelatorio,
+                        'lucros' => $searchItemPedido->searchLucro($model->inicio_intervalo, $model->fim_intervalo),
+            ]);
+        }
+    }
 
     public function actionPdfcontasareceber($id = null) {
         if ($id != null) {
@@ -464,6 +503,46 @@ class RelatorioController extends Controller {
                 ]),
                 'options' => [
                     'title' => 'Relatório de Quantidade de Produtos Vendidos',
+                ],
+                'methods' => [
+                    'SetHeader' => ['Gerado pelo Componente "Krajee Pdf" ||Gerado em: ' . date('d/m/Y h:m:s')],
+                    'SetFooter' => ['|Página {PAGENO}|'],
+                ]
+            ]);
+            return $pdf->render();
+        } else {
+            $searchModel = new RelatorioSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+            return $this->render('index', [
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+            ]);
+        }
+    }
+    
+    public function actionPdflucro($id = null) {
+        if ($id != null) {
+
+         $searchItemPedido = new ItempedidoSearch();
+
+            $model = $this->findModel($id);
+
+
+           $dadosLucro = $searchItemPedido->searchLucro($model->inicio_intervalo, $model->fim_intervalo);
+
+
+
+//         Setando a data para o fuso do Brasil
+            date_default_timezone_set('America/Sao_Paulo');
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8, 
+                'content' => $this->renderPartial('pdflucro', [
+                    'model' => $model,
+                    'dadosLucro' => $dadosLucro ,
+                ]),
+                'options' => [
+                    'title' => 'Relatório de Lucro por Data',
                 ],
                 'methods' => [
                     'SetHeader' => ['Gerado pelo Componente "Krajee Pdf" ||Gerado em: ' . date('d/m/Y h:m:s')],

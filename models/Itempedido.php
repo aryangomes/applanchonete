@@ -10,7 +10,7 @@ use app\models\Produto;
  * @property integer $idPedido
  * @property integer $idProduto
  * @property string $quantidade
- * @property string $total
+ * @property float $total
  *
  * @property Pedido $idPedido0
  * @property Produto $idProduto0
@@ -31,7 +31,7 @@ class Itempedido extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-        [['idPedido', 'idProduto', 'quantidade', 'total'], 'required'],
+        [['idPedido', 'idProduto', 'quantidade'], 'required'],
         [['idPedido', 'idProduto'], 'integer'],
         [['quantidade', 'total'], 'number'],
         [['idPedido'], 'exist', 'skipOnError' => true, 'targetClass' => Pedido::className(), 'targetAttribute' => ['idPedido' => 'idPedido']],

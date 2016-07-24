@@ -11,46 +11,46 @@ use yii\filters\VerbFilter;
 use app\models\Situacaopedido;
 use yii\helpers\ArrayHelper;
 use app\components\AccessFilter;
-use app\models\Insumos;
+use app\models\Insumo;
 use app\models\Itempedido;
 use app\models\Tipopagamento;
 use app\models\Pagamento;
+use app\models\Produto;
+
 /**
  * PedidoController implements the CRUD actions for Pedido model.
  */
-class PedidoController extends Controller
-{
+class PedidoController extends Controller {
+
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
-        'verbs' => [
-        'class' => VerbFilter::className(),
-        'actions' => [
-        'delete' => ['POST'],
-        ],
-        ],
-        'autorizacao'=>[
-        'class'=>AccessFilter::className(),
-        'actions'=>[
-        
-        'pedido'=>[
-        'index-pedido',
-        'update-pedido',
-        'delete-pedido',
-        'view-pedido',
-        'create-pedido',
-        ],
-        
-        'index'=>'index-pedido',
-        'update'=>'update-pedido',
-        'delete'=>'delete-pedido',
-        'view'=>'view-pedido',
-        'create'=>'create-pedido',
-        ],
-        ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+            'autorizacao' => [
+                'class' => AccessFilter::className(),
+                'actions' => [
+
+                    'pedido' => [
+                        'index-pedido',
+                        'update-pedido',
+                        'delete-pedido',
+                        'view-pedido',
+                        'create-pedido',
+                    ],
+                    'index' => 'index-pedido',
+                    'update' => 'update-pedido',
+                    'delete' => 'delete-pedido',
+                    'view' => 'view-pedido',
+                    'create' => 'create-pedido',
+                ],
+            ],
         ];
     }
 
@@ -58,15 +58,14 @@ class PedidoController extends Controller
      * Lists all Pedido models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $searchModel = new PedidoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            ]);
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
@@ -74,11 +73,10 @@ class PedidoController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
-    {
+    public function actionView($id) {
         return $this->render('view', [
-            'model' => $this->findModel($id),
-            ]);
+                    'model' => $this->findModel($id),
+        ]);
     }
 
     /**
@@ -86,19 +84,44 @@ class PedidoController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new Pedido();
         $situacaopedido = ArrayHelper::map(
-            Situacaopedido::find()->all()
-            , 'idSituacaoPedido' ,'titulo');
+                        Situacaopedido::find()->all()
+                        , 'idSituacaoPedido', 'titulo');
+
+        $produtosVenda = ArrayHelper::map(
+                        Produto::find()->where(['isInsumo' => 0])->all(), 'idProduto', 'nome');
+
+        $itemPedido = new Itempedido();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idPedido]);
+            $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
+
+            for ($i = 0; $i < count($itemPedidoPost['idProduto']); $i++) {
+                $itemPedido = new Itempedido();
+                $itemPedido->idProduto = $itemPedidoPost['idProduto'][$i];
+                $itemPedido->quantidade = $itemPedidoPost['quantidade'][$i];
+                $produtoVenda = Produto::find()->where(['idProduto' => $itemPedido->idProduto])->one();
+                $itemPedido->total = floatval(
+                        number_format(
+                                $produtoVenda->valorVenda * $itemPedido->quantidade, 2));
+                $itemPedido->idPedido = $model->idPedido;
+                if ($itemPedido->save()) {
+                    Insumo::atualizaQtdNoEstoqueInsert(
+                            $itemPedido->idProduto, $itemPedido->quantidade);
+                    if ((count($itemPedidoPost['idProduto']) - 1) == $i) {
+                        return $this->redirect(['view', 'id' => $model->idPedido]);
+                    }
+                }
+            }
         } else {
             return $this->render('create', [
-                'model' => $model,
-                'situacaopedido'=>$situacaopedido,
-                ]);
+                        'model' => $model,
+                        'situacaopedido' => $situacaopedido,
+                        'produtosVenda' => $produtosVenda,
+                        'itemPedido' => $itemPedido,
+            ]);
         }
     }
 
@@ -108,30 +131,50 @@ class PedidoController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $model = $this->findModel($id);
-        $situacaopedido = ArrayHelper::map(
-            Situacaopedido::find()->all()
-            , 'idSituacaoPedido' ,'titulo');
-        $tipoPagamento = new Tipopagamento();
-        $tiposPagamento = ArrayHelper::map(
-         $tipoPagamento::find()->all()
-         , 'idTipoPagamento' ,'titulo');
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $pagamento = new Pagamento();
-            $pagamento = $pagamento::find()->where(['idPedido'=>$id])->one();
-            $pagamento->idTipoPagamento = Yii::$app->request->post()['Tipopagamento']['idTipoPagamento'];
+         $situacaopedido = ArrayHelper::map(
+                        Situacaopedido::find()->all()
+                        , 'idSituacaoPedido', 'titulo');
 
-            $pagamento->save();
-            return $this->redirect(['view', 'id' => $model->idPedido]);
-        } else {
+        $produtosVenda = ArrayHelper::map(
+                        Produto::find()->where(['isInsumo' => 0])->all(), 'idProduto', 'nome');
+
+        $itensPedido = Itempedido::find()->where(['idPedido'=>$id])->all();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save() &&
+                (count($itensPedido) > 0)) {
+            $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
+
+            for ($i = 0; $i < count($itensPedido); $i++) {  
+               $itemPedido = Itempedido::find()->where(['idPedido'=>$id , 
+                   'idProduto'=>$itensPedido[$i]->idProduto])->one()->delete();
+            }
+            for ($i = 0; $i < count($itemPedidoPost['idProduto']); $i++) {
+          
+                $itemPedido = new Itempedido();
+                $itemPedido->idProduto = $itemPedidoPost['idProduto'][$i];
+                $itemPedido->quantidade = $itemPedidoPost['quantidade'][$i];
+                $produtoVenda = Produto::find()->where(['idProduto' => $itemPedido->idProduto])->one();
+                $itemPedido->total = floatval(
+                        number_format(
+                                $produtoVenda->valorVenda * $itemPedido->quantidade, 2));
+                $itemPedido->idPedido  =$id;
+                if ($itemPedido->save()) {
+                    Insumo::atualizaQtdNoEstoqueInsert(
+                            $itemPedido->idProduto, $itemPedido->quantidade);
+                    if ((count($itemPedidoPost['idProduto']) - 1) == $i) {
+                        return $this->redirect(['view', 'id' => $model->idPedido]);
+                    }
+                }
+            }
+        }else {
             return $this->render('update', [
-                'model' => $model,
-                'situacaopedido'=>$situacaopedido,
-                'tipoPagamento'=>$tipoPagamento,
-                'tiposPagamento'=>$tiposPagamento,
-                ]);
+                       'model' => $model,
+                        'situacaopedido' => $situacaopedido,
+                        'produtosVenda' => $produtosVenda,
+                        'itemPedido' => $itensPedido,
+            ]);
         }
     }
 
@@ -141,18 +184,17 @@ class PedidoController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
 
-       $itenspedido = Itempedido::find()->where(['idPedido'=>$id])->all();
+        $itenspedido = Itempedido::find()->where(['idPedido' => $id])->all();
 
-       foreach ($itenspedido as  $p) {
-         Insumos::atualizaQtdNoEstoqueDelete($p->idProduto,$p->quantidade);
-     }
-     $this->findModel($id)->delete();
+        foreach ($itenspedido as $p) {
+            Insumo::atualizaQtdNoEstoqueDelete($p->idProduto, $p->quantidade);
+        }
+        $this->findModel($id)->delete();
 
-     return $this->redirect(['index']);
- }
+        return $this->redirect(['index']);
+    }
 
     /**
      * Finds the Pedido model based on its primary key value.
@@ -161,12 +203,12 @@ class PedidoController extends Controller
      * @return Pedido the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         if (($model = Pedido::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
 }

@@ -67,6 +67,7 @@ use kartik\widgets\Select2;
     <?php }?>
     <?php
     $this->registerJsFile(\Yii::getAlias("@web") . '/js/pedido_form.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+
     ?>
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

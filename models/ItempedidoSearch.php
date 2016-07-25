@@ -98,8 +98,60 @@ class ItempedidoSearch extends Itempedido {
 
     public function searchLucro($dataInicio, $dataFinal) {
 
+        /* $query = \Yii::$app->db->createCommand("
+          SELECT *, SUM(ip.total) FROM produto prod NATURAL JOIN (itempedido ip NATURAL JOIN (pedido ped NATURAL JOIN
+          (pagamento p JOIN contasareceber ON p.idConta = contasareceber.idconta)))
+          JOIN conta on conta.idconta = contasareceber.idconta
+          WHERE contasareceber.dataHora BETWEEN '" . $dataInicio . "'
+          and '" . $dataFinal . "' GROUP BY (DATE_FORMAT(contasareceber.dataHora,'%m-%d-%Y'))
+          ORDER BY ' contasareceber.dataHora ASC'
+
+          ")->queryAll();
+          $lucroProduto = [];
+
+          foreach ($query as $itemped) {
+          $faturamentoProduto = floatval($itemped["SUM(ip.total)"]);
+          $custoProduto = intval($itemped["quantidade"]) *
+          floatval(Produto::findOne($itemped["idProduto"])
+          ->calculoPrecoProduto($itemped["idProduto"]));
+
+
+          $diferenca = $faturamentoProduto - $custoProduto;
+          $auxLucro = [
+          'name' => date('d/m/Y', strtotime($itemped["dataHora"])),
+          'data' => [floatval(number_format(($diferenca), 2))],
+          ];
+
+
+          array_push($lucroProduto, $auxLucro);
+          } */
+        $totalPedidosVendas = $this->getTotalPedidoVendas($dataInicio, $dataFinal);
+        $custosProdutos = $this->getCustosProdutos($dataInicio, $dataFinal);
+        $datas = $this->getDatasParaCalculoDeLucro($dataInicio, $dataFinal);
+        $lucroProduto = [];
+
+        if (count($datas) > 0 &&
+                count($totalPedidosVendas) > 0 &&
+                count($custosProdutos) > 0 &&
+                count($totalPedidosVendas) == count($custosProdutos)) {
+            foreach ($datas as $key => $item) {
+
+                $diferenca = $totalPedidosVendas[$key] - $custosProdutos[$key];
+                $auxLucro = [
+                    'name' => date('d/m/Y', strtotime($item)),
+                    'data' => [floatval(number_format(($diferenca), 2))],
+                ];
+                array_push($lucroProduto, $auxLucro);
+            }
+        }
+
+        return $lucroProduto;
+    }
+
+    public function getTotalPedidoVendas($dataInicio, $dataFinal) {
+
         $query = \Yii::$app->db->createCommand("
-        SELECT *, SUM(conta.valor) FROM produto prod NATURAL JOIN (itempedido ip NATURAL JOIN (pedido ped NATURAL JOIN 
+        SELECT *, SUM(ip.total) FROM produto prod NATURAL JOIN (itempedido ip NATURAL JOIN (pedido ped NATURAL JOIN 
         (pagamento p JOIN contasareceber ON p.idConta = contasareceber.idconta))) 
         JOIN conta on conta.idconta = contasareceber.idconta 
         WHERE contasareceber.dataHora BETWEEN '" . $dataInicio . "'
@@ -107,26 +159,98 @@ class ItempedidoSearch extends Itempedido {
          ORDER BY ' contasareceber.dataHora ASC'
         
         ")->queryAll();
-        $lucroProduto = [];
+        $faturamentos = [];
 
-        foreach ($query as $itemped) {
-            $faturamentoProduto = floatval($itemped["SUM(conta.valor)"]);
-            $custoProduto = intval($itemped["quantidade"]) *
-                    floatval(Produto::findOne($itemped["idProduto"])
-                                    ->calculoPrecoProduto($itemped["idProduto"]));
-            var_dump($faturamentoProduto);
-            var_dump($custoProduto);    
-            $diferenca = $faturamentoProduto - $custoProduto;
-                    $auxLucro = [
-                'name' => date('d/m/Y',strtotime($itemped["dataHora"])),
-                'data' => [floatval(number_format(($diferenca),2))],
-            ];
+        foreach ($query as $q) {
+            $faturamento = floatval($q["SUM(ip.total)"]);
 
 
-            array_push($lucroProduto, $auxLucro);
+
+            array_push($faturamentos, $faturamento);
         }
 
-        return $lucroProduto;
+        return $faturamentos;
+    }
+
+    public function getDatasParaCalculoDeLucro($dataInicio, $dataFinal) {
+
+        $query = \Yii::$app->db->createCommand("
+        SELECT * FROM produto prod NATURAL JOIN (itempedido ip NATURAL JOIN (pedido ped NATURAL JOIN 
+        (pagamento p JOIN contasareceber ON p.idConta = contasareceber.idconta))) 
+        JOIN conta on conta.idconta = contasareceber.idconta 
+        WHERE contasareceber.dataHora BETWEEN '" . $dataInicio . "'
+        and '" . $dataFinal . "' GROUP BY (DATE_FORMAT(contasareceber.dataHora,'%m-%d-%Y'))
+         ORDER BY ' contasareceber.dataHora ASC'
+        
+        ")->queryAll();
+
+
+
+
+        $datasVendas = [];
+        foreach ($query as $q) {
+            $dataVenda = date("Y-m-d", strtotime($q["dataHora"]));
+            array_push($datasVendas, $dataVenda);
+        }
+        return $datasVendas;
+    }
+
+    public function getCustosProdutos($dataInicio, $dataFinal) {
+
+        $query = \Yii::$app->db->createCommand("
+        SELECT * FROM produto prod NATURAL JOIN (itempedido ip NATURAL JOIN (pedido ped NATURAL JOIN 
+        (pagamento p JOIN contasareceber ON p.idConta = contasareceber.idconta))) 
+        JOIN conta on conta.idconta = contasareceber.idconta 
+        WHERE contasareceber.dataHora BETWEEN '" . $dataInicio . "'
+        and '" . $dataFinal . "' GROUP BY (DATE_FORMAT(contasareceber.dataHora,'%m-%d-%Y'))
+         ORDER BY ' contasareceber.dataHora ASC'
+        
+        ")->queryAll();
+
+
+
+        $custosProdutos = [];
+        $datasVendas = $this->getDatasParaCalculoDeLucro($dataInicio, $dataFinal);
+
+
+        if(count($datasVendas)> 0) {
+            foreach ($datasVendas as $key => $dv) {
+
+                $pedidosDoDia = [];
+                $pedido = Pedido::find()
+                                ->joinWith('pagamento')
+                                ->joinWith('pagamento.contasareceber')
+                                ->where(['between', 'dataHora', $dv . ' 00:00', $dv . ' 23:59'])->all();
+                array_push($pedidosDoDia, $pedido);
+
+
+                $itensPedido = [];
+
+                foreach ($pedidosDoDia as $key => $pedido) {
+                    for ($i = 0; $i < count($pedido); $i++) {
+
+                        $itemPedido = Itempedido::find()->where(['idPedido' => $pedido[$i]->idPedido])->all();
+                        array_push($itensPedido, $itemPedido);
+                    }
+                }
+
+
+                $valorCustoTotal = 0;
+
+                foreach ($itensPedido as $key => $ip) {
+
+                    for ($i = 0; $i < count($ip); $i++) {
+                        $valorCustoTotal += (intval($ip[$i]->quantidade) *
+                                floatval(number_format(Produto::findOne($ip[$i]->idProduto)->calculoPrecoProduto
+                                                        ($ip[$i]->idProduto), 2)));
+                    }
+                }
+
+
+                array_push($custosProdutos, $valorCustoTotal);
+            }
+        }
+        return $custosProdutos;
     }
 
 }

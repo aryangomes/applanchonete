@@ -80,7 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'data-toggle' => 'tooltip',
             'title' => 'Clique para gerar um PDF',
             'disabled' =>
-            (isset($model->idrelatorio) && count($lucros) > 0) ?
+            (isset($model->idrelatorio) && count($produtosVendidos) > 0) ?
                     false : true,
         ]);
         ?>
@@ -91,7 +91,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <?php
-if (isset($model->idrelatorio) && count($lucros) > 0) {
+if (isset($model->idrelatorio) && count($produtosVendidos) > 0) {
 
     HighchartsAsset::register($this)->withScripts(['highstock', 'modules/exporting', 'modules/drilldown']);
     echo Highcharts::widget([
@@ -109,7 +109,7 @@ if (isset($model->idrelatorio) && count($lucros) > 0) {
                 'title' => ['text' => 'Quantidade']
             ],
             'credits' => false,
-            'series' => $lucros
+            'series' => $produtosVendidos
         ]
     ]);
 } else {

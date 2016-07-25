@@ -167,7 +167,7 @@ class ItempedidoController extends Controller
     {
       $model = $this->findModel($idPedido, $idProduto);
 
-      Insumos::atualizaQtdNoEstoqueDelete($idProduto, $model->quantidade);
+      Insumo::atualizaQtdNoEstoqueDelete($idProduto, $model->quantidade);
 
       $this->findModel($idPedido, $idProduto)->delete();
 

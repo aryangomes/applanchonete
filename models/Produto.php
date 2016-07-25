@@ -165,7 +165,6 @@ class Produto extends \yii\db\ActiveRecord
         //Guarda a soma da quantidade de Produtos Venda vendidos no mês
         $sumQuantidadeVendaProdutoVenda = $searchModel->searchQuantidadeProdutosEmVendas($idprodutoVenda);
 
-
         //Busca e guarda todos os tipos de Custo Fixo
         $tiposCustoFixo = Tipocustofixo::find()->all();
         $consumosCustoFixo = [];
@@ -189,7 +188,7 @@ class Produto extends \yii\db\ActiveRecord
             }
         }
 
-        if(isset($arrayTipoCustoFixoZero)){
+        if(($arrayTipoCustoFixoZero)!= null){
             Yii::$app->session->setFlash('custofixozerados', "<div class=\"alert alert-warning\">
    Não foram calculados os custos fixos de ".implode(",",$arrayTipoCustoFixoZero)." pois não
     há registro(s) dele(s) no mês anterior
@@ -209,7 +208,7 @@ class Produto extends \yii\db\ActiveRecord
         //Soma o(s) valor(es) do(s) insumo(s) do produto venda ao custo do produto
         foreach ($insumos as $key => $insumo) {
             $produtoCompra = ($searchModel->searchProdutosCompra($insumo->idprodutoInsumo));
-
+           
             $precosugerido +=
                 (($produtoCompra->valorCompra * $insumo->quantidade) / $produtoCompra->quantidade);
 

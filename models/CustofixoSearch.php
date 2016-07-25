@@ -94,5 +94,6 @@ class CustofixoSearch extends Custofixo
         $mediaConsumo = $query->average('valor');
 
         return $mediaConsumo;
+      
     }
 }

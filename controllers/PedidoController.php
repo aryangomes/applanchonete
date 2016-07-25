@@ -148,7 +148,10 @@ class PedidoController extends Controller {
 
             for ($i = 0; $i < count($itensPedido); $i++) {  
                $itemPedido = Itempedido::find()->where(['idPedido'=>$id , 
-                   'idProduto'=>$itensPedido[$i]->idProduto])->one()->delete();
+                   'idProduto'=>$itensPedido[$i]->idProduto])->one();
+               if($itemPedido != null){
+                   $itemPedido->removerItemPedido();
+               }
             }
             for ($i = 0; $i < count($itemPedidoPost['idProduto']); $i++) {
           

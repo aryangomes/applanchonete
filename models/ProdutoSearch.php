@@ -133,8 +133,8 @@ class ProdutoSearch extends Produto
      */
     public function searchQuantidadeProdutosEmVendas($idProdutoVenda)
     {
-        //Guarda o mês atual
-        $mes = date('m');
+          //Guarda o mês anterior
+        $mes = (date('m')-1);
 
 
         //Guarda o último dia do mês

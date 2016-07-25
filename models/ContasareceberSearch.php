@@ -97,7 +97,7 @@ class ContasareceberSearch extends Contasareceber {
           ")->queryAll(); */
 
         $query = \Yii::$app->db->createCommand("
-       SELECT *, SUM(valor) FROM produto prod NATURAL JOIN (itempedido ip NATURAL JOIN (pedido ped NATURAL JOIN 
+       SELECT *, SUM(total) FROM produto prod NATURAL JOIN (itempedido ip NATURAL JOIN (pedido ped NATURAL JOIN 
         (pagamento p JOIN contasareceber ON p.idConta = contasareceber.idconta))) 
         JOIN conta on conta.idconta = contasareceber.idconta 
         WHERE contasareceber.dataHora BETWEEN '" . $dataInicio . "'
@@ -116,7 +116,7 @@ class ContasareceberSearch extends Contasareceber {
 
             $aux = [
                 'name' => date('d/m/Y', strtotime($ctareceber ["dataHora"])),
-                'data' => [floatval($ctareceber["SUM(valor)"])],
+                'data' => [floatval(number_format ($ctareceber["SUM(total)"],2))],
             ];
 
             array_push($valoresContasAReceber, $aux);

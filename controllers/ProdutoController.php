@@ -485,7 +485,8 @@ class ProdutoController extends Controller
         $model = $this->findModel($idProduto);
         if (Yii::$app->request->post()) {
             $porcentagemLucro = (Yii::$app->request->post()['porcentagemLucro']);
-            $model->valorVenda += ( $model->valorVenda * (  $porcentagemLucro /100));
+            $model->valorVenda =$model->calculoPrecoProduto($idProduto) 
+                    +( $model->calculoPrecoProduto($idProduto) * (  $porcentagemLucro /100));
              if ($model->save()) {
             return $this->redirect(['view', 'id' => $model->idProduto]);
              }

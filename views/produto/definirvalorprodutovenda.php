@@ -23,15 +23,27 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $form->field($model, 'nome')->textInput(['maxlength' => true])->label('Produto Venda') ?>
 
         <?= $form->field($model, 'valorVenda')->widget(MaskMoney::classname(), [
-            'options' => ['id' => 'valorantigo',],
+            'options' => ['disabled' => true,
+              ],
             'pluginOptions' => [
                 'prefix' => 'R$ ',
 
                 'allowNegative' => false,
             ]
         ]); ?>
+        <p>
+        <?=  Html::label('Preço de Custo de Produto')?>
+     
+        <?= 
+       
+        MaskMoney::widget([
+    'name' => 'calculoPrecoProduto',
+    'value' => $model->calculoPrecoProduto($model->idProduto),
+            'options' => ['id' => 'valorantigo',],
+]);
+        ?>
 
-
+   </p>
         <?= $form->field($model, 'valorVenda')->widget(MaskMoney::classname(), [
             'options' => ['id' => 'valornovo',],
             'pluginOptions' => [
@@ -83,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $(document).ready(function () {
         var valorantigo = parseFloat($("#valorantigo-disp").val());
         $("#w1-source").change(function () {
-
+            console.log('valorantigo '+valorantigo);
             var porcentagem = parseFloat($("#w1-source").val());
 
             porcentagem /= 100.0;

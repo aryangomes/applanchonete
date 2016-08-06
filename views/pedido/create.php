@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'situacaopedido' => $situacaopedido,
         'produtosVenda' => $produtosVenda,
         'itemPedido' => $itemPedido,
+        'formasPagamento' => $formasPagamento,
     ])
     ?>
 

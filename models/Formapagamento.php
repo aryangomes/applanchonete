@@ -39,9 +39,9 @@ class Formapagamento extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idTipoPagamento' => Yii::t('app', 'Id Tipo Pagamento'),
-            'titulo' => Yii::t('app', 'Titulo'),
-            'descricao' => Yii::t('app', 'Descricao'),
+            'idTipoPagamento' => Yii::t('app', 'Id Tipo de Pagamento'),
+            'titulo' => Yii::t('app', 'Tipo de Pagamento'),
+            'descricao' => Yii::t('app', 'Descrição'),
         ];
     }
 }

@@ -38,12 +38,12 @@ $this->params['breadcrumbs'][] = $this->title;
             </thead>
             <tbody>
                 <?php
-                for ($i = 0; $i < count($dadosLucro); $i++) {
+                for ($i = 0; $i < count($dadosItemPedido); $i++) {
                     ?>
 
                     <tr>
-                        <td><?= $dadosLucro[$i]['name'] ?></td>
-                        <td><?= $dadosLucro[$i]['data'][0] ?></td>
+                        <td><?= $dadosItemPedido[$i]['name'] ?></td>
+                        <td><?= $dadosItemPedido[$i]['data'][0] ?></td>
                     </tr>
                     <?php
                 }

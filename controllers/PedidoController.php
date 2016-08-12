@@ -99,6 +99,8 @@ class PedidoController extends Controller {
         $itemPedido = new Itempedido();
 
 
+        $formasPagamento = ArrayHelper::map( 
+                        Formapagamento::find()->all(), 'idTipoPagamento', 'titulo'); 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
 
@@ -126,7 +128,7 @@ class PedidoController extends Controller {
                         'situacaopedido' => $situacaopedido,
                         'produtosVenda' => $produtosVenda,
                         'itemPedido' => $itemPedido,
-                        'itemPedido' => $itemPedido,
+                        'formasPagamento' => $formasPagamento,
             ]);
         }
     }

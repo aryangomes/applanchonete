@@ -49,8 +49,12 @@ class ContaSearch extends Conta
 
         // add conditions that should always apply here
 
-        $dataProvider = new ActiveDataProvider([
+         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+              'pagination' => [
+                'pageSize' => 10,
+            ],
+               'sort'=> ['defaultOrder' => ['idconta'=>SORT_DESC]],
         ]);
 
         $this->load($params);

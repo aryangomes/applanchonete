@@ -28,9 +28,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'idTipoPagamento',
             'idConta',
             'idPedido',
+            'formapagamento_idTipoPagamento',
         ],
     ]) ?>
 

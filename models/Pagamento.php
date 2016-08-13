@@ -7,9 +7,11 @@ use Yii;
 /**
  * This is the model class for table "pagamento".
  *
- * @property integer $idTipoPagamento
  * @property integer $idConta
  * @property integer $idPedido
+ * @property integer $formapagamento_idTipoPagamento
+ *
+ * @property Formapagamento $formapagamentoIdTipoPagamento
  */
 class Pagamento extends \yii\db\ActiveRecord
 {
@@ -27,8 +29,9 @@ class Pagamento extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idTipoPagamento', 'idConta', 'idPedido'], 'required'],
-            [['idTipoPagamento', 'idConta', 'idPedido'], 'integer'],
+            [['idConta', 'idPedido', 'formapagamento_idTipoPagamento'], 'required'],
+            [['idConta', 'idPedido', 'formapagamento_idTipoPagamento'], 'integer'],
+            [['formapagamento_idTipoPagamento'], 'exist', 'skipOnError' => true, 'targetClass' => Formapagamento::className(), 'targetAttribute' => ['formapagamento_idTipoPagamento' => 'idTipoPagamento']],
         ];
     }
 
@@ -38,18 +41,24 @@ class Pagamento extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idTipoPagamento' => Yii::t('app', 'Tipo de Pagamento'),
             'idConta' => Yii::t('app', 'Id Conta'),
             'idPedido' => Yii::t('app', 'Id Pedido'),
+            'formapagamento_idTipoPagamento' => Yii::t('app', 'Forma de Pagamento'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-
-        public function getContasareceber()
+    public function getFormapagamentoIdTipoPagamento()
     {
+        return $this->hasOne(Formapagamento::className(), ['idTipoPagamento' => 'formapagamento_idTipoPagamento']);
+    }
+    
+      /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getContasareceber() {
         return $this->hasOne(Contasareceber::className(), ['idconta' => 'idConta']);
     }
 }

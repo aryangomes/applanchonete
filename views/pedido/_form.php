@@ -42,7 +42,7 @@ use yii\bootstrap\Modal;
         <?php
     } else {
         //Atualizar
-        echo $form->field($model,'idPedido')->hiddenInput(['id'=>'idpedido'])
+        echo $form->field($model, 'idPedido')->hiddenInput(['id' => 'idpedido'])
                 ->label(false);
         for ($i = 0; $i < count($itemPedido); $i++) {
             ?><div class="form-group field-insumos-idprodutoinsumo required" id="<?= 'inputinsumo' . $i ?>"> 
@@ -109,22 +109,34 @@ use yii\bootstrap\Modal;
     $this->registerJsFile(\Yii::getAlias("@web") . '/js/pedido_form.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
     ?>
     <div class="form-group">
+          <?php if (isset($model->idSituacaoAtual)) {
+            if ($model->situacaopedido->titulo != 'Concluído') {
+               echo Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ;
+              }
+        }else{
+        echo Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ;
+             
+          } ?>
+       
+        <?php if (isset($model->idSituacaoAtual)) {
+            if ($model->situacaopedido->titulo != 'Concluído') {
+                ?>
+                <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar Item Pedido">
+            <?php }
+        }else{
+        ?> 
+                <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar Item Pedido">
+
         <?php
-        
-       echo 
-        ($model->situacaopedido->titulo != 'Concluído') ?
-        Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) :
-           ''?>
-<?php if($model->situacaopedido->titulo != 'Concluído'){?>
-        <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar Item Pedido">
-<?php } ?>
+          } ?>
         <!--   ---------------------------   BEGIN Finalizar Pedido  ---------------------------  -->
         <?php
         Modal::begin([
             'header' => '<h2>Finalizar Pedido</h2>',
             'id' => 'modalfinalizarpedido',
-            'toggleButton' => ($model->situacaopedido->titulo != 'Concluído') ?
-            ['label' => 'Finalizar Pedido',
+            'toggleButton' => isset($model->situacaopedido->titulo) &&
+            $model->situacaopedido->titulo != 'Concluído' ?
+                    ['label' => 'Finalizar Pedido',
                 'class' => 'btn btn-warning',
                 'disabled' => isset($model->datadevolucao) ? true : false] : false,
         ]);
@@ -138,7 +150,7 @@ use yii\bootstrap\Modal;
                     <?=
                     Html::dropDownList("Formapagamento", null, $formasPagamento, ['class' => 'form-control',
                         'id' => 'formapagamento',
-                        'prompt'=>'Escolha uma forma de pagamento'])
+                        'prompt' => 'Escolha uma forma de pagamento'])
                     ?>
                     <span class="input-group-btn">
                         <?=
@@ -152,10 +164,9 @@ use yii\bootstrap\Modal;
                 <?= Html::label("Valor Total", ['class' => 'form-control'])
                 ?>
                 <?=
-                Html::input('text', null, isset($model->totalPedido)?'R$ '. $model->totalPedido : ''
+                Html::input('text', null, isset($model->totalPedido) ? 'R$ ' . $model->totalPedido : ''
                         , ['class' => 'form-control',
                     'disabled' => true,])
-                 
                 ?>
             </div>
 
@@ -172,7 +183,7 @@ use yii\bootstrap\Modal;
 
     <?php ActiveForm::end(); ?>
 
-                <div id="mensagem-finalizar-pedido"></div>
+    <div id="mensagem-finalizar-pedido"></div>
 
 </div>
 

@@ -22,607 +22,568 @@ $caixa = new Caixa();
 $caixa = $caixa::find('*')->one();
 
 
-$loja = Loja::find()->where(['user_id' => Yii::$app->user->getId()])->all();
+$loja = Loja::find()->where(['user_id' => Yii::$app->user->getId()])->one();
 
 $qtdProdutoMinimo = Produto::find()->where("quantidadeMinima >= quantidadeEstoque AND isInsumo = 1")->all();
 //var_dump($qtdProduto);
 
 if (count($loja) > 0) {
-    foreach ($loja as $l) {
-        $nomeLoja = $l->nome;
-        $url = Url::toRoute(['/loja/view', 'id' => Yii::$app->user->getId()]);
-    }
 
+    $nomeLoja = $loja->nome;
+    $url = Url::toRoute(['/loja/view', 'id' => Yii::$app->user->getId()]);
 } else {
     $nomeLoja = 'Cadastre sua loja';
     $url = Url::toRoute(['/loja/create']);
 }
-
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
-<head>
-    <meta charset="<?= Yii::$app->charset ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode('App Lanchonete' /*$this->title*/) ?></title>
-    <?php $this->head() ?>
+    <head>
+        <meta charset="<?= Yii::$app->charset ?>">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?= Html::csrfMetaTags() ?>
+        <title><?= Html::encode('App Lanchonete' /* $this->title */) ?></title>
+        <?php $this->head() ?>
 
-</head>
-<body>
-<?php $this->beginBody() ?>
-<?php if (!\Yii::$app->user->isGuest) {
-
-?>
-<div id="wrapper">
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <?= Html::a('Sigir', ['/'], ['class' => 'navbar-brand']) ?>
-        </div>
-
-        <!-- Top Menu Items -->
-        <ul class="nav navbar-right top-nav">
-
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
-                    <?= Yii::$app->user->displayName ?><b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a href="<?= Url::toRoute('/user/account') ?>"><i class="fa fa-fw fa-user"></i> Perfil</a>
-                    </li>
-                    <!--      <li>
-                             <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                         </li>
-                         <li>
-                             <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                         </li> -->
-                    <li class="divider"></li>
-                    <li>
-                        <a href="<?= Url::toRoute('/user/logout') ?>" data-method='POST'><i
-                                class="fa fa-fw fa-power-off"></i> Sair</a>
-                    </li>
-                </ul>
-            </li>
-            <li><a href="#"><?= $nomeLoja ?> </a></li>
-
-            <?php
-            if (Yii::$app->user->can("caixa") || Yii::$app->user->can("despesa")) {
-
+    </head>
+    <body>
+        <?php $this->beginBody() ?>
+        <?php if (!\Yii::$app->user->isGuest) {
             ?>
-            <li class="dropdown">
-                <?php
-                if (Yii::$app->user->can("despesa")) {
+            <div id="wrapper">
 
-                    ?>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <!-- Navigation -->
+                <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <?= Html::a('Sigir', ['/'], ['class' => 'navbar-brand']) ?>
+                    </div>
 
-                    <i class="fa fa-envelope"></i>
-                    <?php
-                  //  if (count($despesasNaoPagas) > 0) {
-                        ?> <span class="label label-danger">
-                                        <?php /*count($despesasNaoPagas) */?>
+                    <!-- Top Menu Items -->
+                    <ul class="nav navbar-right top-nav">
 
-                                    </span>
-                        <b class="caret"></b></a>
-                        <ul class="dropdown-menu message-dropdown">
-                            <?php
-                         //   foreach ($despesasNaoPagas as $despesa) {
-
-
-                                ?>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
+                                <?= Yii::$app->user->displayName ?><b class="caret"></b></a>
+                            <ul class="dropdown-menu">
                                 <li>
-                                    <a href="<?= Url::toRoute(['/despesa/view'/*, 'id' => $despesa->iddespesa*/]) ?>">
-                                        <?php /* 'Despesa: ' . $despesa->nomedespesa .
-                                        '(Data Vencimento: ' . $formatter->asDate($despesa->datavencimento, 'dd/MM/yyyy')
-                                        . ') '*/ ?></a>
+                                    <a href="<?= Url::toRoute('/user/account') ?>"><i class="fa fa-fw fa-user"></i> Perfil</a>
                                 </li>
+                                <!--      <li>
+                                         <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                                     </li>
+                                     <li>
+                                         <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                                     </li> -->
                                 <li class="divider"></li>
-                                <?php
-                           // }
-                            ?>
-
-
-                            <li>
-                                <a href="<?= Url::toRoute(['/despesa/index']) ?>">Todas as despesas</a>
-                            </li>
-                        </ul>
-                        <?php
-                   // } else {
-                        ?>
-                        <b class="caret"></b></a>
-                        <ul class="dropdown-menu message-dropdown">
-                            <li>
-                                Não há despesas para serem pagas
-                            </li>
-                        </ul>
-                        <?php
-                   // }
-
-                }
-                ?>
-
-            </li>
-            <li class="dropdown">
-                <?php
-                if (Yii::$app->user->can("caixa")) {
-
-                ?>
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-
-            <?php
-            if (isset($caixa) && $caixa->valoremcaixa < 1
-                    || count($qtdProdutoMinimo) > 0){
-
-            ?>
-            <i class="fa fa-bell"></i>
-                                <span class="label label-danger">
-                                   !
-                               </span>
-            <b class="caret"></b></a>
-                <ul class="dropdown-menu alert-dropdown">
-                    <?php
-                    if ($caixa->valoremcaixa <1  /*$valorDespesas*/) {
-                        ?>
-                        <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
+                                <li>
+                                    <a href="<?= Url::toRoute('/user/logout') ?>" data-method='POST'><i
+                                            class="fa fa-fw fa-power-off"></i> Sair</a>
+                                </li>
+                            </ul>
                         </li>
-                        <li class="divider"></li>
+                        <li><a href="#"><?= $nomeLoja ?> </a></li>
+
                         <?php
-                    }
-
-
-                    if (count($qtdProdutoMinimo) > 0) {
-                        echo "<li><a><b>Produtos com quantidade em estoque com valor mínimo</b></a></li>";
-                        foreach ($qtdProdutoMinimo as $p) {
-
+                        if (Yii::$app->user->can("caixa") || Yii::$app->user->can("despesa")) {
                             ?>
-                            <li>
-                                <a href="<?= Url::toRoute(['/produto/view', 'id' => $p->idProduto]) ?>"> <?= $p->nome ?> </a>
-                            </li>
-                            <li class="divider"></li>
-                            <?php
-                        }
-                    }
-                    } else {
-                    ?>
-                    <i class="fa fa-bell"></i>
-
-                    <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown">
-                        <li>
-                            &nbsp; Não há alertas
-                        </li>
-                        <?php
-
-                        }
-                        }
-                        } ?>
-
-
-                    </ul>
-                    </li>
-
-                    <!--
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> 
-                                    <?= Yii::$app->user->displayName ?><b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
+                                <?php
+                                if (Yii::$app->user->can("despesa")) {
+                                    ?>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+                                        <i class="fa fa-envelope"></i>
+                                        <?php
+                                        //  if (count($despesasNaoPagas) > 0) {
+                                        ?> <span class="label label-danger">
+                                        <?php /* count($despesasNaoPagas) */ ?>
+
+                                        </span>
+                                        <b class="caret"></b></a>
+                                    <ul class="dropdown-menu message-dropdown">
+                                        <?php
+                                        //   foreach ($despesasNaoPagas as $despesa) {
+                                        ?>
                                         <li>
-                                            <a href="<?= Url::toRoute('/user/account') ?>"><i class="fa fa-fw fa-user"></i> Profile</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                                            <a href="<?= Url::toRoute(['/despesa/view'/* , 'id' => $despesa->iddespesa */]) ?>">
+                                                <?php /* 'Despesa: ' . $despesa->nomedespesa .
+                                                  '(Data Vencimento: ' . $formatter->asDate($despesa->datavencimento, 'dd/MM/yyyy')
+                                                  . ') ' */ ?></a>
                                         </li>
                                         <li class="divider"></li>
+                                        <?php
+                                        // }
+                                        ?>
+
+
                                         <li>
-                                            <a href="<?= Url::toRoute('/user/logout') ?>" data-method='POST'><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                                            <a href="<?= Url::toRoute(['/despesa/index']) ?>">Todas as despesas</a>
                                         </li>
                                     </ul>
-                                </li> -->
-                </ul>
-
-
-                <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-
-                <div class="collapse navbar-collapse navbar-ex1-collapse ">
-                    <ul class="nav navbar-nav side-nav">
-                        <li class="active">
-                            <?= Html::a('<i class="fa fa-fw fa-home"></i> Home', ['/site/index']) ?>
-
-                        </li>
-                        <?php
-                        if (Yii::$app->user->can("index-despesa") || Yii::$app->user->can("despesa")) {
-
-                        ?>
-                        <li>
-                            <?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Despesas', ['/despesa/index']) ?>
-                            <?php
-                            }
-                            ?>
-                        </li>
-                        <?php
-                        if (Yii::$app->user->can("index-caixa") || Yii::$app->user->can("caixa")) {
-
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="glyphicon glyphicon-piggy-bank"></i> Caixa', ['/caixa/index']) ?>
+                                    <?php
+                                    // } else {
+                                    ?>
+                                    <b class="caret"></b></a>
+                                    <ul class="dropdown-menu message-dropdown">
+                                        <li>
+                                            Não há despesas para serem pagas
+                                        </li>
+                                    </ul>
+                                    <?php
+                                    // }
+                                }
+                                ?>
 
                             </li>
+                            <li class="dropdown">
+                                <?php
+                                if (Yii::$app->user->can("caixa")) {
+                                    ?>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
+                                        <?php
+                                        if (isset($caixa) && $caixa->valoremcaixa < 1 || count($qtdProdutoMinimo) > 0) {
+                                            ?>
+                                            <i class="fa fa-bell"></i>
+                                            <span class="label label-danger">
+                                                !
+                                            </span>
+                                            <b class="caret"></b></a>
+                                        <ul class="dropdown-menu alert-dropdown">
+                                            <?php
+                                            if ($caixa->valoremcaixa < 1 ) {
+                                                ?>
+                                                <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <?php
+                                            }
+
+
+                                            if (count($qtdProdutoMinimo) > 0) {
+                                                echo "<li><a><b>Produtos com quantidade em estoque com valor mínimo</b></a></li>";
+                                                foreach ($qtdProdutoMinimo as $p) {
+                                                    ?>
+                                                    <li>
+                                                        <a href="<?= Url::toRoute(['/produto/view', 'id' => $p->idProduto]) ?>"> <?= $p->nome ?> </a>
+                                                    </li>
+                                                    <li class="divider"></li>
+                                                    <?php
+                                                }
+                                            }
+                                        } else {
+                                            ?>
+                                            <i class="fa fa-bell"></i>
+
+                                            <b class="caret"></b></a>
+                                            <ul class="dropdown-menu alert-dropdown">
+                                                <li>
+                                                    &nbsp; Não há alertas
+                                                </li>
+                                                <?php
+                                            }
+                                        }
+                                    }
+                                    ?>
+
+
+                                </ul>
+                        </li>
+
+                        <!--
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> 
+                        <?= Yii::$app->user->displayName ?><b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a href="<?= Url::toRoute('/user/account') ?>"><i class="fa fa-fw fa-user"></i> Profile</a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                                            </li>
+                                            <li class="divider"></li>
+                                            <li>
+                                                <a href="<?= Url::toRoute('/user/logout') ?>" data-method='POST'><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                                            </li>
+                                        </ul>
+                                    </li> -->
+                    </ul>
+
+
+                    <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+
+                    <div class="collapse navbar-collapse navbar-ex1-collapse ">
+                        <ul class="nav navbar-nav side-nav">
+                            <li class="active">
+                                <?= Html::a('<i class="fa fa-fw fa-home"></i> Home', ['/site/index']) ?>
+
+                            </li>
                             <?php
-                        }
-                        ?>
-                        <!--     <li>
-                        <?php // Html::a('<i class="fa fa-fw fa-table"></i> Loja', ['loja/index']) ?>
-                    </li> -->
+                            if (Yii::$app->user->can("index-despesa") || Yii::$app->user->can("despesa")) {
+                                ?>
+                                <li>
+                                    <?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Despesas', ['/despesa/index']) ?>
+                                    <?php
+                                }
+                                ?>
+                            </li>
+                            <?php
+                            if (Yii::$app->user->can("index-caixa") || Yii::$app->user->can("caixa")) {
+                                ?>
+                                <li>
+                                    <?= Html::a('<i class="glyphicon glyphicon-piggy-bank"></i> Caixa', ['/caixa/index']) ?>
 
-                        <?php
-                        if (Yii::$app->user->can("index-fornecedor") || Yii::$app->user->can("fornecedor")) {
+                                </li>
 
+                                <?php
+                            }
                             ?>
-                            <!--  <li>
-                            <?php // Html::a('<i class="fa fa-truck"></i> Fornecedor', ['/fornecedor/index']) ?>
-
+                            <!--     <li>
+                            <?php // Html::a('<i class="fa fa-fw fa-table"></i> Loja', ['loja/index']) ?>
                         </li> -->
 
                             <?php
-                        }
-                        ?>
-
-                        <?php
-                        if (Yii::$app->user->can("index-relatorio") || Yii::$app->user->can("relatorio")) {
-
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="fa fa-fw fa-desktop"></i> Relatório', ['/relatorio/index']) ?>
-
-                            </li>
-
-                            <?php
-                        }
-                        ?>
-                        <?php
-                        if (Yii::$app->user->can("index-compra") || Yii::$app->user->can("compra")) {
-
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="fa fa-shopping-cart"></i> Compras', ['/compra/index']) ?>
-
-                            </li>
-                            <?php
-                        }
-                        ?>
-                        <?php
-                        if (Yii::$app->user->can("index-cardapio") || Yii::$app->user->can("cardapio")) {
-
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/cardapio/index']) ?>
-
-                            </li>
-                            <?php
-                        }
-                        ?>
-
-                        <?php
-                        if (Yii::$app->user->can("index-categoria") || Yii::$app->user->can("categoria")) {
-
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="fa fa-tags"></i> Categorias de Produto', ['/categoria/index']) ?>
-
-                            </li>
-                            <?php
-                        }
-                        ?>
-                        <?php
-                        if (Yii::$app->user->can("index-comanda") || Yii::$app->user->can("comanda")) {
-
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/comanda/index']) ?>
-
-                            </li>
-                            <?php
-                        }
-                        ?>
-                        <?php
-                        if (Yii::$app->user->can("index-destaque") || Yii::$app->user->can("destaque")) {
-
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/destaque/index']) ?>
-
-                            </li>
-                            <?php
-                        }
-                        ?>
-                        <?php
-                        if (Yii::$app->user->can("index-pedido") || Yii::$app->user->can("pedido")) {
-
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="fa fa-hand-o-up"></i> Pedidos', ['/pedido/index']) ?>
-
-                            </li>
-                            <?php
-                        }
-                        ?>
-                        <?php
-                        if (Yii::$app->user->can("index-itempedido") || Yii::$app->user->can("itempedido")) {
-
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="fa fa-pencil-square-o"></i> Itens Pedido', ['/itempedido/index']) ?>
-
-                            </li>
-                            <?php
-                        }
-                        ?>
-                        <?php
-                        if (Yii::$app->user->can("index-historicosituacao") || Yii::$app->user->can("historicosituacao")) {
-
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/historicosituacao/index']) ?>
-
-                            </li>
-                            <?php
-                        }
-                        ?>
-                        <?php
-                        if (Yii::$app->user->can("index-itemcardapio") || Yii::$app->user->can("itemcardapio")) {
-
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/itemcardapio/index']) ?>
-
-                            </li>
-                            <?php
-                        }
-                        ?>
-
-                        <?php
-                        if (Yii::$app->user->can("index-conta") || Yii::$app->user->can("conta")) {
-
-                            ?>
-
-                            <li>
-                                <a href="javascript:;" data-toggle="collapse" data-target="#conta"><i
-                                        class="glyphicon glyphicon-barcode"></i> Contas <i
-                                        class="fa fa-fw fa-caret-down"></i></a>
-                                <ul id="conta" class="collapse">
-                                    <li>
-                                        <?= Html::a('<i class="glyphicon glyphicon-barcode"></i> Todas as Contas', ['/conta/index']) ?>
-
-                                    </li>
-                                    <?php
-                                    if (Yii::$app->user->can("index-contasapagar") || Yii::$app->user->can("contasapagar")) {
-
-                                        ?>
-                                        <li>
-                                            <?= Html::a('<i class="glyphicon glyphicon-pushpin"></i> Contas a Pagar', ['/contasapagar/index']) ?>
-
-                                        </li>
-                                        <?php
-                                    }
-                                    ?>
-
-
-                                    <?php
-                                    if (Yii::$app->user->can("index-contasapagar") || Yii::$app->user->can("contasapagar")) {
-
-                                        ?>
-                                        <li>
-                                            <?= Html::a('<i class="glyphicon glyphicon-pushpin"></i> Custos Fixos', ['/custofixo/index']) ?>
-
-                                        </li>
-                                        <?php
-                                    }
-                                    ?>
-
-                                    <?php
-                                    if (Yii::$app->user->can("index-contasareceber") || Yii::$app->user->can("contasareceber")) {
-
-                                        ?>
-                                        <li>
-                                            <?= Html::a('<i class="fa fa-money"></i> Contas a Receber', ['/contasareceber/index']) ?>
-
-                                        </li>
-                                        <?php
-                                    }
-                                    ?>
-
-                                </ul>
-                            </li>
-
-                            <?php
-                        }
-                        ?>
-
-                        <?php
-                        if (Yii::$app->user->can("index-loja") || Yii::$app->user->can("loja")) {
-
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/loja/index']) ?>
-
-                            </li>
-                            <?php
-                        }
-                        ?>
-                        <?php
-                        if (Yii::$app->user->can("index-mesa") || Yii::$app->user->can("mesa")) {
-
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/mesa/index']) ?>
-
-                            </li>
-                            <?php
-                        }
-                        ?>
-
-                        <?php
-                        if (Yii::$app->user->can("index-produto") || Yii::$app->user->can("produto")) {
-
-                            ?>
-
-                            <li>
-                                <a href="javascript:;" data-toggle="collapse" data-target="#produto"><i
-                                        class="fa fa-shopping-basket"></i> Produtos <i
-                                        class="fa fa-fw fa-caret-down"></i></a>
-                                <ul id="produto" class="collapse">
-                                    <li>
-                                        <?= Html::a('<i class="fa fa-list"></i> Todos os Produtos', ['/produto/index']) ?>
-
-                                    </li>
-                                    <li>
-                                        <?= Html::a('<i class="fa fa-list"></i> Insumos de Produtos de Venda', ['/produto/listadeinsumos']) ?>
-
-                                    </li>
-                                    <li>
-                                        <?= Html::a('<i class="fa fa-list"></i> Produtos de Venda por Insumo', ['/produto/listadeprodutosporinsumo']) ?>
-
-                                    </li>
-                                    <li>
-                                        <?= Html::a('<i class="glyphicon glyphicon-grain"></i> Todos os Insumos', ['/insumo/index']) ?>
-
-                                    </li>
-
-                                    <li>
-                                        <?= Html::a('<i class="fa fa-spoon"></i> Todos os Produtos de Venda', ['/produto/produtosvenda']) ?>
-
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <?php
-                        }
-                        ?>
-
-                        <?php
-                        if (Yii::$app->user->can("user") || Yii::$app->user->can("admin")
-                            || Yii::$app->user->can("index-user")
-                        ) {
-                            ?>
-
-                            <?php
-                            if (Yii::$app->user->can("admin")) {
+                            if (Yii::$app->user->can("index-fornecedor") || Yii::$app->user->can("fornecedor")) {
                                 ?>
-                                <li>
-                                    <?= Html::a('<i class="fa fa-users"></i> Usuários', ['/user/admin']) ?>
+                                <!--  <li>
+                                <?php // Html::a('<i class="fa fa-truck"></i> Fornecedor', ['/fornecedor/index']) ?>
 
-                                </li>
+                            </li> -->
+
                                 <?php
-                            } else {
-
-                                ?>
-                                <li>
-                                    <?= Html::a('<i class="fa fa-users"></i> Usuários', ['/user/']) ?>
-
-                                </li>
-                                <?php
-
                             }
                             ?>
 
+                            <?php
+                            if (Yii::$app->user->can("index-relatorio") || Yii::$app->user->can("relatorio")) {
+                                ?>
+                                <li>
+                                    <?= Html::a('<i class="fa fa-fw fa-desktop"></i> Relatório', ['/relatorio/index']) ?>
+
+                                </li>
+
+                                <?php
+                            }
+                            ?>
+                            <?php
+                            if (Yii::$app->user->can("index-compra") || Yii::$app->user->can("compra")) {
+                                ?>
+                                <li>
+                                    <?= Html::a('<i class="fa fa-shopping-cart"></i> Compras', ['/compra/index']) ?>
+
+                                </li>
+                                <?php
+                            }
+                            ?>
+                            <?php
+                            if (Yii::$app->user->can("index-cardapio") || Yii::$app->user->can("cardapio")) {
+                                ?>
+                                <li>
+                                    <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/cardapio/index']) ?>
+
+                                </li>
+                                <?php
+                            }
+                            ?>
 
                             <?php
-                        }
-                        ?>
-                    </ul>
-                </div>
+                            if (Yii::$app->user->can("index-categoria") || Yii::$app->user->can("categoria")) {
+                                ?>
+                                <li>
+                                    <?= Html::a('<i class="fa fa-tags"></i> Categorias de Produto', ['/categoria/index']) ?>
 
-                <!--    <div class="collapse navbar-collapse navbar-ex1-collapse ">
-                <ul class="nav navbar-nav side-nav">
+                                </li>
+                                <?php
+                            }
+                            ?>
+                            <?php
+                            if (Yii::$app->user->can("index-comanda") || Yii::$app->user->can("comanda")) {
+                                ?>
+                                <li>
+                                    <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/comanda/index']) ?>
 
-                  <li>
+                                </li>
+                                <?php
+                            }
+                            ?>
+                            <?php
+                            if (Yii::$app->user->can("index-destaque") || Yii::$app->user->can("destaque")) {
+                                ?>
+                                <li>
+                                    <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/destaque/index']) ?>
+
+                                </li>
+                                <?php
+                            }
+                            ?>
+                            <?php
+                            if (Yii::$app->user->can("index-pedido") || Yii::$app->user->can("pedido")) {
+                                ?>
+                                <li>
+                                    <?= Html::a('<i class="fa fa-hand-o-up"></i> Pedidos', ['/pedido/index']) ?>
+
+                                </li>
+                                <?php
+                            }
+                            ?>
+                            <?php
+                            if (Yii::$app->user->can("index-itempedido") || Yii::$app->user->can("itempedido")) {
+                                ?>
+                                <li>
+                                    <?= Html::a('<i class="fa fa-pencil-square-o"></i> Itens Pedido', ['/itempedido/index']) ?>
+
+                                </li>
+                                <?php
+                            }
+                            ?>
+                            <?php
+                            if (Yii::$app->user->can("index-historicosituacao") || Yii::$app->user->can("historicosituacao")) {
+                                ?>
+                                <li>
+                                    <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/historicosituacao/index']) ?>
+
+                                </li>
+                                <?php
+                            }
+                            ?>
+                            <?php
+                            if (Yii::$app->user->can("index-itemcardapio") || Yii::$app->user->can("itemcardapio")) {
+                                ?>
+                                <li>
+                                    <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/itemcardapio/index']) ?>
+
+                                </li>
+                                <?php
+                            }
+                            ?>
+
+                            <?php
+                            if (Yii::$app->user->can("index-conta") || Yii::$app->user->can("conta")) {
+                                ?>
+
+                                <li>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#conta"><i
+                                            class="glyphicon glyphicon-barcode"></i> Contas <i
+                                            class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="conta" class="collapse">
+                                        <li>
+                                            <?= Html::a('<i class="glyphicon glyphicon-barcode"></i> Todas as Contas', ['/conta/index']) ?>
+
+                                        </li>
+                                        <?php
+                                        if (Yii::$app->user->can("index-contasapagar") || Yii::$app->user->can("contasapagar")) {
+                                            ?>
+                                            <li>
+                                                <?= Html::a('<i class="glyphicon glyphicon-pushpin"></i> Contas a Pagar', ['/contasapagar/index']) ?>
+
+                                            </li>
+                                            <?php
+                                        }
+                                        ?>
+
+
+                                        <?php
+                                        if (Yii::$app->user->can("index-contasapagar") || Yii::$app->user->can("contasapagar")) {
+                                            ?>
+                                            <li>
+                                                <?= Html::a('<i class="glyphicon glyphicon-pushpin"></i> Custos Fixos', ['/custofixo/index']) ?>
+
+                                            </li>
+                                            <?php
+                                        }
+                                        ?>
+
+                                        <?php
+                                        if (Yii::$app->user->can("index-contasareceber") || Yii::$app->user->can("contasareceber")) {
+                                            ?>
+                                            <li>
+                                                <?= Html::a('<i class="fa fa-money"></i> Contas a Receber', ['/contasareceber/index']) ?>
+
+                                            </li>
+                                            <?php
+                                        }
+                                        ?>
+
+                                    </ul>
+                                </li>
+
+                                <?php
+                            }
+                            ?>
+
+                            <?php
+                            if (Yii::$app->user->can("index-loja") || Yii::$app->user->can("loja")) {
+                                ?>
+                                <li>
+                                    <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/loja/index']) ?>
+
+                                </li>
+                                <?php
+                            }
+                            ?>
+                            <?php
+                            if (Yii::$app->user->can("index-mesa") || Yii::$app->user->can("mesa")) {
+                                ?>
+                                <li>
+                                    <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/mesa/index']) ?>
+
+                                </li>
+                                <?php
+                            }
+                            ?>
+
+                            <?php
+                            if (Yii::$app->user->can("index-produto") || Yii::$app->user->can("produto")) {
+                                ?>
+
+                                <li>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#produto"><i
+                                            class="fa fa-shopping-basket"></i> Produtos <i
+                                            class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="produto" class="collapse">
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-list"></i> Todos os Produtos', ['/produto/index']) ?>
+
+                                        </li>
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-list"></i> Insumos de Produtos de Venda', ['/produto/listadeinsumos']) ?>
+
+                                        </li>
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-list"></i> Produtos de Venda por Insumo', ['/produto/listadeprodutosporinsumo']) ?>
+
+                                        </li>
+                                        <li>
+                                            <?= Html::a('<i class="glyphicon glyphicon-grain"></i> Todos os Insumos', ['/insumo/index']) ?>
+
+                                        </li>
+
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-spoon"></i> Todos os Produtos de Venda', ['/produto/produtosvenda']) ?>
+
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <?php
+                            }
+                            ?>
+
+                            <?php
+                            if (Yii::$app->user->can("user") || Yii::$app->user->can("admin") || Yii::$app->user->can("index-user")
+                            ) {
+                                ?>
+
+                                <?php
+                                if (Yii::$app->user->can("admin")) {
+                                    ?>
+                                    <li>
+                                        <?= Html::a('<i class="fa fa-users"></i> Usuários', ['/user/admin']) ?>
+
+                                    </li>
+                                    <?php
+                                } else {
+                                    ?>
+                                    <li>
+                                        <?= Html::a('<i class="fa fa-users"></i> Usuários', ['/user/']) ?>
+
+                                    </li>
+                                    <?php
+                                }
+                                ?>
+
+
+                                <?php
+                            }
+                            ?>
+                        </ul>
+                    </div>
+
+                    <!--    <div class="collapse navbar-collapse navbar-ex1-collapse ">
+                    <ul class="nav navbar-nav side-nav">
+
+                      <li>
                     <?= Html::a('<i class="fa fa-truck"></i> Fornecedor', ['/fornecedor/index']) ?>
 
-                </li>
-            </ul>
-        </div> -->
+                    </li>
+                </ul>
+            </div> -->
 
 
-                <!--   <div class="collapse navbar-collapse navbar-ex1-collapse "> -->
+                    <!--   <div class="collapse navbar-collapse navbar-ex1-collapse "> -->
 
-                <!--  </div> -->
-                <?php
+                    <!--  </div> -->
+                    <?php
                 }
-
                 ?>
 
                 <!-- /.navbar-collapse -->
-    </nav>
+            </nav>
 
-    <div id="page-wrapper">
+            <div id="page-wrapper">
 
-        <div class="container-fluid">
+                <div class="container-fluid">
 
-            <!-- Page Heading -->
-            <div class="row">
-                <div class="col-lg-12">
+                    <!-- Page Heading -->
+                    <div class="row">
+                        <div class="col-lg-12">
 
-                    <?=
-                    Breadcrumbs::widget([
-                        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                    ])
-                    ?>
+                            <?=
+                            Breadcrumbs::widget([
+                                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                            ])
+                            ?>
 
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                    <!-- conteudo das págians-->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <?= $content ?>
+                        </div>
+                    </div>
+                    <footer class="footer">
+                        <div class="container">
+                            <p class="pull-left">&copy; Sigir <?= date('Y') ?></p>
+
+                            <p class="pull-right"><?= Yii::powered() ?></p>
+                        </div>
+                    </footer>
+                    <!-- /.row -->
                 </div>
+                <!-- /.container-fluid -->
             </div>
-            <!-- /.row -->
-            <!-- conteudo das págians-->
-            <div class="row">
-                <div class="col-lg-12">
-                    <?= $content ?>
-                </div>
-            </div>
-            <footer class="footer">
-                <div class="container">
-                    <p class="pull-left">&copy; Sigir <?= date('Y') ?></p>
+            <!-- /#page-wrapper -->
 
-                    <p class="pull-right"><?= Yii::powered() ?></p>
-                </div>
-            </footer>
-            <!-- /.row -->
         </div>
-        <!-- /.container-fluid -->
-    </div>
-    <!-- /#page-wrapper -->
+        <!-- /#wrapper -->
 
-</div>
-<!-- /#wrapper -->
-
-<?=
+        <?=
 //<!-- jQuery -->
-$this->registerJsFile('@web/admin/js/jquery.js');
-$this->registerJsFile('@web/admin/js/bootstrap.min.js');
+        $this->registerJsFile('@web/admin/js/jquery.js');
+        $this->registerJsFile('@web/admin/js/bootstrap.min.js');
 //<!-- Morris Charts JavaScript -->
-$this->registerJsFile('@web/admin/js/plugins/morris/raphael.min.js');
-$this->registerJsFile('@web/admin/js/plugins/morris/morris.min.js');
-$this->registerJsFile('@web/admin/js/plugins/morris/morris-data.js');
-
-
-?>
-<?php // Html::jsFile("/applanchonete/web/admin/js/cadastro-permissoes.js") ?>
+        $this->registerJsFile('@web/admin/js/plugins/morris/raphael.min.js');
+        $this->registerJsFile('@web/admin/js/plugins/morris/morris.min.js');
+        $this->registerJsFile('@web/admin/js/plugins/morris/morris-data.js');
+        ?>
+        <?php // Html::jsFile("/applanchonete/web/admin/js/cadastro-permissoes.js") ?>
 
 
 
-<?php $this->endBody() ?>
-</body>
+        <?php $this->endBody() ?>
+    </body>
 </html>
 <?php $this->endPage() ?>

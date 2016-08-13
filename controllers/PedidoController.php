@@ -244,7 +244,7 @@ class PedidoController extends Controller {
         if ($formaPagamento != null && $idPedido != null) {
             $pagamento = Pagamento::find()->where(['idPedido' => $idPedido])->one();
             if ($pagamento != null) {
-                $pagamento->idTipoPagamento = $formaPagamento;
+                $pagamento->formapagamento_idTipoPagamento = $formaPagamento;
                 if ($pagamento->save(false)) {
                     $pedido = $this->findModel($idPedido);
                     if ($pedido != null) {

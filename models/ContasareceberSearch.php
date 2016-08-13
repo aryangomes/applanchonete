@@ -46,6 +46,10 @@ class ContasareceberSearch extends Contasareceber {
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+              'pagination' => [
+                'pageSize' => 10,
+            ],
+               'sort'=> ['defaultOrder' => ['idconta'=>SORT_DESC]],
         ]);
 
         $this->load($params);

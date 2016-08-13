@@ -12,11 +12,11 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'idTipoPagamento')->textInput() ?>
-
     <?= $form->field($model, 'idConta')->textInput() ?>
 
     <?= $form->field($model, 'idPedido')->textInput() ?>
+
+    <?= $form->field($model, 'formapagamento_idTipoPagamento')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -17,7 +17,7 @@ class PagamentoSearch extends Pagamento {
      */
     public function rules() {
         return [
-            [['idTipoPagamento', 'idConta', 'idPedido'], 'integer'],
+            [['formapagamento_idTipoPagamento', 'idConta', 'idPedido'], 'integer'],
         ];
     }
 
@@ -41,8 +41,12 @@ class PagamentoSearch extends Pagamento {
 
         // add conditions that should always apply here
 
-        $dataProvider = new ActiveDataProvider([
+         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+              'pagination' => [
+                'pageSize' => 10,
+            ],
+               'sort'=> ['defaultOrder' => ['idConta'=>SORT_DESC]],
         ]);
 
         $this->load($params);
@@ -55,7 +59,7 @@ class PagamentoSearch extends Pagamento {
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'idTipoPagamento' => $this->idTipoPagamento,
+         'formapagamento_idTipoPagamento' => $this->formapagamento_idTipoPagamento, 
             'idConta' => $this->idConta,
             'idPedido' => $this->idPedido,
         ]);

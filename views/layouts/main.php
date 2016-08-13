@@ -24,7 +24,7 @@ $caixa = $caixa::find('*')->one();
 
 $loja = Loja::find()->where(['user_id' => Yii::$app->user->getId()])->all();
 
-$qtdProdutoMinimo = Produto::find()->where("quantidadeMinima = quantidadeEstoque AND isInsumo = 1")->all();
+$qtdProdutoMinimo = Produto::find()->where("quantidadeMinima >= quantidadeEstoque AND isInsumo = 1")->all();
 //var_dump($qtdProduto);
 
 if (count($loja) > 0) {
@@ -160,7 +160,8 @@ if (count($loja) > 0) {
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
             <?php
-            if (isset($caixa) && $caixa->valoremcaixa < 1/*$valorDespesas*/ || count($qtdProdutoMinimo) > 0){
+            if (isset($caixa) && $caixa->valoremcaixa < 1
+                    || count($qtdProdutoMinimo) > 0){
 
             ?>
             <i class="fa fa-bell"></i>

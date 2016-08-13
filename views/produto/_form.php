@@ -65,7 +65,9 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
 
         }
 
-        echo $form->field($model, 'quantidadeMinima')->textInput(['type' => 'number', 'value' => 0]);
+        echo $form->field($model, 'quantidadeMinima')->textInput(['type' => 'number',
+               'step'=>'0.01',
+            'value' => isset($model->quantidadeMinima) ?$model->quantidadeMinima: 0]);
 
         ?>
 
@@ -90,7 +92,9 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
             $this->registerJs("$(\"[class~='field-produto-quantidadeestoque']\").hide(); ");
 
         }
-        echo $form->field($model, 'quantidadeEstoque')->textInput(['type' => 'number', 'value' => 0]);
+        echo $form->field($model, 'quantidadeEstoque')->textInput(['type' => 'number', 
+            'step'=>'0.01',
+            isset($model->quantidadeEstoque) ?$model->quantidadeEstoque: 'value' => 0]);
 
         ?>
 

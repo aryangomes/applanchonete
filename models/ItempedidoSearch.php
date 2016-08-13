@@ -252,5 +252,7 @@ class ItempedidoSearch extends Itempedido {
         }
         return $custosProdutos;
     }
+    
+    
 
 }

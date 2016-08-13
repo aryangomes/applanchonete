@@ -77,8 +77,16 @@ class PedidoController extends Controller {
      * @return mixed
      */
     public function actionView($id) {
+        $formasPagamento = ArrayHelper::map(
+                        Formapagamento::find()->all(), 'idTipoPagamento', 'titulo');
+        
+        $itemPedidoSearch = new PedidoSearch();
+      $itensPedidos = $itemPedidoSearch->searchItensPedidoViewPedido($id);
+
         return $this->render('view', [
                     'model' => $this->findModel($id),
+                    'formasPagamento' => $formasPagamento,
+            'itensPedido'=>$itensPedidos, 
         ]);
     }
 
@@ -99,8 +107,8 @@ class PedidoController extends Controller {
         $itemPedido = new Itempedido();
 
 
-        $formasPagamento = ArrayHelper::map( 
-                        Formapagamento::find()->all(), 'idTipoPagamento', 'titulo'); 
+        $formasPagamento = ArrayHelper::map(
+                        Formapagamento::find()->all(), 'idTipoPagamento', 'titulo');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
 
@@ -246,7 +254,7 @@ class PedidoController extends Controller {
                         if ($situacaoPedido != null) {
                             $pedido->idSituacaoAtual = $situacaoPedido->idSituacaoPedido;
                             if ($pedido->save(false)) {
-                                echo Json::encode( $pedido->idSituacaoAtual);
+                                echo Json::encode($pedido->idSituacaoAtual);
                             } else {
                                 echo Json::encode(false);
                             }

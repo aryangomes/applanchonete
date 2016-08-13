@@ -98,4 +98,21 @@ class PedidoSearch extends Pedido
         return [$pedidosCount,$pedidosDatas];
     }
 
+    
+    
+    public function searchItensPedidoViewPedido($idPedido) {
+        $query = Pedido::find()
+                   ->joinWith('itempedidos')
+                ->joinWith('itempedidos.produto')
+                ->where([
+            'pedido.idPedido' => $idPedido,
+           
+        ])->all();
+
+        // add conditions that should always apply here
+
+       
+
+        return $query;
+    }
 }

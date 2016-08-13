@@ -109,18 +109,24 @@ use yii\bootstrap\Modal;
     $this->registerJsFile(\Yii::getAlias("@web") . '/js/pedido_form.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
     ?>
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-
+        <?php
+        
+       echo 
+        ($model->situacaopedido->titulo != 'Concluído') ?
+        Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) :
+           ''?>
+<?php if($model->situacaopedido->titulo != 'Concluído'){?>
         <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar Item Pedido">
-
+<?php } ?>
         <!--   ---------------------------   BEGIN Finalizar Pedido  ---------------------------  -->
         <?php
         Modal::begin([
             'header' => '<h2>Finalizar Pedido</h2>',
             'id' => 'modalfinalizarpedido',
-            'toggleButton' => ['label' => 'Finalizar Pedido',
+            'toggleButton' => ($model->situacaopedido->titulo != 'Concluído') ?
+            ['label' => 'Finalizar Pedido',
                 'class' => 'btn btn-warning',
-                'disabled' => isset($model->datadevolucao) ? true : false],
+                'disabled' => isset($model->datadevolucao) ? true : false] : false,
         ]);
         ?>
         <div class="row">
@@ -146,8 +152,10 @@ use yii\bootstrap\Modal;
                 <?= Html::label("Valor Total", ['class' => 'form-control'])
                 ?>
                 <?=
-                Html::input('text', null, null, ['class' => 'form-control',
-                    'disabled' => true])
+                Html::input('text', null, isset($model->totalPedido)?'R$ '. $model->totalPedido : ''
+                        , ['class' => 'form-control',
+                    'disabled' => true,])
+                 
                 ?>
             </div>
 

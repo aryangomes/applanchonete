@@ -81,7 +81,7 @@ class PagamentoSearch extends Pagamento {
             $auxQuery = \Yii::$app->db->createCommand("
         SELECT *, COUNT('idTipoPagamento') FROM (pagamento p JOIN contasareceber ON p.idConta = contasareceber.idconta) 
         JOIN conta on conta.idconta = contasareceber.idconta WHERE contasareceber.dataHora BETWEEN '" . $dataInicio . "'
-        and '" . $dataFinal . "' and idTipoPagamento ="
+        and '" . $dataFinal . "' and formapagamento_idTipoPagamento ="
                             . $fp->idTipoPagamento . " GROUP BY (DATE_FORMAT(contasareceber.dataHora,'%m-%d-%Y')) 
                  ORDER BY 'idTipoPagamento, contasareceber.dataHora ASC'
         
@@ -111,10 +111,10 @@ class PagamentoSearch extends Pagamento {
         $formasPagamentos = Formapagamento::find()->all();
         foreach ($formasPagamentos as $fp) {
             $auxQuery = \Yii::$app->db->createCommand("
-        SELECT *, COUNT('idTipoPagamento') FROM (pagamento p JOIN contasareceber ON p.idConta = contasareceber.idconta) 
+        SELECT *, COUNT('formapagamento_idTipoPagamento') FROM (pagamento p JOIN contasareceber ON p.idConta = contasareceber.idconta) 
         JOIN conta on conta.idconta = contasareceber.idconta WHERE contasareceber.dataHora BETWEEN '" . $dataInicio . "'
-        and '" . $dataFinal . "' and idTipoPagamento ="
-                            . $fp->idTipoPagamento . " GROUP BY (idTipoPagamento)  ORDER BY 'idTipoPagamento, contasareceber.dataHora ASC'
+        and '" . $dataFinal . "' and formapagamento_idTipoPagamento ="
+                            . $fp->idTipoPagamento . " GROUP BY (formapagamento_idTipoPagamento)  ORDER BY 'formapagamento_idTipoPagamento, contasareceber.dataHora ASC'
         
         ")->queryAll();
 
@@ -126,7 +126,7 @@ class PagamentoSearch extends Pagamento {
 
         for ($i = 0; $i < count($query); $i++) {
             for ($j = 0; $j < count($query[$i]); $j++) {
-                array_push($countTiposPagamentos, intval($query[$i][$j]["COUNT('idTipoPagamento')"]));
+                array_push($countTiposPagamentos, intval($query[$i][$j]["COUNT('formapagamento_idTipoPagamento')"]));
             }
         }
 
@@ -146,7 +146,7 @@ class PagamentoSearch extends Pagamento {
             $auxQuery = \Yii::$app->db->createCommand("
         SELECT *, COUNT('idTipoPagamento') FROM (pagamento p JOIN contasareceber ON p.idConta = contasareceber.idconta) 
         JOIN conta on conta.idconta = contasareceber.idconta WHERE contasareceber.dataHora BETWEEN '" . $dataInicio . "'
-        and '" . $dataFinal . "' and idTipoPagamento ="
+        and '" . $dataFinal . "' and formapagamento_idTipoPagamento ="
                             . $fp->idTipoPagamento . " GROUP BY (DATE_FORMAT(contasareceber.dataHora,'%m-%d-%Y'))  ORDER BY 'idTipoPagamento, contasareceber.dataHora ASC'
         
         ")->queryAll();

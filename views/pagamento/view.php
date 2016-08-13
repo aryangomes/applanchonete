@@ -16,22 +16,32 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'idConta' => $model->idConta, 'idPedido' => $model->idPedido], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'idConta' => $model->idConta, 'idPedido' => $model->idPedido], [
+        <?=
+        Html::a(Yii::t('app', 'Delete'), ['delete', 'idConta' => $model->idConta, 'idPedido' => $model->idPedido], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
             ],
-        ]) ?>
+        ])
+        ?>
     </p>
 
-    <?= DetailView::widget([
+    <?=
+    DetailView::widget([
         'model' => $model,
         'attributes' => [
             'idConta',
             'idPedido',
-            'formapagamento_idTipoPagamento',
+            [
+                'attribute' => 'formapagamentoIdTipoPagamento',
+                'label'=>'Forma de Pagamento',
+                'value' => isset($model->formapagamento_idTipoPagamento) &&
+                ($model->formapagamento_idTipoPagamento > 0) ?
+                        $model->formapagamentoIdTipoPagamento->titulo : null
+            ],
         ],
-    ]) ?>
+    ])
+    ?>
 
 </div>

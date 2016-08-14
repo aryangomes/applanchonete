@@ -98,11 +98,8 @@ class AdminController extends Controller
 
 
         // AuthAssigment
-     $AuthItem = new AuthItem();
-     $permissoes = ArrayHelper::map(
-        AuthItem::find()->
-        where("name <> 'admin' " )->orderBy('type ASC')->all(), 
-        'name','description');
+     
+     $permissoes =  AuthItem::getListToDropDownList();
      $permissoesUser = null;
         // set up new user/profile objects
      $user = $this->module->model("User", ["scenario" => "register"]);
@@ -164,9 +161,7 @@ class AdminController extends Controller
         if (Yii::$app->user->can("update-user") ||
             Yii::$app->user->can("user")) {
             $authitem = new AuthItem();
-        $permissoes = ArrayHelper::map(
-            AuthItem::find()->orderBy('type ASC')->all(), 
-            'name','description');
+         $permissoes =  AuthItem::getListToDropDownList();
 
         $permissoesUser = ArrayHelper::map(
             AuthItem::find()->innerJoin('auth_assignment',

@@ -10,27 +10,25 @@ use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
 use app\models\AuthItem;
 use yii\helpers\ArrayHelper;
-
-
 use yii\web\ForbiddenHttpException;
 
 /**
  * Default controller for User module
  */
-class DefaultController extends Controller
-{
+class DefaultController extends Controller {
+
     /**
      * @var \amnah\yii2\user\Module
      * @inheritdoc
      */
     public $module;
-    private $authitems;//= ['despesa', 'caixa', 'fornecedor','relatorio','compra','user'];
+    private $authitems; //= ['despesa', 'caixa', 'fornecedor','relatorio','compra','user'];
 
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+
+    public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -64,29 +62,27 @@ class DefaultController extends Controller
     /**
      * Display index - debug page, login page, or account page
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         if (defined('YII_DEBUG') && YII_DEBUG) {
             $actions = $this->module->getActions();
             if (
-            Yii::$app->user->can("admin")
+                    Yii::$app->user->can("admin")
             ) {
 
                 return $this->render('index', ["actions" => $actions]);
             } else if (Yii::$app->user->can("index-user") ||
-                Yii::$app->user->can("user")
+                    Yii::$app->user->can("user")
             ) {
                 $searchModel = $this->module->model("UserSearch");
                 $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
                 return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
+                            'searchModel' => $searchModel,
+                            'dataProvider' => $dataProvider,
                 ]);
             } else {
                 throw new ForbiddenHttpException("Acesso negado!");
             }
-
         } elseif (Yii::$app->user->isGuest) {
             return $this->redirect(["/user/login"]);
         } else {
@@ -97,8 +93,7 @@ class DefaultController extends Controller
     /**
      * Display login page
      */
-    public function actionLogin()
-    {
+    public function actionLogin() {
         /** @var \amnah\yii2\user\models\forms\LoginForm $model */
         $model = $this->module->model("LoginForm");
 
@@ -115,8 +110,7 @@ class DefaultController extends Controller
     /**
      * Login/register via email
      */
-    public function actionLoginEmail()
-    {
+    public function actionLoginEmail() {
         /** @var \amnah\yii2\user\models\forms\LoginEmailForm $loginEmailForm */
         $loginEmailForm = $this->module->model("LoginEmailForm");
 
@@ -135,13 +129,11 @@ class DefaultController extends Controller
     /**
      * Login/register callback via email
      */
-    public function actionLoginCallback($token)
-    {
+    public function actionLoginCallback($token) {
         /** @var \amnah\yii2\user\models\User $user */
         /** @var \amnah\yii2\user\models\Profile $profile */
         /** @var \amnah\yii2\user\models\Role $role */
         /** @var \amnah\yii2\user\models\UserToken $userToken */
-
         $user = $this->module->model("User");
         $profile = $this->module->model("Profile");
         $userToken = $this->module->model("UserToken");
@@ -182,8 +174,7 @@ class DefaultController extends Controller
     /**
      * Perform the login
      */
-    protected function performLogin($user, $rememberMe = true)
-    {
+    protected function performLogin($user, $rememberMe = true) {
         // log user in
         $loginDuration = $rememberMe ? $this->module->loginDuration : 0;
         Yii::$app->user->login($user, $loginDuration);
@@ -202,8 +193,7 @@ class DefaultController extends Controller
     /**
      * Log user out and redirect
      */
-    public function actionLogout()
-    {
+    public function actionLogout() {
         Yii::$app->user->logout();
 
         // handle redirect
@@ -214,18 +204,16 @@ class DefaultController extends Controller
         return $this->goHome();
     }
 
-
-    public function permissoesSortable()
-    {
+    public function permissoesSortable() {
 
         $aux = []; //Array auxiliar para receber as permissões de cada tipo(agrupados)
         $roles_permission = []; // Array que irá guardar um conjunto de um tipo de permissão
         $roles = [];
-        /*$authitem = AuthItem::find()
-        ->where("name <> 'admin' ")->orderBy('type ASC')->all();*/
+        /* $authitem = AuthItem::find()
+          ->where("name <> 'admin' ")->orderBy('type ASC')->all(); */
 
         $this->authitems = AuthItem::find()
-            ->where("name not like '%-%' and name <> 'admin' and name <> 'alterarprodutovenda'  
+                        ->where("name not like '%-%' and name <> 'admin' and name <> 'alterarprodutovenda'  
             and name <> 'produtosvenda'   and name <> 'cadastrarprodutovenda'
             and name <> 'avaliacaoproduto'
             and name <> 'listadeinsumos'
@@ -234,79 +222,50 @@ class DefaultController extends Controller
 
 
             $aux = AuthItem::find()
-                ->where("name <> 'admin' and name like '%" . $ai->name . "%' ")->orderBy('type ASC')->all();
+                            ->where("name <> 'admin' and name like '%" . $ai->name . "%' ")->orderBy('type ASC')->all();
             $r = ArrayHelper::map(
-              $aux,
-                'type', 'description');
-           /* foreach ($aux as $p) {
-                ArrayHelper::map(
-                    $roles_permission[$p->name] ,
-                    'type', 'description');
+                            $aux, 'type', 'description');
+            /* foreach ($aux as $p) {
+              ArrayHelper::map(
+              $roles_permission[$p->name] ,
+              'type', 'description');
               $roles_permission[$p->name] = [
-                    'content' => $p->description,
-                    'options' => ['data' => ['name' => $p->name]],
+              'content' => $p->description,
+              'options' => ['data' => ['name' => $p->name]],
 
-            }*/
+              } */
             array_push($roles, $r);
             $aux = [];
             $roles_permission = [];
         }
 
         /* $roles = ArrayHelper::map(
-            AuthItem::find()
-                ->where("name <> 'admin' and name <> 'alterarprodutovenda'   and name <> 'produtosvenda'   and name <> 'cadastrarprodutovenda'
-            and name <> 'avaliacaoproduto'
-            and name <> 'listadeinsumos'
-            and name <> 'listadeprodutosporinsumo'")->orderBy('type ASC')->all(),
-            'type', 'description');*/
+          AuthItem::find()
+          ->where("name <> 'admin' and name <> 'alterarprodutovenda'   and name <> 'produtosvenda'   and name <> 'cadastrarprodutovenda'
+          and name <> 'avaliacaoproduto'
+          and name <> 'listadeinsumos'
+          and name <> 'listadeprodutosporinsumo'")->orderBy('type ASC')->all(),
+          'type', 'description'); */
 
 
         return $roles;
-
     }
 
     /**
      * Display registration page
      */
-    public function actionRegister()
-    {
+    public function actionRegister() {
         /** @var \amnah\yii2\user\models\User $user */
         /** @var \amnah\yii2\user\models\Profile $profile */
         /** @var \amnah\yii2\user\models\Role $role */
-
-
         // AuthAssigment
-        $AuthItem = new AuthItem();
-        /* $permissoes = ArrayHelper::map(
-             AuthItem::find()->
-             where("name <> 'admin' " )->orderBy('type ASC')->all(),
-             'name','description');*/
-        $permissoes = $this->permissoesSortable();
-        $permissoesRegister = [];
-        $this->authitems = AuthItem::find()
-            ->where("name not like '%-%' and name <> 'admin' and name <> 'alterarprodutovenda'  
-            and name <> 'produtosvenda'   and name <> 'cadastrarprodutovenda'
-            and name <> 'avaliacaoproduto'
-            and name <> 'listadeinsumos'
-            and name <> 'listadeprodutosporinsumo'")->orderBy('type ASC')->all();
-        foreach ($this->authitems as $ai) {
-    array_push($permissoesRegister, AuthItem::find()
-        ->where("name <> 'admin' and name like '%" . $ai->name . "%' ")->orderBy('type ASC')->all());
-
-            /*$permissoesRegister = AuthItem::find()
-                ->where("name <> 'admin' and name like '%" . $ai->name . "%' ")->orderBy('type ASC')->all();
-            */
-
-        }
-
-
         // set up new user/profile objects
         $user = $this->module->model("User", ["scenario" => "register"]);
         $profile = $this->module->model("Profile");
 
         // load post data
         $post = Yii::$app->request->post();
-//var_dump($this->permissoesSortable());
+
         if ($user->load($post)) {
 
             // ensure profile data gets loaded
@@ -318,69 +277,55 @@ class DefaultController extends Controller
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($user, $profile);
             }
+  var_dump($post);
+            if (isset($post['roles'])) {
+//                $aux = $post['User']['role_id'];
+//                $roles = explode(',', $aux);
 
-            if (isset($post['User']['role_id'])) {
-                $aux = $post['User']['role_id'];
-                $roles = explode(',', $aux);
-
-
+                $roles = ($post['roles']);
                 // var_dump($post['User']['role_id']);
                 // $roles = $post['User']['role_id'];
-
             }
+          
+            
+              // validate for normal request
+              if ($user->validate() && $profile->validate()) {
 
+              // perform registration
+              $role = $this->module->model("Role");
+              // VEJA AQUI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+              $user->setRegisterAttributes($role::ROLE_USER, $user::STATUS_ACTIVE)->save();
 
-            // validate for normal request
-            if ($user->validate() && $profile->validate()) {
+              // $user->setPermissoes(1,$user->id);
+              $profile->setUser($user->id)->save();
 
-                // perform registration
-                $role = $this->module->model("Role");
-                // VEJA AQUI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                $user->setRegisterAttributes($role::ROLE_USER, $user::STATUS_ACTIVE)->save();
+              $idUser = $user->id;
+              // var_dump($idUser);
+              foreach ($roles as $role) {
 
-                // $user->setPermissoes(1,$user->id);
-                $profile->setUser($user->id)->save();
-
-                $idUser = $user->id;
-                // var_dump($idUser);
-                foreach ($roles as $role) {
-
-                    $user->setPermissoes($role, $idUser);
-                }
-                // $this->afterRegister($user);
-                // set flash
-                // don't use $this->refresh() because user may automatically be logged in and get 403 forbidden
-                $successText = Yii::t("user", "Successfully registered [ {displayName} ]", ["displayName" => $user->getDisplayName()]);
-                $guestText = "";
-                if (Yii::$app->user->isGuest) {
-                    //$guestText = Yii::t("user", " - Please check your email to confirm your account");
-                }
-                Yii::$app->session->setFlash("Register-success", $successText . $guestText);
-            }
+              $user->setPermissoes($role, $idUser);
+              }
+              // $this->afterRegister($user);
+              // set flash
+              // don't use $this->refresh() because user may automatically be logged in and get 403 forbidden
+              $successText = Yii::t("user", "Successfully registered [ {displayName} ]", ["displayName" => $user->getDisplayName()]);
+              $guestText = "";
+              if (Yii::$app->user->isGuest) {
+              //$guestText = Yii::t("user", " - Please check your email to confirm your account");
+              }
+              Yii::$app->session->setFlash("Register-success", $successText . $guestText);
+              } 
         }
 
-        $this->authitems = AuthItem::find()
-            ->where("name not like '%-%' and name <> 'admin' and name <> 'alterarprodutovenda'   and name <> 'produtosvenda'   and name <> 'cadastrarprodutovenda'
-    and name <> 'avaliacaoproduto'
-    and name <> 'listadeinsumos'
-    and name <> 'listadeprodutosporinsumo'")->orderBy('type ASC')->all();
-        $macroauthitems = array();
-        foreach ($this->authitems as $ai) {
-
-
-            array_push($macroauthitems, $ai->name);
-
-        }
-
-        return $this->render("register", compact("user", "profile", "permissoes", "macroauthitems","permissoesRegister"));
+        $permissoes = AuthItem::getListToDropDownList();
+        return $this->render("register", compact("user", "profile", "permissoes", "macroauthitems", "permissoesRegister"));
     }
 
     /**
      * Process data after registration
      * @param \amnah\yii2\user\models\User $user
      */
-    protected function afterRegister($user)
-    {
+    protected function afterRegister($user) {
         /** @var \amnah\yii2\user\models\UserToken $userToken */
         $userToken = $this->module->model("UserToken");
 
@@ -408,11 +353,9 @@ class DefaultController extends Controller
     /**
      * Confirm email
      */
-    public function actionConfirm($token)
-    {
+    public function actionConfirm($token) {
         /** @var \amnah\yii2\user\models\UserToken $userToken */
         /** @var \amnah\yii2\user\models\User $user */
-
         // search for userToken
         $success = false;
         $email = "";
@@ -430,7 +373,7 @@ class DefaultController extends Controller
             }
 
             // set email and delete token
-            $email = $newEmail ?: $user->email;
+            $email = $newEmail ? : $user->email;
             $userToken->delete();
         }
 
@@ -440,11 +383,9 @@ class DefaultController extends Controller
     /**
      * Account
      */
-    public function actionAccount()
-    {
+    public function actionAccount() {
         /** @var \amnah\yii2\user\models\User $user */
         /** @var \amnah\yii2\user\models\UserToken $userToken */
-
         // set up user and load post data
         $user = Yii::$app->user->identity;
         $user->setScenario("account");
@@ -485,10 +426,8 @@ class DefaultController extends Controller
     /**
      * Profile
      */
-    public function actionProfile()
-    {
+    public function actionProfile() {
         /** @var \amnah\yii2\user\models\Profile $profile */
-
         // set up profile and load post data
         $profile = Yii::$app->user->identity->profile;
         $loadedPost = $profile->load(Yii::$app->request->post());
@@ -512,10 +451,8 @@ class DefaultController extends Controller
     /**
      * Resend email confirmation
      */
-    public function actionResend()
-    {
+    public function actionResend() {
         /** @var \amnah\yii2\user\models\forms\ResendForm $model */
-
         // load post data and send email
         $model = $this->module->model("ResendForm");
         if ($model->load(Yii::$app->request->post()) && $model->sendEmail()) {
@@ -530,11 +467,9 @@ class DefaultController extends Controller
     /**
      * Resend email change confirmation
      */
-    public function actionResendChange()
-    {
+    public function actionResendChange() {
         /** @var \amnah\yii2\user\models\User $user */
         /** @var \amnah\yii2\user\models\UserToken $userToken */
-
         // find userToken of type email change
         $user = Yii::$app->user->identity;
         $userToken = $this->module->model("UserToken");
@@ -552,11 +487,9 @@ class DefaultController extends Controller
     /**
      * Cancel email change
      */
-    public function actionCancel()
-    {
+    public function actionCancel() {
         /** @var \amnah\yii2\user\models\User $user */
         /** @var \amnah\yii2\user\models\UserToken $userToken */
-
         // find userToken of type email change
         $user = Yii::$app->user->identity;
         $userToken = $this->module->model("UserToken");
@@ -572,10 +505,8 @@ class DefaultController extends Controller
     /**
      * Forgot password
      */
-    public function actionForgot()
-    {
+    public function actionForgot() {
         /** @var \amnah\yii2\user\models\forms\ForgotForm $model */
-
         // load post data and send email
         $model = $this->module->model("ForgotForm");
         if ($model->load(Yii::$app->request->post()) && $model->sendForgotEmail()) {
@@ -590,11 +521,9 @@ class DefaultController extends Controller
     /**
      * Reset password
      */
-    public function actionReset($token)
-    {
+    public function actionReset($token) {
         /** @var \amnah\yii2\user\models\User $user */
         /** @var \amnah\yii2\user\models\UserToken $userToken */
-
         // get user token and check expiration
         $userToken = $this->module->model("UserToken");
         $userToken = $userToken::findByToken($token, $userToken::TYPE_PASSWORD_RESET);
@@ -618,4 +547,5 @@ class DefaultController extends Controller
 
         return $this->render('reset', compact("user", "success"));
     }
+
 }

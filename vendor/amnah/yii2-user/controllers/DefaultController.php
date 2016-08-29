@@ -277,7 +277,7 @@ class DefaultController extends Controller {
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($user, $profile);
             }
-  var_dump($post);
+ // var_dump($post);
             if (isset($post['roles'])) {
 //                $aux = $post['User']['role_id'];
 //                $roles = explode(',', $aux);

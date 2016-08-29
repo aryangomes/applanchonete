@@ -37,9 +37,10 @@ $this->title = 'Lista de insumos de um Produto';
 
         <?php 
         if (isset($insumos)) {
-            ?> <div class="panel-heading">Insumos de <?= $produtoVenda->nome ?></div> <?php
+            ?> <div class="panel-heading">Insumos de <?= $model->nome ?></div> <?php
             foreach ($insumos as $insumo) {
-                ?> <div class="panel-body"><?= Html::a($insumo->nome,Url::toRoute(['/insumos/update','idprodutoVenda'=>$produtoVenda->idProduto,'idprodutoInsumo'=>$insumo->idProduto])) ?></div><?php
+                ?> <div class="panel-body"><?= Html::a($insumo->nome,Url::toRoute(['/insumo/view',
+                'idprodutoVenda'=>$model->idProduto,'idprodutoInsumo'=>$insumo->idProduto])) ?></div><?php
             }
         }
 

@@ -75,7 +75,7 @@ else{
 			]);
 	for ($i=0; $i < count($produtosDaCompras); $i++) { 
 	
-?><div class "form-group field-insumos-idprodutoinsumo required" id="<?= 'inputinsumo' .$i ?>"> 
+?><div class="form-group field-insumos-idprodutoinsumo required" id="<?= 'inputinsumo' .$i ?>"> 
 				<?php
 			/*echo $form->field($models[$i], $idprodutoInsumo)->widget(Select2::classname(), [
 				//'name'=>'insumos[]',

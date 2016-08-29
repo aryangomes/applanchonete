@@ -46,7 +46,6 @@ class CaixaController extends Controller
         'delete-caixa',
         'view-caixa',
         'create-caixa',
-        'fechar-caixa'
     ],
     
     'index'=>'index-caixa',
@@ -54,7 +53,6 @@ class CaixaController extends Controller
     'delete'=>'delete-caixa',
       'view'=>'view-caixa',
       'create'=>'create-caixa',
-      'fechar' => 'fechar-caixa'
 ],
         ],
         ];
@@ -65,29 +63,13 @@ class CaixaController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    {  
-        $caixa = new Caixa();
-        $caixas = Caixa::find()->all();
+    {
 
-        $ultimocaixa = Yii::$app->db->createCommand('SELECT * FROM caixa ORDER BY idcaixa DESC LIMIT 1')->queryOne();
-   
-           // $caixa = Caixa::find()->where(['user_id'=>Yii::$app->user->getId()])->one();
+    
+            $caixa = Caixa::find()->where(['user_id'=>Yii::$app->user->getId()])->one();
       //  var_dump($caixa);
-        //if (count($caixa) > 0) {
-        //    return $this->redirect(['view', 'id'=>$caixa->idcaixa]);
-        //}else{
-
-         //   $searchModel = new CaixaSearch();
-         //   $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-          //  return $this->render('index', [
-          //      'searchModel' => $searchModel,
-          //      'dataProvider' => $dataProvider,
-          //      ]);
-        //}
-
-        if (empty($ultimocaixa['datafechamento'])) {
-            return $this->redirect(['view', 'id'=>$ultimocaixa['idcaixa']]);
+        if (count($caixa) > 0) {
+            return $this->redirect(['view', 'id'=>$caixa->idcaixa]);
         }else{
 
             $searchModel = new CaixaSearch();
@@ -123,35 +105,24 @@ class CaixaController extends Controller
      */
     public function actionCreate()
     {
-       // $caixa = new Caixa();
-        $caixas = Caixa::find()->all();
+     
+          $caixa = Caixa::find()->where(['user_id'=>Yii::$app->user->getId()])->one();
+
+      if (count($caixa) == 0) {
 
         $model = new Caixa();
 
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->idcaixa]);
-            } else {
-                return $this->render('create', [
-                    'model' => $model,
-                    ]);
-            }
-         // $caixa = Caixa::find()->where(['user_id'=>Yii::$app->user->getId()])->one();
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->idcaixa]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+                ]);
+        }
+    }else{
+        return $this->redirect(['view', 'id'=>$caixas->idcaixa]);
 
-        // if (count($caixa) == 0) {
-
-        //$model = new Caixa();
-
-        //if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        //    return $this->redirect(['view', 'id' => $model->idcaixa]);
-        //} else {
-        //    return $this->render('create', [
-        //        'model' => $model,
-        //        ]);
-        //}
-    //}else{
-        //return $this->redirect(['view', 'id'=>$caixas->idcaixa]);
-
-    //}
+    }
 
 }
 
@@ -175,18 +146,7 @@ class CaixaController extends Controller
     }
 
 }
-    public function actionFechar($id)
-    {
-    
-    $model = $this->findModel($id);
-    $data = date('Y/d/m');
 
-    Yii::$app->db->createCommand()->update('caixa', ['datafechamento' => $data], 'idcaixa = :idcaixa', ['idcaixa' => $model->idcaixa])->execute();
-
-    // Yii::$app->db->createCommand()->update('apartamento', ['estado' => 'Ocupado'], 'numero = :param', ['param' => $model->apartamento])->execute();
-
-    return $this->redirect(['index']);
-}
     /**
      * Deletes an existing Caixa model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

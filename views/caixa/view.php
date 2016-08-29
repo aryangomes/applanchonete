@@ -28,12 +28,21 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
         <p>
             <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->idcaixa], ['class' => 'btn btn-primary btn-block']) ?>
-            <?=  Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->idcaixa], [
+            <?=  
+             //   Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->idcaixa], [
+             //   'class' => 'btn btn-danger btn-block',
+             //   'data' => [
+             //   'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+             //   'method' => 'post',
+             //  ],
+             //   ]) 
+               Html::a(Yii::t('yii', 'Fechar Caixar'), ['fechar', 'id' => $model->idcaixa], [
                 'class' => 'btn btn-danger btn-block',
                 'data' => [
-                'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                'confirm' => Yii::t('yii', 'Tem certeza que quer fechar o caixa?'),
                 'method' => 'post',
-                ],
-                ]) ?>
+               ],
+              ]) 
+            ?>
             </p>
         </div>

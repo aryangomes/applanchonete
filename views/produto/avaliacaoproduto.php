@@ -9,12 +9,9 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Produto */
 
-$this->title =  'Avaliação Produto: ' . $model->nome;
+$this->title =  'Avaliação Produto';//$model->idProduto;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Produtos'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-
-
-
 ?>
 <div class="produto-view">
 
@@ -22,42 +19,34 @@ $this->params['breadcrumbs'][] = $this->title;
 
   <div class="produto-form">
     <?php $form = ActiveForm::begin(); ?>
-      <div class="form-group datainicioavaliacao">
-          <?= Html::label("De") ?>
-    <?=  DateControl::widget([
-        'name'=>'datainicioavaliacao',
-              'value'=>(isset($datainicio)) ? $datainicio : date('Y-m-d'),
-        'type'=>DateControl::FORMAT_DATE,
-    'ajaxConversion'=>false,
-		'options' => [
+    <?= $form->field($model, 'datainicioavaliacao')->widget(DateControl::classname(), [
+      'type'=>DateControl::FORMAT_DATE,
+      'ajaxConversion'=>false,
+      'options' => [
+      'pluginOptions' => [
+      'autoclose' => true,
+      ]
+      ],
 
-		'pluginOptions' => [
-		'autoclose' => true
-		]
-		],
-		'displayFormat' => 'dd/MM/yyyy',
-		'language'=>'pt',
+      'displayFormat' => 'dd/MM/yyyy',
+      'language'=>'pt',
+      ]);?>
 
-])?>
-</div>
-      <div class="form-group datafimavaliacao">
-          <?= Html::label("Até") ?>
-    <?= DateControl::widget([
-        'name'=>'datafimavaliacao',
-       'value'=>(isset($datafim)) ? $datafim : date('Y-m-d'),
-        'type'=>DateControl::FORMAT_DATE,
-    'ajaxConversion'=>false,
-		'options' => [
+    <?= $form->field($model, 'datafimavaliacao')->widget(DateControl::classname(), [
+      'type'=>DateControl::FORMAT_DATE,
+      'ajaxConversion'=>false,
+      'options' => [
+      'pluginOptions' => [
+      'autoclose' => true
+      ]
+      ],
+      'displayFormat' => 'dd/MM/yyyy',
+      'language'=>'pt',
+      ]);
 
-		'pluginOptions' => [
-		'autoclose' => true
-		]
-		],
-		'displayFormat' => 'dd/MM/yyyy',
-		'language'=>'pt',
-    ])
+
+
       ?>
-          </div>
       <?= $form->field($model, 'groupbyavaliacao')->dropdownList(['DAY'=>'Dia','MONTH'=>'Mês','YEAR'=>'Ano']); ?>
       <div class="form-group">
         <?= Html::submitButton('Gerar gráfico <i class="fa fa-line-chart"></i>', ['class' =>  'btn btn-primary btn-block']) ?>

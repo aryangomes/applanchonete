@@ -290,7 +290,7 @@ if (count($loja) > 0) {
                             if (Yii::$app->user->can("index-cardapio") || Yii::$app->user->can("cardapio")) {
                                 ?>
                                 <li>
-                                    <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/cardapio/index']) ?>
+                                    <?= Html::a('<i class="fa fa fa-list"></i> Cardápio', ['/cardapio/index']) ?>
 
                                 </li>
                                 <?php

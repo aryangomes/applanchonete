@@ -46,6 +46,7 @@ class ProdutoController extends Controller
                         'cadastrarprodutovenda',
                         'alterarprodutovenda',
                         'definirvalorprodutovenda',
+                         'lucroproduto' => 'lucroproduto',
                     ],
 
                     'index' => 'index-produto',
@@ -60,6 +61,7 @@ class ProdutoController extends Controller
                     'cadastrarprodutovenda' => 'cadastrarprodutovenda',
                     'alterarprodutovenda' => 'alterarprodutovenda',
                     'definirvalorprodutovenda' =>'definirvalorprodutovenda',
+                    'lucroproduto' => 'lucroproduto', 
                 ],
             ],
         ];

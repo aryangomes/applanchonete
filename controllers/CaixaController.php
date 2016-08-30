@@ -169,7 +169,7 @@ class CaixaController extends Controller {
     public function actionFechar($id) {
 
         $model = $this->findModel($id);
-        $data = date('Y/d/m');
+        $data = date('Y-m-d');
 
         Yii::$app->db->createCommand()->update('caixa', ['datafechamento' => $data], 'idcaixa = :idcaixa', ['idcaixa' => $model->idcaixa])->execute();
 

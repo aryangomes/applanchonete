@@ -17,21 +17,19 @@ use Yii;
  *
  * @property User $user
  */
-class Caixa extends \yii\db\ActiveRecord
-{
+class Caixa extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'caixa';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['valorapurado', 'valoremcaixa', 'valorlucro'], 'number'],
             [['user_id'], 'integer'],
@@ -44,13 +42,13 @@ class Caixa extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'idcaixa' => Yii::t('app', 'Idcaixa'),
-            'valorapurado' => Yii::t('app', 'Valorapurado'),
-            'valoremcaixa' => Yii::t('app', 'Valoremcaixa'),
-            'valorlucro' => Yii::t('app', 'Valorlucro'),
+            'valorapurado' => Yii::t('app', 'Valor Apurado'),
+            'valoremcaixa' => Yii::t('app', 'Valor em Caixa'),
+            'valorlucro' => Yii::t('app', 'Valor Lucro'), 
+
             'user_id' => Yii::t('app', 'User ID'),
             'dataabertura' => Yii::t('app', 'Dataabertura'),
             'datafechamento' => Yii::t('app', 'Datafechamento'),
@@ -60,8 +58,8 @@ class Caixa extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
-    {
+    public function getUser() {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+
 }

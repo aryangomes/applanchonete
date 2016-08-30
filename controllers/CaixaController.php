@@ -19,42 +19,44 @@ class CaixaController extends Controller {
 
     public function behaviors() {
         return [
-            /* 'access' =>[
-              'class' => AccessControl::classname(),
-              'only'=> ['create','update','view','delete','index'],
-              'rules'=> [
-              ['allow'=>true,
-              'roles' => ['caixa','index-caixa'],
-              ],
-
-              ]
-              ], */
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
-            'autorizacao' => [
-                'class' => AccessFilter::className(),
-                'actions' => [
-
-                    'caixa' => [
-                        'index-caixa',
-                        'update-caixa',
-                        'delete-caixa',
-                        'view-caixa',
-                        'create-caixa',
-                        'fechar-caixa',
-                    ],
-                    'index' => 'index-caixa',
-                    'update' => 'update-caixa',
-                    'delete' => 'delete-caixa',
-                    'view' => 'view-caixa',
-                    'create' => 'create-caixa',
-                    'fechar' => 'fechar-caixa'
-                ],
-            ],
+        /* 'access' =>[
+        'class' => AccessControl::classname(),
+        'only'=> ['create','update','view','delete','index'],
+        'rules'=> [
+        ['allow'=>true,
+        'roles' => ['caixa','index-caixa'],
+        ],
+        
+        ]
+        ],*/
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+        'delete' => ['post'],
+        ],
+        ],
+        
+      /*       'autorizacao'=>[
+        'class'=>AccessFilter::className(),
+'actions'=>[
+    
+    'caixa'=>[
+        'index-caixa',
+        'update-caixa',
+        'delete-caixa',
+        'view-caixa',
+        'create-caixa',
+        'fechar-caixa'
+    ],
+    
+    'index'=>'index-caixa',
+    'update'=>'update-caixa',
+    'delete'=>'delete-caixa',
+      'view'=>'view-caixa',
+      'create'=>'create-caixa',
+      'fechar' => 'fechar-caixa'
+],
+        ],*/
         ];
     }
 

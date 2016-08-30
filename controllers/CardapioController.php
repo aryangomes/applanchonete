@@ -27,14 +27,15 @@ class CardapioController extends Controller
 //        'rules' => ['cardapio','index-cardapio'],
 //        ],
 //        ]
-//        ], 
+//        ],
+      
         'verbs' => [
         'class' => VerbFilter::className(),
         'actions' => [
         'delete' => ['post'],
         ],
         ],
-        
+      
         'autorizacao'=>[
         'class'=>AccessFilter::className(),
         'actions'=>[

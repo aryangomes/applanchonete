@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create {model}',
+        <?= Html::a(Yii::t('app', 'Abrir Caixa',
         ['model'=>Yii::t('app','Caixa')]), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 

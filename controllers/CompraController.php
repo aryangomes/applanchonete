@@ -74,23 +74,24 @@ class CompraController extends Controller
         $compraProduto = new Compraproduto();
         $produtos = ArrayHelper::map(Produto::find()->all(),
             'idProduto','nome');
-        if ((Yii::$app->request->post()) ) {
+        if ((Yii::$app->request->post()) ) 
+        {
            
-            $conta->tipoConta = 'contasapagar';
+                $conta->tipoConta = 'contasapagar';
            
-            if ( $conta->save()) {
-                $model->idconta = $conta->idconta;
-            $model->dataCompra = Yii::$app->request->post()['Compra']['dataCompra'];
-             $model->save();
+                if ( $conta->save()) {
+                    $model->idconta = $conta->idconta;
+                    $model->dataCompra = Yii::$app->request->post()['Compra']['dataCompra'];
+                    $model->save();
 
-            $compraprodutos = Yii::$app->request->post()['Compraproduto'];
-            $valorescompraprodutos = Yii::$app->request->post()['compraproduto-valorcompra-disp'];
+                    $compraprodutos = Yii::$app->request->post()['Compraproduto'];
+                    $valorescompraprodutos = Yii::$app->request->post()['compraproduto-valorcompra-disp'];
 
-          for ($i=0; $i < count($compraprodutos['idProduto']); $i++) {
-            $cp = new Compraproduto();
-          $cp->idCompra =  $model->idconta;
-          $cp->idProduto= $compraprodutos['idProduto'][$i];
-          $cp->quantidade= $compraprodutos['quantidade'][$i]; 
+                    for ($i=0; $i < count($compraprodutos['idProduto']); $i++) {
+                       $cp = new Compraproduto();
+                      $cp->idCompra =  $model->idconta;
+                      $cp->idProduto= $compraprodutos['idProduto'][$i];
+                      $cp->quantidade= $compraprodutos['quantidade'][$i]; 
 
           if($i <= 0) {
                  $cp->valorCompra= $compraprodutos['valorCompra'][0]; 
@@ -106,6 +107,8 @@ class CompraController extends Controller
             }
           
         } else {
+            $model->dataCompra = date('Y-m-d');
+            
             return $this->render('create', [
                 'model' => $model,
                 'compraProduto'=>$compraProduto,

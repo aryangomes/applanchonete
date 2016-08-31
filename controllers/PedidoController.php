@@ -97,48 +97,90 @@ class PedidoController extends Controller {
      */
     public function actionCreate() {
         $model = new Pedido();
+        $itemPedido = new Itempedido();
+        
+        $mensagem = ""; //Informa ao usuário mensagens de erro na view
+        
         $situacaopedido = ArrayHelper::map(
                         Situacaopedido::find()->all()
                         , 'idSituacaoPedido', 'titulo');
 
         $produtosVenda = ArrayHelper::map(
                         Produto::find()->where(['isInsumo' => 0])->all(), 'idProduto', 'nome');
-
-        $itemPedido = new Itempedido();
-
-
+        
         $formasPagamento = ArrayHelper::map(
                         Formapagamento::find()->all(), 'idTipoPagamento', 'titulo');
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
+        
+        if ($model->load(Yii::$app->request->post()))
+        {
+            //Carrega demais modelos
+            
+            //Inicia a transação:
+            $transaction = \Yii::$app->db->beginTransaction();
+            try
+            {
+                //Tenta salvar um registro de Pedido:
+                if($model->save())
+                {
+                    //Carrega os dados dos itens do Pedido:
+                    $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
+                    
+                    $itensInseridos = true;
 
-            for ($i = 0; $i < count($itemPedidoPost['idProduto']); $i++) {
-                $itemPedido = new Itempedido();
-                $itemPedido->idProduto = $itemPedidoPost['idProduto'][$i];
-                $itemPedido->quantidade = $itemPedidoPost['quantidade'][$i];
-                $produtoVenda = Produto::find()->where(['idProduto' => $itemPedido->idProduto])->one();
-                $itemPedido->total = floatval(
-                        number_format(
-                                $produtoVenda->valorVenda * $itemPedido->quantidade, 2));
-                $itemPedido->idPedido = $model->idPedido;
-                if ($itemPedido->save()) {
-                    Insumo::atualizaQtdNoEstoqueInsert(
-                            $itemPedido->idProduto, $itemPedido->quantidade);
-                    if ((count($itemPedidoPost['idProduto']) - 1) == $i) {
+                    for ($i = 0; $i < count($itemPedidoPost['idProduto']); $i++) 
+                    {
+                        $itemPedido = new Itempedido();
+                        $itemPedido->idProduto = $itemPedidoPost['idProduto'][$i];
+                        $itemPedido->quantidade = $itemPedidoPost['quantidade'][$i];
+                        $produtoVenda = Produto::find()->where(['idProduto' => $itemPedido->idProduto])->one();
+                        $itemPedido->total = floatval(
+                                number_format(
+                                        $produtoVenda->valorVenda * $itemPedido->quantidade, 2));
+                        $itemPedido->idPedido = $model->idPedido;
+                        //Tenta salvar os itens do Pedido:
+                        if ($itemPedido->save()) 
+                        {
+                            Insumo::atualizaQtdNoEstoqueInsert(
+                                    $itemPedido->idProduto, $itemPedido->quantidade);
+                            if ((count($itemPedidoPost['idProduto']) - 1) == $i) {
 
-                        return $this->redirect(['view', 'id' => $model->idPedido]);
+                                return $this->redirect(['view', 'id' => $model->idPedido]);
+                            }
+                        }
+                        else{
+                            $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
+                            $transaction->rollBack(); //desfaz alterações no BD
+                            $itensInseridos = false;
+                            break; //encerra o laço for
+                        }
+                    }
+                    //Testa se todos os itens foram inseridos (ou tudo ou nada):
+                    if($itensInseridos)
+                    {
+                        $transaction->commit();
                     }
                 }
+                else
+                {
+                    $mensagem = "Não foi possível salvar os dados do Pedido";
+                }
             }
-        } else {
+            catch(\Exception $exception)
+            {
+                $transaction->rollBack();
+                $mensagem = "Ocorreu uma falha inesperada ao tentar salvar o Pedido";
+            }
+        }
+//        } else {
             return $this->render('create', [
                         'model' => $model,
                         'situacaopedido' => $situacaopedido,
                         'produtosVenda' => $produtosVenda,
                         'itemPedido' => $itemPedido,
                         'formasPagamento' => $formasPagamento,
+                        'mensagem' => $mensagem,
             ]);
-        }
+       // }
     }
 
     /**

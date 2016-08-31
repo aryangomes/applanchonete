@@ -163,9 +163,11 @@ $this->registerJs('var i = 1; $("#btnadprodutocompra").on("click",function(){'
 		?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), 
+                ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 
-        <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar Produto">
+        <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar Produto"
+               title="Clique aqui para adicionar mais de um produto nesta compra"/>
     </div>
 
     <?php ActiveForm::end(); ?>

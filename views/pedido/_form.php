@@ -7,6 +7,7 @@ use yii\bootstrap\Modal;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Pedido */
+/* @var $mensagem mixed */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -184,6 +185,15 @@ use yii\bootstrap\Modal;
     <?php ActiveForm::end(); ?>
 
     <div id="mensagem-finalizar-pedido"></div>
+    
+    <?php
+        if(isset($mensagem) && !empty($mensagem))
+        {
+    ?>
+            <script type="text/javascript">alert('<?= $mensagem; ?>');</script>
+    <?
+        }
+    ?>
 
 </div>
 

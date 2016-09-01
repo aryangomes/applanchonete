@@ -63,7 +63,7 @@ if (count($loja) > 0) {
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <?= Html::a('Sigir', ['/'], ['class' => 'navbar-brand']) ?>
+                        <?= Html::a('AppLanchonete', ['/'], ['class' => 'navbar-brand']) ?>
                     </div>
 
                     <!-- Top Menu Items -->

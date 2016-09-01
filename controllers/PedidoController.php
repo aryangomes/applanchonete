@@ -144,7 +144,7 @@ class PedidoController extends Controller {
                                     $itemPedido->idProduto, $itemPedido->quantidade);
                             if ((count($itemPedidoPost['idProduto']) - 1) == $i) {
 
-                                return $this->redirect(['view', 'id' => $model->idPedido]);
+//                                return $this->redirect(['view', 'id' => $model->idPedido]);
                             }
                         }
                         else{
@@ -158,6 +158,7 @@ class PedidoController extends Controller {
                     if($itensInseridos)
                     {
                         $transaction->commit();
+                        return $this->redirect(['view', 'id' => $model->idPedido]);
                     }
                 }
                 else

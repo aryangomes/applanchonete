@@ -187,6 +187,7 @@ use yii\bootstrap\Modal;
     <div id="mensagem-finalizar-pedido"></div>
     
     <?php
+  
         if(isset($mensagem) && !empty($mensagem))
         {
     ?>

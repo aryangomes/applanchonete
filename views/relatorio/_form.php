@@ -13,8 +13,6 @@ use kartik\datecontrol\DateControl;
 
    <?php $form = ActiveForm::begin(); ?>
 
-   <?/*= $form->field($model, 'nome')->textInput(['maxlength' => true]) */?>
-
    <?= $form->field($model, 'datageracao' )->hiddenInput(['value'=> date('Y-m-d')])->label(false); ?>
 
    <?= $form->field($model, 'tipo')->dropDownList(

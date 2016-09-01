@@ -185,7 +185,7 @@ if (count($loja) > 0) {
                             <?= Html::a('<i class="fa fa-fw fa-home"></i> Home', ['/site/index']) ?>
 
                         </li>
-                      
+
                         <?php
                         if (Yii::$app->user->can("index-caixa") || Yii::$app->user->can("caixa")) {
                             ?>

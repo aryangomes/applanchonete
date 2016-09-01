@@ -22,7 +22,6 @@ $caixa = new Caixa();
 $caixa = $caixa->getCaixaAberto(Yii::$app->user->getId());
 
 
-
 $loja = Loja::find()->where(['user_id' => Yii::$app->user->getId()])->one();
 
 $qtdProdutoMinimo = Produto::find()->where("quantidadeMinima >= quantidadeEstoque AND isInsumo = 1")->all();
@@ -97,52 +96,7 @@ if (count($loja) > 0) {
             if (Yii::$app->user->can("caixa") || Yii::$app->user->can("despesa")) {
             ?>
             <li class="dropdown">
-                <?php
-                if (Yii::$app->user->can("despesa")) {
-                    ?>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
-                        <i class="fa fa-envelope"></i>
-                        <?php
-                        //  if (count($despesasNaoPagas) > 0) {
-                        ?> <span class="label label-danger">
-                                        <?php /* count($despesasNaoPagas) */ ?>
-
-                                        </span>
-                        <b class="caret"></b></a>
-                    <ul class="dropdown-menu message-dropdown">
-                        <?php
-                        //   foreach ($despesasNaoPagas as $despesa) {
-                        ?>
-                        <li>
-                            <a href="<?= Url::toRoute(['/despesa/view'/* , 'id' => $despesa->iddespesa */]) ?>">
-                                <?php /* 'Despesa: ' . $despesa->nomedespesa .
-                                                  '(Data Vencimento: ' . $formatter->asDate($despesa->datavencimento, 'dd/MM/yyyy')
-                                                  . ') ' */ ?></a>
-                        </li>
-                        <li class="divider"></li>
-                        <?php
-                        // }
-                        ?>
-
-
-                        <li>
-                            <a href="<?= Url::toRoute(['/despesa/index']) ?>">Todas as despesas</a>
-                        </li>
-                    </ul>
-                    <?php
-                    // } else {
-                    ?>
-                    <b class="caret"></b></a>
-                    <ul class="dropdown-menu message-dropdown">
-                        <li>
-                            Não há despesas para serem pagas
-                        </li>
-                    </ul>
-                    <?php
-                    // }
-                }
-                ?>
 
             </li>
             <li class="dropdown">
@@ -161,7 +115,7 @@ if (count($loja) > 0) {
             <b class="caret"></b></a>
                 <ul class="dropdown-menu alert-dropdown">
                     <?php
-                    if (isset($caixa) && $caixa->valoremcaixa < 1 ) {
+                    if (isset($caixa) && $caixa->valoremcaixa < 1) {
                         ?>
                         <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
                         </li>
@@ -231,15 +185,7 @@ if (count($loja) > 0) {
                             <?= Html::a('<i class="fa fa-fw fa-home"></i> Home', ['/site/index']) ?>
 
                         </li>
-                        <?php
-                        if (Yii::$app->user->can("index-despesa") || Yii::$app->user->can("despesa")) {
-                        ?>
-                        <li>
-                            <?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Despesas', ['/despesa/index']) ?>
-                            <?php
-                            }
-                            ?>
-                        </li>
+                      
                         <?php
                         if (Yii::$app->user->can("index-caixa") || Yii::$app->user->can("caixa")) {
                             ?>

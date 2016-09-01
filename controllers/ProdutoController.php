@@ -340,6 +340,8 @@ class ProdutoController extends Controller
             return $this->redirect(['produto/view', 'id' => $id]);
 
         } else {
+            $model->quantidadeEstoque = 0;
+            $model->quantidadeMinima = 0;
             if (!$model->isInsumo) {
                 return $this->render('update', [
                     'model' => $model,

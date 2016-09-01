@@ -83,10 +83,7 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
         if (isset($model) && !$model->isInsumo) {
             $this->registerJs("$(\"[class~='field-produto-quantidadeestoque']\").hide(); ");
         }
-        echo $form->field($model, 'quantidadeEstoque')->textInput(['type' => 'number',
-            'step' => '0.01',
-            'min' => '0',
-            isset($model->quantidadeEstoque) ? $model->quantidadeEstoque : 'value' => 0]);
+       
         ?>
 
 

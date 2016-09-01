@@ -56,20 +56,6 @@ $model->dataabertura = date('d/m/Y');
 ?> 
 
 
-    <?=
-    $form->field($model, 'dataabertura')->widget(DateControl::classname(), [
-        'type' => DateControl::FORMAT_DATE,
-        'ajaxConversion' => false,
-        'options' => [
-
-            'pluginOptions' => [
-                'autoclose' => true
-            ]
-        ],
-        'displayFormat' => 'dd/MM/yyyy',
-        'language' => 'pt',
-    ]);
-    ?> 
 
 
     <div class="form-group">

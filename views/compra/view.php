@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Compra */
 
-$this->title = 'Compra do dia '.$model->dataCompra;
+$this->title = 'Compra do dia '. date("d/m/Y",strtotime($model->dataCompra));
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Compras'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

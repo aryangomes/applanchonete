@@ -15,48 +15,50 @@ use app\components\AccessFilter;
 /**
  * CaixaController implements the CRUD actions for Caixa model.
  */
-class CaixaController extends Controller {
+class CaixaController extends Controller
+{
 
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
-        /* 'access' =>[
-        'class' => AccessControl::classname(),
-        'only'=> ['create','update','view','delete','index'],
-        'rules'=> [
-        ['allow'=>true,
-        'roles' => ['caixa','index-caixa'],
-        ],
-        
-        ]
-        ],*/
-        'verbs' => [
-        'class' => VerbFilter::className(),
-        'actions' => [
-        'delete' => ['post'],
-        ],
-        ],
-        
-      /*       'autorizacao'=>[
-        'class'=>AccessFilter::className(),
-'actions'=>[
-    
-    'caixa'=>[
-        'index-caixa',
-        'update-caixa',
-        'delete-caixa',
-        'view-caixa',
-        'create-caixa',
-        'fechar-caixa'
-    ],
-    
-    'index'=>'index-caixa',
-    'update'=>'update-caixa',
-    'delete'=>'delete-caixa',
-      'view'=>'view-caixa',
-      'create'=>'create-caixa',
-      'fechar' => 'fechar-caixa'
-],
-        ],*/
+            /* 'access' =>[
+            'class' => AccessControl::classname(),
+            'only'=> ['create','update','view','delete','index'],
+            'rules'=> [
+            ['allow'=>true,
+            'roles' => ['caixa','index-caixa'],
+            ],
+
+            ]
+            ],*/
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+
+            /*       'autorizacao'=>[
+              'class'=>AccessFilter::className(),
+      'actions'=>[
+
+          'caixa'=>[
+              'index-caixa',
+              'update-caixa',
+              'delete-caixa',
+              'view-caixa',
+              'create-caixa',
+              'fechar-caixa'
+          ],
+
+          'index'=>'index-caixa',
+          'update'=>'update-caixa',
+          'delete'=>'delete-caixa',
+            'view'=>'view-caixa',
+            'create'=>'create-caixa',
+            'fechar' => 'fechar-caixa'
+      ],
+              ],*/
         ];
     }
 
@@ -64,27 +66,14 @@ class CaixaController extends Controller {
      * Lists all Caixa models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
 
-        $caixa = new Caixa();
-        $caixas = Caixa::find()->all();
 
         $ultimocaixa = Yii::$app->db->createCommand('SELECT * FROM caixa ORDER BY idcaixa DESC LIMIT 1')->queryOne();
 
-        // $caixa = Caixa::find()->where(['user_id'=>Yii::$app->user->getId()])->one(); 
-        //  var_dump($caixa);
-        //if (count($caixa) > 0) { 
-        //    return $this->redirect(['view', 'id'=>$caixa->idcaixa]); 
-        //}else{ 
-        //   $searchModel = new CaixaSearch(); 
-        //   $dataProvider = $searchModel->search(Yii::$app->request->queryParams); 
-        //  return $this->render('index', [ 
-        //      'searchModel' => $searchModel, 
-        //      'dataProvider' => $dataProvider, 
-        //      ]); 
-        //} 
 
-        if (empty($ultimocaixa['datafechamento'])) {
+        if ($ultimocaixa != null && empty($ultimocaixa['datafechamento']) ) {
             return $this->redirect(['view', 'id' => $ultimocaixa['idcaixa']]);
         } else {
 
@@ -92,8 +81,8 @@ class CaixaController extends Controller {
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
             return $this->render('index', [
-                        'searchModel' => $searchModel,
-                        'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
             ]);
         }
     }
@@ -103,11 +92,10 @@ class CaixaController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id) {
-
-
+    public function actionView($id)
+    {
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -116,18 +104,22 @@ class CaixaController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate() {
+    public function actionCreate()
+    {
 
         // $caixa = new Caixa(); 
         $caixas = Caixa::find()->all();
 
         $model = new Caixa();
-
+        $model->dataabertura = date('Y-m-d');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idcaixa]);
         } else {
+            $model->valorapurado = 0;
+            $model->valoremcaixa = 0;
+            $model->valorlucro = 0;
             return $this->render('create', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
         // $caixa = Caixa::find()->where(['user_id'=>Yii::$app->user->getId()])->one(); 
@@ -139,7 +131,8 @@ class CaixaController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id) {
+    public function actionUpdate($id)
+    {
 
         $model = $this->findModel($id);
 
@@ -147,7 +140,7 @@ class CaixaController extends Controller {
             return $this->redirect(['view', 'id' => $model->idcaixa]);
         } else {
             return $this->render('update', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -158,7 +151,8 @@ class CaixaController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id) {
+    public function actionDelete($id)
+    {
 
 
         $this->findModel($id)->delete();
@@ -166,7 +160,8 @@ class CaixaController extends Controller {
         return $this->redirect(['index']);
     }
 
-    public function actionFechar($id) {
+    public function actionFechar($id)
+    {
 
         $model = $this->findModel($id);
         $data = date('Y-m-d');
@@ -185,7 +180,8 @@ class CaixaController extends Controller {
      * @return Caixa the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
+    protected function findModel($id)
+    {
         if (($model = Caixa::findOne($id)) !== null) {
             return $model;
         } else {

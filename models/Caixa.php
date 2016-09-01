@@ -62,4 +62,14 @@ class Caixa extends \yii\db\ActiveRecord {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
+    /**
+     * Retorna o caixa atualmente aberto
+     * @param $idUser
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCaixaAberto($idUser) {
+        return self::find()->where(['user_id'=>$idUser,
+        'dataabertura'=>date('Y-m-d'), 'datafechamento'=>null])->one();
+    }
+
 }

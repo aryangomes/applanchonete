@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Caixa;
 use Yii;
 use app\models\Pedido;
 use app\models\PedidoSearch;
@@ -21,12 +22,14 @@ use yii\helpers\Json;
 /**
  * PedidoController implements the CRUD actions for Pedido model.
  */
-class PedidoController extends Controller {
+class PedidoController extends Controller
+{
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -61,13 +64,14 @@ class PedidoController extends Controller {
      * Lists all Pedido models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $searchModel = new PedidoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -76,17 +80,19 @@ class PedidoController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id) {
+    public function actionView($id)
+    {
         $formasPagamento = ArrayHelper::map(
-                        Formapagamento::find()->all(), 'idTipoPagamento', 'titulo');
-        
+            Formapagamento::find()->all(), 'idTipoPagamento', 'titulo');
+
         $itemPedidoSearch = new PedidoSearch();
-      $itensPedidos = $itemPedidoSearch->searchItensPedidoViewPedido($id);
+        $itensPedidos = $itemPedidoSearch->searchItensPedidoViewPedido($id);
+
 
         return $this->render('view', [
-                    'model' => $this->findModel($id),
-                    'formasPagamento' => $formasPagamento,
-            'itensPedido'=>$itensPedidos, 
+            'model' => $this->findModel($id),
+            'formasPagamento' => $formasPagamento,
+            'itensPedido' => $itensPedidos,
         ]);
     }
 
@@ -95,59 +101,54 @@ class PedidoController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $model = new Pedido();
         $itemPedido = new Itempedido();
-        
+
         $mensagem = ""; //Informa ao usuário mensagens de erro na view
-        
+
         $situacaopedido = ArrayHelper::map(
-                        Situacaopedido::find()->all()
-                        , 'idSituacaoPedido', 'titulo');
+            Situacaopedido::find()->all()
+            , 'idSituacaoPedido', 'titulo');
 
         $produtosVenda = ArrayHelper::map(
-                        Produto::find()->where(['isInsumo' => 0])->all(), 'idProduto', 'nome');
-        
+            Produto::find()->where(['isInsumo' => 0])->all(), 'idProduto', 'nome');
+
         $formasPagamento = ArrayHelper::map(
-                        Formapagamento::find()->all(), 'idTipoPagamento', 'titulo');
-        
-        if ($model->load(Yii::$app->request->post()))
-        {
+            Formapagamento::find()->all(), 'idTipoPagamento', 'titulo');
+
+        if ($model->load(Yii::$app->request->post())) {
             //Carrega demais modelos
-            
+
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
-            try
-            {
+            try {
                 //Tenta salvar um registro de Pedido:
-                if($model->save())
-                {
+                if ($model->save()) {
                     //Carrega os dados dos itens do Pedido:
                     $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
-                    
+
                     $itensInseridos = true;
 
-                    for ($i = 0; $i < count($itemPedidoPost['idProduto']); $i++) 
-                    {
+                    for ($i = 0; $i < count($itemPedidoPost['idProduto']); $i++) {
                         $itemPedido = new Itempedido();
                         $itemPedido->idProduto = $itemPedidoPost['idProduto'][$i];
                         $itemPedido->quantidade = $itemPedidoPost['quantidade'][$i];
                         $produtoVenda = Produto::find()->where(['idProduto' => $itemPedido->idProduto])->one();
                         $itemPedido->total = floatval(
-                                number_format(
-                                        $produtoVenda->valorVenda * $itemPedido->quantidade, 2));
+                            number_format(
+                                $produtoVenda->valorVenda * $itemPedido->quantidade, 2));
                         $itemPedido->idPedido = $model->idPedido;
                         //Tenta salvar os itens do Pedido:
-                        if ($itemPedido->save()) 
-                        {
+                        if ($itemPedido->save()) {
                             Insumo::atualizaQtdNoEstoqueInsert(
-                                    $itemPedido->idProduto, $itemPedido->quantidade);
+                                $itemPedido->idProduto, $itemPedido->quantidade);
                             if ((count($itemPedidoPost['idProduto']) - 1) == $i) {
 
 //                                return $this->redirect(['view', 'id' => $model->idPedido]);
                             }
-                        }
-                        else{
+                        } else {
                             $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
                             $transaction->rollBack(); //desfaz alterações no BD
                             $itensInseridos = false;
@@ -155,33 +156,29 @@ class PedidoController extends Controller {
                         }
                     }
                     //Testa se todos os itens foram inseridos (ou tudo ou nada):
-                    if($itensInseridos)
-                    {
+                    if ($itensInseridos) {
                         $transaction->commit();
                         return $this->redirect(['view', 'id' => $model->idPedido]);
                     }
-                }
-                else
-                {
+                } else {
                     $mensagem = "Não foi possível salvar os dados do Pedido";
                 }
-            }
-            catch(\Exception $exception)
-            {
+            } catch (\Exception $exception) {
                 $transaction->rollBack();
                 $mensagem = "Ocorreu uma falha inesperada ao tentar salvar o Pedido";
             }
         }
 //        } else {
-            return $this->render('create', [
-                        'model' => $model,
-                        'situacaopedido' => $situacaopedido,
-                        'produtosVenda' => $produtosVenda,
-                        'itemPedido' => $itemPedido,
-                        'formasPagamento' => $formasPagamento,
-                        'mensagem' => $mensagem,
-            ]);
-       // }
+        $model->idSituacaoAtual=1;
+        return $this->render('create', [
+            'model' => $model,
+            'situacaopedido' => $situacaopedido,
+            'produtosVenda' => $produtosVenda,
+            'itemPedido' => $itemPedido,
+            'formasPagamento' => $formasPagamento,
+            'mensagem' => $mensagem,
+        ]);
+        // }
     }
 
     /**
@@ -190,28 +187,30 @@ class PedidoController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id) {
+    public function actionUpdate($id)
+    {
         $model = $this->findModel($id);
         $situacaopedido = ArrayHelper::map(
-                        Situacaopedido::find()->all()
-                        , 'idSituacaoPedido', 'titulo');
+            Situacaopedido::find()->all()
+            , 'idSituacaoPedido', 'titulo');
 
         $produtosVenda = ArrayHelper::map(
-                        Produto::find()->where(['isInsumo' => 0])->all(), 'idProduto', 'nome');
+            Produto::find()->where(['isInsumo' => 0])->all(), 'idProduto', 'nome');
 
         $itensPedido = Itempedido::find()->where(['idPedido' => $id])->all();
 
         $formasPagamento = ArrayHelper::map(
-                        Formapagamento::find()->all(), 'idTipoPagamento', 'titulo');
+            Formapagamento::find()->all(), 'idTipoPagamento', 'titulo');
         if ($model->load(Yii::$app->request->post()) && $model->save() &&
-                (count($itensPedido) > 0)) {
+            (count($itensPedido) > 0)
+        ) {
 
 
             $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
 
             for ($i = 0; $i < count($itensPedido); $i++) {
                 $itemPedido = Itempedido::find()->where(['idPedido' => $id,
-                            'idProduto' => $itensPedido[$i]->idProduto])->one();
+                    'idProduto' => $itensPedido[$i]->idProduto])->one();
                 if ($itemPedido != null) {
                     $itemPedido->removerItemPedido();
                 }
@@ -223,12 +222,12 @@ class PedidoController extends Controller {
                 $itemPedido->quantidade = $itemPedidoPost['quantidade'][$i];
                 $produtoVenda = Produto::find()->where(['idProduto' => $itemPedido->idProduto])->one();
                 $itemPedido->total = floatval(
-                        number_format(
-                                $produtoVenda->valorVenda * $itemPedido->quantidade, 2));
+                    number_format(
+                        $produtoVenda->valorVenda * $itemPedido->quantidade, 2));
                 $itemPedido->idPedido = $id;
                 if ($itemPedido->save()) {
                     Insumo::atualizaQtdNoEstoqueInsert(
-                            $itemPedido->idProduto, $itemPedido->quantidade);
+                        $itemPedido->idProduto, $itemPedido->quantidade);
                     if ((count($itemPedidoPost['idProduto']) - 1) == $i) {
                         return $this->redirect(['view', 'id' => $model->idPedido]);
                     }
@@ -236,11 +235,11 @@ class PedidoController extends Controller {
             }
         } else {
             return $this->render('update', [
-                        'model' => $model,
-                        'situacaopedido' => $situacaopedido,
-                        'produtosVenda' => $produtosVenda,
-                        'itemPedido' => $itensPedido,
-                        'formasPagamento' => $formasPagamento,
+                'model' => $model,
+                'situacaopedido' => $situacaopedido,
+                'produtosVenda' => $produtosVenda,
+                'itemPedido' => $itensPedido,
+                'formasPagamento' => $formasPagamento,
             ]);
         }
     }
@@ -251,7 +250,8 @@ class PedidoController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id) {
+    public function actionDelete($id)
+    {
 
         $itenspedido = Itempedido::find()->where(['idPedido' => $id])->all();
 
@@ -270,7 +270,8 @@ class PedidoController extends Controller {
      * @return Pedido the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
+    protected function findModel($id)
+    {
         if (($model = Pedido::findOne($id)) !== null) {
             return $model;
         } else {
@@ -283,7 +284,8 @@ class PedidoController extends Controller {
      * 
      */
 
-    public function actionFinalizarPedido($formaPagamento, $idPedido) {
+    public function actionFinalizarPedido($formaPagamento, $idPedido)
+    {
         if ($formaPagamento != null && $idPedido != null) {
             $pagamento = Pagamento::find()->where(['idPedido' => $idPedido])->one();
             if ($pagamento != null) {
@@ -292,12 +294,27 @@ class PedidoController extends Controller {
                     $pedido = $this->findModel($idPedido);
                     if ($pedido != null) {
                         $situacaoPedido = Situacaopedido::find()
-                                ->where(['like', 'titulo', 'Concluído'])
-                                ->one();
+                            ->where(['like', 'titulo', 'Concluído'])
+                            ->one();
                         if ($situacaoPedido != null) {
                             $pedido->idSituacaoAtual = $situacaoPedido->idSituacaoPedido;
                             if ($pedido->save(false)) {
-                                echo Json::encode($pedido->idSituacaoAtual);
+                                $caixa = new Caixa();
+                                $caixa = $caixa->getCaixaAberto(Yii::$app->user->getId());
+                                if ($caixa != null) {
+                                    $caixa = Caixa::findOne($caixa->idcaixa);
+                                    $caixa->valoremcaixa += $pedido->totalPedido;
+                                    $caixa->valorapurado += $pedido->totalPedido;
+                                    if ($caixa->save()) {
+                                        echo Json::encode($pedido->idSituacaoAtual);
+                                    } else {
+                                        echo Json::encode(false);
+                                    }
+                                } else {
+                                    echo Json::encode(false);
+                                }
+
+
                             } else {
                                 echo Json::encode(false);
                             }

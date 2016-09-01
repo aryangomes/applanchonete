@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 11-Jun-2016 às 05:07
+-- Generation Time: 01-Set-2016 às 23:07
 -- Versão do servidor: 10.1.10-MariaDB
 -- PHP Version: 5.6.19
 
@@ -123,7 +123,7 @@ UPDATE pedido set totalPedido = (totalPedido + totalProduto) WHERE idPedido = id
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizaTotalPedidoUpdate` (IN `iddoPedido` INT, IN `totalProduto` FLOAT, IN `oldTotalProduto` INT)  NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizaTotalPedidoUpdate` (IN `iddoPedido` INT, IN `totalProduto` FLOAT, IN `oldTotalProduto` FLOAT)  NO SQL
 BEGIN
 
 IF (totalProduto > oldTotalProduto) THEN
@@ -210,52 +210,53 @@ CREATE TABLE `auth_assignment` (
 
 INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('admin', 1, NULL),
+('caixa', 43, NULL),
 ('caixa', 84, NULL),
+('caixa', 115, NULL),
+('caixa', 116, NULL),
+('cardapio', 84, NULL),
 ('categoria', 84, NULL),
 ('compra', 84, NULL),
 ('compra', 85, NULL),
-('conta', 84, NULL),
-('contasapagar', 84, NULL),
-('contasareceber', 84, NULL),
+('compra', 108, NULL),
 ('create-compra', 85, NULL),
 ('create-fornecedor', 85, NULL),
 ('create-fornecedor', 104, NULL),
-('create-fornecedor', 110, NULL),
 ('create-relatorio', 108, NULL),
 ('definirvalorprodutovenda', 84, NULL),
 ('delete-compra', 85, NULL),
 ('delete-fornecedor', 85, NULL),
 ('delete-fornecedor', 104, NULL),
-('delete-fornecedor', 110, NULL),
 ('delete-relatorio', 108, NULL),
 ('fornecedor', 84, NULL),
 ('fornecedor', 85, NULL),
 ('fornecedor', 104, NULL),
-('fornecedor', 110, NULL),
+('fornecedor', 116, NULL),
+('index-caixa', 84, NULL),
 ('index-compra', 85, NULL),
 ('index-fornecedor', 85, NULL),
 ('index-fornecedor', 104, NULL),
-('index-fornecedor', 109, NULL),
-('index-fornecedor', 110, NULL),
-('index-relatorio', 108, NULL),
+('index-pagamento', 109, NULL),
+('index-relatorio', 85, NULL),
+('index-relatorio', 115, NULL),
 ('index-user', 109, NULL),
 ('insumo', 84, NULL),
 ('itempedido', 84, NULL),
 ('pedido', 84, NULL),
 ('produto', 84, NULL),
 ('produtosvenda', 84, NULL),
+('relatorio', 43, NULL),
 ('relatorio', 84, NULL),
-('relatorio', 108, NULL),
+('relatorio', 85, NULL),
 ('update-compra', 85, NULL),
 ('update-fornecedor', 85, NULL),
 ('update-fornecedor', 104, NULL),
-('update-fornecedor', 110, NULL),
 ('update-relatorio', 108, NULL),
 ('user', 84, NULL),
 ('view-compra', 85, NULL),
 ('view-fornecedor', 85, NULL),
 ('view-fornecedor', 104, NULL),
-('view-fornecedor', 110, NULL),
+('view-relatorio', 85, NULL),
 ('view-relatorio', 108, NULL);
 
 -- --------------------------------------------------------
@@ -552,18 +553,24 @@ CREATE TABLE `auth_rule` (
 
 CREATE TABLE `caixa` (
   `idcaixa` int(11) NOT NULL,
-  `valorapurado` float NOT NULL,
-  `valoremcaixa` double NOT NULL,
-  `valorlucro` float NOT NULL,
-  `user_id` int(11) NOT NULL
+  `valorapurado` float DEFAULT '0',
+  `valoremcaixa` float DEFAULT '0',
+  `valorlucro` float DEFAULT '0',
+  `user_id` int(11) DEFAULT NULL,
+  `dataabertura` date NOT NULL,
+  `datafechamento` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `caixa`
 --
 
-INSERT INTO `caixa` (`idcaixa`, `valorapurado`, `valoremcaixa`, `valorlucro`, `user_id`) VALUES
-(7, 0, 0, 0, 84);
+INSERT INTO `caixa` (`idcaixa`, `valorapurado`, `valoremcaixa`, `valorlucro`, `user_id`, `dataabertura`, `datafechamento`) VALUES
+(19, 0, 0, 0, 84, '2016-09-01', '2016-09-01'),
+(20, 0, 0, 0, 84, '2016-09-01', '2016-09-01'),
+(21, 18.87, 18.87, 0, 84, '2016-09-01', '2016-09-01'),
+(22, 2.83, 2.83, 0, 84, '2016-09-02', '2016-09-03'),
+(23, 2.66, 2.66, 0, 84, '2016-09-01', NULL);
 
 -- --------------------------------------------------------
 
@@ -595,7 +602,8 @@ CREATE TABLE `categoria` (
 INSERT INTO `categoria` (`idCategoria`, `nome`) VALUES
 (3, 'Massa'),
 (4, 'Legume'),
-(5, 'Lanche');
+(5, 'Lanche'),
+(6, 'Bebidas');
 
 -- --------------------------------------------------------
 
@@ -605,6 +613,11 @@ INSERT INTO `categoria` (`idCategoria`, `nome`) VALUES
 
 CREATE TABLE `compra` (
   `idconta` int(11) NOT NULL,
+  `valor` double NOT NULL,
+  `descricao` text,
+  `tipoConta` varchar(50) NOT NULL,
+  `situacaoPagamento` tinyint(1) NOT NULL,
+  `dataVencimento` date DEFAULT NULL,
   `dataCompra` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -612,9 +625,13 @@ CREATE TABLE `compra` (
 -- Extraindo dados da tabela `compra`
 --
 
-INSERT INTO `compra` (`idconta`, `dataCompra`) VALUES
-(79, '2016-06-02'),
-(80, '2016-06-05');
+INSERT INTO `compra` (`idconta`, `valor`, `descricao`, `tipoConta`, `situacaoPagamento`, `dataVencimento`, `dataCompra`) VALUES
+(79, 0, NULL, '', 0, NULL, '2016-06-02'),
+(80, 0, NULL, '', 0, NULL, '2016-06-05'),
+(173, 0, NULL, '', 0, NULL, '2016-08-29'),
+(194, 0, NULL, '', 0, NULL, '2016-09-01'),
+(215, 0, NULL, '', 0, NULL, '2016-09-01'),
+(216, 0, NULL, '', 0, NULL, '2016-09-01');
 
 --
 -- Acionadores `compra`
@@ -645,17 +662,21 @@ CREATE TABLE `compraproduto` (
 --
 
 INSERT INTO `compraproduto` (`idCompra`, `idProduto`, `quantidade`, `valorCompra`) VALUES
-(76, 7, 2, 5),
-(76, 9, 1, 5),
-(78, 7, 2, 5),
-(78, 9, 1, 5),
-(79, 9, 3, 5),
-(80, 7, 3, 5),
-(80, 9, 1, 5),
+(76, 7, 10, 5),
+(76, 9, 10, 5),
+(78, 7, 10, 5),
+(78, 9, 10, 5),
+(79, 9, 10, 5),
+(80, 7, 10, 5),
+(80, 9, 10, 5),
 (80, 12, 10, 5),
-(80, 13, 4, 5),
-(80, 45, 5, 1),
-(80, 46, 5, 1);
+(80, 13, 10, 5),
+(80, 45, 10, 3),
+(80, 46, 10, 3),
+(173, 64, 1, 1),
+(194, 9, 30, 30),
+(215, 64, 10, 2.34),
+(216, 66, 20, 3.21);
 
 --
 -- Acionadores `compraproduto`
@@ -692,30 +713,52 @@ CREATE TABLE `conta` (
 --
 
 INSERT INTO `conta` (`idconta`, `valor`, `descricao`, `tipoConta`, `situacaoPagamento`) VALUES
-(2, 6, 'Luz', 'contasapagar', 0),
 (5, 1.23, 'Pedido', 'contasareceber', 0),
 (6, 10.3100004196167, 'Água', 'contasapagar', 0),
 (13, 5.67, 'receber', 'contasareceber', 0),
 (14, 8.9, 'pagar', 'contasapagar', 0),
-(42, 5, 'Pedido', 'contasareceber', 0),
 (77, 0, 'Compra de 2016-06-02', 'contasapagar', 0),
 (78, 0, 'Compra de 2016-06-03', 'contasapagar', 0),
 (79, 0, 'Compra de 2016-06-02', 'contasapagar', 0),
 (80, 0, 'Compra de 2016-06-05', 'contasapagar', 0),
 (81, 0, 'Pedido', 'contasareceber', 0),
-(82, 7, 'Pedido', 'contasareceber', 0),
-(83, 5, 'Pedido', 'contasareceber', 0),
-(84, 6, 'Pedido', 'contasareceber', 1),
-(85, 0, 'Pedido', 'contasareceber', 0),
-(106, 8.88, '888', 'custofixo', 0),
-(107, 8.88, '888', 'custofixo', 0),
 (109, 5.67, '567', 'contasapagar', 0),
 (110, 90.91, '90', 'contasareceber', 0),
-(111, 0.68, 'Custo fixo', 'custofixo', 0),
+(111, 4, 'Custo fixo', 'custofixo', 0),
 (112, 4.35, '-', 'contasapagar', 0),
 (113, 5.55, '--', 'contasapagar', 0),
 (114, 5.55, 'Conta', 'contasapagar', 0),
-(115, 6.57, '-=', 'contasareceber', 0);
+(115, 6.57, '-=', 'contasareceber', 0),
+(116, 4, '-', 'custofixo', 0),
+(117, 4, '', 'custofixo', 0),
+(121, 1.23, '-', 'contasareceber', 0),
+(126, 0.61, '', 'contasareceber', 0),
+(127, 0, 'Pedido', 'contasareceber', 0),
+(167, 4.670000076293945, 'Pedido', 'contasareceber', 0),
+(168, 3.75, 'Pedido', 'contasareceber', 0),
+(173, 0, 'Compra de 2016-08-29', 'contasapagar', 0),
+(180, 0, 'Pedido', 'contasareceber', 0),
+(181, 3, 'Pedido', 'contasareceber', 0),
+(182, 3, 'Pedido', 'contasareceber', 0),
+(187, 2, 'Pedido', 'contasareceber', 0),
+(191, 3, 'Pedido', 'contasareceber', 0),
+(192, 6, 'Pedido', 'contasareceber', 0),
+(193, 2, 'Pedido', 'contasareceber', 0),
+(194, 0, 'Compra de 2016-09-01', 'contasapagar', 0),
+(195, 13, 'Pedido', 'contasareceber', 0),
+(196, 2, 'Pedido', 'contasareceber', 0),
+(197, 2, 'Pedido', 'contasareceber', 0),
+(198, 2, 'Pedido', 'contasareceber', 0),
+(199, 5, 'Pedido', 'contasareceber', 0),
+(209, 2.8299999237060547, 'Pedido', 'contasareceber', 0),
+(210, 2.8299999237060547, 'Pedido', 'contasareceber', 0),
+(211, 2.8299999237060547, 'Pedido', 'contasareceber', 0),
+(212, 2.8299999237060547, 'Pedido', 'contasareceber', 0),
+(213, 8.380000114440918, 'Pedido', 'contasareceber', 0),
+(214, 2.8299999237060547, 'Pedido', 'contasareceber', 0),
+(215, 0, 'Compra de 2016-09-01', 'contasapagar', 0),
+(216, 0, 'Compra de 2016-09-01', 'contasapagar', 0),
+(217, 2.6600000858306885, 'Pedido', 'contasareceber', 0);
 
 --
 -- Acionadores `conta`
@@ -750,12 +793,16 @@ INSERT INTO `contasapagar` (`idconta`, `dataVencimento`) VALUES
 (78, NULL),
 (79, NULL),
 (80, NULL),
-(106, '2016-07-09'),
-(107, '2016-07-09'),
 (109, '2016-06-25'),
-(111, '2016-07-09'),
+(111, '2016-06-09'),
 (112, '2016-07-07'),
-(114, '2016-07-08');
+(114, '2016-07-08'),
+(116, '2016-06-30'),
+(117, '2016-06-10'),
+(173, NULL),
+(194, NULL),
+(215, NULL),
+(216, NULL);
 
 -- --------------------------------------------------------
 
@@ -775,14 +822,34 @@ CREATE TABLE `contasareceber` (
 INSERT INTO `contasareceber` (`idconta`, `dataHora`) VALUES
 (5, '2016-05-12 00:00:00'),
 (13, '2016-05-19 20:55:00'),
-(42, '2016-05-05 23:16:26'),
 (81, '2016-05-23 00:56:50'),
-(82, '2016-06-03 02:10:00'),
-(83, '2016-05-23 01:16:22'),
-(84, '2017-06-02 22:25:47'),
-(85, '2016-06-06 22:35:31'),
 (110, '2016-07-02 15:10:00'),
-(115, '2016-06-11 03:15:00');
+(115, '2016-06-11 03:15:00'),
+(126, '2016-07-22 23:55:00'),
+(127, '2016-07-16 23:25:19'),
+(167, '2016-08-06 14:49:57'),
+(168, '2016-08-12 10:21:20'),
+(170, '2016-08-13 10:26:53'),
+(172, '2016-08-13 10:44:36'),
+(180, '2016-08-31 22:43:40'),
+(181, '2016-08-31 23:14:13'),
+(182, '2016-08-31 23:17:14'),
+(187, '2016-08-31 23:43:17'),
+(191, '2016-08-31 23:48:04'),
+(192, '2016-08-31 23:48:28'),
+(193, '2016-09-01 10:17:20'),
+(195, '2016-09-01 10:25:35'),
+(196, '2016-09-01 10:29:27'),
+(197, '2016-09-01 11:32:29'),
+(198, '2016-09-01 11:33:07'),
+(199, '2016-09-01 11:34:55'),
+(209, '2016-09-01 16:42:00'),
+(210, '2016-09-01 16:43:25'),
+(211, '2016-09-01 17:07:21'),
+(212, '2016-09-01 17:08:42'),
+(213, '2016-09-01 17:09:46'),
+(214, '2016-09-02 17:14:26'),
+(217, '2016-09-01 17:53:01');
 
 -- --------------------------------------------------------
 
@@ -792,7 +859,7 @@ INSERT INTO `contasareceber` (`idconta`, `dataHora`) VALUES
 
 CREATE TABLE `custofixo` (
   `idconta` int(11) NOT NULL,
-  `consumo` varchar(70) NOT NULL,
+  `consumo` double NOT NULL,
   `tipocustofixo_idtipocustofixo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -801,7 +868,9 @@ CREATE TABLE `custofixo` (
 --
 
 INSERT INTO `custofixo` (`idconta`, `consumo`, `tipocustofixo_idtipocustofixo`) VALUES
-(111, '23', 1);
+(111, 4, 1),
+(116, 4, 2),
+(117, 6, 2);
 
 -- --------------------------------------------------------
 
@@ -892,7 +961,16 @@ INSERT INTO `insumo` (`idprodutoVenda`, `idprodutoInsumo`, `quantidade`, `unidad
 (59, 7, 0.1, 'kg'),
 (59, 9, 1, 'unidade'),
 (59, 12, 0.3, 'kg'),
-(60, 9, 1, 'unidade');
+(60, 9, 1, 'unidade'),
+(62, 9, 1, 'unidade'),
+(62, 12, 0.5, 'kg'),
+(63, 9, 1, 'unidade'),
+(63, 12, 0.9, 'kg'),
+(65, 9, 1, 'unidade'),
+(65, 64, 1, 'unidade'),
+(67, 9, 1, 'unidade'),
+(67, 12, 1, 'unidade'),
+(67, 66, 1, 'unidade');
 
 -- --------------------------------------------------------
 
@@ -916,8 +994,8 @@ CREATE TABLE `itemcardapio` (
 CREATE TABLE `itempedido` (
   `idPedido` int(11) NOT NULL,
   `idProduto` int(11) NOT NULL,
-  `quantidade` decimal(10,0) NOT NULL DEFAULT '1',
-  `total` decimal(10,0) NOT NULL DEFAULT '0' COMMENT 'Preço do produto venda * quantidade'
+  `quantidade` int(11) NOT NULL,
+  `total` float NOT NULL COMMENT 'Preço do produto venda * quantidade'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -925,17 +1003,35 @@ CREATE TABLE `itempedido` (
 --
 
 INSERT INTO `itempedido` (`idPedido`, `idProduto`, `quantidade`, `total`) VALUES
-(2, 11, '2', '4'),
-(3, 8, '2', '8'),
-(3, 11, '3', '9'),
-(10, 8, '4', '16'),
-(105, 8, '1', '4'),
-(105, 60, '1', '5'),
-(107, 8, '2', '4'),
-(107, 37, '1', '3'),
-(108, 59, '1', '5'),
-(109, 8, '1', '4'),
-(109, 44, '2', '2');
+(1, 8, 1, 3),
+(2, 8, 1, 3),
+(7, 14, 1, 2),
+(11, 8, 1, 3),
+(12, 11, 1, 1),
+(12, 14, 1, 2),
+(12, 47, 1, 3),
+(13, 10, 1, 2),
+(14, 10, 3, 6),
+(14, 65, 3, 7),
+(15, 14, 1, 2),
+(16, 65, 1, 2),
+(17, 14, 1, 2),
+(18, 59, 1, 5),
+(21, 8, 1, 3),
+(22, 8, 1, 3),
+(23, 11, 1, 1),
+(24, 11, 1, 0.918),
+(25, 11, 1, 0.92),
+(26, 10, 1, 2),
+(27, 11, 1, 0.92),
+(28, 8, 1, 2.83),
+(29, 8, 1, 2.83),
+(30, 8, 1, 2.83),
+(31, 8, 1, 2.83),
+(32, 10, 2, 4),
+(32, 65, 2, 4.38),
+(33, 8, 1, 2.83),
+(34, 67, 1, 2.66);
 
 --
 -- Acionadores `itempedido`
@@ -1030,22 +1126,46 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 --
 
 CREATE TABLE `pagamento` (
-  `idTipoPagamento` int(11) DEFAULT NULL,
   `idConta` int(11) NOT NULL,
-  `idPedido` int(11) NOT NULL
+  `idPedido` int(11) NOT NULL,
+  `formapagamento_idTipoPagamento` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `pagamento`
 --
 
-INSERT INTO `pagamento` (`idTipoPagamento`, `idConta`, `idPedido`) VALUES
-(1, 42, 105),
-(2, 43, 106),
-(NULL, 82, 107),
-(NULL, 83, 108),
-(NULL, 84, 109),
-(NULL, 85, 110);
+INSERT INTO `pagamento` (`idConta`, `idPedido`, `formapagamento_idTipoPagamento`) VALUES
+(171, 158, 0),
+(179, 0, 0),
+(180, 0, 0),
+(181, 1, 0),
+(187, 7, 0),
+(191, 11, 0),
+(199, 18, 0),
+(202, 21, 0),
+(203, 22, 0),
+(204, 23, 0),
+(205, 24, 0),
+(206, 25, 0),
+(207, 26, 0),
+(208, 27, 0),
+(212, 31, 0),
+(170, 157, 1),
+(182, 2, 1),
+(192, 12, 1),
+(193, 13, 1),
+(195, 14, 1),
+(196, 15, 1),
+(197, 16, 1),
+(198, 17, 1),
+(209, 28, 1),
+(210, 29, 1),
+(214, 33, 1),
+(217, 34, 1),
+(172, 159, 2),
+(211, 30, 2),
+(213, 32, 2);
 
 -- --------------------------------------------------------
 
@@ -1055,7 +1175,7 @@ INSERT INTO `pagamento` (`idTipoPagamento`, `idConta`, `idPedido`) VALUES
 
 CREATE TABLE `pedido` (
   `idPedido` int(11) NOT NULL,
-  `totalPedido` double NOT NULL DEFAULT '0',
+  `totalPedido` float NOT NULL,
   `idSituacaoAtual` int(11) NOT NULL COMMENT 'Situação atual do staus do pedido, \nfacilitar na busca do status do pedido'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1064,17 +1184,24 @@ CREATE TABLE `pedido` (
 --
 
 INSERT INTO `pedido` (`idPedido`, `totalPedido`, `idSituacaoAtual`) VALUES
-(2, 6, 1),
-(3, 21, 1),
-(5, 0, 1),
-(8, 0, 1),
-(10, 16, 2),
-(105, 5, 2),
-(106, 0, 1),
-(107, 7, 1),
-(108, 5, 1),
-(109, 6, 1),
-(110, 0, 1);
+(1, 3, 1),
+(2, 3, 2),
+(7, 2, 1),
+(11, 3, 1),
+(12, 6, 2),
+(13, 2, 2),
+(14, 13, 2),
+(15, 2, 2),
+(16, 2, 2),
+(17, 2, 2),
+(18, 5, 1),
+(28, 2.83, 2),
+(29, 2.83, 2),
+(30, 2.83, 2),
+(31, 2.83, 1),
+(32, 8.38, 2),
+(33, 2.83, 2),
+(34, 2.66, 2);
 
 --
 -- Acionadores `pedido`
@@ -1120,26 +1247,32 @@ CREATE TABLE `produto` (
 --
 
 INSERT INTO `produto` (`idProduto`, `nome`, `valorVenda`, `isInsumo`, `quantidadeMinima`, `idCategoria`, `quantidadeEstoque`) VALUES
-(7, 'Tomate', 20, 1, 0, 4, 61),
-(8, 'Sanduíche A', 4.68, 0, 0, 5, 0),
-(9, 'Pão', 0, 1, 0, 3, 35),
+(7, 'Tomate', 20, 1, 35, 4, 31.5),
+(8, 'Sanduíche A', 2.8325, 0, 0, 5, 0),
+(9, 'Pão', 0, 1, 0, 3, 76),
 (10, 'Refrigerante', 2, 0, 0, 5, 10),
-(11, 'Sanduíche B', 3, 0, 0, 5, 0),
-(12, 'Hambúrguer ', 0, 1, 0, 3, 30.7),
-(13, 'Ovo', 0, 1, 0, 3, 61),
+(11, 'Sanduíche B', 0.918, 0, 0, 5, 0),
+(12, 'Hambúrguer ', 0, 1, 0, 3, 59.5),
+(13, 'Ovo', 0, 1, 0, 3, 65),
 (14, 'Sanduíche C', 2, 0, 0, 5, 0),
-(18, 'Insumo Teste', 0, 1, 2, 4, 0),
+(18, 'Insumo Teste', 0, 1, 2, 4, 3),
 (19, 'Sanduiche X-Bacon', 1, 0, 0, 5, 0),
 (37, 'Sanduiche X-Egg', 3, 0, 0, 5, 0),
 (38, 'Sanduiche X-Tudo', 5, 0, 0, 5, 0),
 (44, 'Sanduiche X-Duplo', 1, 0, 0, 5, 0),
-(45, 'Queijo', 0, 1, 0, 3, 15),
-(46, 'Presunto', 0, 1, 0, 3, 15),
+(45, 'Queijo', 0, 1, 0, 3, 19.7),
+(46, 'Presunto', 0, 1, 0, 3, 19.8),
 (47, 'Sanduiche X-Misto', 3, 0, 0, 5, 0),
-(50, 'Alface', 0, 1, 2, 4, 0),
+(50, 'Alface', 0, 1, 2, 4, 3),
 (59, 'Sanduiche X-Especial', 5.43, 0, 0, 5, 0),
 (60, 'Misto-Quente', 5.45, 0, 0, 5, 0),
-(61, 'Salsicha', NULL, 1, 0, 4, 0);
+(61, 'Salsicha', NULL, 1, 0, 4, 2),
+(62, 'X-Casa', 5.25, 0, 0, 5, 0),
+(63, 'Hambúrguer ', 6.54, 0, 0, 5, 0),
+(64, 'Batata', NULL, 1, 0, 4, 11),
+(65, 'X-Batata', 2.19, 0, 0, 5, 0),
+(66, 'Cebola', NULL, 1, 0, 4, 19),
+(67, 'X-Cebola', 1.6605, 0, 0, 5, 0);
 
 -- --------------------------------------------------------
 
@@ -1163,15 +1296,16 @@ INSERT INTO `profile` (`id`, `user_id`, `created_at`, `updated_at`, `full_name`)
 (1, 1, '2016-01-26 02:42:07', '2016-01-28 01:27:25', 'Admin'),
 (2, 2, '2016-01-26 20:58:10', '2016-01-28 01:17:46', ''),
 (3, 3, '2016-01-26 21:02:42', '2016-01-31 04:37:09', ''),
-(33, 43, '2016-02-01 01:00:46', '2016-02-01 04:23:48', ''),
+(33, 43, '2016-02-01 01:00:46', '2016-08-16 03:30:39', ''),
 (34, 44, '2016-02-01 01:01:26', '2016-02-01 01:01:26', NULL),
 (59, 80, '2016-02-05 03:30:47', '2016-02-05 05:19:16', ''),
-(63, 84, '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL),
-(64, 85, '2016-02-10 06:13:27', '2016-02-13 17:20:37', ''),
+(63, 84, '2016-02-09 02:14:53', '2016-08-16 03:31:05', ''),
+(64, 85, '2016-02-10 06:13:27', '2016-08-16 03:33:26', ''),
 (65, 104, '2016-02-14 05:09:25', '2016-02-14 06:02:05', ''),
-(69, 108, '2016-02-14 06:30:37', '2016-02-14 06:30:37', ''),
-(70, 109, '2016-02-14 22:38:19', '2016-03-02 04:26:23', ''),
-(71, 110, '2016-03-02 04:30:57', '2016-03-02 04:49:11', '');
+(69, 108, '2016-02-14 06:30:37', '2016-08-16 03:30:13', ''),
+(70, 109, '2016-02-14 22:38:19', '2016-08-16 03:39:32', ''),
+(76, 115, '2016-08-15 02:02:35', '2016-08-16 03:34:11', ''),
+(77, 116, '2016-09-02 00:01:41', '2016-09-02 00:01:41', 'teste8');
 
 -- --------------------------------------------------------
 
@@ -1194,9 +1328,24 @@ CREATE TABLE `relatorio` (
 --
 
 INSERT INTO `relatorio` (`idrelatorio`, `nome`, `datageracao`, `tipo`, `inicio_intervalo`, `fim_intervalo`, `usuario_id`) VALUES
-(5, 'Relatório 01', '2016-02-01', 'Compras', '2016-01-26', '2016-01-30', 44),
-(6, 'Relatório 02', '2016-02-09', 'Faturamento', '2016-02-25', '2016-02-29', 84),
-(7, 'testestesteste', '2016-02-14', NULL, NULL, '2016-02-15', 109);
+(13, '', '2016-06-26', 'Contasareceber', '2016-05-08', '2016-05-31', 84),
+(14, '', '2016-07-14', 'Contasareceber', '2016-05-08', '2016-06-03', 84),
+(15, '', '2016-06-26', 'Contasareceber', '2016-05-29', '2016-07-01', 84),
+(16, '', '2016-07-23', 'Contasareceber', '2016-01-01', '2016-12-31', 84),
+(17, '', '2016-07-17', 'Pagamento', '2016-06-01', '2016-08-07', 84),
+(20, '', '2016-07-14', 'Pedido', '2016-01-01', '2016-09-08', 84),
+(21, '', '2016-07-17', 'Pedido', '2016-06-01', '2016-08-01', 84),
+(22, '', '2016-07-17', 'Itempedido', '2016-05-01', '2016-05-31', 84),
+(26, '', '2016-07-17', 'Itempedido', '2009-12-28', '2016-12-30', 84),
+(27, '', '2016-07-21', 'Contasareceber', '2010-07-01', '2016-12-31', 84),
+(28, '', '2016-07-23', 'Lucro', '2016-01-01', '2016-12-31', 84),
+(29, '', '2016-07-24', 'Contasareceber', '2016-07-24', '2016-07-31', 84),
+(30, '', '2016-08-06', 'Lucro', '2016-07-24', '2016-08-07', 84),
+(31, '', '2016-08-06', 'Itempedido', '2016-07-24', '2016-08-07', 84),
+(32, '', '2016-08-06', 'Pedido', '2016-07-24', '2016-08-06', 84),
+(33, '', '2016-08-13', 'Pagamento', '2016-07-31', '2016-09-10', 84),
+(34, '', '2016-09-01', 'Lucro', '2016-08-28', '2016-10-07', 84),
+(35, '', '2016-09-01', 'Itempedido', '2016-08-28', '2016-10-07', 84);
 
 -- --------------------------------------------------------
 
@@ -1258,7 +1407,8 @@ CREATE TABLE `tipocustofixo` (
 --
 
 INSERT INTO `tipocustofixo` (`idtipocustofixo`, `tipocustofixo`) VALUES
-(1, 'Água');
+(1, 'Água'),
+(2, 'Energia');
 
 -- --------------------------------------------------------
 
@@ -1289,18 +1439,19 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `role_id`, `status`, `email`, `username`, `password`, `auth_key`, `access_token`, `logged_in_ip`, `logged_in_at`, `created_ip`, `created_at`, `updated_at`, `banned_at`, `banned_reason`) VALUES
-(1, 1, 1, 'admin@sigir.com', 'admin', '$2y$13$ZaQ4eZwz1ZevK9oaKksT2uKcUlh1aytLRyqGGUGYJSzNLuBcYJOvO', '4c1Lk1bFV-2gSyrQnXm7661avqoQOC0L', 'W6ELUzLx6Zvva8fQ5NV4nLl8jJInF_BC', '127.0.0.1', '2016-06-07 04:45:34', NULL, '2016-01-26 02:42:06', '2016-01-28 01:27:25', NULL, NULL),
+(1, 1, 1, 'admin@sigir.com', 'admin', '$2y$13$ZaQ4eZwz1ZevK9oaKksT2uKcUlh1aytLRyqGGUGYJSzNLuBcYJOvO', '4c1Lk1bFV-2gSyrQnXm7661avqoQOC0L', 'W6ELUzLx6Zvva8fQ5NV4nLl8jJInF_BC', '127.0.0.1', '2016-06-13 06:34:01', NULL, '2016-01-26 02:42:06', '2016-01-28 01:27:25', NULL, NULL),
 (2, 2, 1, 'gerente@sigir.com', 'gerente2', '$2y$13$SVYrr6CicYYdpMnep5LKtO8ak84X8h6tFHYVpR8j7nGupVOvqnpVa', 'VPd_SzxMvyTgZprvDA-tfT4kPW_IYzZD', 'UyNFyd41oMBIiRVurZPZuvt6kgTe98xy', '::1', '2016-02-07 23:58:31', '::1', '2016-01-26 20:58:10', '2016-01-31 01:28:29', NULL, NULL),
 (3, 3, 1, 'funcionario@sigir.com', 'funcionario', '$2y$13$.gl9ePCdOVOww1C7AZosD.GSsbD6cMERou36tWYrmEN.dtEFkml9i', 't6g9cyhdz2-EKqG3Whb6TC30qNPQ6oU7', 'BAWIuKS9sXShdh2fM3QnwH8ZqdT5mGwv', '::1', '2016-02-02 05:21:59', '::1', '2016-01-26 21:02:42', '2016-01-31 04:37:09', NULL, NULL),
-(43, 3, 1, 'funcionario1@sigir.com', 'funcionario01', '$2y$13$MR/pQJFMZRJZkZj4.xg0qOtdjJK6NMaMo5jF4bVt1tPHf7sjr0QHi', 'JoIVj9p9IWlVklx1TZ00otnbcr-Gmao7', 'hAYvnkL8pFzP6FGMH7eKw7UmisflzyjX', '::1', '2016-02-05 03:48:25', '::1', '2016-02-01 01:00:46', '2016-02-01 04:23:48', NULL, NULL),
+(43, 3, 1, 'funcionario1@sigir.com', 'funcionario01', '$2y$13$MR/pQJFMZRJZkZj4.xg0qOtdjJK6NMaMo5jF4bVt1tPHf7sjr0QHi', 'JoIVj9p9IWlVklx1TZ00otnbcr-Gmao7', 'hAYvnkL8pFzP6FGMH7eKw7UmisflzyjX', '::1', '2016-02-05 03:48:25', '::1', '2016-02-01 01:00:46', '2016-08-16 03:30:38', NULL, NULL),
 (44, 2, 1, 'gerente1@sigir.com', 'gerente', '$2y$13$mujgA7j0OsPxUr0gYAao3OSk1yykiEFfxqXis7m.lzvZ3EWID1jOG', 'c4rPsYI-Q-WNI9GgYyTvbZr_ynwyuAlY', 'nAzvxmIB3bTRTW9d23dn1isBFBr6s7RI', '::1', '2016-02-09 23:37:54', '::1', '2016-02-01 01:01:26', '2016-02-09 07:11:09', NULL, NULL),
 (80, 2, 1, 'teste@teste.com', NULL, '$2y$13$Up2wVYVIsBKk3oij/H/8l.5hPym80.3NTFpGlc97cSJg32EqNGn4y', 'EXAFyYZpG5QVTcGx6yeFrlDOl9OizMuM', 'ZdjGbu9FKlXtF5mYt1A4CcShpkEaTd9i', '::1', '2016-02-08 01:22:20', '::1', '2016-02-05 03:30:47', '2016-02-05 05:19:16', NULL, NULL),
-(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-06-11 01:15:26', '::1', '2016-02-09 02:14:53', '2016-02-09 02:14:53', NULL, NULL),
-(85, 2, 1, 'compras@compras.com', 'Compra', '$2y$13$fcSVvuFUmhH.3iZ0wTtoZOpkVTt1tjAg2fO2thZog9QwMUIEUUzKu', 'tVH-bh0RpqSA1RgMqIR4rqcKtKiGhvPB', '165xJKTAkwnR1QcUd6wQ-fkU8Q98od2O', '::1', '2016-02-12 04:37:12', '::1', '2016-02-10 06:13:27', '2016-02-13 17:20:37', NULL, NULL),
+(84, 2, 1, 'user@master.com', NULL, '$2y$13$hiUnt5bM5nC02ntGxCCmBesZZIFNs5p/pfQ2ZNtNTvUdFcDGr5ZCa', 'RdSnQjSZqz7Z2_bQUTFgmbJAhug45hFL', '38W0FnvUuYydns3nmlBagAIpH2R3NQuY', '::1', '2016-09-01 22:36:07', '::1', '2016-02-09 02:14:53', '2016-08-16 03:31:05', NULL, NULL),
+(85, 2, 1, 'compras@compras.com', 'Compra', '$2y$13$fcSVvuFUmhH.3iZ0wTtoZOpkVTt1tjAg2fO2thZog9QwMUIEUUzKu', 'tVH-bh0RpqSA1RgMqIR4rqcKtKiGhvPB', '165xJKTAkwnR1QcUd6wQ-fkU8Q98od2O', '::1', '2016-02-12 04:37:12', '::1', '2016-02-10 06:13:27', '2016-08-16 03:33:26', NULL, NULL),
 (104, 2, 1, 'teste3@teste.com', 'teste3', '$2y$13$4MrmhHyYwYzQ5uFHtr8rpeUNCgFCZiHR0410sdcJBABbm/zl/1Z..', 'ndzPwraET0uG3RZMtH23_-7IdxZtiRaH', 'nO74vFAzRakvIVNVrrJLrl4CU9718fzh', '::1', '2016-02-14 05:59:05', '::1', '2016-02-14 05:09:25', '2016-02-14 06:02:05', NULL, NULL),
-(108, 2, 1, 'teste4@teste.com', 'teste44', '$2y$13$COZu07CnXAVlfSQJwK6ng.LnOd43dGyN29Tw/FH13Mtoa/zTtlGwy', 'Hs7QEYX6yxldLcpIVPjwNoBNBY5zWDSa', 'Ib_71XRL0h05Yr1STAjJwv9Y3sfJOIW4', '::1', '2016-02-14 06:35:23', '::1', '2016-02-14 06:30:37', '2016-02-14 06:35:48', NULL, NULL),
-(109, 2, 1, 'teste5@teste.com', 'te5te', '$2y$13$kmvcINGlBELnlIkODn5jROZn1j9YaK6gUOgE1d1hLgVRK0Div9ZDC', 'qhwHHhEN3dUbQlbS-KgD0s-FeCaEHWN8', 'bjaxj0OwAYpBgPGkY-8IiQz6078n-lHd', '::1', '2016-03-02 04:25:06', '::1', '2016-02-14 22:38:19', '2016-03-02 04:26:23', NULL, NULL),
-(110, 2, 1, 'teste6@teste.com', NULL, '$2y$13$HqbxlWNZCTEvklWOT0qe3.6SzPXRnw8Dw5NUvzwZbbRNUux6iRD0e', 'qu8OL_HN7TxFAYp8EQ1aUet-ApaO3ayK', '8ui-NK4VbPSmS6uTSBbLeiByU8ZSeOuj', '::1', '2016-03-02 04:33:26', '::1', '2016-03-02 04:30:57', '2016-03-02 04:49:11', NULL, NULL);
+(108, 2, 1, 'teste4@teste.com', 'teste44', '$2y$13$COZu07CnXAVlfSQJwK6ng.LnOd43dGyN29Tw/FH13Mtoa/zTtlGwy', 'Hs7QEYX6yxldLcpIVPjwNoBNBY5zWDSa', 'Ib_71XRL0h05Yr1STAjJwv9Y3sfJOIW4', '::1', '2016-02-14 06:35:23', '::1', '2016-02-14 06:30:37', '2016-08-16 03:30:13', NULL, NULL),
+(109, 2, 1, 'teste5@teste.com', 'te5te', '$2y$13$kmvcINGlBELnlIkODn5jROZn1j9YaK6gUOgE1d1hLgVRK0Div9ZDC', 'qhwHHhEN3dUbQlbS-KgD0s-FeCaEHWN8', 'bjaxj0OwAYpBgPGkY-8IiQz6078n-lHd', '::1', '2016-08-16 03:40:01', '::1', '2016-02-14 22:38:19', '2016-08-16 03:39:32', NULL, NULL),
+(115, 2, 1, 'teste6@email.com', NULL, '$2y$13$cFGqNPixglFo4MA1ESwYWerm8Z3px6uAqvtSdtSacUnDiSdRfX1jG', '9uNwyOQ7xuFqkjr6x5dxdKUd7e_F0PnQ', 'nqD8TJOSYAShSm_WM3bbvpa2-42YzQi6', '::1', '2016-08-16 03:43:27', '::1', '2016-08-15 02:02:34', '2016-08-16 03:34:11', NULL, NULL),
+(116, 2, 1, 'teste8@email.com', 'teste8', '$2y$13$Tld/quLHn850ewaKjcc9wuREdlEPGW4xI2MzZ/R3n9qRdMWBnlZs2', 'd3zpSG2zdeKGwqQdYPLUCr4INnb-7FHL', 'oj--ygpeu18CD1QpTd4xnpTKtq3hfelh', NULL, NULL, '::1', '2016-09-02 00:01:41', '2016-09-02 00:01:41', NULL, NULL);
 
 --
 -- Acionadores `user`
@@ -1525,7 +1676,8 @@ ALTER TABLE `migration`
 --
 ALTER TABLE `pagamento`
   ADD PRIMARY KEY (`idConta`,`idPedido`),
-  ADD KEY `idPedido` (`idPedido`);
+  ADD KEY `idPedido` (`idPedido`),
+  ADD KEY `fk_pagamento_formapagamento1_idx` (`formapagamento_idTipoPagamento`);
 
 --
 -- Indexes for table `pedido`
@@ -1614,7 +1766,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `caixa`
 --
 ALTER TABLE `caixa`
-  MODIFY `idcaixa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `idcaixa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT for table `cardapio`
 --
@@ -1624,12 +1776,12 @@ ALTER TABLE `cardapio`
 -- AUTO_INCREMENT for table `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `idCategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idCategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `conta`
 --
 ALTER TABLE `conta`
-  MODIFY `idconta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
+  MODIFY `idconta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=218;
 --
 -- AUTO_INCREMENT for table `formapagamento`
 --
@@ -1644,22 +1796,22 @@ ALTER TABLE `mesa`
 -- AUTO_INCREMENT for table `pedido`
 --
 ALTER TABLE `pedido`
-  MODIFY `idPedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
+  MODIFY `idPedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 --
 -- AUTO_INCREMENT for table `produto`
 --
 ALTER TABLE `produto`
-  MODIFY `idProduto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `idProduto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 --
 -- AUTO_INCREMENT for table `profile`
 --
 ALTER TABLE `profile`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 --
 -- AUTO_INCREMENT for table `relatorio`
 --
 ALTER TABLE `relatorio`
-  MODIFY `idrelatorio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `idrelatorio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 --
 -- AUTO_INCREMENT for table `role`
 --
@@ -1674,12 +1826,12 @@ ALTER TABLE `situacaopedido`
 -- AUTO_INCREMENT for table `tipocustofixo`
 --
 ALTER TABLE `tipocustofixo`
-  MODIFY `idtipocustofixo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idtipocustofixo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
 --
 -- AUTO_INCREMENT for table `user_auth`
 --
@@ -1711,12 +1863,6 @@ ALTER TABLE `auth_assignment`
 --
 ALTER TABLE `auth_rule`
   ADD CONSTRAINT `auth_rule_ibfk_1` FOREIGN KEY (`name`) REFERENCES `auth_item` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Limitadores para a tabela `compra`
---
-ALTER TABLE `compra`
-  ADD CONSTRAINT `compra_ibfk_1` FOREIGN KEY (`idconta`) REFERENCES `conta` (`idconta`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `compraproduto`
@@ -1768,20 +1914,13 @@ ALTER TABLE `itemcardapio`
 -- Limitadores para a tabela `itempedido`
 --
 ALTER TABLE `itempedido`
-  ADD CONSTRAINT `fk_itemPedido_produto10` FOREIGN KEY (`idProduto`) REFERENCES `produto` (`idProduto`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `itempedido_ibfk_1` FOREIGN KEY (`idPedido`) REFERENCES `pedido` (`idPedido`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_itemPedido_produto10` FOREIGN KEY (`idProduto`) REFERENCES `produto` (`idProduto`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `loja`
 --
 ALTER TABLE `loja`
   ADD CONSTRAINT `loja_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Limitadores para a tabela `pedido`
---
-ALTER TABLE `pedido`
-  ADD CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`idSituacaoAtual`) REFERENCES `situacaopedido` (`idSituacaoPedido`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `produto`

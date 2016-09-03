@@ -46,13 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => ($model->tipoConta == 'custofixo') ? $model->getCustofixo($model->idconta)
                     ->tipocustofixoIdtipocustofixo->tipocustofixo : null,
             ],
-            /* ['label' => 'Data de Vencimento',
-                 'visible'=> ($model->tipoConta == 'contasapagar')? true:false,
-                 'format' => 'text',
-                 'value' => ($model->tipoConta == 'contasapagar')?
-                     date('d/m/Y',strtotime($model->getContaapagar($model->idconta)->dataVencimento))
-                     : null,
-             ],*/
+
 
             ['attribute' => 'contasapagar.dataVencimento',
                 'value' => ($model->tipoConta == 'contasapagar') ? $model->contasapagar->dataVencimento : '',
@@ -63,12 +57,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
             ['attribute' => 'contasareceber.dataHora',
-                'value' => ($model->tipoConta == 'contasareceber') ? $model->contasareceber->dataHora : '',
-                'format' => 'datetime',
+                'value' => ($model->tipoConta == 'contasareceber' && isset($model->contasareceber->dataHora))
+                    ? date('d/m/Y H:h:i',
+                        strtotime($model->contasareceber->dataHora)) : '',
+
                 'visible' => ($model->tipoConta == 'contasareceber') ? true : false,
 
             ],
-            
+
             ['attribute' => 'situacaoPagamento',
                 'format' => 'text',
                 'value' => $model->situacaoPagamento ? 'Paga' : 'Não paga'

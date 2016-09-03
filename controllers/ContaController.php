@@ -91,6 +91,10 @@ class ContaController extends Controller
      */
     public function actionCreate()
     {
+        //Setando para o fuso horário do Brasil
+        date_default_timezone_set('America/Sao_Paulo');
+
+
         $model = new Conta();
 
         $mensagem = ""; //Informa ao usuário mensagens de erro na view
@@ -181,6 +185,8 @@ class ContaController extends Controller
 
 
         }
+
+        $modelContasareceber->dataHora = date('Y-m-d H:i:s');
         return $this->render('create', [
             'model' => $model,
             'tiposConta' => $tiposConta,

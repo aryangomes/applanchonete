@@ -52,7 +52,12 @@ use kartik\datecontrol\DateControl;
         'language' => 'pt',
     ]); ?>
 
-    <?= $form->field($modelContasareceber, 'dataHora')->widget(DateControl::classname(), [
+    <?php
+
+    //Setando para o fuso horário do Brasil
+    date_default_timezone_set('America/Sao_Paulo');
+
+    echo $form->field($modelContasareceber, 'dataHora')->widget(DateControl::classname(), [
         'type' => DateControl::FORMAT_DATETIME,
         'ajaxConversion' => false,
         'options' => [
@@ -61,8 +66,8 @@ use kartik\datecontrol\DateControl;
                 'autoclose' => true
             ]
         ],
-        'displayFormat' => 'dd/MM/yyyy H:m ',
-        'language' => 'pt',
+        'displayFormat' => 'dd/MM/yyyy H:m:s ',
+//        'language' => 'pt',
     ]); ?>
 
 

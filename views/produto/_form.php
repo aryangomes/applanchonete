@@ -345,3 +345,13 @@ if (isset($insumos)) {
 
 
     </script>
+
+<?php
+
+if(isset($mensagem) && !empty($mensagem))
+{
+    ?>
+    <script type="text/javascript">alert('<?= $mensagem; ?>');</script>
+    <?
+}
+?>

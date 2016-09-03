@@ -46,7 +46,7 @@ class ProdutoController extends Controller
                         'cadastrarprodutovenda',
                         'alterarprodutovenda',
                         'definirvalorprodutovenda',
-                         'lucroproduto' => 'lucroproduto',
+                        'lucroproduto' => 'lucroproduto',
                     ],
 
                     'index' => 'index-produto',
@@ -60,8 +60,8 @@ class ProdutoController extends Controller
                     'produtosvenda' => 'produtosvenda',
                     'cadastrarprodutovenda' => 'cadastrarprodutovenda',
                     'alterarprodutovenda' => 'alterarprodutovenda',
-                    'definirvalorprodutovenda' =>'definirvalorprodutovenda',
-                    'lucroproduto' => 'lucroproduto', 
+                    'definirvalorprodutovenda' => 'definirvalorprodutovenda',
+                    'lucroproduto' => 'lucroproduto',
                 ],
             ],
         ];
@@ -224,56 +224,86 @@ class ProdutoController extends Controller
     public function actionCreate()
     {
         $model = new Produto();
+
+        $mensagem = ""; //Informa ao usuário mensagens de erro na view
+
+
         $insumo = new Insumo();
+
         $categorias = ArrayHelper::map(
             Categoria::find()->all(),
             'idCategoria', 'nome');
+
         $insumos = ArrayHelper::map(
             Produto::find()->where(['isInsumo' => 1])->all(),
             'idProduto', 'nome');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+
+            //Inicia a transação:
+            $transaction = \Yii::$app->db->beginTransaction();
+            try {
+                //Tenta salvar um registro :
+
+                if ($model->save()) {
+
+                    $itensInseridos = true;
+
+                    if (!Yii::$app->request->post()['Produto']['isInsumo']) {
+                        $aux = Yii::$app->request->post()['Insumo'];
+                        $n = count($aux['idprodutoInsumo']);
+
+                        for ($i = 0; $i < $n; $i++) {
+
+                            if (($aux['idprodutoInsumo'][$i]) > 0) {
 
 
-
-            if (!Yii::$app->request->post()['Produto']['isInsumo']) {
-                $aux = Yii::$app->request->post()['Insumo'];
-                $n = count($aux['idprodutoInsumo']);
-
-                for ($i = 0; $i < $n; $i++) {
-
-                    if (($aux['idprodutoInsumo'][$i]) > 0) {
-
-
-                        Yii::$app->db->createCommand(
-                            "INSERT INTO insumo
+                                Yii::$app->db->createCommand(
+                                    "INSERT INTO insumo
                     (idprodutoVenda, idprodutoInsumo,
                       quantidade,unidade ) 
                   VALUES (:idprodutoVenda, :idprodutoInsumo,
                     :quantidade,:unidade)", [
-                            ':idprodutoVenda' => $model->idProduto,
-                            ':idprodutoInsumo' => $aux['idprodutoInsumo'][$i],
-                            ':quantidade' => $aux['quantidade'][$i],
-                            ':unidade' => $aux['unidade'][$i],
-                        ])->execute();
+                                    ':idprodutoVenda' => $model->idProduto,
+                                    ':idprodutoInsumo' => $aux['idprodutoInsumo'][$i],
+                                    ':quantidade' => $aux['quantidade'][$i],
+                                    ':unidade' => $aux['unidade'][$i],
+                                ])->execute();
+                            }
+
+                        }
+
+                        $model->valorVenda = $model->calculoPrecoProduto($model->idProduto);
+                        if (!$model->save()) {
+                            $mensagem = "Não foi possível salvar os dados";
+                            $transaction->rollBack(); //desfaz alterações no BD
+                            $itensInseridos = false;
+                        }
+                        if ($itensInseridos) {
+                            $transaction->commit();
+                            return $this->redirect(['definirvalorprodutovenda', 'idProduto' => $model->idProduto]);
+                        }
+                    }
+                    if ($itensInseridos) {
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $model->idProduto]);
                     }
 
+
                 }
-
-                $model->valorVenda = $model->calculoPrecoProduto($model->idProduto);
-                $model->save(false);
-                return $this->redirect(['definirvalorprodutovenda', 'idProduto' => $model->idProduto]);
+            } catch (\Exception $exception) {
+                $transaction->rollBack();
+                $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
             }
-
-            return $this->redirect(['view', 'id' => $model->idProduto]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-                'categorias' => $categorias,
-                'insumos' => $insumos,
-                'insumo' => $insumo,
-            ]);
         }
+
+        return $this->render('create', [
+            'model' => $model,
+            'categorias' => $categorias,
+            'insumos' => $insumos,
+            'insumo' => $insumo,
+            'mensagem' => $mensagem,
+        ]);
     }
 
     /**
@@ -286,10 +316,15 @@ class ProdutoController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+
         $insumo = new Insumo();
+
+        $mensagem = ""; //Informa ao usuário mensagens de erro na view
+
         $categorias = ArrayHelper::map(
             Categoria::find()->all(),
             'idCategoria', 'nome');
+
         if (!$model->isInsumo) {
             $insumos = ArrayHelper::map(
                 Produto::find()->where(['isInsumo' => 1])->all(),
@@ -298,69 +333,96 @@ class ProdutoController extends Controller
 
             $modelProdutoVenda = $this::findModel($id);
         }
+
         if ((Yii::$app->request->post())) {
-            if (!$model->isInsumo) {
-                if (isset(Yii::$app->request->post()['produto-valorvenda-disp'])) {
-                    $model->valorVenda = Yii::$app->request->post()['Produto']['valorVenda'];
-                    $model->idCategoria = Yii::$app->request->post()['Produto']['idCategoria'];
-                    $model->save();
-                }
-                $aux = Yii::$app->request->post()['Insumo'];
 
-                $n = count($aux['idprodutoInsumo']);
+            //Inicia a transação:
+            $transaction = \Yii::$app->db->beginTransaction();
+            try {
+                //Tenta salvar um registro :
 
-                Yii::$app->db->createCommand(
-                    "DELETE FROM insumo WHERE idprodutoVenda = :idprodutoVenda", [
-                    ':idprodutoVenda' => $id,
-                ])->execute();
-                for ($i = 0; $i < $n; $i++) {
+                    $itensInseridos = true;
 
-                    if (($aux['idprodutoInsumo'][$i]) > 0) {
 
-                        Yii::$app->db->createCommand(
-                            "INSERT INTO insumo
+                    if (!$model->isInsumo) {
+                    if (isset(Yii::$app->request->post()['produto-valorvenda-disp'])) {
+                        $model->valorVenda = Yii::$app->request->post()['Produto']['valorVenda'];
+                        $model->idCategoria = Yii::$app->request->post()['Produto']['idCategoria'];
+                        $model->save();
+                    }
+                    $aux = Yii::$app->request->post()['Insumo'];
+
+                    $n = count($aux['idprodutoInsumo']);
+
+                    Yii::$app->db->createCommand(
+                        "DELETE FROM insumo WHERE idprodutoVenda = :idprodutoVenda", [
+                        ':idprodutoVenda' => $id,
+                    ])->execute();
+                    for ($i = 0; $i < $n; $i++) {
+
+                        if (($aux['idprodutoInsumo'][$i]) > 0) {
+
+                            Yii::$app->db->createCommand(
+                                "INSERT INTO insumo
                     (idprodutoVenda, idprodutoInsumo,
                       quantidade,unidade ) 
                   VALUES (:idprodutoVenda, :idprodutoInsumo,
                     :quantidade,:unidade)", [
-                            ':idprodutoVenda' => $id,
-                            ':idprodutoInsumo' => $aux['idprodutoInsumo'][$i],
-                            ':quantidade' => $aux['quantidade'][$i],
-                            ':unidade' => $aux['unidade'][$i],
-                        ])->execute();
+                                ':idprodutoVenda' => $id,
+                                ':idprodutoInsumo' => $aux['idprodutoInsumo'][$i],
+                                ':quantidade' => $aux['quantidade'][$i],
+                                ':unidade' => $aux['unidade'][$i],
+                            ])->execute();
+                        }
+
                     }
-
+                    $model->valorVenda = $model->calculoPrecoProduto($model->idProduto);
+                        if (!$model->save()) {
+                            $mensagem = "Não foi possível salvar os dados";
+                            $transaction->rollBack(); //desfaz alterações no BD
+                            $itensInseridos = false;
+                        }
+                } else {
+                    $model->load(Yii::$app->request->post());
+                        if (!$model->save()) {
+                            $mensagem = "Não foi possível salvar os dados";
+                            $transaction->rollBack(); //desfaz alterações no BD
+                            $itensInseridos = false;
+                        }
                 }
-                $model->valorVenda = $model->calculoPrecoProduto($model->idProduto);
-                $model->save(false);
-            } else {
-                $model->load(Yii::$app->request->post());
-                $model->save();
-            }
-            return $this->redirect(['produto/view', 'id' => $id]);
+                if ($itensInseridos) {
+                    $transaction->commit();
+                    return $this->redirect(['view', 'id' => $model->idProduto]);
+                }
 
-        } else {
-            $model->quantidadeEstoque = 0;
-            $model->quantidadeMinima = 0;
-            if (!$model->isInsumo) {
-                return $this->render('update', [
-                    'model' => $model,
-                    'models' => $models,
-                    'categorias' => $categorias,
-                    'insumos' => $insumos,
-                    'insumo' => $insumo,
-                    'modelProdutoVenda' => $modelProdutoVenda,
-
-                    'idprodutoVenda' => $id,
-                ]);
+            } catch (\Exception $exception) {
+                $transaction->rollBack();
+                $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
             }
+
+
+        }
+
+        $model->quantidadeEstoque = 0;
+        $model->quantidadeMinima = 0;
+        if (!$model->isInsumo) {
             return $this->render('update', [
                 'model' => $model,
-
+                'models' => $models,
                 'categorias' => $categorias,
-
+                'insumos' => $insumos,
+                'insumo' => $insumo,
+                'modelProdutoVenda' => $modelProdutoVenda,
+                'mensagem' => $mensagem,
+                'idprodutoVenda' => $id,
             ]);
         }
+        return $this->render('update', [
+            'model' => $model,
+            'mensagem' => $mensagem,
+            'categorias' => $categorias,
+
+        ]);
     }
 
 
@@ -442,8 +504,8 @@ class ProdutoController extends Controller
                         strtotime($v->pedido->pagamento->contasareceber->dataHora)));
                 }
             }
-            
-            
+
+
             return $this->render('avaliacaoproduto', [
                 'qtdvendas' => $qtdvendas,
                 'datasvendas' => $datasvendas,
@@ -489,11 +551,11 @@ class ProdutoController extends Controller
         $model = $this->findModel($idProduto);
         if (Yii::$app->request->post()) {
             $porcentagemLucro = (Yii::$app->request->post()['porcentagemLucro']);
-            $model->valorVenda =$model->calculoPrecoProduto($idProduto) 
-                    +( $model->calculoPrecoProduto($idProduto) * (  $porcentagemLucro /100));
-             if ($model->save()) {
-            return $this->redirect(['view', 'id' => $model->idProduto]);
-             }
+            $model->valorVenda = $model->calculoPrecoProduto($idProduto)
+                + ($model->calculoPrecoProduto($idProduto) * ($porcentagemLucro / 100));
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->idProduto]);
+            }
         } else {
             return $this->render('definirvalorprodutovenda', [
                 'model' => $model,

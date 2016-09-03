@@ -13,42 +13,43 @@ use app\models\Produto;
 use yii\web\ForbiddenHttpException;
 use app\components\AccessFilter;
 use yii\base\Model;
+
 /**
  * InsumosController implements the CRUD actions for Insumos model.
  */
 class InsumoController extends Controller
 {
-  public function behaviors()
-  {
-    return [
-    'verbs' => [
-    'class' => VerbFilter::className(),
-    'actions' => [
-    'delete' => ['post'],
-    ],
-    ],
-    'autorizacao'=>[
-    'class'=>AccessFilter::className(),
-    'actions'=>[
-    
-    'insumos'=>[
-    'index-insumos',
-    'update-insumos',
-    'delete-insumos',
-    'view-insumos',
-    'create-insumos',
-    
-    ],
-    
-    'index'=>'index-insumos',
-    'update'=>'update-insumos',
-    'delete'=>'delete-insumos',
-    'view'=>'view-insumos',
-    'create'=>'create-insumos',
-    ],
-    ],
-    ];
-  }
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+            'autorizacao' => [
+                'class' => AccessFilter::className(),
+                'actions' => [
+
+                    'insumos' => [
+                        'index-insumos',
+                        'update-insumos',
+                        'delete-insumos',
+                        'view-insumos',
+                        'create-insumos',
+
+                    ],
+
+                    'index' => 'index-insumos',
+                    'update' => 'update-insumos',
+                    'delete' => 'delete-insumos',
+                    'view' => 'view-insumos',
+                    'create' => 'create-insumos',
+                ],
+            ],
+        ];
+    }
 
     /**
      * Lists all Insumo models.
@@ -56,12 +57,12 @@ class InsumoController extends Controller
      */
     public function actionIndex()
     {
-      $searchModel = new InsumoSearch();
-      $dataProvider = $searchModel->searchInsumos(Yii::$app->request->queryParams);
+        $searchModel = new InsumoSearch();
+        $dataProvider = $searchModel->searchInsumos(Yii::$app->request->queryParams);
 
-      return $this->render('index', [
-        'searchModel' => $searchModel,
-        'dataProvider' => $dataProvider,
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -70,12 +71,12 @@ class InsumoController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($idprodutoVenda, $idprodutoInsumo) 
-    { 
-      return $this->render('view', [ 
-        'model' => $this->findModel($idprodutoVenda, $idprodutoInsumo), 
-        ]); 
-    } 
+    public function actionView($idprodutoVenda, $idprodutoInsumo)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($idprodutoVenda, $idprodutoInsumo),
+        ]);
+    }
 
     /**
      * Creates a new Insumos model.
@@ -169,31 +170,29 @@ class InsumoController extends Controller
      */
 
 
+    public function actionUpdate($idprodutoVenda, $idprodutoInsumo)
+    {
+        $model = $this->findModel($idprodutoVenda, $idprodutoInsumo);
 
-    public function actionUpdate($idprodutoVenda, $idprodutoInsumo) 
-    { 
-      $model = $this->findModel($idprodutoVenda, $idprodutoInsumo); 
+        $produtosvenda = ArrayHelper::map(
+            Produto::find()->where(['isInsumo' => 0])->all(),
+            'idProduto', 'nome');
+        $insumos = ArrayHelper::map(
+            Produto::find()->where(['isInsumo' => 1])->all(),
+            'idProduto', 'nome');
 
-      $produtosvenda = ArrayHelper::map(
-        Produto::find()->where(['isInsumo'=>0])->all(), 
-        'idProduto','nome');
-      $insumos = ArrayHelper::map(
-        Produto::find()->where(['isInsumo'=>1])->all(), 
-        'idProduto','nome');
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'idprodutoVenda' => $model->idprodutoVenda, 'idprodutoInsumo' => $model->idprodutoInsumo]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+                'insumos' => $insumos,
+                'produtosvenda' => $produtosvenda,
 
-      if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        return $this->redirect(['view', 'idprodutoVenda' => $model->idprodutoVenda, 'idprodutoInsumo' => $model->idprodutoInsumo]); 
-      } else {
-        return $this->render('update', [
-          'model' => $model,
-          'insumos' => $insumos,
-          'produtosvenda' => $produtosvenda,
-
-          ]);
-      }
+            ]);
+        }
     }
 
-    
 
     /**
      * Deletes an existing Insumos model.
@@ -201,12 +200,13 @@ class InsumoController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($idprodutoVenda, $idprodutoInsumo) 
-    { 
-      $this->findModel($idprodutoVenda, $idprodutoInsumo)->delete(); 
+    public function actionDelete($idprodutoVenda, $idprodutoInsumo)
+    {
+        $this->findModel($idprodutoVenda, $idprodutoInsumo)->delete();
 
-      return $this->redirect(['index']); 
-    } 
+        return $this->redirect(['index']);
+    }
+
     /**
      * Finds the Insumo model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -214,12 +214,12 @@ class InsumoController extends Controller
      * @return Insumos the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($idprodutoVenda, $idprodutoInsumo) 
-    { 
-      if (($model = Insumo::findOne(['idprodutoVenda' => $idprodutoVenda, 'idprodutoInsumo' => $idprodutoInsumo])) !== null) {
-        return $model; 
-      } else { 
-        throw new NotFoundHttpException('The requested page does not exist.'); 
-      } 
-    } 
-  }
+    protected function findModel($idprodutoVenda, $idprodutoInsumo)
+    {
+        if (($model = Insumo::findOne(['idprodutoVenda' => $idprodutoVenda, 'idprodutoInsumo' => $idprodutoInsumo])) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+}

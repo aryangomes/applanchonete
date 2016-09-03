@@ -27,6 +27,7 @@ $this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 			'modelProdutoVenda' => $modelProdutoVenda,
 
 			'idprodutoVenda' => $idprodutoVenda,
+			'mensagem'=> $mensagem,
 		]);
 
 	}else{
@@ -34,6 +35,7 @@ $this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 			'model' => $model,
 
 			'categorias' => $categorias,
+			'mensagem'=> $mensagem,
 
 		]);
 	}

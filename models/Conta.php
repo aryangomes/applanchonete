@@ -37,7 +37,7 @@ class Conta extends \yii\db\ActiveRecord
         return [
             [['valor'], 'number'],
             [['descricao'], 'string'],
-            [['tipoConta'], 'required'],
+            [['tipoConta','valor','situacaoPagamento'], 'required'],
             [['situacaoPagamento'], 'integer'],
             [['tipoConta'], 'string', 'max' => 100],
         ];

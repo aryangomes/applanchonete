@@ -29,7 +29,12 @@ use kartik\datecontrol\DateControl;
 
     <?= $form->field($model, 'tipoConta')->dropDownList(
         $tiposConta,
-        ['prompt' => 'Selecione o tipo de Conta']) ?>
+        ['prompt' => 'Selecione o tipo de Conta',
+        'disabled'=>$model->isNewRecord ? false: true]) ?>
+
+
+    <? echo $model->isNewRecord ? '':  $form->field($model, 'tipoConta')->hiddenInput(
+       )->label(false) ?>
 
     <?= $form->field($model, 'situacaoPagamento')->dropDownList(
         [1 => 'Paga', 0 => 'Não paga'], ['prompt' => 'Seleciona a situação do pagamento']) ?>

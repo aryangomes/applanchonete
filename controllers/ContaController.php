@@ -203,6 +203,9 @@ class ContaController extends Controller
     {
         $model = $this->findModel($id);
 
+        //Guarda o tipo de conta
+        $tipodeConta = $model->tipoConta;
+
         $mensagem = ""; //Informa ao usuário mensagens de erro na view
 
 
@@ -230,11 +233,18 @@ class ContaController extends Controller
         $tiposCustoFixo = ArrayHelper::map(Tipocustofixo::find()->all(),
             'idtipocustofixo', 'tipocustofixo');
 
+
+
+
         if ($model->load(Yii::$app->request->post())) {
 
+            $model->tipoConta =  $tipodeConta;
+            var_dump($model->tipoConta);
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
             try {
+
+
                 //Tenta salvar um registro :
 
                 if ($model->save()) {

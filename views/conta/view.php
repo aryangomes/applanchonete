@@ -11,7 +11,6 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Contas'), 'url' => [
 $this->params['breadcrumbs'][] = $this->title;
 
 
-
 ?>
 <div class="conta-view">
 
@@ -36,37 +35,43 @@ $this->params['breadcrumbs'][] = $this->title;
             'descricao:ntext',
             'tipoConta',
             ['label' => 'Consumo',
-                'visible'=> ($model->tipoConta == 'custofixo')? true:false,
+                'visible' => ($model->tipoConta == 'custofixo') ? true : false,
                 'format' => 'text',
-                'value' => ($model->tipoConta == 'custofixo')?
-                    $model->getCustofixo($model->idconta)->consumo :'',
+                'value' => ($model->tipoConta == 'custofixo') ?
+                    $model->getCustofixo($model->idconta)->consumo : '',
             ],
             ['label' => 'Tipo de Custo Fixo',
-                'visible'=> ($model->tipoConta == 'custofixo')? true:false,
+                'visible' => ($model->tipoConta == 'custofixo') ? true : false,
                 'format' => 'text',
-                'value' => ($model->tipoConta == 'custofixo')? $model->getCustofixo($model->idconta)
-                    ->tipocustofixoIdtipocustofixo->tipocustofixo: null,
+                'value' => ($model->tipoConta == 'custofixo') ? $model->getCustofixo($model->idconta)
+                    ->tipocustofixoIdtipocustofixo->tipocustofixo : null,
             ],
-            ['label' => 'Data de Vencimento',
-                'visible'=> ($model->tipoConta == 'contasapagar')? true:false,
-                'format' => 'text',
-                'value' => ($model->tipoConta == 'contasapagar')?
-                    date('d/m/Y',strtotime($model->getContaapagar($model->idconta)->dataVencimento))
-                    : null,
+            /* ['label' => 'Data de Vencimento',
+                 'visible'=> ($model->tipoConta == 'contasapagar')? true:false,
+                 'format' => 'text',
+                 'value' => ($model->tipoConta == 'contasapagar')?
+                     date('d/m/Y',strtotime($model->getContaapagar($model->idconta)->dataVencimento))
+                     : null,
+             ],*/
+
+            ['attribute' => 'contasapagar.dataVencimento',
+                'value' => ($model->tipoConta == 'contasapagar') ? $model->contasapagar->dataVencimento : '',
+                'format' => 'date',
+                'visible' => ($model->tipoConta == 'contasapagar') ? true : false,
+
             ],
 
-            ['label' => 'Data de Vencimento',
-                'visible'=> ($model->tipoConta == 'contasareceber')? true:false,
-                'format' => 'text',
-                'value' => ($model->tipoConta == 'contasareceber') && 
-                 ($model->getContaareceber($model->idconta) != null )?
-                 app\models\Relatorio::formatarDataDiaMesAno(
-                         ($model->getContaareceber($model->idconta)->dataHora))
-                    : null,
+
+            ['attribute' => 'contasareceber.dataHora',
+                'value' => ($model->tipoConta == 'contasareceber') ? $model->contasareceber->dataHora : '',
+                'format' => 'datetime',
+                'visible' => ($model->tipoConta == 'contasareceber') ? true : false,
+
             ],
-            ['attribute'=>'situacaoPagamento',
-                'format'=>'text',
-                'value'=>$model->situacaoPagamento ? 'Paga' : 'Não paga'
+            
+            ['attribute' => 'situacaoPagamento',
+                'format' => 'text',
+                'value' => $model->situacaoPagamento ? 'Paga' : 'Não paga'
             ],
         ],
     ]) ?>

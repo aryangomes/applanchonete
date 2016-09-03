@@ -255,21 +255,12 @@ if (count($loja) > 0) {
                             <?php
                         }
                         ?>
-                        <?php
-                        if (Yii::$app->user->can("index-comanda") || Yii::$app->user->can("comanda")) {
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/comanda/index']) ?>
 
-                            </li>
-                            <?php
-                        }
-                        ?>
                         <?php
                         if (Yii::$app->user->can("index-destaque") || Yii::$app->user->can("destaque")) {
                             ?>
                             <li>
-                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/destaque/index']) ?>
+                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Destaque', ['/destaque/index']) ?>
 
                             </li>
                             <?php
@@ -291,7 +282,7 @@ if (count($loja) > 0) {
                         if (Yii::$app->user->can("index-historicosituacao") || Yii::$app->user->can("historicosituacao")) {
                             ?>
                             <li>
-                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/historicosituacao/index']) ?>
+                                <?= Html::a('<i class="fa fa-shopping-basket"></i> HIstórico Situação', ['/historicosituacao/index']) ?>
 
                             </li>
                             <?php
@@ -301,7 +292,7 @@ if (count($loja) > 0) {
                         if (Yii::$app->user->can("index-itemcardapio") || Yii::$app->user->can("itemcardapio")) {
                             ?>
                             <li>
-                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/itemcardapio/index']) ?>
+                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Item Cardapio', ['/itemcardapio/index']) ?>
 
                             </li>
                             <?php
@@ -366,7 +357,7 @@ if (count($loja) > 0) {
                         if (Yii::$app->user->can("index-loja") || Yii::$app->user->can("loja")) {
                             ?>
                             <li>
-                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/loja/index']) ?>
+                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Loja', ['/loja/index']) ?>
 
                             </li>
                             <?php
@@ -376,7 +367,7 @@ if (count($loja) > 0) {
                         if (Yii::$app->user->can("index-mesa") || Yii::$app->user->can("mesa")) {
                             ?>
                             <li>
-                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Compras', ['/mesa/index']) ?>
+                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Mesa', ['/mesa/index']) ?>
 
                             </li>
                             <?php

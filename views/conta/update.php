@@ -23,6 +23,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
         'modelContasareceber' => $modelContasareceber,
         'modelCustofixo' => $modelCustofixo,
         'tiposCustoFixo' => $tiposCustoFixo,
+        'mensagem' => $mensagem,
     ]) ?>
 
 </div>

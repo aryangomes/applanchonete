@@ -204,9 +204,6 @@ class CompraController extends Controller
                         break; //encerra o laço for
                     }
 
-
-
-
                 }
 
                 if ($itensInseridos) {

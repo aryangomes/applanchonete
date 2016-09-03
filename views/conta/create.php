@@ -21,6 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'modelContasareceber' => $modelContasareceber,
         'modelCustofixo' => $modelCustofixo,
         'tiposCustoFixo'=>$tiposCustoFixo,
+        'mensagem'=>$mensagem,
     ]) ?>
 
 </div>

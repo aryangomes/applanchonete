@@ -190,6 +190,9 @@ class PedidoController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+
+        $mensagem = ""; //Informa ao usuário mensagens de erro na view
+
         $situacaopedido = ArrayHelper::map(
             Situacaopedido::find()->all()
             , 'idSituacaoPedido', 'titulo');
@@ -201,47 +204,77 @@ class PedidoController extends Controller
 
         $formasPagamento = ArrayHelper::map(
             Formapagamento::find()->all(), 'idTipoPagamento', 'titulo');
-        if ($model->load(Yii::$app->request->post()) && $model->save() &&
-            (count($itensPedido) > 0)
-        ) {
 
 
-            $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
+        if ($model->load(Yii::$app->request->post()) &&
+            (count($itensPedido) > 0)) {
+            //Carrega demais modelos
 
-            for ($i = 0; $i < count($itensPedido); $i++) {
-                $itemPedido = Itempedido::find()->where(['idPedido' => $id,
-                    'idProduto' => $itensPedido[$i]->idProduto])->one();
-                if ($itemPedido != null) {
-                    $itemPedido->removerItemPedido();
-                }
-            }
-            for ($i = 0; $i < count($itemPedidoPost['idProduto']); $i++) {
+            //Inicia a transação:
+            $transaction = \Yii::$app->db->beginTransaction();
+            try {
+                //Tenta salvar um registro de Pedido:
+                if ($model->save()) {
+                    //Carrega os dados dos itens do Pedido:
+                    $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
 
-                $itemPedido = new Itempedido();
-                $itemPedido->idProduto = $itemPedidoPost['idProduto'][$i];
-                $itemPedido->quantidade = $itemPedidoPost['quantidade'][$i];
-                $produtoVenda = Produto::find()->where(['idProduto' => $itemPedido->idProduto])->one();
-                $itemPedido->total = floatval(
-                    number_format(
-                        $produtoVenda->valorVenda * $itemPedido->quantidade, 2));
-                $itemPedido->idPedido = $id;
-                if ($itemPedido->save()) {
-                    Insumo::atualizaQtdNoEstoqueInsert(
-                        $itemPedido->idProduto, $itemPedido->quantidade);
-                    if ((count($itemPedidoPost['idProduto']) - 1) == $i) {
+                    $itensInseridos = true;
+
+                    for ($i = 0; $i < count($itensPedido); $i++) {
+                        $itemPedido = Itempedido::find()->where(['idPedido' => $id,
+                            'idProduto' => $itensPedido[$i]->idProduto])->one();
+                        if ($itemPedido != null) {
+                            $itemPedido->removerItemPedido();
+                        }
+                    }
+
+                    for ($i = 0; $i < count($itemPedidoPost['idProduto']); $i++) {
+                        $itemPedido = new Itempedido();
+                        $itemPedido->idProduto = $itemPedidoPost['idProduto'][$i];
+                        $itemPedido->quantidade = $itemPedidoPost['quantidade'][$i];
+                        $produtoVenda = Produto::find()->where(['idProduto' => $itemPedido->idProduto])->one();
+                        $itemPedido->total = floatval(
+                            number_format(
+                                $produtoVenda->valorVenda * $itemPedido->quantidade, 2));
+                        $itemPedido->idPedido = $model->idPedido;
+                        //Tenta salvar os itens do Pedido:
+                        if ($itemPedido->save()) {
+                            Insumo::atualizaQtdNoEstoqueInsert(
+                                $itemPedido->idProduto, $itemPedido->quantidade);
+                            if ((count($itemPedidoPost['idProduto']) - 1) == $i) {
+
+//                                return $this->redirect(['view', 'id' => $model->idPedido]);
+                            }
+                        } else {
+                            $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
+                            $transaction->rollBack(); //desfaz alterações no BD
+                            $itensInseridos = false;
+                            break; //encerra o laço for
+                        }
+                    }
+                    //Testa se todos os itens foram inseridos (ou tudo ou nada):
+                    if ($itensInseridos) {
+                        $transaction->commit();
                         return $this->redirect(['view', 'id' => $model->idPedido]);
                     }
+                } else {
+                    $mensagem = "Não foi possível salvar os dados do Pedido";
                 }
+            } catch (\Exception $exception) {
+                $transaction->rollBack();
+                $mensagem = "Ocorreu uma falha inesperada ao tentar salvar o Pedido";
             }
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                'situacaopedido' => $situacaopedido,
-                'produtosVenda' => $produtosVenda,
-                'itemPedido' => $itensPedido,
-                'formasPagamento' => $formasPagamento,
-            ]);
         }
+//        } else {
+
+        return $this->render('update', [
+            'model' => $model,
+            'situacaopedido' => $situacaopedido,
+            'produtosVenda' => $produtosVenda,
+            'itemPedido' => $itensPedido,
+            'formasPagamento' => $formasPagamento,
+            'mensagem' => $mensagem,
+        ]);
     }
 
     /**
@@ -286,6 +319,10 @@ class PedidoController extends Controller
 
     public function actionFinalizarPedido($formaPagamento, $idPedido)
     {
+        $caixa = new Caixa();
+        $caixa = $caixa->getCaixaAberto(Yii::$app->user->getId());
+        var_dump($caixa);
+
         if ($formaPagamento != null && $idPedido != null) {
             $pagamento = Pagamento::find()->where(['idPedido' => $idPedido])->one();
             if ($pagamento != null) {

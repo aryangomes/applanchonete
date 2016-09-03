@@ -68,8 +68,10 @@ class Caixa extends \yii\db\ActiveRecord {
      * @return \yii\db\ActiveQuery
      */
     public function getCaixaAberto($idUser) {
-        return self::find()->where(['user_id'=>$idUser,
-        'dataabertura'=>date('Y-m-d'), 'datafechamento'=>null])->one();
+        return self::find()->where(['user_id'=>$idUser])
+            ->andWhere(['not', ['dataabertura' => null]])
+            ->andWhere( ['datafechamento' => null])
+            ->one();
     }
 
 }

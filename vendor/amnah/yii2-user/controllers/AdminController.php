@@ -105,6 +105,8 @@ class AdminController extends Controller
      $user = $this->module->model("User", ["scenario" => "register"]);
      $profile = $this->module->model("Profile");
 
+
+     $user->status = 1;
         // load post data
      $post = Yii::$app->request->post();
 

@@ -130,56 +130,7 @@ use yii\bootstrap\Modal;
 
         <?php
           } ?>
-        <!--   ---------------------------   BEGIN Finalizar Pedido  ---------------------------  -->
-        <?php
-        Modal::begin([
-            'header' => '<h2>Finalizar Pedido</h2>',
-            'id' => 'modalfinalizarpedido',
-            'toggleButton' => isset($model->situacaopedido->titulo) &&
-            $model->situacaopedido->titulo != 'Concluído' ?
-                    ['label' => 'Finalizar Pedido',
-                'class' => 'btn btn-warning',
-                'disabled' => isset($model->datadevolucao) ? true : false] : false,
-        ]);
-        ?>
-        <div class="row">
-            <div class="col-lg-6">
-                <?= Html::label("Forma Pagamento", ['class' => 'form-control'])
-                ?>
-                <div class="input-group">
-
-                    <?=
-                    Html::dropDownList("Formapagamento", null, $formasPagamento, ['class' => 'form-control',
-                        'id' => 'formapagamento',
-                        'prompt' => 'Escolha uma forma de pagamento'])
-                    ?>
-                    <span class="input-group-btn">
-                        <?=
-                        Html::Button("Finalizar Pedido", ['class' => 'btn btn-success',
-                            'id' => 'btFinalizarPedido'])
-                        ?>
-                    </span>
-
-
-                </div>
-                <?= Html::label("Valor Total", ['class' => 'form-control'])
-                ?>
-                <?=
-                Html::input('text', null, isset($model->totalPedido) ? 'R$ ' . $model->totalPedido : ''
-                        , ['class' => 'form-control',
-                    'disabled' => true,])
-                ?>
-            </div>
-
         </div>
-
-
-        <?php
-        Modal::end();
-        ?>
-
-        <!--   ---------------------------   END Finalizar Pedido  ---------------------------  -->
-    </div>
 
 
     <?php ActiveForm::end(); ?>

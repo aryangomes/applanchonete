@@ -144,10 +144,7 @@ class PedidoController extends Controller
                         if ($itemPedido->save()) {
                             Insumo::atualizaQtdNoEstoqueInsert(
                                 $itemPedido->idProduto, $itemPedido->quantidade);
-                            if ((count($itemPedidoPost['idProduto']) - 1) == $i) {
 
-//                                return $this->redirect(['view', 'id' => $model->idPedido]);
-                            }
                         } else {
                             $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
                             $transaction->rollBack(); //desfaz alterações no BD

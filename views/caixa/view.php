@@ -16,24 +16,34 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
 
-
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-           // 'idcaixa',
-        'valorapurado',
-        'valoremcaixa',
-        'valorlucro',
+            // 'idcaixa',
+
+            [
+                'attribute' => 'valorapurado',
+                'value' => 'R$ ' . $model->valorapurado,
+            ],
+            [
+                'attribute' => 'valoremcaixa',
+                'value' => 'R$ ' . $model->valoremcaixa,
+            ],
+            [
+                'attribute' => 'valorlucro',
+                'value' => 'R$ ' . $model->valorlucro,
+            ],
+
         ],
-        ]) ?>
-        <p>
-            <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->idcaixa], ['class' => 'btn btn-primary btn-block']) ?>
-            <?=   Html::a(Yii::t('yii', 'Fechar Caixar'), ['fechar', 'id' => $model->idcaixa], [
-                'class' => 'btn btn-danger btn-block',
-                'data' => [
+    ]) ?>
+    <p>
+        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->idcaixa], ['class' => 'btn btn-primary btn-block']) ?>
+        <?= Html::a(Yii::t('yii', 'Fechar Caixar'), ['fechar', 'id' => $model->idcaixa], [
+            'class' => 'btn btn-danger btn-block',
+            'data' => [
                 'confirm' => Yii::t('yii', 'Tem certeza que quer fechar o caixa?'),
                 'method' => 'post',
-                ],
-                ]) ?>
-            </p>
-        </div>
+            ],
+        ]) ?>
+    </p>
+</div>

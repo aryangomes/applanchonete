@@ -12,6 +12,7 @@ use app\models\Conta;
 use app\models\Compraproduto;
 use app\models\Produto;
 use yii\helpers\ArrayHelper;
+
 /**
  * CompraController implements the CRUD actions for Compra model.
  */
@@ -54,11 +55,11 @@ class CompraController extends Controller
      */
     public function actionView($id)
     {
-        $compraProdutos = Compraproduto::find()->where(['idCompra'=>$id])
-        ->all();
+        $compraProdutos = Compraproduto::find()->where(['idCompra' => $id])
+            ->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'compraProdutos'=>$compraProdutos,
+            'compraProdutos' => $compraProdutos,
         ]);
     }
 
@@ -70,51 +71,83 @@ class CompraController extends Controller
     public function actionCreate()
     {
         $model = new Compra();
+
+        $mensagem = ""; //Informa ao usuário mensagens de erro na view
+
         $conta = new Conta();
+
         $compraProduto = new Compraproduto();
+
         $produtos = ArrayHelper::map(Produto::find()->all(),
-            'idProduto','nome');
-        if ((Yii::$app->request->post()) ) 
-        {
-           
-                $conta->tipoConta = 'contasapagar';
-           
-                if ( $conta->save()) {
+            'idProduto', 'nome');
+
+        if ((Yii::$app->request->post())) {
+
+            $conta->tipoConta = 'contasapagar';
+
+            //Inicia a transação:
+            $transaction = \Yii::$app->db->beginTransaction();
+            try {
+                //Tenta salvar um registro :
+
+                if ($conta->save()) {
+
+                    $itensInseridos = true;
+
                     $model->idconta = $conta->idconta;
                     $model->dataCompra = Yii::$app->request->post()['Compra']['dataCompra'];
-                    $model->save();
+                    if ($model->save()) {
+                        $compraprodutos = Yii::$app->request->post()['Compraproduto'];
+                        $valorescompraprodutos = Yii::$app->request->post()['compraproduto-valorcompra-disp'];
 
-                    $compraprodutos = Yii::$app->request->post()['Compraproduto'];
-                    $valorescompraprodutos = Yii::$app->request->post()['compraproduto-valorcompra-disp'];
+                        for ($i = 0; $i < count($compraprodutos['idProduto']); $i++) {
+                            $cp = new Compraproduto();
+                            $cp->idCompra = $model->idconta;
+                            $cp->idProduto = $compraprodutos['idProduto'][$i];
+                            $cp->quantidade = $compraprodutos['quantidade'][$i];
 
-                    for ($i=0; $i < count($compraprodutos['idProduto']); $i++) {
-                       $cp = new Compraproduto();
-                      $cp->idCompra =  $model->idconta;
-                      $cp->idProduto= $compraprodutos['idProduto'][$i];
-                      $cp->quantidade= $compraprodutos['quantidade'][$i]; 
+                            if ($i <= 0) {
+                                $cp->valorCompra = $compraprodutos['valorCompra'][0];
+                            } else {
+                                $cp->valorCompra = (substr($valorescompraprodutos[$i - 1], 4));
+                            }
 
-          if($i <= 0) {
-                 $cp->valorCompra= $compraprodutos['valorCompra'][0]; 
-             }else{
-                $cp->valorCompra=( substr($valorescompraprodutos[$i-1], 4));
-             }
-        
-        
-             $cp->save();
-          }
+                            if (!$cp->save()) {
+                                $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
+                                $transaction->rollBack(); //desfaz alterações no BD
+                                $itensInseridos = false;
+                                break; //encerra o laço for
+                            }
 
-            return $this->redirect(['view', 'id' => $model->idconta]);
+                        }
+
+                        if ($itensInseridos) {
+                            $transaction->commit();
+                            return $this->redirect(['view', 'id' => $model->idconta]);
+                        }
+
+                    } else {
+                        $transaction->rollBack();
+                        $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
+                    }
+
+
+                }
+            } catch (\Exception $exception) {
+                $transaction->rollBack();
+                $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
             }
-          
-        } else {
-            $model->dataCompra = date('Y-m-d');
-            
-            return $this->render('create', [
-                'model' => $model,
-                'compraProduto'=>$compraProduto,
-                'produtos'=>$produtos,
-            ]);
+//        } else {
+
         }
+        $model->dataCompra = date('Y-m-d');
+
+        return $this->render('create', [
+            'model' => $model,
+            'compraProduto' => $compraProduto,
+            'produtos' => $produtos,
+            'mensagem' => $mensagem,
+        ]);
     }
 
     /**
@@ -126,41 +159,74 @@ class CompraController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
- $compraProduto = new Compraproduto();
-  $produtos = ArrayHelper::map(Produto::find()->all(),
-            'idProduto','nome');
-  $produtosDaCompras = 
-    Compraproduto::find()->where(['idCompra'=>$id])->all();
-    if(Yii::$app->request->post()){
-        $compraProdutoAux = (Yii::$app->request->post()['Compraproduto']);
- Yii::$app->db->createCommand(
-            "DELETE FROM compraproduto WHERE idCompra = :idCompra", [
-            ':idCompra' => $id,
-            ])->execute();
-       for ($i=0; $i < count($compraProdutoAux['idProduto']); $i++) { 
 
-       
-          $cp = new Compraproduto();
+        $mensagem = ""; //Informa ao usuário mensagens de erro na view
 
-         $cp->idCompra = $id;
-          $cp->idProduto = $compraProdutoAux['idProduto'][$i];
-            $cp->quantidade = $compraProdutoAux['quantidade'][$i];
-            $cp->valorCompra = $compraProdutoAux['valorCompra'][$i];
+        $compraProduto = new Compraproduto();
 
-            $cp->save();
-           
-       
+        $produtos = ArrayHelper::map(Produto::find()->all(),
+            'idProduto', 'nome');
+
+        $produtosDaCompras =
+            Compraproduto::find()->where(['idCompra' => $id])->all();
+
+
+
+
+        if (Yii::$app->request->post()) {
+
+            $itensInseridos = true;
+
+            //Inicia a transação:
+            $transaction = \Yii::$app->db->beginTransaction();
+            try {
+
+                $compraProdutoAux = (Yii::$app->request->post()['Compraproduto']);
+
+                Yii::$app->db->createCommand(
+                    "DELETE FROM compraproduto WHERE idCompra = :idCompra", [
+                    ':idCompra' => $id,
+                ])->execute();
+                for ($i = 0; $i < count($compraProdutoAux['idProduto']); $i++) {
+
+
+                    $cp = new Compraproduto();
+
+                    $cp->idCompra = $id;
+                    $cp->idProduto = $compraProdutoAux['idProduto'][$i];
+                    $cp->quantidade = $compraProdutoAux['quantidade'][$i];
+                    $cp->valorCompra = $compraProdutoAux['valorCompra'][$i];
+
+                    if (!$cp->save()) {
+                        $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
+                        $transaction->rollBack(); //desfaz alterações no BD
+                        $itensInseridos = false;
+                        break; //encerra o laço for
+                    }
+
+
+
+
+                }
+
+                if ($itensInseridos) {
+                    $transaction->commit();
+                    return $this->redirect(['view', 'id' => $model->idconta]);
+                }
+
+            } catch (\Exception $exception) {
+                $transaction->rollBack();
+                $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
+            }
         }
-      //  if ($model->load(Yii::$app->request->post()) && $model->save()) {
-          return $this->redirect(['view', 'id' => $model->idconta]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                'compraProduto'=>$compraProduto,
-                'produtos'=>$produtos,
-                'produtosDaCompras'=>$produtosDaCompras,
-            ]);
-        }
+
+        return $this->render('update', [
+            'model' => $model,
+            'compraProduto' => $compraProduto,
+            'produtos' => $produtos,
+            'produtosDaCompras' => $produtosDaCompras,
+            'mensagem' => $mensagem,
+        ]);
     }
 
     /**

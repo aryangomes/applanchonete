@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $model app\models\Compra */
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
-    'modelClass' => 'Compra do dia ',
-]) . $model->dataCompra;
+        'modelClass' => 'Compra do dia ',
+    ]) . $model->dataCompra;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Compras'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->dataCompra, 'url' => ['view', 'id' => $model->idconta]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
@@ -18,10 +18,11 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
     <?= $this->render('_form', [
         'model' => $model,
- 'compraProduto'=>$compraProduto,
-                'produtos'=>$produtos,
-                'produtosDaCompras'=>$produtosDaCompras,
-         
+        'compraProduto' => $compraProduto,
+        'produtos' => $produtos,
+        'produtosDaCompras' => $produtosDaCompras,
+        'mensagem' => $mensagem,
+
     ]) ?>
 
 </div>

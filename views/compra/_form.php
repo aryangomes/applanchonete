@@ -107,7 +107,7 @@ use kartik\money\MaskMoney;
                     ],
                 ]);
                 ?>
-                <div class="help-block-insumo<?= $i ?>"> </div><?php
+                <div class="help-block-insumo<?= $i ?>"></div><?php
                 echo "</br>";
 
                 echo $form->field($compraProduto, 'quantidade[]')->textInput(['type' => 'number', 'value' => $produtosDaCompras[$i]->quantidade, 'min' => 0]);
@@ -163,6 +163,15 @@ use kartik\money\MaskMoney;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+
+if (isset($mensagem) && !empty($mensagem)) {
+    ?>
+    <script type="text/javascript">alert('<?= $mensagem; ?>');</script>
+    <?
+}
+?>
 <script type="text/javascript">
     function removeins(id) {
         $('#inputinsumo' + id).empty();

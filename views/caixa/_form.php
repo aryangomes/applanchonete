@@ -15,7 +15,7 @@ use kartik\datecontrol\DateControl;
 
 <?php $form = ActiveForm::begin(); ?>
 
-
+    
 
     <?=
     $form->field($model, 'valorapurado')->widget(MaskMoney::classname(), [

@@ -150,7 +150,7 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
                  */
                 if (!$model->isInsumo) {
                     ?>
-                    <input class="btn btn-danger" onclick="removeins(0)" type="button" value="Remover Insumo">
+                    <input class="btn btn-danger" onclick="removeins(0)" type="button" value="Remover Insumo" title="Remover insumo desse produto">
                 <?php } ?>
                 <hr>
                 <div class="table-responsive" id="input-dinamico">
@@ -256,7 +256,7 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
              <?php
              if (!$model->isInsumo) {
                  ?>
-            <input class="btn btn-primary" type='button' id='btnaddinsumo' value="Adicionar mais insumos">
+            <input class="btn btn-primary" type='button' id='btnaddinsumo' value="Adicionar mais insumos" title="Adicionar mais um insumo a esse produto">
                  <?php
              }
              ?>

@@ -45,8 +45,13 @@ class ContasapagarSearch extends Contasapagar
 
         // add conditions that should always apply here
 
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+              'pagination' => [
+                'pageSize' => 10,
+            ],
+               'sort'=> ['defaultOrder' => ['idconta'=>SORT_DESC]],
         ]);
 
         $this->load($params);

@@ -67,6 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?=
         Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->idrelatorio], [
             'class' => 'btn btn-danger',
+            'title' => 'Clique para apagar esse relatório',
             'data' => [
                 'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
                 'method' => 'post',

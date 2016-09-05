@@ -136,12 +136,23 @@ class CaixaController extends Controller
 
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $ultimocaixa =  Caixa::find()->where(['datafechamento' => null])
+        ->orderBy('idcaixa DESC')->all();
+        //SELECT ID FROM tabela ORDER BY ID DESC LIMIT 1
+        if(!empty($ultimocaixa)){
+          if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idcaixa]);
-        } else {
+          } else {
             return $this->render('update', [
                 'model' => $model,
             ]);
+          }
+        } else {
+          throw new NotFoundHttpException('O caixa não está aberto');
+
+          return $this->render('update', [
+                'model' => $model,
+          ]);
         }
     }
 

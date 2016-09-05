@@ -62,7 +62,7 @@ class Produto extends \yii\db\ActiveRecord
             'nome' => Yii::t('app', 'Nome'),
             'valorVenda' => Yii::t('app', 'Valor Venda'),
             'isInsumo' => Yii::t('app', 'Is Insumo'),
-            'quantidadeMinima' => Yii::t('app', 'Quantidade Minima'),
+            'quantidadeMinima' => Yii::t('app', 'Estoque mínimo'),
             'idCategoria' => Yii::t('app', 'Categoria'),
             'quantidadeEstoque' => Yii::t('app', 'Quantidade em Estoque'),
             'datainicioavaliacao' => Yii::t('app', 'De'),

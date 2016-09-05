@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -9,6 +9,9 @@ use yii\widgets\DetailView;
 $this->title = 'Compra do dia '. date("d/m/Y",strtotime($model->dataCompra));
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Compras'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+
+
 ?>
 <div class="compra-view">
 

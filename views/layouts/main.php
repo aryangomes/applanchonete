@@ -18,15 +18,19 @@ use app\models\Produto;
 AppAsset::register($this);
 
 $formatter = \Yii::$app->formatter;
+
 $caixa = new Caixa();
+
+//Pega a instaância do caixa aberto
 $caixa = $caixa->getCaixaAberto(Yii::$app->user->getId());
 
-
+//Rechpera o nome da loja
 $loja = Loja::find()->where(['user_id' => Yii::$app->user->getId()])->one();
 
+//Busca os produtos com estoque mínimo
 $qtdProdutoMinimo = Produto::find()->where("quantidadeMinima >= quantidadeEstoque AND isInsumo = 1")->all();
-//var_dump($qtdProduto);
 
+//Verifica se o nome da Loja está cadastrado
 if (count($loja) > 0) {
 
     $nomeLoja = $loja->nome;

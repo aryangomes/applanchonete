@@ -166,7 +166,7 @@ class PedidoController extends Controller
             }
         }
 //        } else {
-        $model->idSituacaoAtual=1;
+        $model->idSituacaoAtual = Pedido::EM_ANDAMENTO;
         return $this->render('create', [
             'model' => $model,
             'situacaopedido' => $situacaopedido,
@@ -204,7 +204,8 @@ class PedidoController extends Controller
 
 
         if ($model->load(Yii::$app->request->post()) &&
-            (count($itensPedido) > 0)) {
+            (count($itensPedido) > 0)
+        ) {
             //Carrega demais modelos
 
             //Inicia a transação:
@@ -316,50 +317,74 @@ class PedidoController extends Controller
 
     public function actionFinalizarPedido($formaPagamento, $idPedido)
     {
-        $caixa = new Caixa();
-        $caixa = $caixa->getCaixaAberto(Yii::$app->user->getId());
-        var_dump($caixa);
 
         if ($formaPagamento != null && $idPedido != null) {
             $pagamento = Pagamento::find()->where(['idPedido' => $idPedido])->one();
             if ($pagamento != null) {
                 $pagamento->formapagamento_idTipoPagamento = $formaPagamento;
-                if ($pagamento->save(false)) {
-                    $pedido = $this->findModel($idPedido);
-                    if ($pedido != null) {
-                        $situacaoPedido = Situacaopedido::find()
-                            ->where(['like', 'titulo', 'Concluído'])
-                            ->one();
-                        if ($situacaoPedido != null) {
-                            $pedido->idSituacaoAtual = $situacaoPedido->idSituacaoPedido;
-                            if ($pedido->save(false)) {
+
+                //Inicia a transação:
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+
+                    $itensInseridos = true;
+
+                    if ($pagamento->save()) {
+                        $pedido = $this->findModel($idPedido);
+                        if ($pedido != null) {
+                            $situacaoPedido = Pedido::CONCLUIDO;
+
+                            $pedido->idSituacaoAtual = $situacaoPedido;
+                            if ($pedido->save()) {
                                 $caixa = new Caixa();
                                 $caixa = $caixa->getCaixaAberto(Yii::$app->user->getId());
                                 if ($caixa != null) {
                                     $caixa = Caixa::findOne($caixa->idcaixa);
                                     $caixa->valoremcaixa += $pedido->totalPedido;
                                     $caixa->valorapurado += $pedido->totalPedido;
-                                    if ($caixa->save()) {
-                                        echo Json::encode($pedido->idSituacaoAtual);
-                                    } else {
+                                    if (!$caixa->save()) {
+                                        $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
+                                        $transaction->rollBack(); //desfaz alterações no BD
+                                        $itensInseridos = false;
                                         echo Json::encode(false);
+
                                     }
                                 } else {
+                                    $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
+                                    $transaction->rollBack(); //desfaz alterações no BD
+                                    $itensInseridos = false;
                                     echo Json::encode(false);
                                 }
 
 
                             } else {
+                                $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
+                                $transaction->rollBack(); //desfaz alterações no BD
+                                $itensInseridos = false;
                                 echo Json::encode(false);
                             }
+
                         } else {
+                            $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
+                            $transaction->rollBack(); //desfaz alterações no BD
+                            $itensInseridos = false;
                             echo Json::encode(false);
                         }
+
                     } else {
+                        $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
+                        $transaction->rollBack(); //desfaz alterações no BD
+                        $itensInseridos = false;
                         echo Json::encode(false);
                     }
-                } else {
-                    echo Json::encode(false);
+                    //Testa se todos os itens foram inseridos (ou tudo ou nada):
+                    if ($itensInseridos) {
+                        $transaction->commit();
+                        echo Json::encode($pedido->idSituacaoAtual);
+                    }
+                } catch (\Exception $exception) {
+                    $transaction->rollBack();
+                    $mensagem = "Ocorreu uma falha inesperada ao tentar salvar o Pedido";
                 }
             } else {
                 echo Json::encode(false);

@@ -81,6 +81,12 @@ class CompraController extends Controller
         $produtos = ArrayHelper::map(Produto::find()->all(),
             'idProduto', 'nome');
 
+        //Recebe o valor total da compra
+        $valorTotalDaCompra = 0;
+
+        //Setando o fuso horário
+        date_default_timezone_set('America/Sao_Paulo');
+
         if ((Yii::$app->request->post())) {
 
             $conta->tipoConta = 'contasapagar';
@@ -90,13 +96,13 @@ class CompraController extends Controller
             try {
                 //Tenta salvar um registro :
 
-                if ($conta->save()) {
+                if ($conta->save(false)) {
 
                     $itensInseridos = true;
 
                     $model->idconta = $conta->idconta;
                     $model->dataCompra = Yii::$app->request->post()['Compra']['dataCompra'];
-                    if ($model->save()) {
+                    if ($model->save(false)) {
                         $compraprodutos = Yii::$app->request->post()['Compraproduto'];
                         $valorescompraprodutos = Yii::$app->request->post()['compraproduto-valorcompra-disp'];
 
@@ -109,17 +115,36 @@ class CompraController extends Controller
                             if ($i <= 0) {
                                 $cp->valorCompra = $compraprodutos['valorCompra'][0];
                             } else {
-                                $cp->valorCompra = (substr($valorescompraprodutos[$i - 1], 4));
+                                $cp->valorCompra = (($valorescompraprodutos[$i - 1]));
                             }
 
-                            if (!$cp->save()) {
-                                $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
+                            if (!$cp->save(false)) {
+                                $mensagem = "Não foi possível salvar os dados";
                                 $transaction->rollBack(); //desfaz alterações no BD
                                 $itensInseridos = false;
                                 break; //encerra o laço for
+                            } else {
+                                $valorTotalDaCompra += floatval($cp->valorCompra);
                             }
 
                         }
+
+                        $model->valor = $valorTotalDaCompra;
+
+                        if (!$model->save(false)) {
+                            $mensagem = "Não foi possível salvar os dados ";
+                            $transaction->rollBack(); //desfaz alterações no BD
+                            $itensInseridos = false;
+                        }else{
+                            $conta->valor= $model->valor;
+                            if (!$conta->save(false)) {
+                                $mensagem = "Não foi possível salvar os dados ";
+                                $transaction->rollBack(); //desfaz alterações no BD
+                                $itensInseridos = false;
+                            }
+                        }
+
+
 
                         if ($itensInseridos) {
                             $transaction->commit();
@@ -132,12 +157,15 @@ class CompraController extends Controller
                     }
 
 
+                } else {
+                    $transaction->rollBack();
+                    $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
                 }
             } catch (\Exception $exception) {
                 $transaction->rollBack();
                 $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
             }
-//        } else {
+
 
         }
         $model->dataCompra = date('Y-m-d');
@@ -160,6 +188,8 @@ class CompraController extends Controller
     {
         $model = $this->findModel($id);
 
+        $conta = Conta::findOne($model->idconta);
+
         $mensagem = ""; //Informa ao usuário mensagens de erro na view
 
         $compraProduto = new Compraproduto();
@@ -170,6 +200,9 @@ class CompraController extends Controller
         $produtosDaCompras =
             Compraproduto::find()->where(['idCompra' => $id])->all();
 
+
+        //Recebe o valor total da compra
+        $valorTotalDaCompra = 0;
 
 
 
@@ -195,16 +228,42 @@ class CompraController extends Controller
                     $cp->idCompra = $id;
                     $cp->idProduto = $compraProdutoAux['idProduto'][$i];
                     $cp->quantidade = $compraProdutoAux['quantidade'][$i];
-                    $cp->valorCompra = $compraProdutoAux['valorCompra'][$i];
 
-                    if (!$cp->save()) {
-                        $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
+                        $cp->valorCompra = (Yii::$app->request->post()
+                        ['compraproduto-valorcompra-disp'][$i]);
+
+
+
+                    if (!$cp->save(false)) {
+                        $mensagem = "Não foi possível salvar os dados de algum";
                         $transaction->rollBack(); //desfaz alterações no BD
                         $itensInseridos = false;
                         break; //encerra o laço for
+                    } else {
+
+                        $valorTotalDaCompra += floatval($cp->valorCompra);
+
                     }
 
                 }
+
+                $model->valor = $valorTotalDaCompra;
+
+
+
+                if (!$model->save(false)) {
+                    $mensagem = "Não foi possível salvar os dados ";
+                    $transaction->rollBack(); //desfaz alterações no BD
+                    $itensInseridos = false;
+                }else{
+                    $conta->valor= $model->valor;
+                    if (!$conta->save(false)) {
+                        $mensagem = "Não foi possível salvar os dados ";
+                        $transaction->rollBack(); //desfaz alterações no BD
+                        $itensInseridos = false;
+                    }
+                }
+
 
                 if ($itensInseridos) {
                     $transaction->commit();

@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a(Yii::t('app', 'Create {model}',['model'=>'Compra']), ['create'], ['class' => 'btn btn-success']) ?>
-     <?= Html::a(Yii::t('app', 'Orcamento de Compra de Insumos',['model'=>'OrcamentoCompra']), ['/orcamentocompra/orcamentocomprainsumos'], ['class' => 'btn btn-success']) ?>
+     <?= Html::a(Yii::t('app', 'Orçamento de Compra de Insumos',['model'=>'OrcamentoCompra']), ['/orcamentocompra/orcamentocomprainsumos'], ['class' => 'btn btn-success']) ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -25,8 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'idconta',
-            'dataCompra',
+
+            'dataCompra:date',
+
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

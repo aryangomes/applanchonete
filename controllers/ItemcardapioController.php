@@ -8,8 +8,8 @@ use app\models\ItemcardapioSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+/*use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;*/
 use app\components\AccessFilter;
 /**
  * ItemcardapioController implements the CRUD actions for Itemcardapio model.

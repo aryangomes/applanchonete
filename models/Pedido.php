@@ -20,7 +20,11 @@ use Yii;
 class Pedido extends \yii\db\ActiveRecord
 {
 
- 
+    const EM_ANDAMENTO = 1;
+
+    const CONCLUIDO = 2;
+
+    const CANCELADO = 3;
 
     /**
      * @inheritdoc

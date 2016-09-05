@@ -129,7 +129,8 @@ use yii\bootstrap\Modal;
                 <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar Item Pedido">
 
         <?php
-          } ?>
+          }
+          ?>
         </div>
 
 

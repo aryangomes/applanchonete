@@ -8,8 +8,8 @@ use app\models\MesaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+/*use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;*/
 use app\components\AccessFilter;
 /**
  * MesaController implements the CRUD actions for Mesa model.

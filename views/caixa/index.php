@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a(Yii::t('app', 'Abrir Caixa',
-        ['model'=>Yii::t('app','Caixa')]), ['create'], ['class' => 'btn btn-success']) ?>
+        ['model'=>Yii::t('app','Caixa')]), ['create'], ['class' => 'btn btn-success', 'title' => 'Abrir novo caixa']) ?>
     </p>
 
     <?php  /*GridView::widget([

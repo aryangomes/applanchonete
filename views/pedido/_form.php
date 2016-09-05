@@ -78,7 +78,7 @@ use yii\bootstrap\Modal;
 
                 echo $form->field($itemPedido[$i], 'quantidade[]')->textInput([ 'type' => 'number', 'value' => $itemPedido[$i]->quantidade, 'min' => 0]);
                 ?>
-                <input class="btn btn-danger" onclick="removeins(<?= $i ?>)" type='button' value="Remover Item Pedido"> </div></br><?php
+                <input class="btn btn-danger" onclick="removeins(<?= $i ?>)" type='button' value="Remover Item Pedido" title='Remover item do pedido'> </div></br><?php
         }
     }
     ?>
@@ -122,11 +122,11 @@ use yii\bootstrap\Modal;
         <?php if (isset($model->idSituacaoAtual)) {
             if ($model->situacaopedido->titulo != 'Concluído') {
                 ?>
-                <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar Item Pedido">
+                <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar Item Pedido" title="Adicionar item ao pedido">
             <?php }
         }else{
         ?> 
-                <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar Item Pedido">
+                <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar Item Pedido" title="Adicionar item ao pedido">
 
         <?php
           } ?>
@@ -138,6 +138,7 @@ use yii\bootstrap\Modal;
             'toggleButton' => isset($model->situacaopedido->titulo) &&
             $model->situacaopedido->titulo != 'Concluído' ?
                     ['label' => 'Finalizar Pedido',
+                'title' => 'Clique aqui para enviar o pedido',   
                 'class' => 'btn btn-warning',
                 'disabled' => isset($model->datadevolucao) ? true : false] : false,
         ]);
@@ -192,7 +193,7 @@ use yii\bootstrap\Modal;
         {
     ?>
             <script type="text/javascript">alert('<?= $mensagem; ?>');</script>
-    <?
+    <?php
         }
     ?>
 
@@ -204,6 +205,4 @@ use yii\bootstrap\Modal;
     function removeins(id) {
         $('#inputinsumo' + id).empty();
     }
-
-
 </script>

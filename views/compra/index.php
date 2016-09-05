@@ -16,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create {model}',['model'=>'Compra']), ['create'], ['class' => 'btn btn-success']) ?>
-     <?= Html::a(Yii::t('app', 'Orcamento de Compra de Insumos',['model'=>'OrcamentoCompra']), ['/orcamentocompra/orcamentocomprainsumos'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create {model}',['model'=>'Compra']), ['create'], ['class' => 'btn btn-success', 'title' => 'Cadastrar uma nova compra']) ?>
+     <?= Html::a(Yii::t('app', 'Orcamento de Compra de Insumos',['model'=>'OrcamentoCompra']), ['/orcamentocompra/orcamentocomprainsumos'], ['class' => 'btn btn-success', 'title' => 'Gerar orçamento de compra de insumos']) ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,

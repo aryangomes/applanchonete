@@ -73,6 +73,8 @@ class Conta extends \yii\db\ActiveRecord
         return $this->hasOne(Contasapagar::className(), ['idconta' => 'idconta']);
     }
 
+
+
     public function getContaapagar($idconta)
     {
         return Contasapagar::findOne($idconta);
@@ -97,8 +99,8 @@ class Conta extends \yii\db\ActiveRecord
      * @param $idconta
      * @return Custofixo
      */
-    public function getCustofixo($idconta)
+    public function getCustofixo()
     {
-        return Custofixo::findOne($idconta);
+        return $this->hasOne(Custofixo::className(), ['idconta' => 'idconta']);
     }
 }

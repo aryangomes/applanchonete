@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'value'=>function ($model)
         {
             return isset($model->dataHora) ?
-            \Yii::$app->formatter->asDate($model->dataHora, 'dd/MM/yyyy H:m') : null ;
+           date("d/m/Y H:i",strtotime($model->dataHora)) : null ;
         }
         ],
 

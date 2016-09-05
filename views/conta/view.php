@@ -38,12 +38,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'visible' => ($model->tipoConta == 'custofixo') ? true : false,
                 'format' => 'text',
                 'value' => ($model->tipoConta == 'custofixo') ?
-                    $model->getCustofixo($model->idconta)->consumo : '',
+                    $model->custofixo->consumo : '',
             ],
             ['label' => 'Tipo de Custo Fixo',
                 'visible' => ($model->tipoConta == 'custofixo') ? true : false,
                 'format' => 'text',
-                'value' => ($model->tipoConta == 'custofixo') ? $model->getCustofixo($model->idconta)
+                'value' => ($model->tipoConta == 'custofixo') ? $model->custofixo
                     ->tipocustofixoIdtipocustofixo->tipocustofixo : null,
             ],
 
@@ -54,7 +54,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'visible' => ($model->tipoConta == 'contasapagar') ? true : false,
 
             ],
+            ['attribute' => 'custofixo.dataVencimento',
+                'value' => ($model->tipoConta == 'custofixo') ? $model->contasapagar->dataVencimento : '',
+                'format' => 'date',
+                'visible' => ($model->tipoConta == 'custofixo') ? true : false,
 
+            ],
 
             ['attribute' => 'contasareceber.dataHora',
                 'value' => ($model->tipoConta == 'contasareceber' && isset($model->contasareceber->dataHora))

@@ -293,9 +293,43 @@ class CompraController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        //Inicia a transação:
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+
+            $itensDeletados = true;
+
+            $produtosCompra = Compraproduto::find()
+                ->where(['idCompra'=>$id])->all();
+
+            foreach ($produtosCompra as $pc){
+
+                    $produto = Produto::findOne($pc->idProduto);
+
+                    $produto->quantidadeEstoque -= $pc->quantidade;
+
+                if(!$produto->save()){
+                    $transaction->rollBack(); //desfaz alterações no BD
+                    $itensDeletados = false;
+                }
+            }
+
+
+            if ($itensDeletados) {
+                $this->findModel($id)->delete();
+
+                $transaction->commit();
+                return $this->redirect(['index']);
+
+            }
+        } catch (\Exception $exception) {
+            $transaction->rollBack();
+            $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
+        }
+
+        return $this->redirect(['view', 'id' => $id]);
+
     }
 
     /**

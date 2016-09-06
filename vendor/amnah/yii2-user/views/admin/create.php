@@ -23,6 +23,9 @@ $this->params['breadcrumbs'][] = $this->title;
 		'profile' => $profile,
 		'permissoesUser'=>$permissoesUser,
 		'permissoes'=>$permissoes,
+        'authAssignment'=>$authAssignment,
+		'mensagem'=>$mensagem,
+
 		]) ?>
 
 	</div>

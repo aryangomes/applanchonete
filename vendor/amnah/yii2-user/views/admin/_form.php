@@ -18,7 +18,7 @@ $role = $module->model("Role");
 ?>
 
 <div class="user-form">
-    <?php //var_dump($permissoesUser) ?>
+
 
 
     <?php $form = ActiveForm::begin(); ?>
@@ -31,34 +31,25 @@ $role = $module->model("Role");
 
     <?= $form->field($profile, 'full_name'); ?>
 
-    <?php // $form->field($user, 'role_id')->dropDownList($permissoes); ?>
 
-    <?php
-    $inic = array();
-    if (isset($permissoesUser)) {
 
-        foreach ($permissoesUser as $key => $value) {
-            array_push($inic, $key);
-        }
-    }
-    ?>
-
-    <?php /*$form->field($user, 'role_id')->widget(Select2::classname(), [
+    <?= $form->field($authAssignment, 'item_name')->widget(Select2::classname(), [
 
         'data' => $permissoes,
 
         //'attribute'=>$permissoesUser,
-        'value'=>$inic,
+//        'value'=>$inic,
+//    'initValueText'=>'Caixa',
       //  'options' => ['placeholder' => 'Selecione as permissões'],
         'pluginOptions' => [
 
         'allowClear' => true,
         'multiple'=>true,
         ],
-        ]); */ ?>
+        ]);  ?>
 
 <?php
-echo Html::label('Permissões');
+/*echo Html::label('Permissões');
 
 echo Select2::widget([
     'name'=>'roles',
@@ -76,7 +67,7 @@ echo Select2::widget([
 
     ]);
 
-echo "</br>";
+echo "</br>";*/
 ?>
 
     <?php

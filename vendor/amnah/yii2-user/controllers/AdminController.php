@@ -2,6 +2,7 @@
 
 namespace amnah\yii2\user\controllers;
 
+use app\models\AuthAssignment;
 use Yii;
 use amnah\yii2\user\models\User;
 use amnah\yii2\user\models\UserToken;
@@ -111,6 +112,10 @@ class AdminController extends Controller
         $mensagem = ""; //Informa ao usuário mensagens de erro na view
 
 
+
+
+        $authAssignment = new AuthAssignment();
+
         $user->status = 1;
         // load post data
         $post = Yii::$app->request->post();
@@ -129,9 +134,9 @@ class AdminController extends Controller
                     Yii::$app->response->format = Response::FORMAT_JSON;
                     return ActiveForm::validate($user, $profile);
                 }
-                if (isset($post['roles'])) {
+                if (isset($post['AuthAssignment']['item_name'])) {
                     // var_dump($post['User']['role_id']);
-                    $roles = $post['roles'];
+                    $roles = $post['AuthAssignment']['item_name'];
 
                 }
 
@@ -176,7 +181,7 @@ class AdminController extends Controller
         }
 
 
-        return $this->render("create", compact("user", "profile", "permissoes", "permissoesUser", "mensagem"));
+        return $this->render("create", compact("user", "profile", "permissoes", "permissoesUser", "mensagem","authAssignment"));
     }
 
     /**
@@ -193,16 +198,29 @@ class AdminController extends Controller
             $authitem = new AuthItem();
             $permissoes = AuthItem::getListToDropDownList();
 
-            $permissoesUser = ArrayHelper::map(
-                AuthItem::find()->innerJoin('auth_assignment',
-                    'item_name = name')->where(['user_id' => $id])->all(),
-                'name', 'description');
+
             // set up user and profile
             $user = $this->findModel($id);
             $user->setScenario("admin");
             $profile = $user->profile;
 
             $mensagem = ""; //Informa ao usuário mensagens de erro na view
+
+            $authAssignment = new AuthAssignment();
+
+
+           $authItensUser = AuthAssignment::find()
+               ->where(['user_id'=>$id])->all();
+
+            $permissoesUser =[];
+
+            foreach ($authItensUser as $aiu){
+                array_push($permissoesUser,$aiu->item_name);
+            }
+
+
+            var_dump($permissoesUser);
+            $authAssignment->item_name = $permissoesUser;
 
             // load post data and validate
             $post = Yii::$app->request->post();
@@ -216,9 +234,10 @@ class AdminController extends Controller
                 try {
                     $itensInseridos = true;
 
-                    if (isset($post['roles'])) {
-                        // var_dump($post['roles']);
-                        $roles = $post['roles'];
+                    if (isset($post['AuthAssignment']['item_name'])) {
+                        // var_dump($post['User']['role_id']);
+                        $roles = $post['AuthAssignment']['item_name'];
+
                     }
 
                     Yii::$app->db->createCommand(
@@ -258,7 +277,8 @@ class AdminController extends Controller
             }
 
             // render
-            return $this->render('update', compact('user', 'profile', 'permissoes', 'permissoesUser', 'mensagem'));
+            return $this->render('update', compact('user', 'profile', 'permissoes', 'permissoesUser',
+                'mensagem','authAssignment'));
         } else {
             throw new ForbiddenHttpException("Acesso negado!");
         }

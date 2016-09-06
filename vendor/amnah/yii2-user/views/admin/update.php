@@ -24,6 +24,8 @@ $this->params['breadcrumbs'][] = Yii::t('user', 'Update');
 		'profile' => $profile,
 		'permissoes'=>$permissoes,
 		'permissoesUser'=>$permissoesUser,
+        'authAssignment'=>$authAssignment,
+		'mensagem'=>$mensagem,
 		]) ?>
 
 	</div>

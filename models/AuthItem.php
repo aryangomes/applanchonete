@@ -15,6 +15,7 @@ use yii\helpers\ArrayHelper;
  * @property string $data
  * @property integer $created_at
  * @property integer $updated_at
+ * @property User[] $users
  *
  * @property AuthAssignment[] $authAssignments
  * @property AuthRule $ruleName
@@ -97,26 +98,46 @@ class AuthItem extends \yii\db\ActiveRecord {
         return AuthItem::find()->where(['type' => $role_id])->one();
     }
 
+
+    public function getUsers()
+    {
+        return $this->hasMany(User::className(), ['id' => 'user_id'])->viaTable('auth_assignment', ['item_name' => 'name']);
+    }
+
     /**
      * @return array|null
      * Gera a lista de Permissões com optgroups
      */
     public static function getListToDropDownList() {
         $options = [];
-        $auxOptions = [];
+
         $optGroups = AuthItem::find()
                         ->where("name not like '%-%' and name <> 'admin' and name <> 'alterarprodutovenda'  
             and name <> 'produtosvenda'   and name <> 'cadastrarprodutovenda'
             and name <> 'avaliacaoproduto'
             and name <> 'listadeinsumos'
             and name <> 'listadeprodutosporinsumo'
-            and name <>'definirvalorprodutovenda'")->orderBy('type ASC')->all();
+            and name <>'definirvalorprodutovenda'")->distinct()->orderBy('type ASC')->all();
 
         foreach ($optGroups as $macroPermissao) {
 
             $permissao = [];
+            $sqlWhere = "name <> 'admin' and name like 'index-" . $macroPermissao->name
+                . "' or ".
+                "name = '". $macroPermissao->name .""
+                . "' or ".
+                "name like 'view-". $macroPermissao->name .""
+                 . "' or ".
+                "name like 'create-". $macroPermissao->name .""
+                  . "' or ".
+                "name like 'delete-". $macroPermissao->name .""
+                  . "' or ".
+                "name like 'index-". $macroPermissao->name .""
+                  . "' or ".
+                "name like 'update-". $macroPermissao->name ."'"
+                ;
             $auxPermissoes = AuthItem::find()->
-                            where("name <> 'admin' and name like '%" . $macroPermissao->name . "%'")->orderBy('type ASC')->all();
+                            where($sqlWhere)->orderBy('type ASC')->all();
             foreach ($auxPermissoes as $p) {
                 $key = $p->name;
                 $permissao[$key] = $p->description;

@@ -48,7 +48,7 @@ class Compraproduto extends \yii\db\ActiveRecord
         'idCompra' => Yii::t('app', 'Compra'),
         'idProduto' => Yii::t('app', 'Produto'),
         'quantidade' => Yii::t('app', 'Quantidade'),
-        'valorCompra' => Yii::t('app', 'Valor da Compra'),
+        'valorCompra' => Yii::t('app', 'Valor da Compra(R$)'),
         ];
     }
 

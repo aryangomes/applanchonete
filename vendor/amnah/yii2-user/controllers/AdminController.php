@@ -12,6 +12,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\AuthItem;
 use yii\helpers\ArrayHelper;
+
 /**
  * AdminController implements the CRUD actions for User model.
  */
@@ -22,7 +23,7 @@ class AdminController extends Controller
      * @inheritdoc
      */
     public $module;
-    
+
     /**
      * @inheritdoc
      */
@@ -31,15 +32,15 @@ class AdminController extends Controller
         // check for admin permission (`tbl_role.can_admin`)
         // note: check for Yii::$app->user first because it doesn't exist in console commands (throws exception)
         if (!empty(Yii::$app->user) && !Yii::$app->user->can("admin") && !Yii::$app->user->can("user")
-            && !Yii::$app->user->can("index-user")   && !Yii::$app->user->can("create-user") 
-            && !Yii::$app->user->can("view-user")   && !Yii::$app->user->can("update-user")
+            && !Yii::$app->user->can("index-user") && !Yii::$app->user->can("create-user")
+            && !Yii::$app->user->can("view-user") && !Yii::$app->user->can("update-user")
             && !Yii::$app->user->can("delete-user")
-            ) {
+        ) {
             throw new ForbiddenHttpException('You are not allowed to perform this action.');
-    }
+        }
 
-    parent::init();
-}
+        parent::init();
+    }
 
     /**
      * @inheritdoc
@@ -47,12 +48,12 @@ class AdminController extends Controller
     public function behaviors()
     {
         return [
-        'verbs' => [
-        'class' => VerbFilter::className(),
-        'actions' => [
-        'delete' => ['post'],
-        ],
-        ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
         ];
     }
 
@@ -77,14 +78,16 @@ class AdminController extends Controller
     public function actionView($id)
     {
         if (Yii::$app->user->can("view-user") ||
-            Yii::$app->user->can("user")) {
+            Yii::$app->user->can("user")
+        ) {
             return $this->render('view', [
                 'user' => $this->findModel($id),
-                ]);
-    }else{
-        throw new ForbiddenHttpException("Acesso negado!");
+            ]);
+        } else {
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
-}
+
     /**
      * Create a new User model. If creation is successful, the browser will
      * be redirected to the 'view' page.
@@ -92,65 +95,89 @@ class AdminController extends Controller
      */
     public function actionCreate()
     {
-     /** @var \amnah\yii2\user\models\User $user */
-     /** @var \amnah\yii2\user\models\Profile $profile */
-     /** @var \amnah\yii2\user\models\Role $role */
+        /** @var \amnah\yii2\user\models\User $user */
+        /** @var \amnah\yii2\user\models\Profile $profile */
+        /** @var \amnah\yii2\user\models\Role $role */
 
 
         // AuthAssigment
-     
-     $permissoes =  AuthItem::getListToDropDownList();
-     $permissoesUser = null;
+
+        $permissoes = AuthItem::getListToDropDownList();
+        $permissoesUser = null;
         // set up new user/profile objects
-     $user = $this->module->model("User", ["scenario" => "register"]);
-     $profile = $this->module->model("Profile");
+        $user = $this->module->model("User", ["scenario" => "register"]);
+        $profile = $this->module->model("Profile");
+
+        $mensagem = ""; //Informa ao usuário mensagens de erro na view
 
 
-     $user->status = 1;
+        $user->status = 1;
         // load post data
-     $post = Yii::$app->request->post();
+        $post = Yii::$app->request->post();
 
-     if ($user->load($post)) {
+        if ($user->load($post)) {
 
             // ensure profile data gets loaded
-         $profile->load($post);
+            $profile->load($post);
 
-            // validate for ajax request
-         if (Yii::$app->request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ActiveForm::validate($user, $profile);
+            //Inicia a transação:
+            $transaction = \Yii::$app->db->beginTransaction();
+            try {
+
+                // validate for ajax request
+                if (Yii::$app->request->isAjax) {
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return ActiveForm::validate($user, $profile);
+                }
+                if (isset($post['roles'])) {
+                    // var_dump($post['User']['role_id']);
+                    $roles = $post['roles'];
+
+                }
+
+
+                // validate for normal request
+                if ($user->validate() && $profile->validate()) {
+                    $itensInseridos = true;
+                    // perform registration
+                    $role = $this->module->model("Role");
+                    // VEJA AQUI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    if (!$user->setRegisterAttributes($role::ROLE_USER, $user::STATUS_ACTIVE)->save()) {
+                        $mensagem = "Não foi possível salvar os dados";
+                        $transaction->rollBack(); //desfaz alterações no BD
+                        $itensInseridos = false;
+                    }
+
+                    // $user->setPermissoes(1,$user->id);
+                    if (!$profile->setUser($user->id)->save()) {
+                        $mensagem = "Não foi possível salvar os dados";
+                        $transaction->rollBack(); //desfaz alterações no BD
+                        $itensInseridos = false;
+                    }
+
+
+                    $idUser = $user->id;
+                    // var_dump($idUser);
+                    foreach ($roles as $role) {
+
+                        $user->setPermissoes($role, $idUser);
+                    }
+
+                    if ($itensInseridos) {
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $user->id]);
+                    }
+
+                }
+            } catch (\Exception $exception) {
+                $transaction->rollBack();
+                $mensagem = "Ocorreu uma falha inesperada ao tentar salvar";
+            }
         }
-        if (isset($post['roles'])) {
-           // var_dump($post['User']['role_id']);
-            $roles = $post['roles'];
-
-        }
 
 
-            // validate for normal request
-        if ($user->validate() && $profile->validate()) {
-
-            // perform registration
-            $role = $this->module->model("Role");
-        // VEJA AQUI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            $user->setRegisterAttributes($role::ROLE_USER, $user::STATUS_ACTIVE)->save();
-
-       // $user->setPermissoes(1,$user->id);
-            $profile->setUser($user->id)->save();
-
-            $idUser = $user->id;
-           // var_dump($idUser);
-            foreach ( $roles as $role) {
-
-              $user->setPermissoes($role,$idUser);
-          }
-          return $this->redirect(['view', 'id' => $user->id]);
-      }
-  }
-
-
-  return $this->render("create", compact("user", "profile","permissoes","permissoesUser"));
-}
+        return $this->render("create", compact("user", "profile", "permissoes", "permissoesUser", "mensagem"));
+    }
 
     /**
      * Update an existing User model. If update is successful, the browser
@@ -161,49 +188,81 @@ class AdminController extends Controller
     public function actionUpdate($id)
     {
         if (Yii::$app->user->can("update-user") ||
-            Yii::$app->user->can("user")) {
+            Yii::$app->user->can("user")
+        ) {
             $authitem = new AuthItem();
-         $permissoes =  AuthItem::getListToDropDownList();
+            $permissoes = AuthItem::getListToDropDownList();
 
-        $permissoesUser = ArrayHelper::map(
-            AuthItem::find()->innerJoin('auth_assignment',
-                'item_name = name')->where(['user_id'=>$id])->all(), 
-            'name','description');
-        // set up user and profile
-        $user = $this->findModel($id);
-        $user->setScenario("admin");
-        $profile = $user->profile;
+            $permissoesUser = ArrayHelper::map(
+                AuthItem::find()->innerJoin('auth_assignment',
+                    'item_name = name')->where(['user_id' => $id])->all(),
+                'name', 'description');
+            // set up user and profile
+            $user = $this->findModel($id);
+            $user->setScenario("admin");
+            $profile = $user->profile;
 
-        // load post data and validate
-        $post = Yii::$app->request->post();
-        if ($user->load($post) && $user->validate() && $profile->load($post) && $profile->validate()) {
-            if (isset($post['roles'])) {
-               // var_dump($post['roles']);
-                $roles = $post['roles'];
-            }
+            $mensagem = ""; //Informa ao usuário mensagens de erro na view
 
-            Yii::$app->db->createCommand(
-                "DELETE from auth_assignment WHERE 
+            // load post data and validate
+            $post = Yii::$app->request->post();
+
+            if ($user->load($post) && $user->validate() && $profile->load($post) && $profile->validate()) {
+
+
+
+                //Inicia a transação:
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+                    $itensInseridos = true;
+
+                    if (isset($post['roles'])) {
+                        // var_dump($post['roles']);
+                        $roles = $post['roles'];
+                    }
+
+                    Yii::$app->db->createCommand(
+                        "DELETE from auth_assignment WHERE 
                 user_id = :iduser ", [
 
-                ':iduser'=> $user->id,
-                ])->execute();
-            foreach ( $roles as $role) {
+                        ':iduser' => $user->id,
+                    ])->execute();
+                    foreach ($roles as $role) {
 
-                $user->alterarPermissoes($role,$user->id);
+                        $user->alterarPermissoes($role, $user->id);
+                    }
+
+
+                    if (!$user->save()) {
+                        $mensagem = "Não foi possível salvar os dados";
+                        $transaction->rollBack(); //desfaz alterações no BD
+                        $itensInseridos = false;
+                    }
+                    if (!$profile->setUser($user->id)->save()) {
+                        $mensagem = "Não foi possível salvar os dados";
+                        $transaction->rollBack(); //desfaz alterações no BD
+                        $itensInseridos = false;
+                    }
+
+
+                    if ($itensInseridos) {
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $user->id]);
+                    }
+
+                } catch (\Exception $exception) {
+                    $transaction->rollBack();
+                    $mensagem = "Ocorreu uma falha inesperada ao tentar salvar";
+                }
+
             }
 
-            $user->save(false);
-            $profile->setUser($user->id)->save(false);
-            return $this->redirect(['view', 'id' => $user->id]);
+            // render
+            return $this->render('update', compact('user', 'profile', 'permissoes', 'permissoesUser', 'mensagem'));
+        } else {
+            throw new ForbiddenHttpException("Acesso negado!");
         }
-
-        // render
-        return $this->render('update', compact('user', 'profile','permissoes','permissoesUser'));
-    } else{
-        throw new ForbiddenHttpException("Acesso negado!");
     }
-}
 
     /**
      * Delete an existing User model. If deletion is successful, the browser
@@ -214,20 +273,21 @@ class AdminController extends Controller
     public function actionDelete($id)
     {
         if (Yii::$app->user->can("delete-user") ||
-            Yii::$app->user->can("user")) {
-        // delete profile and userTokens first to handle foreign key constraint
+            Yii::$app->user->can("user")
+        ) {
+            // delete profile and userTokens first to handle foreign key constraint
             $user = $this->findModel($id);
-        $profile = $user->profile;
-        UserToken::deleteAll(['user_id' => $user->id]);
-        UserAuth::deleteAll(['user_id' => $user->id]);
-        $profile->delete();
-        $user->delete();
+            $profile = $user->profile;
+            UserToken::deleteAll(['user_id' => $user->id]);
+            UserAuth::deleteAll(['user_id' => $user->id]);
+            $profile->delete();
+            $user->delete();
 
-        return $this->redirect(['index']);
-    } else{
-        throw new ForbiddenHttpException("Acesso negado!");
+            return $this->redirect(['index']);
+        } else {
+            throw new ForbiddenHttpException("Acesso negado!");
+        }
     }
-}
 
     /**
      * Find the User model based on its primary key value.

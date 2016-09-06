@@ -80,7 +80,7 @@ echo "</br>";
 ?>
 
     <?php
-    $this->registerJsFile(\Yii::getAlias('@web') . "/js/user_form.js", ['depends' => [\yii\web\JqueryAsset::className()]]);
+//    $this->registerJsFile(\Yii::getAlias('@web') . "/js/user_form.js", ['depends' => [\yii\web\JqueryAsset::className()]]);
     ?>
 
 <div class="form-group">
@@ -90,3 +90,14 @@ echo "</br>";
 <?php ActiveForm::end(); ?>
 
 </div>
+
+
+<?php
+
+if(isset($mensagem) && !empty($mensagem))
+{
+    ?>
+    <script type="text/javascript">alert('<?= $mensagem; ?>');</script>
+    <?php
+}
+?>

@@ -28,18 +28,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= $form->field($model, 'username') ?>
         <?= $form->field($model, 'password')->passwordInput() ?>
-        <?= $form->field($model, 'rememberMe', [
-            'template' => "{label}<div class=\"col-lg-offset-2 col-lg-3\">{input}</div>\n<div class=\"col-lg-7\">{error}</div>",
-            ])->checkbox() ?>
+
 
             <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">
                     <?= Html::submitButton(Yii::t('user', 'Login'), ['class' => 'btn btn-primary']) ?>
 
                     <br/><br/>
-                    <?= Html::a(Yii::t("user", "Register"), ["/user/register"]) ?> /
-                    <?= Html::a(Yii::t("user", "Forgot password") . "?", ["/user/forgot"]) ?> /
-                    <?php // Html::a(Yii::t("user", "Resend confirmation email"), ["/user/resend"]) ?>
+
                 </div>
             </div>
 

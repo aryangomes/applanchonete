@@ -341,10 +341,10 @@ class ProdutoController extends Controller
             try {
                 //Tenta salvar um registro :
 
-                    $itensInseridos = true;
+                $itensInseridos = true;
 
 
-                    if (!$model->isInsumo) {
+                if (!$model->isInsumo) {
                     if (isset(Yii::$app->request->post()['produto-valorvenda-disp'])) {
                         $model->valorVenda = Yii::$app->request->post()['Produto']['valorVenda'];
                         $model->idCategoria = Yii::$app->request->post()['Produto']['idCategoria'];
@@ -377,18 +377,18 @@ class ProdutoController extends Controller
 
                     }
                     $model->valorVenda = $model->calculoPrecoProduto($model->idProduto);
-                        if (!$model->save()) {
-                            $mensagem = "Não foi possível salvar os dados";
-                            $transaction->rollBack(); //desfaz alterações no BD
-                            $itensInseridos = false;
-                        }
+                    if (!$model->save()) {
+                        $mensagem = "Não foi possível salvar os dados";
+                        $transaction->rollBack(); //desfaz alterações no BD
+                        $itensInseridos = false;
+                    }
                 } else {
                     $model->load(Yii::$app->request->post());
-                        if (!$model->save()) {
-                            $mensagem = "Não foi possível salvar os dados";
-                            $transaction->rollBack(); //desfaz alterações no BD
-                            $itensInseridos = false;
-                        }
+                    if (!$model->save()) {
+                        $mensagem = "Não foi possível salvar os dados";
+                        $transaction->rollBack(); //desfaz alterações no BD
+                        $itensInseridos = false;
+                    }
                 }
                 if ($itensInseridos) {
                     $transaction->commit();

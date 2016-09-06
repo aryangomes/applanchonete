@@ -23,7 +23,8 @@ use \app\models\ItempedidoSearch;
 /**
  * RelatorioController implements the CRUD actions for Relatorio model.
  */
-class RelatorioController extends Controller {
+class RelatorioController extends Controller
+{
 
     private $tiposRelatorio = [
 
@@ -31,10 +32,11 @@ class RelatorioController extends Controller {
         'Pagamento' => 'Pagamento',
         'Pedido' => 'Pedidos',
         'Itempedido' => 'Item(ns) Pedido',
-         'Lucro' => 'Lucro',
+        'Lucro' => 'Lucro',
     ];
 
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             /* 'access' =>[
               'class' => AccessControl::classname(),
@@ -51,27 +53,27 @@ class RelatorioController extends Controller {
                     'delete' => ['post'],
                 ],
             ],
-                /* 'autorizacao' => [
-                  'class' => AccessFilter::className(),
-                  'actions' => [
+            /* 'autorizacao' => [
+              'class' => AccessFilter::className(),
+              'actions' => [
 
-                  'relatorio' => [
-                  'index-relatorio',
-                  'update-relatorio',
-                  'delete-relatorio',
-                  'view-relatorio',
-                  'create-relatorio',
-                  'relatorio-contasa-receber',
-                  ],
+              'relatorio' => [
+              'index-relatorio',
+              'update-relatorio',
+              'delete-relatorio',
+              'view-relatorio',
+              'create-relatorio',
+              'relatorio-contasa-receber',
+              ],
 
-                  'index' => 'index-relatorio',
-                  'update' => 'update-relatorio',
-                  'delete' => 'delete-relatorio',
-                  'view' => 'view-relatorio',
-                  'create' => 'create-relatorio',
+              'index' => 'index-relatorio',
+              'update' => 'update-relatorio',
+              'delete' => 'delete-relatorio',
+              'view' => 'view-relatorio',
+              'create' => 'create-relatorio',
 
-                  ],
-                  ], */
+              ],
+              ], */
         ];
     }
 
@@ -79,14 +81,15 @@ class RelatorioController extends Controller {
      * Lists all Relatorio models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
 
         $searchModel = new RelatorioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -95,14 +98,15 @@ class RelatorioController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id) {
+    public function actionView($id)
+    {
         $model = $this->findModel($id);
 
 //        $tipoDeRelatorio ="\\app\\models\\".$model->tipo;
 
 
         return $this->render('view', [
-                    'model' => $model,
+            'model' => $model,
         ]);
     }
 
@@ -111,7 +115,8 @@ class RelatorioController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate() {
+    public function actionCreate()
+    {
 
         $model = new Relatorio();
 
@@ -119,8 +124,8 @@ class RelatorioController extends Controller {
             return $this->redirect(['relatorio' . strtolower($model->tipo), 'id' => $model->idrelatorio]);
         } else {
             return $this->render('create', [
-                        'model' => $model,
-                        'tiposRelatorio' => $this->tiposRelatorio,
+                'model' => $model,
+                'tiposRelatorio' => $this->tiposRelatorio,
             ]);
         }
     }
@@ -131,7 +136,8 @@ class RelatorioController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id) {
+    public function actionUpdate($id)
+    {
 
         $model = $this->findModel($id);
 
@@ -139,8 +145,8 @@ class RelatorioController extends Controller {
             return $this->redirect(['relatorio' . strtolower($model->tipo), 'id' => $model->idrelatorio]);
         } else {
             return $this->render('update', [
-                        'model' => $model,
-                        'tiposRelatorio' => $this->tiposRelatorio,
+                'model' => $model,
+                'tiposRelatorio' => $this->tiposRelatorio,
             ]);
         }
     }
@@ -151,7 +157,8 @@ class RelatorioController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id) {
+    public function actionDelete($id)
+    {
 
         $this->findModel($id)->delete();
 
@@ -165,7 +172,8 @@ class RelatorioController extends Controller {
      * @return Relatorio the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
+    protected function findModel($id)
+    {
         if (($model = Relatorio::findOne($id)) !== null) {
             return $model;
         } else {
@@ -178,10 +186,10 @@ class RelatorioController extends Controller {
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException
      */
-    public function actionRelatoriocontasareceber($id = null) {
+    public function actionRelatoriocontasareceber($id = null)
+    {
 
         $model = new Relatorio();
-
 
 
         if (Yii::$app->request->post()) {
@@ -192,18 +200,18 @@ class RelatorioController extends Controller {
         } else {
             if ($id == null) {
                 return $this->render('relatoriocontasareceber', [
-                            'model' => $model,
-                            'tiposRelatorio' => $this->tiposRelatorio
+                    'model' => $model,
+                    'tiposRelatorio' => $this->tiposRelatorio
                 ]);
             }
 
             $searchContasAReceber = new ContasareceberSearch();
             $model = $this->findModel($id);
             return $this->render('relatoriocontasareceber', [
-                        'model' => $model,
-                        'tiposRelatorio' => $this->tiposRelatorio,
-                        'datasContasAReceber' => $searchContasAReceber->searchDatasContasAReceberPorPeriodo($model->inicio_intervalo, $model->fim_intervalo),
-                        'valoresContasAReceber' => $searchContasAReceber->searchContasAReceberPorPeriodo($model->inicio_intervalo, $model->fim_intervalo),
+                'model' => $model,
+                'tiposRelatorio' => $this->tiposRelatorio,
+                'datasContasAReceber' => $searchContasAReceber->searchDatasContasAReceberPorPeriodo($model->inicio_intervalo, $model->fim_intervalo),
+                'valoresContasAReceber' => $searchContasAReceber->searchContasAReceberPorPeriodo($model->inicio_intervalo, $model->fim_intervalo),
             ]);
         }
     }
@@ -213,10 +221,10 @@ class RelatorioController extends Controller {
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException
      */
-    public function actionRelatoriopagamento($id = null) {
+    public function actionRelatoriopagamento($id = null)
+    {
 
         $model = new Relatorio();
-
 
 
         if (Yii::$app->request->post()) {
@@ -227,8 +235,8 @@ class RelatorioController extends Controller {
         } else {
             if ($id == null) {
                 return $this->render('relatoriopagamento', [
-                            'model' => $model,
-                            'tiposRelatorio' => $this->tiposRelatorio
+                    'model' => $model,
+                    'tiposRelatorio' => $this->tiposRelatorio
                 ]);
             }
 
@@ -238,11 +246,11 @@ class RelatorioController extends Controller {
             $model = $this->findModel($id);
 
             return $this->render('relatoriopagamento', [
-                        'model' => $model,
-                        'tiposRelatorio' => $this->tiposRelatorio,
-                        'countTiposPagamentos' => $searchPagamento->searchCountPagamentosContasAReceberPorPeriodo($model->inicio_intervalo, $model->fim_intervalo),
-                        'datasPagamentos' => $searchPagamento->searchDatasPagamentosContasAReceberPorPeriodo($model->inicio_intervalo, $model->fim_intervalo),
-                        'tiposPagamentos' => $searchPagamento->searchPagamentosContasAReceberPorPeriodo($model->inicio_intervalo, $model->fim_intervalo),
+                'model' => $model,
+                'tiposRelatorio' => $this->tiposRelatorio,
+                'countTiposPagamentos' => $searchPagamento->searchCountPagamentosContasAReceberPorPeriodo($model->inicio_intervalo, $model->fim_intervalo),
+                'datasPagamentos' => $searchPagamento->searchDatasPagamentosContasAReceberPorPeriodo($model->inicio_intervalo, $model->fim_intervalo),
+                'tiposPagamentos' => $searchPagamento->searchPagamentosContasAReceberPorPeriodo($model->inicio_intervalo, $model->fim_intervalo),
             ]);
         }
     }
@@ -252,10 +260,10 @@ class RelatorioController extends Controller {
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException
      */
-    public function actionRelatoriopedido($id = null) {
+    public function actionRelatoriopedido($id = null)
+    {
 
         $model = new Relatorio();
-
 
 
         if (Yii::$app->request->post()) {
@@ -266,8 +274,8 @@ class RelatorioController extends Controller {
         } else {
             if ($id == null) {
                 return $this->render('relatoriopedido', [
-                            'model' => $model,
-                            'tiposRelatorio' => $this->tiposRelatorio
+                    'model' => $model,
+                    'tiposRelatorio' => $this->tiposRelatorio
                 ]);
             }
 
@@ -278,9 +286,9 @@ class RelatorioController extends Controller {
 
 
             return $this->render('relatoriopedido', [
-                        'model' => $model,
-                        'tiposRelatorio' => $this->tiposRelatorio,
-                        'pedidos' => $searchPedido->searchCountPedidosContasAReceberPorPeriodo($model->inicio_intervalo, $model->fim_intervalo),
+                'model' => $model,
+                'tiposRelatorio' => $this->tiposRelatorio,
+                'pedidos' => $searchPedido->searchCountPedidosContasAReceberPorPeriodo($model->inicio_intervalo, $model->fim_intervalo),
             ]);
         }
     }
@@ -290,10 +298,10 @@ class RelatorioController extends Controller {
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException
      */
-    public function actionRelatorioitempedido($id = null) {
+    public function actionRelatorioitempedido($id = null)
+    {
 
         $model = new Relatorio();
-
 
 
         if (Yii::$app->request->post()) {
@@ -304,8 +312,8 @@ class RelatorioController extends Controller {
         } else {
             if ($id == null) {
                 return $this->render('relatorioitempedido', [
-                            'model' => $model,
-                            'tiposRelatorio' => $this->tiposRelatorio
+                    'model' => $model,
+                    'tiposRelatorio' => $this->tiposRelatorio
                 ]);
             }
 
@@ -316,22 +324,22 @@ class RelatorioController extends Controller {
 
 
             return $this->render('relatorioitempedido', [
-                        'model' => $model,
-                        'tiposRelatorio' => $this->tiposRelatorio,
-                        'produtosVendidos' => $searchItemPedido->searchItensPedido($model->inicio_intervalo, $model->fim_intervalo),
+                'model' => $model,
+                'tiposRelatorio' => $this->tiposRelatorio,
+                'produtosVendidos' => $searchItemPedido->searchItensPedido($model->inicio_intervalo, $model->fim_intervalo),
             ]);
         }
     }
-    
-      /**
+
+    /**
      * @param null $id
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException
      */
-    public function actionRelatoriolucro($id = null) {
+    public function actionRelatoriolucro($id = null)
+    {
 
         $model = new Relatorio();
-
 
 
         if (Yii::$app->request->post()) {
@@ -342,8 +350,8 @@ class RelatorioController extends Controller {
         } else {
             if ($id == null) {
                 return $this->render('relatoriolucro', [
-                            'model' => $model,
-                            'tiposRelatorio' => $this->tiposRelatorio
+                    'model' => $model,
+                    'tiposRelatorio' => $this->tiposRelatorio
                 ]);
             }
 
@@ -354,22 +362,23 @@ class RelatorioController extends Controller {
 
 
             return $this->render('relatoriolucro', [
-                        'model' => $model,
-                        'tiposRelatorio' => $this->tiposRelatorio,
-                        'lucros' => $searchItemPedido->searchLucro($model->inicio_intervalo, $model->fim_intervalo),
+                'model' => $model,
+                'tiposRelatorio' => $this->tiposRelatorio,
+                'lucros' => $searchItemPedido->searchLucro($model->inicio_intervalo, $model->fim_intervalo),
             ]);
         }
     }
 
-    public function actionPdfcontasareceber($id = null) {
+    public function actionPdfcontasareceber($id = null)
+    {
         if ($id != null) {
 
             $searchContasAReceber = new ContasareceberSearch();
             $model = $this->findModel($id);
             $dadosContasAReceber = [$searchContasAReceber->searchDatasContasAReceberPorPeriodo
-                        ($model->inicio_intervalo, $model->fim_intervalo),
+            ($model->inicio_intervalo, $model->fim_intervalo),
                 $searchContasAReceber->searchContasAReceberPorPeriodo
-                        ($model->inicio_intervalo, $model->fim_intervalo)
+                ($model->inicio_intervalo, $model->fim_intervalo)
             ];
 
 //         Setando a data para o fuso do Brasil
@@ -394,13 +403,14 @@ class RelatorioController extends Controller {
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
             return $this->render('index', [
-                        'searchModel' => $searchModel,
-                        'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
             ]);
         }
     }
 
-    public function actionPdfpagamento($id = null) {
+    public function actionPdfpagamento($id = null)
+    {
         if ($id != null) {
 
             $searchPagamento = new PagamentoSearch();
@@ -408,14 +418,13 @@ class RelatorioController extends Controller {
             $model = $this->findModel($id);
 
             $dadosPagamento = $searchPagamento->searchPagamentosContasAReceberPorPeriodo
-                    ($model->inicio_intervalo, $model->fim_intervalo);
-
+            ($model->inicio_intervalo, $model->fim_intervalo);
 
 
 //         Setando a data para o fuso do Brasil
             date_default_timezone_set('America/Sao_Paulo');
             $pdf = new Pdf([
-                'mode' => Pdf::MODE_UTF8, 
+                'mode' => Pdf::MODE_UTF8,
                 'content' => $this->renderPartial('pdfpagamento', [
                     'model' => $model,
                     'dadosPagamento' => $dadosPagamento,
@@ -434,32 +443,31 @@ class RelatorioController extends Controller {
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
             return $this->render('index', [
-                        'searchModel' => $searchModel,
-                        'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
             ]);
         }
     }
-    
-    public function actionPdfpedido($id = null) {
+
+    public function actionPdfpedido($id = null)
+    {
         if ($id != null) {
 
-         $searchPedido = new PedidoSearch();
+            $searchPedido = new PedidoSearch();
 
             $model = $this->findModel($id);
 
-            $dadosPedido =  $searchPedido->searchCountPedidosContasAReceberPorPeriodo
-                    ($model->inicio_intervalo, $model->fim_intervalo);
-      
-
+            $dadosPedido = $searchPedido->searchCountPedidosContasAReceberPorPeriodo
+            ($model->inicio_intervalo, $model->fim_intervalo);
 
 
 //         Setando a data para o fuso do Brasil
             date_default_timezone_set('America/Sao_Paulo');
             $pdf = new Pdf([
-                'mode' => Pdf::MODE_UTF8, 
+                'mode' => Pdf::MODE_UTF8,
                 'content' => $this->renderPartial('pdfpedido', [
                     'model' => $model,
-                    'dadosPedido' => $dadosPedido ,
+                    'dadosPedido' => $dadosPedido,
                 ]),
                 'options' => [
                     'title' => 'Relatório de Pedidos Feitos',
@@ -475,31 +483,31 @@ class RelatorioController extends Controller {
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
             return $this->render('index', [
-                        'searchModel' => $searchModel,
-                        'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
             ]);
         }
     }
-    
-    public function actionPdfitempedido($id = null) {
+
+    public function actionPdfitempedido($id = null)
+    {
         if ($id != null) {
 
-         $searchItemPedido = new ItempedidoSearch();
+            $searchItemPedido = new ItempedidoSearch();
 
             $model = $this->findModel($id);
 
 
-           $dadosItemPedido = $searchItemPedido->searchItensPedido($model->inicio_intervalo, $model->fim_intervalo);
-
+            $dadosItemPedido = $searchItemPedido->searchItensPedido($model->inicio_intervalo, $model->fim_intervalo);
 
 
 //         Setando a data para o fuso do Brasil
             date_default_timezone_set('America/Sao_Paulo');
             $pdf = new Pdf([
-                'mode' => Pdf::MODE_UTF8, 
+                'mode' => Pdf::MODE_UTF8,
                 'content' => $this->renderPartial('pdfitempedido', [
                     'model' => $model,
-                    'dadosItemPedido' => $dadosItemPedido ,
+                    'dadosItemPedido' => $dadosItemPedido,
                 ]),
                 'options' => [
                     'title' => 'Relatório de Quantidade de Produtos Vendidos',
@@ -515,31 +523,31 @@ class RelatorioController extends Controller {
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
             return $this->render('index', [
-                        'searchModel' => $searchModel,
-                        'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
             ]);
         }
     }
-    
-    public function actionPdflucro($id = null) {
+
+    public function actionPdflucro($id = null)
+    {
         if ($id != null) {
 
-         $searchItemPedido = new ItempedidoSearch();
+            $searchItemPedido = new ItempedidoSearch();
 
             $model = $this->findModel($id);
 
 
-           $dadosLucro = $searchItemPedido->searchLucro($model->inicio_intervalo, $model->fim_intervalo);
-
+            $dadosLucro = $searchItemPedido->searchLucro($model->inicio_intervalo, $model->fim_intervalo);
 
 
 //         Setando a data para o fuso do Brasil
             date_default_timezone_set('America/Sao_Paulo');
             $pdf = new Pdf([
-                'mode' => Pdf::MODE_UTF8, 
+                'mode' => Pdf::MODE_UTF8,
                 'content' => $this->renderPartial('pdflucro', [
                     'model' => $model,
-                    'dadosLucro' => $dadosLucro ,
+                    'dadosLucro' => $dadosLucro,
                 ]),
                 'options' => [
                     'title' => 'Relatório de Lucro por Data',
@@ -555,8 +563,8 @@ class RelatorioController extends Controller {
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
             return $this->render('index', [
-                        'searchModel' => $searchModel,
-                        'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
             ]);
         }
     }

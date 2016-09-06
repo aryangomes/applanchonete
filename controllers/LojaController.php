@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use \yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
 use app\components\AccessFilter;
+
 /**
  * LojaController implements the CRUD actions for Loja model.
  */
@@ -19,40 +20,40 @@ class LojaController extends Controller
     public function behaviors()
     {
         return [
-      /*  'access' =>[
-        'class' => AccessControl::classname(),
-        'only'=> ['create','update','view','delete','index'],
-        'rules'=> [
-        ['allow'=>true,
-       // 'roles' => ['gerente'],
-        ],
-        ]
-        ],*/
-        'verbs' => [
-        'class' => VerbFilter::className(),
-        'actions' => [
-        'delete' => ['post'],
-        ],
-        ],
-         'autorizacao'=>[
-        'class'=>AccessFilter::className(),
-'actions'=>[
-    
-    'loja'=>[
-        'index-loja',
-        'update-loja',
-        'delete-loja',
-        'view-loja',
-        'create-loja',
-    ],
-    
-    'index'=>'index-loja',
-    'update'=>'update-loja',
-    'delete'=>'delete-loja',
-      'view'=>'view-loja',
-      'create'=>'create-loja',
-],
-        ],
+            /*  'access' =>[
+              'class' => AccessControl::classname(),
+              'only'=> ['create','update','view','delete','index'],
+              'rules'=> [
+              ['allow'=>true,
+             // 'roles' => ['gerente'],
+              ],
+              ]
+              ],*/
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+            'autorizacao' => [
+                'class' => AccessFilter::className(),
+                'actions' => [
+
+                    'loja' => [
+                        'index-loja',
+                        'update-loja',
+                        'delete-loja',
+                        'view-loja',
+                        'create-loja',
+                    ],
+
+                    'index' => 'index-loja',
+                    'update' => 'update-loja',
+                    'delete' => 'delete-loja',
+                    'view' => 'view-loja',
+                    'create' => 'create-loja',
+                ],
+            ],
         ];
     }
 
@@ -62,16 +63,16 @@ class LojaController extends Controller
      */
     public function actionIndex()
     {
-  
-        $searchModel = new LojaSearch();
-    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-    return $this->render('index', [
-        'searchModel' => $searchModel,
-        'dataProvider' => $dataProvider,
+        $searchModel = new LojaSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
 
-}
+    }
 
     /**
      * Displays a single Loja model.
@@ -80,12 +81,12 @@ class LojaController extends Controller
      */
     public function actionView($id)
     {
-   
+
         return $this->render('view', [
             'model' => $this->findModel($id),
-            ]);
+        ]);
 
-}
+    }
 
     /**
      * Creates a new Loja model.
@@ -94,18 +95,18 @@ class LojaController extends Controller
      */
     public function actionCreate()
     {
-     
-            $model = new Loja();
+
+        $model = new Loja();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => Yii::$app->user->getId()]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-                ]);
+            ]);
         }
- 
-}
+
+    }
 
     /**
      * Updates an existing Loja model.
@@ -115,18 +116,18 @@ class LojaController extends Controller
      */
     public function actionUpdate($id)
     {
-  
+
         $model = $this->findModel($id);
 
-    if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        return $this->redirect(['view', 'id' => Yii::$app->user->getId()]);
-    } else {
-        return $this->render('update', [
-            'model' => $model,
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => Yii::$app->user->getId()]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
             ]);
-    }
+        }
 
-}
+    }
 
     /**
      * Deletes an existing Loja model.
@@ -136,12 +137,12 @@ class LojaController extends Controller
      */
     public function actionDelete($id)
     {
-      
-            $this->findModel($id)->delete();
+
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-   
-}
+
+    }
 
     /**
      * Finds the Loja model based on its primary key value.

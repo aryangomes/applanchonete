@@ -111,9 +111,7 @@ class AdminController extends Controller
 
         $mensagem = ""; //Informa ao usuário mensagens de erro na view
 
-
-
-
+        //Permissão do usuário
         $authAssignment = new AuthAssignment();
 
         $user->status = 1;
@@ -146,14 +144,14 @@ class AdminController extends Controller
                     $itensInseridos = true;
                     // perform registration
                     $role = $this->module->model("Role");
-                    // VEJA AQUI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
                     if (!$user->setRegisterAttributes($role::ROLE_USER, $user::STATUS_ACTIVE)->save()) {
                         $mensagem = "Não foi possível salvar os dados";
                         $transaction->rollBack(); //desfaz alterações no BD
                         $itensInseridos = false;
                     }
 
-                    // $user->setPermissoes(1,$user->id);
+
                     if (!$profile->setUser($user->id)->save()) {
                         $mensagem = "Não foi possível salvar os dados";
                         $transaction->rollBack(); //desfaz alterações no BD
@@ -162,7 +160,7 @@ class AdminController extends Controller
 
 
                     $idUser = $user->id;
-                    // var_dump($idUser);
+
                     foreach ($roles as $role) {
 
                         $user->setPermissoes($role, $idUser);
@@ -181,7 +179,7 @@ class AdminController extends Controller
         }
 
 
-        return $this->render("create", compact("user", "profile", "permissoes", "permissoesUser", "mensagem","authAssignment"));
+        return $this->render("create", compact("user", "profile", "permissoes", "permissoesUser", "mensagem", "authAssignment"));
     }
 
     /**
@@ -195,7 +193,7 @@ class AdminController extends Controller
         if (Yii::$app->user->can("update-user") ||
             Yii::$app->user->can("user")
         ) {
-            $authitem = new AuthItem();
+
             $permissoes = AuthItem::getListToDropDownList();
 
 
@@ -206,27 +204,28 @@ class AdminController extends Controller
 
             $mensagem = ""; //Informa ao usuário mensagens de erro na view
 
+
+            //Permissão do usuário
             $authAssignment = new AuthAssignment();
 
 
-           $authItensUser = AuthAssignment::find()
-               ->where(['user_id'=>$id])->all();
+            $authItensUser = AuthAssignment::find()
+                ->where(['user_id' => $id])->all();
 
-            $permissoesUser =[];
+            $permissoesUser = [];
 
-            foreach ($authItensUser as $aiu){
-                array_push($permissoesUser,$aiu->item_name);
+            foreach ($authItensUser as $aiu) {
+                array_push($permissoesUser, $aiu->item_name);
             }
 
 
-            var_dump($permissoesUser);
+            //Recebe as permissões salvas do usuário
             $authAssignment->item_name = $permissoesUser;
 
             // load post data and validate
             $post = Yii::$app->request->post();
 
             if ($user->load($post) && $user->validate() && $profile->load($post) && $profile->validate()) {
-
 
 
                 //Inicia a transação:
@@ -278,7 +277,7 @@ class AdminController extends Controller
 
             // render
             return $this->render('update', compact('user', 'profile', 'permissoes', 'permissoesUser',
-                'mensagem','authAssignment'));
+                'mensagem', 'authAssignment'));
         } else {
             throw new ForbiddenHttpException("Acesso negado!");
         }

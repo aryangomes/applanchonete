@@ -245,7 +245,7 @@ class ContaController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 
             $model->tipoConta =  $tipodeConta;
-            var_dump($model->tipoConta);
+
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
             try {
@@ -315,8 +315,6 @@ class ContaController extends Controller
                 $transaction->rollBack();
                 $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
             }
-
-
 
 
         }

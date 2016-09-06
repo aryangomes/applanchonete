@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\components\AccessFilter;
+
 /**
  * HistoricosituacaoController implements the CRUD actions for Historicosituacao model.
  */
@@ -17,7 +18,7 @@ class HistoricosituacaoController extends Controller
     public function behaviors()
     {
         return [
-        'access' =>[
+            'access' => [
 //        'class' => AccessControl::classname(),
 //        'only'=> ['create','update','view','delete','index'],
 //        'rules'=> [
@@ -26,33 +27,33 @@ class HistoricosituacaoController extends Controller
 //        ],
 //        ]
 //        ],
-        'verbs' => [
-        'class' => VerbFilter::className(),
-        'actions' => [
-        'delete' => ['post'],
-        ],
-        ],
-        ],
-        'autorizacao'=>[
-           'class'=>AccessFilter::className(),
-           'actions'=>[
-    
-           'historicosituacao'=>[
-               'index-historicosituacao',
-               'update-historicosituacao',
-               'delete-historicosituacao',
-               'view-historicosituacao',
-               'create-historicosituacao',
-           ],
-    
-            'index'=>'index-historicosituacao',
-            'update'=>'update-historicosituacao',
-            'delete'=>'delete-historicosituacao',
-            'view'=>'view-historicosituacao',
-            'create'=>'create-historicosituacao',
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['post'],
+                    ],
+                ],
             ],
+            'autorizacao' => [
+                'class' => AccessFilter::className(),
+                'actions' => [
+
+                    'historicosituacao' => [
+                        'index-historicosituacao',
+                        'update-historicosituacao',
+                        'delete-historicosituacao',
+                        'view-historicosituacao',
+                        'create-historicosituacao',
+                    ],
+
+                    'index' => 'index-historicosituacao',
+                    'update' => 'update-historicosituacao',
+                    'delete' => 'delete-historicosituacao',
+                    'view' => 'view-historicosituacao',
+                    'create' => 'create-historicosituacao',
+                ],
             ],
-         ];
+        ];
     }
 
     /**
@@ -62,16 +63,17 @@ class HistoricosituacaoController extends Controller
     public function actionIndex()
     {
         if (Yii::$app->user->can("index-historicosituacao") ||
-        Yii::$app->user->can("historicosituacao") ) {
+            Yii::$app->user->can("historicosituacao")
+        ) {
 
-        $searchModel = new HistoricosituacaoSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            $searchModel = new HistoricosituacaoSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-        }else{
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {
             throw new ForbiddenHttpException("Acesso negado!");
         }
     }
@@ -85,12 +87,13 @@ class HistoricosituacaoController extends Controller
     public function actionView($idPedido, $idSituacaoPedido)
     {
         if (Yii::$app->user->can("view-historicosituacao") ||
-        Yii::$app->user->can("historicosituacao") ) {
+            Yii::$app->user->can("historicosituacao")
+        ) {
 
-        return $this->render('view', [
-            'model' => $this->findModel($idPedido, $idSituacaoPedido),
-        ]);
-        }else{
+            return $this->render('view', [
+                'model' => $this->findModel($idPedido, $idSituacaoPedido),
+            ]);
+        } else {
             throw new ForbiddenHttpException("Acesso negado!");
         }
     }
@@ -103,18 +106,19 @@ class HistoricosituacaoController extends Controller
     public function actionCreate()
     {
         if (Yii::$app->user->can("create-historicosituacao") ||
-        Yii::$app->user->can("historicosituacao") ) {
+            Yii::$app->user->can("historicosituacao")
+        ) {
 
-        $model = new Historicosituacao();
+            $model = new Historicosituacao();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'idPedido' => $model->idPedido, 'idSituacaoPedido' => $model->idSituacaoPedido]);
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'idPedido' => $model->idPedido, 'idSituacaoPedido' => $model->idSituacaoPedido]);
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-        }else{
             throw new ForbiddenHttpException("Acesso negado!");
         }
     }
@@ -129,18 +133,19 @@ class HistoricosituacaoController extends Controller
     public function actionUpdate($idPedido, $idSituacaoPedido)
     {
         if (Yii::$app->user->can("update-historicosituacao") ||
-        Yii::$app->user->can("historicosituacao") ) {
+            Yii::$app->user->can("historicosituacao")
+        ) {
 
-        $model = $this->findModel($idPedido, $idSituacaoPedido);
+            $model = $this->findModel($idPedido, $idSituacaoPedido);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'idPedido' => $model->idPedido, 'idSituacaoPedido' => $model->idSituacaoPedido]);
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'idPedido' => $model->idPedido, 'idSituacaoPedido' => $model->idSituacaoPedido]);
+            } else {
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-        }else{
             throw new ForbiddenHttpException("Acesso negado!");
         }
     }
@@ -155,12 +160,13 @@ class HistoricosituacaoController extends Controller
     public function actionDelete($idPedido, $idSituacaoPedido)
     {
         if (Yii::$app->user->can("delete-historicosituacao") ||
-        Yii::$app->user->can("historicosituacao") ) {
+            Yii::$app->user->can("historicosituacao")
+        ) {
 
-        $this->findModel($idPedido, $idSituacaoPedido)->delete();
+            $this->findModel($idPedido, $idSituacaoPedido)->delete();
 
-        return $this->redirect(['index']);
-        }else{
+            return $this->redirect(['index']);
+        } else {
             throw new ForbiddenHttpException("Acesso negado!");
         }
     }

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\Select2;
+
 /**
  * @var yii\web\View $this
  * @var amnah\yii2\user\Module $module
@@ -17,76 +18,50 @@ $role = $module->model("Role");
 
 ?>
 
-<div class="user-form">
+    <div class="user-form">
+
+
+        <?php $form = ActiveForm::begin(); ?>
+
+        <?= $form->field($user, 'email')->textInput(['maxlength' => 255]) ?>
+
+        <?= $form->field($user, 'username')->textInput(['maxlength' => 255]) ?>
+
+        <?= $form->field($user, 'newPassword')->passwordInput() ?>
+
+        <?= $form->field($profile, 'full_name'); ?>
 
 
 
-    <?php $form = ActiveForm::begin(); ?>
+        <?= $form->field($authAssignment, 'item_name')->widget(Select2::classname(), [
 
-    <?= $form->field($user, 'email')->textInput(['maxlength' => 255]) ?>
+            'data' => $permissoes,
 
-    <?= $form->field($user, 'username')->textInput(['maxlength' => 255]) ?>
+            'pluginOptions' => [
 
-    <?= $form->field($user, 'newPassword')->passwordInput() ?>
+                'allowClear' => true,
+                'multiple' => true,
+            ],
+        ]); ?>
 
-    <?= $form->field($profile, 'full_name'); ?>
 
 
+        <?php
+        //    $this->registerJsFile(\Yii::getAlias('@web') . "/js/user_form.js", ['depends' => [\yii\web\JqueryAsset::className()]]);
+        ?>
 
-    <?= $form->field($authAssignment, 'item_name')->widget(Select2::classname(), [
+        <div class="form-group">
+            <?= Html::submitButton($user->isNewRecord ? Yii::t('user', 'Create') : Yii::t('user', 'Update'), ['class' => $user->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        </div>
 
-        'data' => $permissoes,
+        <?php ActiveForm::end(); ?>
 
-        //'attribute'=>$permissoesUser,
-//        'value'=>$inic,
-//    'initValueText'=>'Caixa',
-      //  'options' => ['placeholder' => 'Selecione as permissões'],
-        'pluginOptions' => [
-
-        'allowClear' => true,
-        'multiple'=>true,
-        ],
-        ]);  ?>
-
-<?php
-/*echo Html::label('Permissões');
-
-echo Select2::widget([
-    'name'=>'roles',
-
-    'data' => $permissoes,
-
-    'attribute'=>'roles',
-    'value'=>$inic,
-      //  'options' => ['placeholder' => 'Selecione as permissões'],
-    'pluginOptions' => [
-
-    'allowClear' => true,
-    'multiple'=>true,
-    ],
-
-    ]);
-
-echo "</br>";*/
-?>
-
-    <?php
-//    $this->registerJsFile(\Yii::getAlias('@web') . "/js/user_form.js", ['depends' => [\yii\web\JqueryAsset::className()]]);
-    ?>
-
-<div class="form-group">
-    <?= Html::submitButton($user->isNewRecord ? Yii::t('user', 'Create') : Yii::t('user', 'Update'), ['class' => $user->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-</div>
-
-<?php ActiveForm::end(); ?>
-
-</div>
+    </div>
 
 
 <?php
 
-if(isset($mensagem) && !empty($mensagem))
-{
+if (isset($mensagem) && !empty($mensagem)) {
     ?>
     <script type="text/javascript">alert('<?= $mensagem; ?>');</script>
     <?php

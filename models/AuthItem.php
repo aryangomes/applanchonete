@@ -22,19 +22,22 @@ use yii\helpers\ArrayHelper;
  * @property AuthItemChild[] $authItemChildren
  * @property AuthItemChild[] $authItemChildren0
  */
-class AuthItem extends \yii\db\ActiveRecord {
+class AuthItem extends \yii\db\ActiveRecord
+{
 
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'auth_item';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['name', 'type'], 'required'],
             [['type', 'created_at', 'updated_at'], 'integer'],
@@ -46,7 +49,8 @@ class AuthItem extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'name' => Yii::t('app', 'Name'),
             'type' => Yii::t('app', 'Type'),
@@ -61,40 +65,47 @@ class AuthItem extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAuthAssignments() {
+    public function getAuthAssignments()
+    {
         return $this->hasMany(AuthAssignment::className(), ['item_name' => 'name']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRuleName() {
+    public function getRuleName()
+    {
         return $this->hasOne(AuthRule::className(), ['name' => 'rule_name']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAuthItemChildren() {
+    public function getAuthItemChildren()
+    {
         return $this->hasMany(AuthItemChild::className(), ['parent' => 'name']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAuthItemChildren0() {
+    public function getAuthItemChildren0()
+    {
         return $this->hasMany(AuthItemChild::className(), ['child' => 'name']);
     }
 
-    public function getDescription($role_id) {
+    public function getDescription($role_id)
+    {
         return $this->find('description')->where(['type' => $role_id])->one();
     }
 
-    public function getDescriptionByName($name) {
+    public function getDescriptionByName($name)
+    {
         return $this->find()->where(['name' => $name])->one();
     }
 
-    public function getPermissao($role_id) {
+    public function getPermissao($role_id)
+    {
         return AuthItem::find()->where(['type' => $role_id])->one();
     }
 
@@ -108,11 +119,12 @@ class AuthItem extends \yii\db\ActiveRecord {
      * @return array|null
      * Gera a lista de Permissões com optgroups
      */
-    public static function getListToDropDownList() {
+    public static function getListToDropDownList()
+    {
         $options = [];
 
         $optGroups = AuthItem::find()
-                        ->where("name not like '%-%' and name <> 'admin' and name <> 'alterarprodutovenda'  
+            ->where("name not like '%-%' and name <> 'admin' and name <> 'alterarprodutovenda'  
             and name <> 'produtosvenda'   and name <> 'cadastrarprodutovenda'
             and name <> 'avaliacaoproduto'
             and name <> 'listadeinsumos'
@@ -123,21 +135,20 @@ class AuthItem extends \yii\db\ActiveRecord {
 
             $permissao = [];
             $sqlWhere = "name <> 'admin' and name like 'index-" . $macroPermissao->name
-                . "' or ".
-                "name = '". $macroPermissao->name .""
-                . "' or ".
-                "name like 'view-". $macroPermissao->name .""
-                 . "' or ".
-                "name like 'create-". $macroPermissao->name .""
-                  . "' or ".
-                "name like 'delete-". $macroPermissao->name .""
-                  . "' or ".
-                "name like 'index-". $macroPermissao->name .""
-                  . "' or ".
-                "name like 'update-". $macroPermissao->name ."'"
-                ;
+                . "' or " .
+                "name = '" . $macroPermissao->name . ""
+                . "' or " .
+                "name like 'view-" . $macroPermissao->name . ""
+                . "' or " .
+                "name like 'create-" . $macroPermissao->name . ""
+                . "' or " .
+                "name like 'delete-" . $macroPermissao->name . ""
+                . "' or " .
+                "name like 'index-" . $macroPermissao->name . ""
+                . "' or " .
+                "name like 'update-" . $macroPermissao->name . "'";
             $auxPermissoes = AuthItem::find()->
-                            where($sqlWhere)->orderBy('type ASC')->all();
+            where($sqlWhere)->orderBy('type ASC')->all();
             foreach ($auxPermissoes as $p) {
                 $key = $p->name;
                 $permissao[$key] = $p->description;

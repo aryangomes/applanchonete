@@ -14,6 +14,7 @@ use app\models\Itempedido;
 use yii\helpers\ArrayHelper;
 use yii\web\ForbiddenHttpException;
 use app\components\AccessFilter;
+use yii\web\UploadedFile;
 
 /**
  * ProdutoController implements the CRUD actions for Produto model.
@@ -239,7 +240,13 @@ class ProdutoController extends Controller
             'idProduto', 'nome');
 
         if ($model->load(Yii::$app->request->post())) {
+            //Faz o upload da image
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if (isset($model->imageFile)) {
 
+                //Converte a imagem em binário
+                $model->foto = file_get_contents($model->imageFile->tempName);
+            }
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
             try {
@@ -342,6 +349,13 @@ class ProdutoController extends Controller
                 //Tenta salvar um registro :
 
                 $itensInseridos = true;
+
+                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+                if (isset($model->imageFile)) {
+
+                    //Converte a imagem em binário
+                    $model->foto = file_get_contents($model->imageFile->tempName);
+                }
 
 
                 if (!$model->isInsumo) {

@@ -26,9 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
 
         <?php
-        echo  (!$model->isInsumo) ?
-        Html::a(Yii::t('app', 'Alterar valor de venda'), ['definirvalorprodutovenda', 'idProduto' => $model->idProduto],
-            ['class' => 'btn btn-success']) : ''?>
+        echo (!$model->isInsumo) ?
+            Html::a(Yii::t('app', 'Alterar valor de venda'), ['definirvalorprodutovenda', 'idProduto' => $model->idProduto],
+                ['class' => 'btn btn-success']) : '' ?>
     </p>
 
     <?= DetailView::widget([
@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'valorVenda',
                 'format' => 'text',
-                'value' => 'R$ ' .\Yii::$app->formatter->asDecimal($model->valorVenda,2),
+                'value' => 'R$ ' . \Yii::$app->formatter->asDecimal($model->valorVenda, 2),
                 'visible' => !($model->isInsumo),
             ],
             [
@@ -71,17 +71,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Preço de custo',
                 'format' => 'raw',
                 'value' => $model->isInsumo ? null :
-                    'R$ ' .\Yii::$app->formatter
-                        ->asDecimal(($model->calculoPrecoProduto($model->idProduto)),2) .
+                    'R$ ' . \Yii::$app->formatter
+                        ->asDecimal(($model->calculoPrecoProduto($model->idProduto)), 2) .
                     Yii::$app->session->getFlash('custofixozerados'),
                 'visible' => !($model->isInsumo),
+            ],
+            [
+                'attribute' => 'foto',
+                'format' => 'raw',
+                'value' => isset($model->foto) ? Html::img('data:image/jpeg;base64,' . base64_encode($model->foto))
+                    : 'Sem imagem cadastrada',
+
             ],
 
         ],
     ]) ?>
 
     <div class="panel panel-default">
-       
+
         <?php
         if (isset($insumos) && !($produtoVenda->isInsumo)) {
 
@@ -89,24 +96,24 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="panel-heading">Insumos de <?= $model->nome ?></div>
         <table class="table table-hover">
             <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Quantidade</th>
-                </tr>
+            <tr>
+                <th>Nome</th>
+                <th>Quantidade</th>
+            </tr>
             </thead>
             <?php
             foreach ($insumos as $insumo) {
                 ?>
                 <tr>
                     <td><?= Html::a($insumo['produtoInsumo']->nome, Url::toRoute(['view',
-                           'idprodutoVenda' => $produtoVenda->idProduto,
+                            'idprodutoVenda' => $produtoVenda->idProduto,
                             'id' => $insumo->idprodutoInsumo]))
                         ?></td>
-                      <td><?php
-                          echo
-                            ($insumo->quantidade>1) ? $insumo->quantidade .' '. $insumo->unidade.'s':
-                                $insumo->quantidade .' '. $insumo->unidade;
-                          ?></td>
+                    <td><?php
+                        echo
+                        ($insumo->quantidade > 1) ? $insumo->quantidade . ' ' . $insumo->unidade . 's' :
+                            $insumo->quantidade . ' ' . $insumo->unidade;
+                        ?></td>
 
                 </tr>
 
@@ -116,10 +123,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
             ?>
         </table>
-        </div>
-        <?php
-        }
-        ?>
+    </div>
+<?php
+}
+?>
 
     <?php
 

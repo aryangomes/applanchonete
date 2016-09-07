@@ -15,6 +15,8 @@ use app\models\ProdutoSearch;
  * @property double $quantidadeMinima
  * @property integer $idCategoria
  * @property double $quantidadeEstoque
+ * @property resource $foto
+ * @property resource $imageFile
  *
  * @property Insumo $insumo
  * @property Itemcardapio[] $itemcardapios
@@ -28,7 +30,7 @@ class Produto extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-
+    public $imageFile;
     public $datainicioavaliacao;
     public $datafimavaliacao;
     public $groupbyavaliacao;
@@ -48,7 +50,9 @@ class Produto extends \yii\db\ActiveRecord
                 , 'required'],
             [['quantidadeMinima', 'quantidadeEstoque'], 'number'],
             [['isInsumo', 'idCategoria'], 'integer'],
-            [['nome'], 'string', 'max' => 100]
+            [['foto'], 'string'],
+            [['nome'], 'string', 'max' => 100],
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
         ];
     }
 
@@ -68,6 +72,7 @@ class Produto extends \yii\db\ActiveRecord
             'datainicioavaliacao' => Yii::t('app', 'De'),
             'datafimavaliacao' => Yii::t('app', 'Até'),
             'groupbyavaliacao' => Yii::t('app', 'Agrupar por'),
+            'foto' => Yii::t('app', 'Foto'),
         ];
     }
 

@@ -137,8 +137,7 @@ use yii\bootstrap\Modal;
             'id' => 'modalfinalizarpedido',
             'toggleButton' => isset($model->situacaopedido->titulo) &&
             $model->situacaopedido->titulo != 'Concluído' ?
-                    ['label' => 'Finalizar Pedido',
-                'title' => 'Clique aqui para enviar o pedido',   
+                    ['label' => 'Finalizar Pedido',  
                 'class' => 'btn btn-warning',
                 'disabled' => isset($model->datadevolucao) ? true : false] : false,
         ]);

@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="input-group">
 
                     <?=
-                    Html::dropDownList("Formapagamento", null, $formasPagamento, ['class' => 'form-control',
+                    Html::dropDownList("Formapagamento", 1, $formasPagamento, ['class' => 'form-control',
                         'id' => 'formapagamento',
                         'prompt' => 'Escolha uma forma de pagamento'])
                     ?>
@@ -108,6 +108,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     </div>
 
+    <div id="mensagem-finalizar-pedido"></div>
 
 <?php
 if (count($itensPedido) > 0) {

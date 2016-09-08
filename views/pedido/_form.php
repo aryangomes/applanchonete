@@ -136,7 +136,6 @@ use yii\bootstrap\Modal;
 
     <?php ActiveForm::end(); ?>
 
-    <div id="mensagem-finalizar-pedido"></div>
     
     <?php
   

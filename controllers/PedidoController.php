@@ -353,7 +353,7 @@ class PedidoController extends Controller
                                     $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
                                     $transaction->rollBack(); //desfaz alterações no BD
                                     $itensInseridos = false;
-                                    echo Json::encode(false);
+                                    echo Json::encode('caixanull');
                                 }
 
 

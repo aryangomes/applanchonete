@@ -36,18 +36,21 @@ $role = $module->model("Role");
         <?= $form->field($authAssignment, 'item_name')->widget(Select2::classname(), [
 
             'data' => $permissoes,
-
+            'options'=>[
+                'id'=>'permissoes',
+            ],
             'pluginOptions' => [
 
-                'allowClear' => true,
+//                'allowClear' => true,
                 'multiple' => true,
+
             ],
         ]); ?>
 
 
 
         <?php
-        //    $this->registerJsFile(\Yii::getAlias('@web') . "/js/user_form.js", ['depends' => [\yii\web\JqueryAsset::className()]]);
+            $this->registerJsFile(\Yii::getAlias('@web') . "/js/user_form.js", ['depends' => [\yii\web\JqueryAsset::className()]]);
         ?>
 
         <div class="form-group">

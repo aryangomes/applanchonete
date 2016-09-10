@@ -2,15 +2,19 @@
 
 namespace app\controllers;
 
+use app\models\Itemcardapio;
+use app\models\Produto;
 use Yii;
 use app\models\Cardapio;
 use app\models\CardapioSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
 use app\components\AccessFilter;
+
 /**
  * CardapioController implements the CRUD actions for Cardapio model.
  */
@@ -28,33 +32,33 @@ class CardapioController extends Controller
 //        ],
 //        ]
 //        ],
-      
-        'verbs' => [
-        'class' => VerbFilter::className(),
-        'actions' => [
-        'delete' => ['post'],
-        ],
-        ],
-      
-        'autorizacao'=>[
-        'class'=>AccessFilter::className(),
-        'actions'=>[
-    
-        'cardapio'=>[
-           'index-cardapio',
-           'update-cardapio',
-           'delete-cardapio',
-           'view-cardapio',
-           'create-cardapio',
-         ],
-    
-        'index'=>'index-cardapio',
-        'update'=>'update-cardapio',
-        'delete'=>'delete-cardapio',
-        'view'=>'view-cardapio',
-        'create'=>'create-cardapio',
-           ],
-           ],
+
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+
+            'autorizacao' => [
+                'class' => AccessFilter::className(),
+                'actions' => [
+
+                    'cardapio' => [
+                        'index-cardapio',
+                        'update-cardapio',
+                        'delete-cardapio',
+                        'view-cardapio',
+                        'create-cardapio',
+                    ],
+
+                    'index' => 'index-cardapio',
+                    'update' => 'update-cardapio',
+                    'delete' => 'delete-cardapio',
+                    'view' => 'view-cardapio',
+                    'create' => 'create-cardapio',
+                ],
+            ],
         ];
     }
 
@@ -65,15 +69,16 @@ class CardapioController extends Controller
     public function actionIndex()
     {
         if (Yii::$app->user->can("index-cardapio") ||
-        Yii::$app->user->can("cardapio") ) {
-        $searchModel = new CardapioSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            Yii::$app->user->can("cardapio")
+        ) {
+            $searchModel = new CardapioSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-        }else{
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {
             throw new ForbiddenHttpException("Acesso negado!");
         }
     }
@@ -86,11 +91,12 @@ class CardapioController extends Controller
     public function actionView($id)
     {
         if (Yii::$app->user->can("view-cardapio") ||
-            Yii::$app->user->can("cardapio") ) {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-        }else{
+            Yii::$app->user->can("cardapio")
+        ) {
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+            ]);
+        } else {
             throw new ForbiddenHttpException("Acesso negado!");
         }
     }
@@ -103,17 +109,72 @@ class CardapioController extends Controller
     public function actionCreate()
     {
         if (Yii::$app->user->can("create-cardapio") ||
-            Yii::$app->user->can("cardapio") ) {
-        $model = new Cardapio();
+            Yii::$app->user->can("cardapio")
+        ) {
+            $model = new Cardapio();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idCardapio]);
-        } else {
+            $modelItemCardapio = new Itemcardapio();
+
+            $mensagem = "";
+
+            $produtos = ArrayHelper::map(
+                Produto::find()->all(),
+                'idProduto','nome'
+            );
+
+            if ($model->load(Yii::$app->request->post())) {
+
+                //Inicia a transação:
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+
+                    $itensInseridos = true;
+
+                    if ($model->save()) {
+
+                        $itensCardapio = Yii::$app->request->post()['Itemcardapio'];
+
+                        for ($i = 0; $i < count($itensCardapio['idProduto']); $i++) {
+                            $itemCardapio = new Itemcardapio();
+                            $itemCardapio->idCardapio = $model->idCardapio;
+                            $itemCardapio->idProduto = $itensCardapio['idProduto'][$i];
+                            $itemCardapio->ordem = $itensCardapio['ordem'][$i];
+                            var_dump($itensCardapio['idProduto'][$i]);
+                            if (!$itemCardapio->save()) {
+                                $itensInseridos = false;
+                            }
+                        }
+
+                        if ($itensInseridos) {
+                            $transaction->commit();
+                            return $this->redirect(['view', 'id' => $model->idCardapio]);
+                        } else {
+                            $mensagem = "Não foi possível salvar os dados";
+                            $transaction->rollBack(); //desfaz alterações no BD
+
+                        }
+
+                    }
+
+                } catch (\Exception $exception) {
+                    $transaction->rollBack();
+                    $mensagem = "Ocorreu uma falha inesperada ao tentar salvar";
+                }
+
+            }
+            //Seta o fuso horário brasileiro
+            date_default_timezone_set('America/Sao_Paulo');
+            $model->data = date('Y-m-d');
+
             return $this->render('create', [
                 'model' => $model,
+                'modelItemCardapio' => $modelItemCardapio,
+                'mensagem' => $mensagem,
+                'produtos'=>$produtos,
             ]);
-        }
-        }else{
+
+
+        } else {
             throw new ForbiddenHttpException("Acesso negado!");
         }
     }
@@ -127,17 +188,78 @@ class CardapioController extends Controller
     public function actionUpdate($id)
     {
         if (Yii::$app->user->can("update-cardapio") ||
-        Yii::$app->user->can("cardapio") ) {
-        $model = $this->findModel($id);
+            Yii::$app->user->can("cardapio")
+        ) {
+            $model = $this->findModel($id);
+            $modelItemCardapio = new Itemcardapio();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idCardapio]);
-        } else {
+            $mensagem = "";
+
+//            $itensCardapio = Itemcardapio::findAll(['idCardapio' => $id]);
+            $itensCardapio = Itemcardapio::find()
+                ->where(['idCardapio' => $id])
+                ->orderBy('ordem ASC')
+                ->all();
+            $produtos = ArrayHelper::map(
+                Produto::find()->all(),
+                'idProduto','nome'
+            );
+
+            if ($model->load(Yii::$app->request->post())) {
+
+                //Inicia a transação:
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+
+                    $itensInseridos = true;
+
+                    if ($model->save()) {
+
+
+                        if (Itemcardapio::deleteAll(['idCardapio' => $id]) > 0) {
+
+                            $itensCardapio = Yii::$app->request->post()['Itemcardapio'];
+
+                            for ($i = 0; $i < count($itensCardapio['idProduto']); $i++) {
+                                $itemCardapio = new Itemcardapio();
+                                $itemCardapio->idCardapio = $model->idCardapio;
+                                $itemCardapio->idProduto = $itensCardapio['idProduto'][$i];
+                                $itemCardapio->ordem = $itensCardapio['ordem'][$i];
+
+                                if (!$itemCardapio->save()) {
+                                    $itensInseridos = false;
+                                }
+                            }
+
+                            if ($itensInseridos) {
+                                $transaction->commit();
+                                return $this->redirect(['view', 'id' => $model->idCardapio]);
+                            } else {
+                                $mensagem = "Não foi possível salvar os dados";
+                                $transaction->rollBack(); //desfaz alterações no BD
+
+                            }
+                        }
+                    }
+
+                } catch (\Exception $exception) {
+                    $transaction->rollBack();
+                    $mensagem = "Ocorreu uma falha inesperada ao tentar salvar";
+                }
+
+            }
+            //Seta o fuso horário brasileiro
+            date_default_timezone_set('America/Sao_Paulo');
+
+
             return $this->render('update', [
                 'model' => $model,
+                'modelItemCardapio' => $modelItemCardapio,
+                'mensagem' => $mensagem,
+                'itensCardapio'=>$itensCardapio,
+                'produtos'=>$produtos,
             ]);
-        }
-        }else{
+        } else {
             throw new ForbiddenHttpException("Acesso negado!");
         }
     }
@@ -151,11 +273,12 @@ class CardapioController extends Controller
     public function actionDelete($id)
     {
         if (Yii::$app->user->can("delete-cardapio") ||
-        Yii::$app->user->can("cardapio") ) {
-        $this->findModel($id)->delete();
+            Yii::$app->user->can("cardapio")
+        ) {
+            $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
-        }else{
+            return $this->redirect(['index']);
+        } else {
             throw new ForbiddenHttpException("Acesso negado!");
         }
     }

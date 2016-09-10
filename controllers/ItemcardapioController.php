@@ -6,6 +6,7 @@ use Yii;
 use app\models\Itemcardapio;
 use app\models\ItemcardapioSearch;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 /*use yii\web\NotFoundHttpException;
@@ -20,7 +21,7 @@ class ItemcardapioController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
+//            'access' => [
 //        'class' => AccessControl::classname(),
 //        'only'=> ['create','update','view','delete','index'],
 //        'rules'=> [
@@ -34,8 +35,8 @@ class ItemcardapioController extends Controller
                         'delete' => ['post'],
                     ],
                 ],
-            ],
-            'autorizacao' => [
+//            ],
+            /*'autorizacao' => [
                 'class' => AccessFilter::className(),
                 'actions' => [
 
@@ -53,7 +54,7 @@ class ItemcardapioController extends Controller
                     'view' => 'view-itemcardapio',
                     'create' => 'create-itemcardapio',
                 ],
-            ],
+            ],*/
         ];
     }
 
@@ -63,9 +64,7 @@ class ItemcardapioController extends Controller
      */
     public function actionIndex()
     {
-        if (Yii::$app->user->can("index-itemcardapio") ||
-            Yii::$app->user->can("itemcardapio")
-        ) {
+
 
             $searchModel = new ItemcardapioSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -74,9 +73,7 @@ class ItemcardapioController extends Controller
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
             ]);
-        } else {
-            throw new ForbiddenHttpException("Acesso negado!");
-        }
+
     }
 
     /**

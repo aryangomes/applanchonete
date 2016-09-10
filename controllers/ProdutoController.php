@@ -15,7 +15,7 @@ use yii\helpers\ArrayHelper;
 use yii\web\ForbiddenHttpException;
 use app\components\AccessFilter;
 use yii\web\UploadedFile;
-
+use yii\helpers\Json;
 /**
  * ProdutoController implements the CRUD actions for Produto model.
  */
@@ -30,7 +30,7 @@ class ProdutoController extends Controller
                     'delete' => ['post'],
                 ],
             ],
-            'autorizacao' => [
+            /*'autorizacao' => [
                 'class' => AccessFilter::className(),
                 'actions' => [
 
@@ -64,7 +64,7 @@ class ProdutoController extends Controller
                     'definirvalorprodutovenda' => 'definirvalorprodutovenda',
                     'lucroproduto' => 'lucroproduto',
                 ],
-            ],
+            ],*/
         ];
     }
 
@@ -575,6 +575,29 @@ class ProdutoController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+
+    public function  actionGetProdutos($busca){
+        $buscaProdutos =  Produto::find()
+            ->where(['like','nome',$busca])->all();/*ArrayHelper::map(
+            Produto::find()
+                ->where(['like','nome',$busca])
+                ->all(),
+            'idProduto','nome'
+        );*/
+
+        if ($buscaProdutos != null) {
+            $produtos = [];
+            foreach ($buscaProdutos as $p) {
+                array_push($produtos, $p);
+            }
+            echo Json::encode($produtos);
+        } else {
+            echo Json::encode(null);
+        }
+
+
     }
 
 }

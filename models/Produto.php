@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use app\models\ProdutoSearch;
 
+
 /**
  * This is the model class for table "produto".
  *
@@ -184,36 +185,36 @@ class Produto extends \yii\db\ActiveRecord
             $consumoCustoFixo = $searchModelCustoFixo
                 ->searchConsumoCustoFixoporTipoMensal($custoFixo->idtipocustofixo, date('m'));
             array_push($consumosCustoFixo, $consumoCustoFixo);
-            if($consumoCustoFixo > 0){
+            if ($consumoCustoFixo > 0) {
                 $ct = ($sumQuantidadeVendaProdutoVenda / $consumoCustoFixo);
                 $precosugerido += $ct;
-            }else{
-                    array_push($arrayTipoCustoFixoZero,$custoFixo->tipocustofixo);
+            } else {
+                array_push($arrayTipoCustoFixoZero, $custoFixo->tipocustofixo);
 
             }
         }
 
-        if(($arrayTipoCustoFixoZero)!= null){
+        if (($arrayTipoCustoFixoZero) != null) {
             Yii::$app->session->setFlash('custofixozerados', "<div class=\"alert alert-warning\">
-   Não foram calculados os custos fixos de ".implode(",",$arrayTipoCustoFixoZero)." pois não
+   Não foram calculados os custos fixos de " . implode(",", $arrayTipoCustoFixoZero) . " pois não
     há registro(s) dele(s) no mês anterior
 </div>");
         }
 
         //Soma o(s) valor(es) médio(s) de custos fixos do mês ao custo do produto
-       /* foreach ($consumosCustoFixo as $custo) {
-            if($custo > 0){
-            $ct = ($sumQuantidadeVendaProdutoVenda / $custo);
-            $precosugerido += $ct;
-            }else{
-                echo "Não há vendas no mês anterior";
-            }
-        }*/
+        /* foreach ($consumosCustoFixo as $custo) {
+             if($custo > 0){
+             $ct = ($sumQuantidadeVendaProdutoVenda / $custo);
+             $precosugerido += $ct;
+             }else{
+                 echo "Não há vendas no mês anterior";
+             }
+         }*/
 
         //Soma o(s) valor(es) do(s) insumo(s) do produto venda ao custo do produto
         foreach ($insumos as $key => $insumo) {
             $produtoCompra = ($searchModel->searchProdutosCompra($insumo->idprodutoInsumo));
-           
+
             $precosugerido +=
                 (($produtoCompra->valorCompra * $insumo->quantidade) / $produtoCompra->quantidade);
 
@@ -223,5 +224,7 @@ class Produto extends \yii\db\ActiveRecord
         return $precosugerido;
 
     }
+
+
 
 }

@@ -23,26 +23,29 @@ function removerItemCardapio(element) {
 
 }
 
-function funcao1(element) {
-    var idProduto = +element.value;
-// console.log('element.: '+valorElemento);
-//     console.log('element.: '+$(element).parent().css());
-    var elemento = $(element).parent().parent().parent();
-    // console.log('bro.:'+elemento.text("changed"));
-    console.log('elemento.:'+elemento.toString());
-  // $("div:last img",elemento).attr("src","http://www.monolitonimbus.com.br/wp-content/uploads/2016/01/banana-dancando.gif");
-    // $(element).parent().parent().parent().empty();
-    // $(elemento+ ' div:last').text("changed");
+function mudarFoto(element) {
 
+    var idProduto = +element.value;
+
+    var elementoImg = $(element).parent().parent().parent();
+    // var elementoImg = $(element).parent().parent();
+    console.log(elementoImg);
     $.get('get-foto-produto', {idProduto: idProduto
     }, function (data) {
 
            var data = $.parseJSON(data);
-//         console.log(data);
+
         if (data != 'false') {
-            if(data != null){
-                $("div:last img",elemento).attr("src",
-                'data:image/jpeg;base64,'+data);
+            if(data[1] != ""){
+                console.log(data);
+                $("div:last img",elementoImg).attr("src",
+                'data:image/jpeg;base64,'+data[1]);
+                $("div:last img",elementoImg).attr("alt",
+                    data[0]);
+            }else{
+                $("div:last img",elementoImg).attr("src",
+                  "/applanchonete/web/imgs/semfoto.jpg");
+                $("div:last img",elementoImg).attr("alt","Sem foto cadastrada");
             }
 
 

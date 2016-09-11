@@ -35,26 +35,26 @@ use yii\bootstrap\Modal;
             ?>
             <div id="item">
 
- <div class="form-group">
-     <div class="row">
-         <div class="col-md-6">
-                <?= $form->field($modelItemCardapio, 'idProduto[]')->dropDownList(
-                    $produtos,
-                    ['onChange'=>'funcao1(this)']
-                ) ?>
-         </div>
-           <div class="col-md-6">
-           Imagem
-               <img src="" class="img-responsive">
-           </div>
-     </div>
-                <?= $form->field($modelItemCardapio, 'ordem[]')->textInput(['type' => 'number', 'step' => 1, 'min' => 0]) ?>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <?= $form->field($modelItemCardapio, 'idProduto[]')->dropDownList(
+                                $produtos,
+                                ['onChange' => 'mudarFoto(this)']
+                            ) ?>
+                        </div>
+                        <div class="col-md-6">
+                            Imagem
+                            <img src="" class="img-responsive">
+                        </div>
+                    </div>
+                    <?= $form->field($modelItemCardapio, 'ordem[]')->textInput(['type' => 'number', 'step' => 1, 'min' => 0]) ?>
 
-                <input type="button" id="btRemoverItemCardapio"
-                       value="Remover"
-                       class="btn btn-primary" onclick="removerItemCardapio(this)"
-                />
-            </div>
+                    <input type="button" id="btRemoverItemCardapio"
+                           value="Remover"
+                           class="btn btn-primary" onclick="removerItemCardapio(this)"
+                    />
+                </div>
             </div>
 
             <?php
@@ -62,10 +62,25 @@ use yii\bootstrap\Modal;
             ?>
             <div id="item">
                 <div class="form-group">
-                    <?= Html::label('Produto') ?>
-                    <?= Html::dropDownList('Itemcardapio[idProduto][]', $itensCardapio[0]->idProduto, $produtos,
-                        ['class' => 'form-control']) ?>
-
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div>
+                            <?= Html::label('Produto') ?>
+                            <?= Html::dropDownList('Itemcardapio[idProduto][]', $itensCardapio[0]->idProduto, $produtos,
+                                ['class' => 'form-control',
+                                    'onChange' => 'mudarFoto(this)']) ?>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            Imagem
+                            <img
+                                src="<?=
+                                ($itensCardapio[0]->produto->foto) ?
+                                    'data:image/jpeg;base64,' . base64_encode($itensCardapio[0]->produto->foto) :
+                                    '../imgs/semfoto.jpg'?>
+" class="img-responsive">
+                        </div>
+                    </div>
                     <?= $form->field($itensCardapio[0], 'ordem[]')->textInput(['type' => 'number', 'step' => 1, 'min' => 0,
                         'value' => $itensCardapio[0]->ordem]) ?>
                     <input type="button" id="btRemoverItemCardapio"
@@ -79,17 +94,27 @@ use yii\bootstrap\Modal;
             <?php
             for ($i = 1; $i < count($itensCardapio); $i++) {
                 ?>
-                <div class="form-group" id="itemcardapio<?=$i?>">
-                    <?= Html::label('Produto') ?>
-                    <?= Html::dropDownList('Itemcardapio[idProduto][]', $itensCardapio[$i]->idProduto, $produtos,
-                        ['class' => 'form-control']) ?>
-
+                <div class="form-group" id="itemcardapio<?= $i ?>">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div>
+                            <?= Html::label('Produto') ?>
+                            <?= Html::dropDownList('Itemcardapio[idProduto][]', $itensCardapio[$i]->idProduto, $produtos,
+                                ['class' => 'form-control'
+                                    , 'onChange' => 'mudarFoto(this)']) ?>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            Imagem
+                            <img src="<?= 'data:image/jpeg;base64,' .base64_encode($itensCardapio[$i]->produto->foto)?>" class="img-responsive">
+                        </div>
+                    </div>
                     <?= $form->field($itensCardapio[$i], 'ordem[]')->textInput(['type' => 'number', 'step' => 1, 'min' => 0,
                         'value' => $itensCardapio[$i]->ordem]) ?>
 
                     <input type="button"
                            value="Remover"
-                           class="btn btn-primary" onclick="remover('<?= $i?>')"
+                           class="btn btn-primary" onclick="remover('<?= $i ?>')"
                     />
 
 

@@ -205,10 +205,7 @@ class CardapioController extends Controller
                 ->where(['idCardapio' => $id])
                 ->orderBy('ordem ASC')
                 ->all();
-            $produtos = ArrayHelper::map(
-                Produto::find()->all(),
-                'idProduto','nome'
-            );
+            $produtos = Produto::getListToDropDownList();
 
             if ($model->load(Yii::$app->request->post())) {
 
@@ -312,7 +309,7 @@ class CardapioController extends Controller
             $produto = Produto::findOne($idProduto);
 
             if($produto !=null){
-                return Json::encode(base64_encode($produto->foto));
+                return Json::encode([($produto->nome),base64_encode($produto->foto)]);
             }else{
                 return Json::encode(false);
             }

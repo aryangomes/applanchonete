@@ -42,8 +42,8 @@ class Itemcardapio extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-        'idCardapio' => 'Id Cardapio',
-        'idProduto' => 'Id Produto',
+        'idCardapio' => 'Cardápio',
+        'idProduto' => 'Produto',
         'status' => 'Status',
         'ordem' => 'Ordem',
         ];

@@ -8,6 +8,7 @@ use Yii;
 use app\models\Cardapio;
 use app\models\CardapioSearch;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -50,6 +51,7 @@ class CardapioController extends Controller
                         'delete-cardapio',
                         'view-cardapio',
                         'create-cardapio',
+                        'get-foto-produto'
                     ],
 
                     'index' => 'index-cardapio',
@@ -57,6 +59,7 @@ class CardapioController extends Controller
                     'delete' => 'delete-cardapio',
                     'view' => 'view-cardapio',
                     'create' => 'create-cardapio',
+                    'get-foto-produto' => 'cardapio',
                 ],
             ],
         ];
@@ -117,10 +120,12 @@ class CardapioController extends Controller
 
             $mensagem = "";
 
-            $produtos = ArrayHelper::map(
+            $produtos = Produto::getListToDropDownList();
+
+            /*$produtos = ArrayHelper::map(
                 Produto::find()->all(),
                 'idProduto','nome'
-            );
+            );*/
 
             if ($model->load(Yii::$app->request->post())) {
 
@@ -296,6 +301,21 @@ class CardapioController extends Controller
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+
+
+    public function actionGetFotoProduto($idProduto)
+    {
+        if(isset($idProduto)){
+            $produto = Produto::findOne($idProduto);
+
+            if($produto !=null){
+                return Json::encode(base64_encode($produto->foto));
+            }else{
+                return Json::encode(false);
+            }
         }
     }
 }

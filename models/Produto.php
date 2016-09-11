@@ -74,6 +74,7 @@ class Produto extends \yii\db\ActiveRecord
             'datafimavaliacao' => Yii::t('app', 'Até'),
             'groupbyavaliacao' => Yii::t('app', 'Agrupar por'),
             'foto' => Yii::t('app', 'Foto'),
+            'imageFile' => Yii::t('app', 'Foto'),
         ];
     }
 
@@ -195,10 +196,10 @@ class Produto extends \yii\db\ActiveRecord
         }
 
         if (($arrayTipoCustoFixoZero) != null) {
-            Yii::$app->session->setFlash('custofixozerados', "<div class=\"alert alert-warning\">
-   Não foram calculados os custos fixos de " . implode(",", $arrayTipoCustoFixoZero) . " pois não
-    há registro(s) dele(s) no mês anterior
-</div>");
+                        Yii::$app->session->setFlash('custofixozerados', "<div class=\"alert alert-warning\">
+               Não foram calculados os custos fixos de " . implode(",", $arrayTipoCustoFixoZero) . " pois não
+                há registro(s) dele(s) no mês anterior
+            </div>");
         }
 
         //Soma o(s) valor(es) médio(s) de custos fixos do mês ao custo do produto
@@ -225,6 +226,31 @@ class Produto extends \yii\db\ActiveRecord
 
     }
 
+    /**
+     * @return array|null
+     * Gera a lista de Permissões com optgroups
+     */
+    public static function getListToDropDownList()
+    {
+        $options = [];
 
+        $optGroups = Categoria::find()->all();
+
+        foreach ($optGroups as $categoria) {
+            $produtosCategoria= [];
+            $produtos = Produto::find()->
+            where(['idCategoria'=>$categoria->idCategoria])->all();
+
+            foreach ($produtos as $p) {
+                $key = $p->idProduto;
+                $produtosCategoria[$key] = $p->nome;
+            }
+
+            $options[$categoria->nome] = $produtosCategoria;
+
+        }
+
+        return $options;
+    }
 
 }

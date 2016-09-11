@@ -36,11 +36,18 @@ use yii\bootstrap\Modal;
             <div id="item">
 
  <div class="form-group">
+     <div class="row">
+         <div class="col-md-6">
                 <?= $form->field($modelItemCardapio, 'idProduto[]')->dropDownList(
-                    $produtos
-
+                    $produtos,
+                    ['onChange'=>'funcao1(this)']
                 ) ?>
-
+         </div>
+           <div class="col-md-6">
+           Imagem
+               <img src="" class="img-responsive">
+           </div>
+     </div>
                 <?= $form->field($modelItemCardapio, 'ordem[]')->textInput(['type' => 'number', 'step' => 1, 'min' => 0]) ?>
 
                 <input type="button" id="btRemoverItemCardapio"
@@ -111,53 +118,6 @@ use yii\bootstrap\Modal;
                     'id' => 'btAddItem']
             ) ?>
 
-            <!--  ----------- BEGIN MODAL PARA PESQUISAR POR PRODUTO ------------------------    -->
-            <?php
-            Modal::begin([
-                'header' => '<h2>Pesquisa por produto</h2>',
-                'toggleButton' => ['label' => 'Buscar por produto',
-                    'class' => 'btn btn-warning',
-                ],
-            ]);
-
-
-            ?>
-            <div class="input-group">
-
-
-                <?=
-                Html::input('text', null, null, ['class' => 'form-control',
-                    'id' => 'busca-produto',
-                    'placeholder' => 'Digite o nome do produto...'])
-                ?>
-
-
-                <span class="input-group-btn">
-                    <?=
-                    Html::button('Pesquisar', ['class' => 'btn btn-primary',
-                        'id' => 'btPesquisarPorProduto'])
-                    ?>
-                </span>
-            </div>
-
-            <table id="tableresult-produto" class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>Nome</th>
-
-                    <th>Ações</th>
-                </tr>
-                </thead>
-                <tbody id="tbody-result-produto">
-
-                </tbody>
-            </table>
-            <?php
-
-
-            Modal::end();
-            ?>
-            <!--  ----------- END MODAL PARA PESQUISAR POR PRODUTO ------------------------    -->
         </div>
 
         <?php ActiveForm::end(); ?>

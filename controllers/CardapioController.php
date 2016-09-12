@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Insumo;
 use app\models\Itemcardapio;
 use app\models\Produto;
 use Yii;
@@ -96,8 +97,37 @@ class CardapioController extends Controller
         if (Yii::$app->user->can("view-cardapio") ||
             Yii::$app->user->can("cardapio")
         ) {
+            //Recebe os itens do cardápio
+            $itensCardapio = Itemcardapio::find()->where(
+                ['idCardapio'=>$id]
+            )->orderBy('ordem ASC')->all();
+
+            //Recebe os insumos do Produto Venda do item do Cardápio
+            $insumosProdutos = [];
+
+
+            foreach ($itensCardapio as $ic){
+                $aux = [];
+                $produtoVenda = Produto::findOne($ic->idProduto);
+
+                if($produtoVenda != null){
+                    $insumos = Insumo::findAll(['idProdutoVenda'=>$produtoVenda->idProduto]);
+                    foreach ($insumos as $i){
+
+                        array_push($aux,$i->produtoInsumo->nome);
+                    }
+                    //Adiciona os insumos produtos na lista de insumos do produto
+                    //do item do cardápio
+                    array_push($insumosProdutos,$aux);
+                }
+
+            }
+
+
             return $this->render('view', [
                 'model' => $this->findModel($id),
+                'itensCardapio'=>$itensCardapio,
+                'insumosProdutos'=>$insumosProdutos,
             ]);
         } else {
             throw new ForbiddenHttpException("Acesso negado!");

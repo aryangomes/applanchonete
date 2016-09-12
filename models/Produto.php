@@ -143,6 +143,14 @@ class Produto extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategoria()
+    {
+        return $this->hasOne(Categoria::className(), ['idCategoria' => 'idCategoria']);
+    }
+
+    /**
      * @return string
      * Retorna o nome da Categoria do Produto
      */

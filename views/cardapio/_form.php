@@ -45,7 +45,7 @@ use yii\bootstrap\Modal;
                         </div>
                         <div class="col-md-6">
                             Imagem
-                            <img src="" class="img-responsive">
+                            <img width="200" src="" class="img-responsive">
                         </div>
                     </div>
                     <?= $form->field($modelItemCardapio, 'ordem[]')->textInput(['type' => 'number', 'step' => 1, 'min' => 0]) ?>
@@ -73,7 +73,7 @@ use yii\bootstrap\Modal;
                         </div>
                         <div class="col-md-6">
                             Imagem
-                            <img
+                            <img width="200"
                                 src="<?=
                                 ($itensCardapio[0]->produto->foto) ?
                                     'data:image/jpeg;base64,' . base64_encode($itensCardapio[0]->produto->foto) :
@@ -106,7 +106,11 @@ use yii\bootstrap\Modal;
                         </div>
                         <div class="col-md-6">
                             Imagem
-                            <img src="<?= 'data:image/jpeg;base64,' .base64_encode($itensCardapio[$i]->produto->foto)?>" class="img-responsive">
+                            <img width="200"  src="<?=
+                            ($itensCardapio[$i]->produto->foto) ?
+                                'data:image/jpeg;base64,' . base64_encode($itensCardapio[$i]->produto->foto) :
+                                '../imgs/semfoto.jpg'?>
+" class="img-responsive">
                         </div>
                     </div>
                     <?= $form->field($itensCardapio[$i], 'ordem[]')->textInput(['type' => 'number', 'step' => 1, 'min' => 0,

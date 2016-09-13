@@ -194,7 +194,7 @@ if (count($loja) > 0) {
                         if (Yii::$app->user->can("index-caixa") || Yii::$app->user->can("caixa")) {
                             ?>
                             <li>
-                                <?= Html::a('<i class="glyphicon glyphicon-piggy-bank"></i> Caixa', ['/caixa/index']) ?>
+                                <?= Html::a('<i class="fa fa-money"></i> Caixa', ['/caixa/index']) ?>
 
                             </li>
 
@@ -309,18 +309,18 @@ if (count($loja) > 0) {
 
                             <li>
                                 <a href="javascript:;" data-toggle="collapse" data-target="#conta"><i
-                                        class="glyphicon glyphicon-barcode"></i> Contas <i
+                                        class="fa fa-barcode"></i> Contas <i
                                         class="fa fa-fw fa-caret-down"></i></a>
                                 <ul id="conta" class="collapse">
                                     <li>
-                                        <?= Html::a('<i class="glyphicon glyphicon-barcode"></i> Todas as Contas', ['/conta/index']) ?>
+                                        <?= Html::a('<i class="fa fa-barcode"></i> Todas as Contas', ['/conta/index']) ?>
 
                                     </li>
                                     <?php
                                     if (Yii::$app->user->can("index-contasapagar") || Yii::$app->user->can("contasapagar")) {
                                         ?>
                                         <li>
-                                            <?= Html::a('<i class="glyphicon glyphicon-pushpin"></i> Contas a Pagar', ['/contasapagar/index']) ?>
+                                            <?= Html::a('<i class="fa fa-credit-card-alt"></i> Contas a Pagar', ['/contasapagar/index']) ?>
 
                                         </li>
                                         <?php
@@ -332,7 +332,7 @@ if (count($loja) > 0) {
                                     if (Yii::$app->user->can("index-contasapagar") || Yii::$app->user->can("contasapagar")) {
                                         ?>
                                         <li>
-                                            <?= Html::a('<i class="glyphicon glyphicon-pushpin"></i> Custos Fixos', ['/custofixo/index']) ?>
+                                            <?= Html::a('<i class="fa fa-thumb-tack"></i> Custos Fixos', ['/custofixo/index']) ?>
 
                                         </li>
                                         <?php
@@ -343,7 +343,7 @@ if (count($loja) > 0) {
                                     if (Yii::$app->user->can("index-contasareceber") || Yii::$app->user->can("contasareceber")) {
                                         ?>
                                         <li>
-                                            <?= Html::a('<i class="fa fa-money"></i> Contas a Receber', ['/contasareceber/index']) ?>
+                                            <?= Html::a('<i class="fa fa-dollar"></i> Contas a Receber', ['/contasareceber/index']) ?>
 
                                         </li>
                                         <?php
@@ -400,7 +400,7 @@ if (count($loja) > 0) {
 
                                     </li>
                                     <li>
-                                        <?= Html::a('<i class="glyphicon glyphicon-grain"></i> Todos os Insumos', ['/insumo/index']) ?>
+                                        <?= Html::a('<i class="fa fa-pagelines"></i> Todos os Insumos', ['/insumo/index']) ?>
 
                                     </li>
 

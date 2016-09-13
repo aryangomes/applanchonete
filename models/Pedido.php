@@ -65,7 +65,7 @@ class Pedido extends \yii\db\ActiveRecord
      */
     public function getHistoricosituacaos()
     {
-        return $this->hasMany(Historicosituacao::className(), ['idPedido' => 'idPedido']);
+        return $this->hasOne(Historicosituacao::className(), ['idPedido' => 'idPedido']);
     }
 
     /**
@@ -102,5 +102,47 @@ class Pedido extends \yii\db\ActiveRecord
     public function getPagamento()
     {
         return $this->hasOne(Pagamento::className(), ['idPedido' => 'idPedido']);
+    }
+
+    /**
+     * Retorna a data hora da situação do pedido
+     */
+    public function getDataHoraPedido()
+    {
+
+        return isset(Historicosituacao::find()->where(
+            ['idPedido'=>$this->idPedido]
+        )->orderBy('dataHora DESC')->one()->dataHora) ?
+            Historicosituacao::find()->where(
+                ['idPedido'=>$this->idPedido]
+            )->orderBy('dataHora DESC')->one()->dataHora : null
+            ;
+    }
+
+
+    /**
+     *
+     */
+    public function getItensPedido()
+    {
+        $itensPedido = Itempedido::findAll($this->idPedido);
+       $results = [];
+        $aux = [];
+
+
+        if(count($itensPedido) > 0 ){
+            $aux = [];
+            foreach ($itensPedido as $ip){
+                $produto = Produto::findOne($ip->idProduto);
+                if($produto != null){
+                    array_push($aux,[$produto->nome,$ip->quantidade]);
+                }
+
+            }
+
+           return $aux;
+        }else{
+        return null;
+        }
     }
 }

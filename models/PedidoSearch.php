@@ -50,6 +50,10 @@ class PedidoSearch extends Pedido
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort'=> ['defaultOrder' => ['idPedido'=>SORT_DESC]],
             ]);
 
         $this->load($params);

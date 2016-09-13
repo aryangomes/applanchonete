@@ -20,7 +20,7 @@ use yii\bootstrap\Modal;
             ->dropDownList($situacaopedido, ['prompt' => 'Selecione a situação do pedido'])
     ?>  
     <?php
-    if ($model->isNewRecord) {
+    if (Yii::$app->controller->action->id == 'create') {
         //Cadastrar
         ?>
 

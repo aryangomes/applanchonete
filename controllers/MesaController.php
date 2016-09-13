@@ -6,6 +6,7 @@ use Yii;
 use app\models\Mesa;
 use app\models\MesaSearch;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 /*use yii\web\NotFoundHttpException;
@@ -20,7 +21,7 @@ class MesaController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
+//            'access' => [
 //        'class' => AccessControl::classname(),
 //        'only'=> ['create','update','view','delete','index'],
 //        'rules'=> [
@@ -35,8 +36,8 @@ class MesaController extends Controller
                         'delete' => ['post'],
                     ],
                 ],
-            ],
-            'autorizacao' => [
+//            ],
+          /*  'autorizacao' => [
                 'class' => AccessFilter::className(),
                 'actions' => [
 
@@ -54,7 +55,7 @@ class MesaController extends Controller
                     'view' => 'view-mesa',
                     'create' => 'create-mesa',
                 ],
-            ],
+            ],*/
         ];
     }
 

@@ -203,6 +203,8 @@ class PedidoController extends Controller
             Formapagamento::find()->all(), 'idTipoPagamento', 'titulo');
 
 
+        $antigaSituacao = $model->idSituacaoAtual;
+
         if ($model->load(Yii::$app->request->post()) &&
             (count($itensPedido) > 0)
         ) {
@@ -239,10 +241,7 @@ class PedidoController extends Controller
                         if ($itemPedido->save()) {
                             Insumo::atualizaQtdNoEstoqueInsert(
                                 $itemPedido->idProduto, $itemPedido->quantidade);
-                            if ((count($itemPedidoPost['idProduto']) - 1) == $i) {
 
-//                                return $this->redirect(['view', 'id' => $model->idPedido]);
-                            }
                         } else {
                             $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
                             $transaction->rollBack(); //desfaz alterações no BD
@@ -250,6 +249,17 @@ class PedidoController extends Controller
                             break; //encerra o laço for
                         }
                     }
+
+                    if ($antigaSituacao != $model->idSituacaoAtual) {
+
+                        if (!$model->mudarHistoricoSituacaoPedido(intval($model->idSituacaoAtual))
+                            && !$model->save()
+                        ) {
+
+                            $itensInseridos = false;
+                        }
+                    }
+
                     //Testa se todos os itens foram inseridos (ou tudo ou nada):
                     if ($itensInseridos) {
                         $transaction->commit();
@@ -335,7 +345,9 @@ class PedidoController extends Controller
                             $situacaoPedido = Pedido::CONCLUIDO;
 
                             $pedido->idSituacaoAtual = $situacaoPedido;
-                            if ($pedido->save()) {
+
+
+                            if ($pedido->save() && $pedido->mudarHistoricoSituacaoPedido(intval($pedido->idSituacaoAtual))) {
                                 $caixa = new Caixa();
                                 $caixa = $caixa->getCaixaAberto(Yii::$app->user->getId());
                                 if ($caixa != null) {

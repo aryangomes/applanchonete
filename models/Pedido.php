@@ -40,11 +40,11 @@ class Pedido extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-        [['totalPedido'], 'double'],
-        [['idSituacaoAtual'], 'required'],
-        [['idSituacaoAtual'], 'integer'],
-        [['situacaopedido'], 'safe'],
-        [['idSituacaoAtual'], 'exist', 'skipOnError' => true, 'targetClass' => Situacaopedido::className(), 'targetAttribute' => ['idSituacaoAtual' => 'idSituacaoPedido']],
+            [['totalPedido'], 'double'],
+            [['idSituacaoAtual'], 'required'],
+            [['idSituacaoAtual'], 'integer'],
+            [['situacaopedido'], 'safe'],
+            [['idSituacaoAtual'], 'exist', 'skipOnError' => true, 'targetClass' => Situacaopedido::className(), 'targetAttribute' => ['idSituacaoAtual' => 'idSituacaoPedido']],
         ];
     }
 
@@ -54,9 +54,9 @@ class Pedido extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-        'idPedido' => Yii::t('app', 'Id Pedido'),
-        'totalPedido' => Yii::t('app', 'Total Pedido'),
-        'idSituacaoAtual' => Yii::t('app', 'Situação Atual'),
+            'idPedido' => Yii::t('app', 'Id Pedido'),
+            'totalPedido' => Yii::t('app', 'Total Pedido'),
+            'idSituacaoAtual' => Yii::t('app', 'Situação Atual'),
         ];
     }
 
@@ -84,7 +84,6 @@ class Pedido extends \yii\db\ActiveRecord
         return $this->hasMany(Itempedido::className(), ['idPedido' => 'idPedido']);
     }
 
-    
 
     /**
      * @return \yii\db\ActiveQuery
@@ -111,38 +110,68 @@ class Pedido extends \yii\db\ActiveRecord
     {
 
         return isset(Historicosituacao::find()->where(
-            ['idPedido'=>$this->idPedido]
-        )->orderBy('dataHora DESC')->one()->dataHora) ?
+                ['idPedido' => $this->idPedido]
+            )->orderBy('dataHora DESC')->one()->dataHora) ?
             Historicosituacao::find()->where(
-                ['idPedido'=>$this->idPedido]
-            )->orderBy('dataHora DESC')->one()->dataHora : null
-            ;
+                ['idPedido' => $this->idPedido]
+            )->orderBy('dataHora DESC')->one()->dataHora : null;
     }
 
 
     /**
-     *
+     * Retorna os itens do pedido para o index de Pedido
+     * @return array|null
      */
     public function getItensPedido()
     {
         $itensPedido = Itempedido::findAll($this->idPedido);
-       $results = [];
+        $results = [];
         $aux = [];
 
 
-        if(count($itensPedido) > 0 ){
+        if (count($itensPedido) > 0) {
             $aux = [];
-            foreach ($itensPedido as $ip){
+            foreach ($itensPedido as $ip) {
                 $produto = Produto::findOne($ip->idProduto);
-                if($produto != null){
-                    array_push($aux,[$produto->nome,$ip->quantidade]);
+                if ($produto != null) {
+                    array_push($aux, [$produto->nome, $ip->quantidade]);
                 }
 
             }
 
-           return $aux;
-        }else{
-        return null;
+            return $aux;
+        } else {
+            return null;
+        }
+    }
+
+
+    /**
+     * Insere uma nova situação de pedido ao histórico da situação do pedido
+     * @param $novaSituacao
+     * @return bool
+     */
+    public function mudarHistoricoSituacaoPedido($novaSituacao)
+    {
+        $historicoPedido = Historicosituacao::findOne([$this->idPedido, $this->idSituacaoAtual]);
+        if ($historicoPedido != null) {
+
+            $historicoPedido = new Historicosituacao();
+            $historicoPedido->idPedido = $this->idPedido;
+            $historicoPedido->idSituacaoPedido = $novaSituacao;
+
+            date_default_timezone_set('America/Sao_Paulo');
+
+            $historicoPedido->dataHora = date('Y-m-d H:i');
+            if ($historicoPedido->save()) {
+
+                return true;
+            } else {
+
+                return false;
+            }
+        } else {
+            return false;
         }
     }
 }

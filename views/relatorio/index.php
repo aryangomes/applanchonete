@@ -17,31 +17,31 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a(Yii::t('app', 'Create {model}',
-        ['model'=>Yii::t('app','Relatório')]), ['create'], ['class' => 'btn btn-success', 'title' => 'Criar um novo relatório']) ?>
+            ['model' => Yii::t('app', 'Relatório')]), ['create'], ['class' => 'btn btn-success', 'title' => 'Criar um novo relatório']) ?>
     </p>
+    <div class="table-responsive">
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-        ['class' => 'yii\grid\SerialColumn'],
 
-        
-       [
-           'format'=>'raw',
-           'label'=>'Ação',
-           'value'=>function($model){
-             return  Html::a('Gerar relatório',['relatorio'.strtolower($model->tipo), 'id'=>$model->idrelatorio]);
-           },
-       ],
-        'datageracao:date',
-        'tipo',
-        'inicio_intervalo:date',
-        'fim_intervalo:date',
-            // 'usuario_id',
+                [
+                    'format' => 'raw',
+                    'label' => 'Ação',
+                    'value' => function ($model) {
+                        return Html::a('Gerar relatório', ['relatorio' . strtolower($model->tipo), 'id' => $model->idrelatorio]);
+                    },
+                ],
+                'datageracao:date',
+                'tipo',
+                'inicio_intervalo:date',
+                'fim_intervalo:date',
+                // 'usuario_id',
 
-      //  ['class' => 'yii\grid\ActionColumn'],
-        ],
+                //  ['class' => 'yii\grid\ActionColumn'],
+            ],
         ]); ?>
-
     </div>
+</div>

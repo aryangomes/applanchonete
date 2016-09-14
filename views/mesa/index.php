@@ -18,23 +18,49 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Mesa', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+    <div class="table-responsive">
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+                'idMesa',
+                'descricao',
+                [
+                    'attribute' => 'disponivel',
+                    'value' => function ($model) {
+                        return $model->disponivel ? 'Disponível' : 'Não Disponível';
+                    }
 
-            'idMesa',
-            'descricao',
-            'disponivel',
-            'alerta',
-            'qrcode',
-            // 'chave',
-            // 'cont',
+                ],
+                [
+                    'attribute' => 'alerta',
+                    'value' => function ($model) {
+                        return $model->alerta ? 'Ligado' : 'Desligado';
+                    }
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+                ],
 
+//            'qrcode',
+                // 'chave',
+                // 'cont',
+
+                ['class' => 'yii\grid\ActionColumn',
+                    'template' => '{view}',
+                    'header' => 'Ação',
+                    'buttons' => [
+                        'view' => function ($url, $model) {
+                            return Html::a('Clique aqui para visualizar detalhes da mesa<i class="fa fa-search-plus"></i>',
+                                \yii\helpers\Url::toRoute(['view', 'id' => $model->idMesa]),
+                                [
+                                    'title' => Yii::t('app', 'Clique aqui para visualizar detalhes da mesa'),
+                                ]);
+                        }
+                    ],
+
+                ],
+            ],
+        ]); ?>
+    </div>
 </div>

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\models\AuthItem;
+
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
@@ -26,60 +27,75 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create {model}', ['model'=>'Usuário']), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create {model}', ['model' => 'Usuário']), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php \yii\widgets\Pjax::begin(); ?>
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-        ['class' => 'yii\grid\SerialColumn'],
+    <div class="table-responsive">
+        <?php \yii\widgets\Pjax::begin(); ?>
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
 
-        'id',
-        [
-        'attribute' => 'role_id',
-        'label' => 'Permissões',
-        /*  Yii::t('user', 'Role'),
-               'filter' => $role::dropdown(),
-                'value' => function($model, $index, $dataColumn) use ($role) {
-                    $roleDropdown = $role::dropdown();
-                    return $roleDropdown[$model->role_id];
-                },*/
-                'value' => function($data) {
-                    /*$authitem = new AuthItem();
-                    return $authitem->getDescription($data->role_id)->description;*/
-                    return $data->permissoes;
+                'id',
+                [
+                    'attribute' => 'role_id',
+                    'label' => 'Permissões',
+                    /*  Yii::t('user', 'Role'),
+                           'filter' => $role::dropdown(),
+                            'value' => function($model, $index, $dataColumn) use ($role) {
+                                $roleDropdown = $role::dropdown();
+                                return $roleDropdown[$model->role_id];
+                            },*/
+                    'value' => function ($data) {
+                        /*$authitem = new AuthItem();
+                        return $authitem->getDescription($data->role_id)->description;*/
+                        return $data->permissoes;
 
-                }
+                    }
                 ],
                 [
-                'attribute' => 'status',
-                'label' => Yii::t('user', 'Status'),
-                'filter' => $user::statusDropdown(),
-                'value' => function($model, $index, $dataColumn) use ($user) {
-                    $statusDropdown = $user::statusDropdown();
-                    return $statusDropdown[$model->status];
-                },
+                    'attribute' => 'status',
+                    'label' => Yii::t('user', 'Status'),
+                    'filter' => $user::statusDropdown(),
+                    'value' => function ($model, $index, $dataColumn) use ($user) {
+                        $statusDropdown = $user::statusDropdown();
+                        return $statusDropdown[$model->status];
+                    },
                 ],
                 'email:email',
                 'profile.full_name',
-                'created_at',
+                'created_at:datetime',
 
-            // 'username',
-            // 'password',
-            // 'auth_key',
-            // 'access_token',
-            // 'logged_in_ip',
-            // 'logged_in_at',
-            // 'created_ip',
-            // 'updated_at',
-            // 'banned_at',
-            // 'banned_reason',
+                // 'username',
+                // 'password',
+                // 'auth_key',
+                // 'access_token',
+                // 'logged_in_ip',
+                // 'logged_in_at',
+                // 'created_ip',
+                // 'updated_at',
+                // 'banned_at',
+                // 'banned_reason',
 
-                ['class' => 'yii\grid\ActionColumn'],
+                ['class' => 'yii\grid\ActionColumn',
+                    'template' => '{view}',
+                    'header' => 'Ação',
+                    'buttons' => [
+                        'view' => function ($url, $model) {
+                            return Html::a('Clique aqui para visualizar detalhes do usuário<i class="fa fa-search-plus"></i>',
+                                \yii\helpers\Url::toRoute(['view', 'id' => $model->id]),
+                                [
+                                    'title' => Yii::t('app', 'Clique aqui para visualizar detalhes do usuário'),
+                                ]);
+                        }
+                    ],
+
                 ],
-                ]); ?>
-                <?php \yii\widgets\Pjax::end(); ?>
+            ],
+        ]); ?>
+        <?php \yii\widgets\Pjax::end(); ?>
 
-            </div>
+    </div>
+</div>

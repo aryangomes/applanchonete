@@ -8,7 +8,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\InsumosSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Create {model}', ['model'=>'Insumo']);
+$this->title = Yii::t('app', 'Create {model}', ['model' => 'Insumo']);
 $this->params['breadcrumbs'][] = 'Insumos';
 ?>
 <div class="insumos-index">
@@ -17,61 +17,39 @@ $this->params['breadcrumbs'][] = 'Insumos';
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create {model}', ['model'=>'Insumo']), ['produto/create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create {model}', ['model' => 'Insumo']), ['produto/create'], ['class' => 'btn btn-success']) ?>
     </p>
+    <div class="table-responsive">
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            // 'filterModel' => $searchModel,
+            'columns' => [
+                //   ['class' => 'yii\grid\SerialColumn'],
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-       // 'filterModel' => $searchModel,
-        'columns' => [
-     //   ['class' => 'yii\grid\SerialColumn'],
+                //'idprodutoVenda',
+                [
+                    'attribute' => 'nomeInsumo',
+                    'format' => 'raw',
+                    'value' => function ($model) {
 
-        //'idprodutoVenda',
-            [
-                'attribute'=>'nomeInsumo',
-                'format'=>'raw',
-                'value' =>function($model){
+                        return Html::a($model->nomeInsumo, ['view',
+                            'idprodutoVenda' => $model->idprodutoVenda,
+                            'idprodutoInsumo' => $model->idprodutoInsumo]);
+                    },
+                ],
+                [
+                    'label' => 'Produto de Venda',
+                    'value' => 'nomeprodutovenda',
+                ],
+                [
+                    'label' => 'Quantidade',
+                    'value' => function ($model) {
+                        return $model->quantidade . ' ' . $model->unidade;
+                    },
+                ],
 
-                    return Html::a($model->nomeInsumo,['view',
-                        'idprodutoVenda'=>$model->idprodutoVenda,
-                        'idprodutoInsumo'=>$model->idprodutoInsumo]);
-                },
             ],
-        [
-        'label'=>'Produto de Venda',
-        'value' =>'nomeprodutovenda',
-        ],
-        [
-        'label'=>'Quantidade',
-        'value' =>function ($model)
-        {
-            return $model->quantidade . ' ' . $model->unidade;
-        },
-        ],
-     /*   'quantidade',
-     'unidade',*/
+        ]); ?>
 
-    /* ['class' => 'yii\grid\ActionColumn',
-     'template' => '{view} {update} {alterarinsumo} {delete} ',
-     'buttons' => [
-     'update' => function ($url, $model) {
-        return Html::a('<i class="glyphicon glyphicon-pencil"></i>',
-            Url::toRoute(['insumos/update', 'idprodutoVenda'=>$model->idprodutoVenda,
-                'idprodutoInsumo'=>$model->idprodutoInsumo]),
-            [
-            'title' => Yii::t('app', 'Alterar Insumo no produto ' . $model->nomeprodutovenda),
-            ]);
-    },
-    'alterarinsumo' => function ($url, $model) {
-        return Html::a('<i class="glyphicon glyphicon-edit"></i>',
-            Url::toRoute(['produto/update', 'id'=>$model->idprodutoInsumo]),
-            [
-            'title' => Yii::t('app', 'Alterar Insumo'),
-            ]);
-    }
-    ],
-    ],*/
-    ],
-    ]); ?>
-
+    </div>
 </div>

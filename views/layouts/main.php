@@ -371,7 +371,7 @@ if (count($loja) > 0) {
                         if (Yii::$app->user->can("index-mesa") || Yii::$app->user->can("mesa")) {
                             ?>
                             <li>
-                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Mesa', ['/mesa/index']) ?>
+                                <?= Html::a('<i class="fa fa-table"></i> Mesa', ['/mesa/index']) ?>
 
                             </li>
                             <?php

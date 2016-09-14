@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="table-responsive">
         <?php Pjax::begin(); ?>    <?= GridView::widget([
             'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
+//            'filterModel' => $searchModel,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
@@ -64,9 +64,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 ['class' => 'yii\grid\ActionColumn',
                     'template' => '{view}',
+                    'header'=>'Ação',
                     'buttons' => [
                         'view' => function ($url, $model) {
-                            return Html::a('Clique aqui para visualizar detalhes do pedido',
+                            return Html::a('Clique aqui para visualizar detalhes do pedido <i class="fa fa-search-plus"></i>',
                                 \yii\helpers\Url::toRoute(['view', 'id' => $model->idPedido]),
                                 [
                                     'title' => Yii::t('app', 'Clique aqui para visualizar detalhes do pedido'),

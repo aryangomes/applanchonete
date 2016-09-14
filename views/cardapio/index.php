@@ -19,18 +19,33 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Criar Cardapio', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+    <div class="table-responsive">
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
 
-            //'idCardapio',
-            'data:date',
-            'titulo',
+                //'idCardapio',
+                'data:date',
+                'titulo',
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+                ['class' => 'yii\grid\ActionColumn',
+                    'template' => '{view}',
+                    'header' => 'Ação',
+                    'buttons' => [
+                        'view' => function ($url, $model) {
+                            return Html::a('Clique aqui para visualizar detalhes do cardápio <i class="fa fa-search-plus"></i>',
+                                \yii\helpers\Url::toRoute(['view', 'id' => $model->idCardapio]),
+                                [
+                                    'title' => Yii::t('app', 'Clique aqui para visualizar detalhes do cardápio'),
+                                ]);
+                        }
+                    ],
 
+                ],
+            ],
+        ]); ?>
+
+    </div>
 </div>

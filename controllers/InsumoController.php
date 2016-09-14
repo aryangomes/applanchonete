@@ -32,20 +32,20 @@ class InsumoController extends Controller
                 'class' => AccessFilter::className(),
                 'actions' => [
 
-                    'insumos' => [
-                        'index-insumos',
-                        'update-insumos',
-                        'delete-insumos',
-                        'view-insumos',
-                        'create-insumos',
+                    'insumo' => [
+                        'index-insumo',
+                        'update-insumo',
+                        'delete-insumo',
+                        'view-insumo',
+                        'create-insumo',
 
                     ],
 
-                    'index' => 'index-insumos',
-                    'update' => 'update-insumos',
-                    'delete' => 'delete-insumos',
-                    'view' => 'view-insumos',
-                    'create' => 'create-insumos',
+                    'index' => 'index-insumo',
+                    'update' => 'update-insumo',
+                    'delete' => 'delete-insumo',
+                    'view' => 'view-insumo',
+                    'create' => 'create-insumo',
                 ],
             ],
         ];

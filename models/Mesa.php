@@ -33,7 +33,8 @@ class Mesa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['descricao', 'disponivel', 'alerta', 'qrcode', 'chave'], 'required'],
+//            [['descricao', 'disponivel', 'alerta', 'qrcode', 'chave'], 'required'],
+            [['disponivel'], 'required'],
             [['disponivel', 'alerta', 'cont'], 'integer'],
             [['descricao', 'chave'], 'string', 'max' => 45],
             [['qrcode'], 'string', 'max' => 100]
@@ -46,9 +47,9 @@ class Mesa extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idMesa' => 'Id Mesa',
-            'descricao' => 'Descricao',
-            'disponivel' => 'Disponivel',
+            'idMesa' => 'Identificador da Mesa',
+            'descricao' => 'Descrição',
+            'disponivel' => 'Disponibilidade',
             'alerta' => 'Alerta',
             'qrcode' => 'Qrcode',
             'chave' => 'Chave',

@@ -12,17 +12,15 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'descricao')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'descricao')->textarea(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'disponivel')->textInput() ?>
+    <?= $form->field($model, 'disponivel')->dropDownList([
+        '1'=>'Disponível','0'=>'Não Disponível'
+    ],['prompt'=>'Selecione...']) ?>
 
-    <?= $form->field($model, 'alerta')->textInput() ?>
 
-    <?= $form->field($model, 'qrcode')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'chave')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'cont')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -79,7 +79,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'foto',
                 'format' => 'raw',
-                'value' => isset($model->foto) ? Html::img('data:image/jpeg;base64,' . base64_encode($model->foto))
+                'value' => isset($model->foto) ? Html::img('data:image/jpeg;base64,' . base64_encode($model->foto),
+                    ['class'=>'img-responsive'])
                     : 'Sem imagem cadastrada',
 
             ],

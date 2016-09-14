@@ -70,7 +70,7 @@ switch ($action) {
 			<?php
 
 			echo $form->field($model,  $quantidade)->textInput([ 'type' => 'number', 
-				'value'=>0, 'min'=>0, 'step'=>'0.1','id'=>'quantidade0','value' => Yii::$app->formatter->asDecimal($model->quantidade)]);
+				 'min'=>0, 'step'=>'0.1','id'=>'quantidade0']);
 
 			echo $form->field($model, $unidade)->dropDownList(
 				['kg'=> 'Kg', 'l'=>'Litros', 'unidade'=>'Unidade'],

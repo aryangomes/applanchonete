@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Categoria;
 use Yii;
 use app\models\Compra;
 use app\models\CompraSearch;
@@ -83,6 +84,12 @@ class CompraController extends Controller
 
         //Recebe o valor total da compra
         $valorTotalDaCompra = 0;
+
+        $categorias = ArrayHelper::map(
+            Categoria::find()->all(),
+            'idCategoria', 'nome');
+
+        $novoProduto = new Produto();
 
         //Setando o fuso horário
         date_default_timezone_set('America/Sao_Paulo');
@@ -175,6 +182,8 @@ class CompraController extends Controller
             'compraProduto' => $compraProduto,
             'produtos' => $produtos,
             'mensagem' => $mensagem,
+            'categorias'=>$categorias,
+            'novoProduto'=>$novoProduto,
         ]);
     }
 

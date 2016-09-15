@@ -44,6 +44,10 @@ use kartik\money\MaskMoney;
 
         ?>
 
+        <?php
+        $this->registerJsFile(\Yii::getAlias("@web") . '/js/compra_form.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+        ?>
+
         <?=
         $form->field($compraProduto, 'quantidade[]')->textInput(['type' => 'number', 'value' => 1, 'min' => 0]);
 
@@ -112,17 +116,17 @@ use kartik\money\MaskMoney;
 
                 echo $form->field($compraProduto, 'quantidade[]')->textInput(['type' => 'number', 'value' => $produtosDaCompras[$i]->quantidade, 'min' => 0]);
 
-              /*  echo $form->field($compraProduto, 'valorCompra[]')->widget(MaskMoney::classname(), [
-                    'options' => [
-                        'id' => 'valorCompra' . $produtosDaCompras[$i]->idProduto,
-                        'value' => $produtosDaCompras[$i]->valorCompra,
-                    ],
-                    'pluginOptions' => [
-                        'prefix' => 'R$ ',
+                /*  echo $form->field($compraProduto, 'valorCompra[]')->widget(MaskMoney::classname(), [
+                      'options' => [
+                          'id' => 'valorCompra' . $produtosDaCompras[$i]->idProduto,
+                          'value' => $produtosDaCompras[$i]->valorCompra,
+                      ],
+                      'pluginOptions' => [
+                          'prefix' => 'R$ ',
 
-                        'allowNegative' => false,
-                    ]
-                ]);*/
+                          'allowNegative' => false,
+                      ]
+                  ]);*/
 
                 $this->registerJsFile(\Yii::getAlias('@web') . "/assets/f39098af/js/jquery.maskMoney.js",
                     ['depends' => [\yii\web\JqueryAsset::className()]]);
@@ -130,9 +134,12 @@ use kartik\money\MaskMoney;
                 ?>
                 <p>
                     <label>Valor da Compra(R$)</label>
-                    <input type="number" min="0" step="0.01" id="compraproduto-valorcompra-disp" value="<?= $produtosDaCompras[$i]->valorCompra ?>" class="form-control" name="compraproduto-valorcompra-disp[]">
+                    <input type="number" min="0" step="0.01" id="compraproduto-valorcompra-disp"
+                           value="<?= $produtosDaCompras[$i]->valorCompra ?>" class="form-control"
+                           name="compraproduto-valorcompra-disp[]">
                 </p>
-                <input class="btn btn-danger" onclick="removeins(<?= $i ?>)" type='button' value="Remover Produto da Compra">
+                <input class="btn btn-danger" onclick="removeins(<?= $i ?>)" type='button'
+                       value="Remover Produto da Compra">
             </div></br><?php
         }
     }
@@ -164,16 +171,86 @@ use kartik\money\MaskMoney;
         <?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Cadastrar a Compra')
             : Yii::t('yii', 'Atualizar a Compra'),
             ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
-            'title'=>'Clique aqui para cadastrar a compra']) ?>
+                'title' => 'Clique aqui para cadastrar a compra']) ?>
 
         <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar mais um Produto"
                title="Clique aqui para adicionar mais de um produto nesta compra"/>
+
+
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
 
+<div class="form-group">
+    <!--   ---------------------------   BEGIN Cadastrar Novo Produto ---------------------------  -->
+    <?php
+    \yii\bootstrap\Modal::begin([
+        'header' => '<h2>Cadastrar Novo Produto</h2>',
+        'id' => 'modalnovoproduto',
+
+        'toggleButton' =>$model->isNewRecord ?
+            ['label' => 'Cadastrar Novo Produto',
+                'class' => 'btn btn-warning',
+                'id' => 'btnovoproduto',
+            ]: false,
+
+    ]);
+    ?>
+    <div class="row">
+        <div class="col-lg-6">
+
+            <div class="form-group">
+
+                <?= Html::label("Nome", ['class' => 'form-control'])
+                ?>
+                <?=
+                Html::input('text', null, null, ['class' => 'form-control',
+                    'id' => 'produto-nome','placeholder'=>'Digite o nome do novo produto...'])
+
+                ?>
+            </div>
+            <div class="form-group">
+                <?= Html::label("Estoque Minímo", ['class' => 'form-control'])
+                ?>
+                <?=
+                Html::input('number', null, 0, ['class' => 'form-control',
+                    'id' => 'produto-quantidademinima',
+                    'placeholder'=>'Digite o estoque mínimo do novo produto...',
+                    'min' => 0, 'step' => 0.01])
+
+                ?>
+            </div>
+
+            <div class="form-group">
+                <?= Html::label("Categoria", ['class' => 'form-control'])
+                ?>
+                <?=
+                $model->isNewRecord ?
+                Html::dropDownList('Produto[idCategoria]', null, $categorias, ['class' => 'form-control',
+                    'id' => 'produto-idcategoria', 'prompt' => 'Seleciona a categoria...']) : ''
+
+                ?>
+            </div>
+
+
+            <?=
+            $model->isNewRecord ? Html::Button('Cadastra Novo Produto',
+                ['class' => 'btn btn-success',
+                    'id' => 'btCadastrarNovoProduto',
+                    'title' => 'Clique aqui para cadastrar um novo produto']) :''?>
+
+        </div>
+
+    </div>
+
+
+    <?php
+    \yii\bootstrap\Modal::end();
+    ?>
+
+    <!--   ---------------------------   END Cadastrar Novo Produto  ---------------------------  --></div>
 
 <?php
 

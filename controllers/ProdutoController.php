@@ -600,4 +600,37 @@ class ProdutoController extends Controller
 
     }
 
+    public function  actionGetProduto(){
+        $produtos = ArrayHelper::map(Produto::find()->all(),
+            'nome', 'idProduto');
+            echo Json::encode($produtos);
+
+
+
+    }
+
+    public function  actionCadastrarNovoProduto($nome = null,
+                                                $categoria= null,
+                                                $estoqueMinimo = null){
+
+        if($nome != null && $categoria != null && $estoqueMinimo != null){
+            $novoProduto = new Produto();
+            $novoProduto->nome=$nome;
+            $novoProduto->idCategoria=$categoria;
+            $novoProduto->quantidadeMinima=$estoqueMinimo;
+            $novoProduto->quantidadeEstoque=0;
+            $novoProduto->isInsumo=1;
+
+            if($novoProduto->save()){
+                echo Json::encode(true);
+            }else{
+                echo Json::encode(false);
+            }
+        }else{
+            echo Json::encode(false);
+        }
+
+
+    }
+
 }

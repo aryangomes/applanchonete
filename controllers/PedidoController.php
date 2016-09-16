@@ -369,6 +369,7 @@ class PedidoController extends Controller
                                     $caixa = Caixa::findOne($caixa->idcaixa);
                                     $caixa->valoremcaixa += $pedido->totalPedido;
                                     $caixa->valorapurado += $pedido->totalPedido;
+                                    $caixa->valorlucro += number_format($caixa->calculaValorLucroPedido($pedido->idPedido),2);
                                     if (!$caixa->save()) {
                                         $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
                                         $transaction->rollBack(); //desfaz alterações no BD

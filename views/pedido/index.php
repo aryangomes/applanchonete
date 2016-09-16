@@ -20,6 +20,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Yii::t('app', 'Create {model}', ['model' => 'Pedido']), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+    <div class="form-group">
+        <?= Html::label('Situação do Pedido') ?>
+        <?php $form = \yii\widgets\ActiveForm::begin(); ?>
+        <?= Html::dropDownList('situacao-pedido', $situacaoDoPedido, $situacaopedido, ['class' => 'form-control']) ?>
+        <?php $form = \yii\widgets\ActiveForm::end(); ?>
+    </div>
+    <?php
+        $this->registerJs('$("select").change(function(){$(this).submit()});');
+    ?>
 
     <div class="table-responsive">
         <?php Pjax::begin(); ?>    <?= GridView::widget([
@@ -39,15 +48,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 ],
                 [
-                    'label'=>'Itens do Pedido (Produto/Quantidade)',
+                    'label' => 'Itens do Pedido (Produto/Quantidade)',
                     'value' => function ($model) {
-                    $itensPedidos = $model->getItensPedido();
+                        $itensPedidos = $model->getItensPedido();
                         $results = [];
-                      for ($i = 0 ; $i < count($itensPedidos);$i++){
-                            $str = $itensPedidos[$i][0].'('.$itensPedidos[$i][1].')' ;
-                            array_push($results,$str);
+                        for ($i = 0; $i < count($itensPedidos); $i++) {
+                            $str = $itensPedidos[$i][0] . '(' . $itensPedidos[$i][1] . ')';
+                            array_push($results, $str);
                         }
-                       return(    implode(", ",$results));
+                        return (implode(", ", $results));
 
                     }
                 ],
@@ -64,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 ['class' => 'yii\grid\ActionColumn',
                     'template' => '{view}',
-                    'header'=>'Ação',
+                    'header' => 'Ação',
                     'buttons' => [
                         'view' => function ($url, $model) {
                             return Html::a('Clique aqui para visualizar detalhes do pedido <i class="fa fa-search-plus"></i>',

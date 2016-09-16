@@ -68,8 +68,34 @@ class PedidoSearch extends Pedido
         $query->andFilterWhere([
             'idPedido' => $this->idPedido,
             'totalPedido' => $this->totalPedido,
-            'idSituacaoAtual' => $this->idSituacaoAtual,
+            'idSituacaoAtual' => Pedido::EM_ANDAMENTO,
             ]);
+
+        return $dataProvider;
+    }
+
+    public function searchPedidos($situacaoDoPedido)
+    {
+        $query = Pedido::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort'=> ['defaultOrder' => ['idPedido'=>SORT_DESC]],
+        ]);
+
+
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'idPedido' => $this->idPedido,
+            'totalPedido' => $this->totalPedido,
+            'idSituacaoAtual' => $situacaoDoPedido,
+        ]);
 
         return $dataProvider;
     }

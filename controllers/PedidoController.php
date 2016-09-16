@@ -67,11 +67,26 @@ class PedidoController extends Controller
     public function actionIndex()
     {
         $searchModel = new PedidoSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+//        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+
+
+        if(Yii::$app->request->post()){
+            $situacaoDoPedido = (Yii::$app->request->post()["situacao-pedido"]);
+        }else{
+            $situacaoDoPedido = 1;
+        }
+
+        $dataProvider = $searchModel->searchPedidos($situacaoDoPedido);
+        $situacaopedido = ArrayHelper::map(
+            Situacaopedido::find()->all()
+            , 'idSituacaoPedido', 'titulo');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'situacaopedido'=>$situacaopedido,
+            'situacaoDoPedido'=>$situacaoDoPedido,
         ]);
     }
 

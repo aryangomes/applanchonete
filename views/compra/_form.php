@@ -177,80 +177,80 @@ use kartik\money\MaskMoney;
                title="Clique aqui para adicionar mais de um produto nesta compra"/>
 
 
+        <!--   ---------------------------   BEGIN Cadastrar Novo Produto ---------------------------  -->
+        <?php
+        \yii\bootstrap\Modal::begin([
+            'header' => '<h2>Cadastrar Novo Produto</h2>',
+            'id' => 'modalnovoproduto',
+
+            'toggleButton' => $model->isNewRecord ?
+                ['label' => 'Cadastrar Novo Produto',
+                    'class' => 'btn btn-warning',
+                    'id' => 'btnovoproduto',
+                    'title' => 'Clique aqui para cadastrar um novo produto'
+                ] : false,
+
+        ]);
+        ?>
+        <div class="row">
+            <div class="col-lg-6">
+
+                <div class="form-group">
+
+                    <?= Html::label("Nome", ['class' => 'form-control'])
+                    ?>
+                    <?=
+                    Html::input('text', null, null, ['class' => 'form-control',
+                        'id' => 'produto-nome', 'placeholder' => 'Digite o nome do novo produto...'])
+
+                    ?>
+                </div>
+                <div class="form-group">
+                    <?= Html::label("Estoque Minímo", ['class' => 'form-control'])
+                    ?>
+                    <?=
+                    Html::input('number', null, 0, ['class' => 'form-control',
+                        'id' => 'produto-quantidademinima',
+                        'placeholder' => 'Digite o estoque mínimo do novo produto...',
+                        'min' => 0, 'step' => 0.01])
+
+                    ?>
+                </div>
+
+                <div class="form-group">
+                    <?= Html::label("Categoria", ['class' => 'form-control'])
+                    ?>
+                    <?=
+                    $model->isNewRecord ?
+                        Html::dropDownList('Produto[idCategoria]', null, $categorias, ['class' => 'form-control',
+                            'id' => 'produto-idcategoria', 'prompt' => 'Seleciona a categoria...']) : ''
+
+                    ?>
+                </div>
+
+
+                <?=
+                $model->isNewRecord ? Html::Button('Cadastra Novo Produto',
+                    ['class' => 'btn btn-success',
+                        'id' => 'btCadastrarNovoProduto',
+                        'title' => 'Clique aqui para cadastrar um novo produto']) : '' ?>
+
+            </div>
+
+        </div>
+
+
+        <?php
+        \yii\bootstrap\Modal::end();
+        ?>
+
+        <!--   ---------------------------   END Cadastrar Novo Produto  ---------------------------  -->
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
 
-<div class="form-group">
-    <!--   ---------------------------   BEGIN Cadastrar Novo Produto ---------------------------  -->
-    <?php
-    \yii\bootstrap\Modal::begin([
-        'header' => '<h2>Cadastrar Novo Produto</h2>',
-        'id' => 'modalnovoproduto',
-
-        'toggleButton' =>$model->isNewRecord ?
-            ['label' => 'Cadastrar Novo Produto',
-                'class' => 'btn btn-warning',
-                'id' => 'btnovoproduto',
-            ]: false,
-
-    ]);
-    ?>
-    <div class="row">
-        <div class="col-lg-6">
-
-            <div class="form-group">
-
-                <?= Html::label("Nome", ['class' => 'form-control'])
-                ?>
-                <?=
-                Html::input('text', null, null, ['class' => 'form-control',
-                    'id' => 'produto-nome','placeholder'=>'Digite o nome do novo produto...'])
-
-                ?>
-            </div>
-            <div class="form-group">
-                <?= Html::label("Estoque Minímo", ['class' => 'form-control'])
-                ?>
-                <?=
-                Html::input('number', null, 0, ['class' => 'form-control',
-                    'id' => 'produto-quantidademinima',
-                    'placeholder'=>'Digite o estoque mínimo do novo produto...',
-                    'min' => 0, 'step' => 0.01])
-
-                ?>
-            </div>
-
-            <div class="form-group">
-                <?= Html::label("Categoria", ['class' => 'form-control'])
-                ?>
-                <?=
-                $model->isNewRecord ?
-                Html::dropDownList('Produto[idCategoria]', null, $categorias, ['class' => 'form-control',
-                    'id' => 'produto-idcategoria', 'prompt' => 'Seleciona a categoria...']) : ''
-
-                ?>
-            </div>
-
-
-            <?=
-            $model->isNewRecord ? Html::Button('Cadastra Novo Produto',
-                ['class' => 'btn btn-success',
-                    'id' => 'btCadastrarNovoProduto',
-                    'title' => 'Clique aqui para cadastrar um novo produto']) :''?>
-
-        </div>
-
-    </div>
-
-
-    <?php
-    \yii\bootstrap\Modal::end();
-    ?>
-
-    <!--   ---------------------------   END Cadastrar Novo Produto  ---------------------------  --></div>
 
 <?php
 

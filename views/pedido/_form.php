@@ -112,7 +112,9 @@ use yii\bootstrap\Modal;
     <div class="form-group">
           <?php if (isset($model->idSituacaoAtual)) {
             if ($model->situacaopedido->titulo != 'Concluído') {
-               echo Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ;
+               echo Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'),
+                   ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+                       'title'=>'Clique para cadastrar o pedido']) ;
               }
         }else{
         echo Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ;
@@ -122,11 +124,11 @@ use yii\bootstrap\Modal;
         <?php if (isset($model->idSituacaoAtual)) {
             if ($model->situacaopedido->titulo != 'Concluído') {
                 ?>
-                <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar Item Pedido" title="Adicionar item ao pedido">
+                <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar Item do Pedido" title="Adicionar mais um item ao pedido">
             <?php }
         }else{
         ?> 
-                <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar Item Pedido" title="Adicionar item ao pedido">
+                <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar Item do Pedido" title="Adicionar mais um item ao pedido">
 
         <?php
           }

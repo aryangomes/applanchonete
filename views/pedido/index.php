@@ -22,12 +22,12 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
     <div class="form-group">
         <?= Html::label('Situação do Pedido') ?>
-        <?php $form = \yii\widgets\ActiveForm::begin(); ?>
+        <?php $form = \yii\widgets\ActiveForm::begin(['action' => 'index', 'id' => $situacaoDoPedido, 'method' => 'get',]); ?>
         <?= Html::dropDownList('situacao-pedido', $situacaoDoPedido, $situacaopedido, ['class' => 'form-control']) ?>
         <?php $form = \yii\widgets\ActiveForm::end(); ?>
     </div>
     <?php
-        $this->registerJs('$("select").change(function(){$(this).submit()});');
+    $this->registerJs('$("select").change(function(){$(this).submit()});');
     ?>
 
     <div class="table-responsive">
@@ -90,5 +90,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]); ?>
         <?php Pjax::end(); ?>
+
     </div>
 </div>

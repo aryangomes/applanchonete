@@ -64,17 +64,12 @@ class PedidoController extends Controller
      * Lists all Pedido models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($situacaoDoPedido=1)
     {
         $searchModel = new PedidoSearch();
-//        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-
-
-        if(Yii::$app->request->post()){
-            $situacaoDoPedido = (Yii::$app->request->post()["situacao-pedido"]);
-        }else{
-            $situacaoDoPedido = 1;
+        if (Yii::$app->request->get()) {
+            $situacaoDoPedido = (Yii::$app->request->get()["situacao-pedido"]);
         }
 
         $dataProvider = $searchModel->searchPedidos($situacaoDoPedido);
@@ -85,8 +80,8 @@ class PedidoController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'situacaopedido'=>$situacaopedido,
-            'situacaoDoPedido'=>$situacaoDoPedido,
+            'situacaopedido' => $situacaopedido,
+            'situacaoDoPedido' => $situacaoDoPedido,
         ]);
     }
 
@@ -369,7 +364,7 @@ class PedidoController extends Controller
                                     $caixa = Caixa::findOne($caixa->idcaixa);
                                     $caixa->valoremcaixa += $pedido->totalPedido;
                                     $caixa->valorapurado += $pedido->totalPedido;
-                                    $caixa->valorlucro += number_format($caixa->calculaValorLucroPedido($pedido->idPedido),2);
+                                    $caixa->valorlucro += number_format($caixa->calculaValorLucroPedido($pedido->idPedido), 2);
                                     if (!$caixa->save()) {
                                         $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
                                         $transaction->rollBack(); //desfaz alterações no BD

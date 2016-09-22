@@ -18,18 +18,18 @@ $this->params['breadcrumbs'][] = $this->title;
         <p>
             <?php
 
-            echo ($model->situacaopedido->titulo != 'Concluído') ? Html::a(Yii::t('yii', 'Update'),
+            echo ($model->situacaopedido->idSituacaoPedido == 1) ? Html::a(Yii::t('yii', 'Update'),
                 ['update', 'id' => $model->idPedido], ['class' => 'btn btn-primary']) : '' ?>
             <?php
 
-            echo ($model->situacaopedido->titulo != 'Concluído') ? Html::a(Yii::t('app', 'Delete'),
+          /*  echo ($model->situacaopedido->idSituacaoPedido == 1) ? Html::a(Yii::t('app', 'Delete'),
                 ['delete', 'id' => $model->idPedido], [
                     'class' => 'btn btn-danger',
                     'data' => [
                         'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                         'method' => 'post',
                     ],
-                ]) : '' ?>
+                ]) : ''*/ ?>
 
             <!--   ---------------------------   BEGIN Finalizar Pedido  ---------------------------  -->
             <?php
@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'header' => '<h2>Finalizar Pedido</h2>',
                 'id' => 'modalfinalizarpedido',
 
-                'toggleButton' => ($model->situacaopedido->titulo != 'Concluído') ?
+                'toggleButton' => ($model->situacaopedido->idSituacaoPedido == 1) ?
                     ['label' => 'Finalizar Pedido',
                         'class' => 'btn btn-warning',
                         'disabled' => isset($model->datadevolucao) ? true : false] : false,
@@ -140,7 +140,4 @@ if (count($itensPedido) > 0) {
 
     <?php
 }
-?>
-<?php //var_dump($itensPedido) 
-
 ?>

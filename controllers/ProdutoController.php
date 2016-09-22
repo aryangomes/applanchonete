@@ -16,6 +16,7 @@ use yii\web\ForbiddenHttpException;
 use app\components\AccessFilter;
 use yii\web\UploadedFile;
 use yii\helpers\Json;
+
 /**
  * ProdutoController implements the CRUD actions for Produto model.
  */
@@ -578,9 +579,10 @@ class ProdutoController extends Controller
     }
 
 
-    public function  actionGetProdutos($busca){
-        $buscaProdutos =  Produto::find()
-            ->where(['like','nome',$busca])->all();/*ArrayHelper::map(
+    public function actionGetProdutos($busca)
+    {
+        $buscaProdutos = Produto::find()
+            ->where(['like', 'nome', $busca])->all();/*ArrayHelper::map(
             Produto::find()
                 ->where(['like','nome',$busca])
                 ->all(),
@@ -600,33 +602,34 @@ class ProdutoController extends Controller
 
     }
 
-    public function  actionGetProduto(){
+    public function actionGetProduto()
+    {
         $produtos = ArrayHelper::map(Produto::find()->all(),
             'nome', 'idProduto');
-            echo Json::encode($produtos);
-
+        echo Json::encode($produtos);
 
 
     }
 
-    public function  actionCadastrarNovoProduto($nome = null,
-                                                $categoria= null,
-                                                $estoqueMinimo = null){
+    public function actionCadastrarNovoProduto($nome = null,
+                                               $categoria = null,
+                                               $estoqueMinimo = null)
+    {
 
-        if($nome != null && $categoria != null && $estoqueMinimo != null){
+        if ($nome != null && $categoria != null && $estoqueMinimo != null) {
             $novoProduto = new Produto();
-            $novoProduto->nome=$nome;
-            $novoProduto->idCategoria=$categoria;
-            $novoProduto->quantidadeMinima=$estoqueMinimo;
-            $novoProduto->quantidadeEstoque=0;
-            $novoProduto->isInsumo=1;
+            $novoProduto->nome = $nome;
+            $novoProduto->idCategoria = $categoria;
+            $novoProduto->quantidadeMinima = $estoqueMinimo;
+            $novoProduto->quantidadeEstoque = 0;
+            $novoProduto->isInsumo = 1;
 
-            if($novoProduto->save()){
+            if ($novoProduto->save()) {
                 echo Json::encode(true);
-            }else{
+            } else {
                 echo Json::encode(false);
             }
-        }else{
+        } else {
             echo Json::encode(false);
         }
 

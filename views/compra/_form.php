@@ -33,20 +33,31 @@ use kartik\money\MaskMoney;
             'language' => 'pt',
         ]); ?>
 
-        <?=
-        $form->field($compraProduto, 'idProduto[]')->widget(Select2::classname(), [
-            'data' => $produtos,
-            'options' => ['placeholder' => 'Selecione o produto'],
-            'pluginOptions' => [
-                'allowClear' => true,
-            ],
-        ]);
 
-        ?>
 
-        <?php
-        $this->registerJsFile(\Yii::getAlias("@web") . '/js/compra_form.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
-        ?>
+        <div class="row">
+            <div class="col-md-6">
+
+                <?=
+                $form->field($compraProduto, 'idProduto[]')->widget(Select2::classname(), [
+                    'data' => $produtos,
+                    'options' => ['placeholder' => 'Selecione o produto',
+                        'onChange' => 'mudarFoto(this)'],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],
+                ]);
+
+                ?>
+
+            </div>
+            <div class="col-md-6">
+                Imagem
+                <img width="200" src="" class="img-responsive">
+            </div>
+        </div>
+
+
 
         <?=
         $form->field($compraProduto, 'quantidade[]')->textInput(['type' => 'number', 'value' => 1, 'min' => 0]);
@@ -62,7 +73,24 @@ use kartik\money\MaskMoney;
             ]
         ]);
 
+
+
+        $options = array();
+        $opt = "<option value=\"\">Selecione um produto</option>";
+        array_push($options, $opt);
+        foreach ($produtos as $k => $v) {
+            $opt = "<option value=\"" . $k . "\">" . $v . "</option>";
+            array_push($options, $opt);
+        }
+        $o = implode("", $options);
+
+        $this->registerJs('var i = 1; $("#btnadprodutocompra").on("click",function(){'
+            . '$("#input-dinamico").append(\'<div id="inputinsumo\'+i+\'" ><div class="form-group field-insumos-idprodutoinsumo required"><div class="row"><div class="col-md-6"><label class="control-label" for="insumos-idprodutoinsumo">Produto</label><select onChange="mudarFoto(this)" id="compraproduto-idproduto" class="form-control" name="Compraproduto[idProduto][]" >' . $o . '</select><div class="help-block"></div></div><div class="col-md-6">Imagem<img width="200" src="" class="img-responsive"></div></div></div><div class="form-group field-insumos-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Compraproduto[quantidade][]" value="1" min="0" step="1"><div class="help-block"></div></div><div class="form-group field-compraproduto-valorcompra required has-success"><label class="control-label" for="compraproduto-valorcompra\'+i+\'">Valor da Compra(R$)</label><input type="number" min="0" step="0.01" value="0" id="compraproduto-valorcompra-disp" class="form-control" name="compraproduto-valorcompra-disp[]"><input type="hidden" id="compraproduto-valorcompra\'+i+\'" name="Compraproduto[valorCompra][]" data-krajee-maskmoney="maskMoney_17eeef61" value="0"><div class="help-block"></div></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Produto"></div><hr></div>\');'
+            . '$("[name=\'Compraproduto[idProduto][]\']").select2();/*$("[name=\'compraproduto-valorcompra-disp[]\']").maskMoney({prefix:\'R$: \'})*/;i = i+1;'
+            . '})');
+
         ?>
+
     <?php } else {
 
         echo $form->field($model, 'dataCompra')->widget(DateControl::classname(), [
@@ -77,10 +105,30 @@ use kartik\money\MaskMoney;
             'displayFormat' => 'dd/MM/yyyy',
             'language' => 'pt',
         ]);
+
+        $options = array();
+        $opt = "<option value=\"\">Selecione um produto</option>";
+        array_push($options, $opt);
+        foreach ($produtos as $k => $v) {
+            $opt = "<option value=\"" . $k . "\">" . $v . "</option>";
+            array_push($options, $opt);
+        }
+        $o = implode("", $options);
+
+        $this->registerJs('var i = '. count($produtosDaCompras).'; $("#btnadprodutocompra").on("click",function(){'
+            . '$("#input-dinamico").append(\'<div id="inputinsumo\'+i+\'" ><div class="form-group field-insumos-idprodutoinsumo required"><div class="row"><div class="col-md-6"><label class="control-label" for="insumos-idprodutoinsumo">Produto</label><select onChange="mudarFoto(this)" id="compraproduto-idproduto" class="form-control" name="Compraproduto[idProduto][]" >' . $o . '</select><div class="help-block"></div></div><div class="col-md-6">Imagem<img width="200" src="" class="img-responsive"></div></div></div><div class="form-group field-insumos-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Compraproduto[quantidade][]" value="1" min="0" step="1"><div class="help-block"></div></div><div class="form-group field-compraproduto-valorcompra required has-success"><label class="control-label" for="compraproduto-valorcompra\'+i+\'">Valor da Compra(R$)</label><input type="number" min="0" step="0.01" value="0" id="compraproduto-valorcompra-disp" class="form-control" name="compraproduto-valorcompra-disp[]"><input type="hidden" id="compraproduto-valorcompra\'+i+\'" name="Compraproduto[valorCompra][]" data-krajee-maskmoney="maskMoney_17eeef61" value="0"><div class="help-block"></div></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Produto"></div><hr></div>\');'
+            . '$("[name=\'Compraproduto[idProduto][]\']").select2();/*$("[name=\'compraproduto-valorcompra-disp[]\']").maskMoney({prefix:\'R$: \'})*/;i = i+1;'
+            . '})');
+
         for ($i = 0; $i < count($produtosDaCompras); $i++) {
 
             ?>
+
+
             <div class="form-group field-insumos-idprodutoinsumo required" id="<?= 'inputinsumo' . $i ?>">
+               <div>
+                <div class="row">
+                    <div class="col-md-6">
                 <?php
 
                 echo Html::activeLabel($produtosDaCompras[$i], 'idProduto', ['class' => 'control-label']);
@@ -92,6 +140,7 @@ use kartik\money\MaskMoney;
 
                     'options' => ['placeholder' => 'Selecione o insumo',
                         'id' => 'idinsumo' . $i,
+                        'onChange' => 'mudarFoto(this)',
 
                     ],
                     'pluginOptions' => [
@@ -110,23 +159,23 @@ use kartik\money\MaskMoney;
     }",
                     ],
                 ]);
+
                 ?>
+                    </div>
+                    <div class="col-md-6">
+                        Imagem
+                        <img width="200" src="<?=
+                        ($produtosDaCompras[$i]->produto->foto) ?
+                            'data:image/jpeg;base64,' . base64_encode($produtosDaCompras[$i]->produto->foto) :
+                            '../imgs/semfoto.jpg'?>" class="img-responsive">
+                    </div>
+                </div>
+            </div>
                 <div class="help-block-insumo<?= $i ?>"></div><?php
                 echo "</br>";
 
                 echo $form->field($compraProduto, 'quantidade[]')->textInput(['type' => 'number', 'value' => $produtosDaCompras[$i]->quantidade, 'min' => 0]);
 
-                /*  echo $form->field($compraProduto, 'valorCompra[]')->widget(MaskMoney::classname(), [
-                      'options' => [
-                          'id' => 'valorCompra' . $produtosDaCompras[$i]->idProduto,
-                          'value' => $produtosDaCompras[$i]->valorCompra,
-                      ],
-                      'pluginOptions' => [
-                          'prefix' => 'R$ ',
-
-                          'allowNegative' => false,
-                      ]
-                  ]);*/
 
                 $this->registerJsFile(\Yii::getAlias('@web') . "/assets/f39098af/js/jquery.maskMoney.js",
                     ['depends' => [\yii\web\JqueryAsset::className()]]);
@@ -140,7 +189,8 @@ use kartik\money\MaskMoney;
                 </p>
                 <input class="btn btn-danger" onclick="removeins(<?= $i ?>)" type='button'
                        value="Remover Produto da Compra">
-            </div></br><?php
+            </div>
+            </br><?php
         }
     }
 
@@ -149,23 +199,7 @@ use kartik\money\MaskMoney;
 
     </div>
 
-    <?php
 
-    $options = array();
-    $opt = "<option value=\"\">Selecione um produto</option>";
-    array_push($options, $opt);
-    foreach ($produtos as $k => $v) {
-        $opt = "<option value=\"" . $k . "\">" . $v . "</option>";
-        array_push($options, $opt);
-    }
-    $o = implode("", $options);
-
-    $this->registerJs('var i = 1; $("#btnadprodutocompra").on("click",function(){'
-        . '$("#input-dinamico").append(\'<div id="inputinsumo\'+i+\'" ><div class="form-group field-insumos-idprodutoinsumo required"><label class="control-label" for="insumos-idprodutoinsumo">Produto</label><select id="compraproduto-idproduto" class="form-control" name="Compraproduto[idProduto][]" >' . $o . '</select><div class="help-block"></div></div><div class="form-group field-insumos-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Compraproduto[quantidade][]" value="1" min="0" step="1"><div class="help-block"></div></div><div class="form-group field-compraproduto-valorcompra required has-success"><label class="control-label" for="compraproduto-valorcompra\'+i+\'">Valor da Compra(R$)</label><input type="number" min="0" step="0.01" value="0" id="compraproduto-valorcompra-disp" class="form-control" name="compraproduto-valorcompra-disp[]"><input type="hidden" id="compraproduto-valorcompra\'+i+\'" name="Compraproduto[valorCompra][]" data-krajee-maskmoney="maskMoney_17eeef61" value="0"><div class="help-block"></div></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Produto"></div><hr></div>\');'
-        . '$("[name=\'Compraproduto[idProduto][]\']").select2();/*$("[name=\'compraproduto-valorcompra-disp[]\']").maskMoney({prefix:\'R$: \'})*/;i = i+1;'
-        . '})');
-
-    ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Cadastrar a Compra')
@@ -251,7 +285,9 @@ use kartik\money\MaskMoney;
 
 </div>
 
-
+<?php
+$this->registerJsFile(\Yii::getAlias("@web") . '/js/compra_form.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+?>
 <?php
 
 if (isset($mensagem) && !empty($mensagem)) {

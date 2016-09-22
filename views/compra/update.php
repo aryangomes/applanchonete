@@ -7,9 +7,9 @@ use yii\helpers\Html;
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
         'modelClass' => 'Compra do dia ',
-    ]) . $model->dataCompra;
+    ]) . date("d/m/Y",strtotime($model->dataCompra));
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Compras'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->dataCompra, 'url' => ['view', 'id' => $model->idconta]];
+$this->params['breadcrumbs'][] = ['label' => 'Compra do dia '. date("d/m/Y",strtotime($model->dataCompra)), 'url' => ['view', 'id' => $model->idconta]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="compra-update">

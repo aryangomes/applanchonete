@@ -1,4 +1,4 @@
-    <?php
+<?php
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -6,10 +6,9 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Compra */
 
-$this->title = 'Compra do dia '. date("d/m/Y",strtotime($model->dataCompra));
+$this->title = 'Compra do dia ' . date("d/m/Y", strtotime($model->dataCompra));
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Compras'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-
 
 
 ?>
@@ -29,25 +28,38 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
 
-</br>
-<table id="w0" class="table table-striped table-bordered detail-view">
-<p><thead><b>Lista de Produtos comprados</b></thead></p>
-<tbody>
-<th>Produto</th>
-<th>Quantidade</th>
-<th>Preço Unitário</th>
-<?php foreach ($compraProdutos as $key => $cp) {
- ?>
+    </br>
+    <table id="w0" class="table table-striped table-bordered detail-view">
+        <p>
+            <thead><b>Lista de Produtos comprados</b></thead>
+        </p>
+        <tbody>
+        <th>Produto</th>
+        <th>Quantidade</th>
+        <th>Preço</th>
+        <th>Valor Total</th>
+        <?php foreach ($compraProdutos as $key => $cp) {
+            ?>
 
-<tr>
+            <tr>
 
-<td><?= $cp->produto->nome ?></td>
-<td><?= $cp->quantidade ?></td>
-<td><?= $cp->valorCompra ?></td>
-</tr>
-<?php } ?>
-</tbody>
-</table>
+                <td><?= $cp->produto->nome ?></td>
+                <td><?= $cp->quantidade ?></td>
+                <td><?= 'R$ '.$cp->valorCompra ?></td>
+                <td>-</td>
+            </tr>
+        <?php
+
+        }
+        ?>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><?= 'R$ '.   $model->conta->valor ?></td>
+        </tr>
+        </tbody>
+    </table>
 
     <?php /* DetailView::widget([
         'model' => $model,

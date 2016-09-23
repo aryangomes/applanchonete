@@ -123,6 +123,8 @@ class RelatorioController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['relatorio' . strtolower($model->tipo), 'id' => $model->idrelatorio]);
         } else {
+            $model->inicio_intervalo= date('Y-m-d');
+            $model->fim_intervalo= date('Y-m-d');
             return $this->render('create', [
                 'model' => $model,
                 'tiposRelatorio' => $this->tiposRelatorio,

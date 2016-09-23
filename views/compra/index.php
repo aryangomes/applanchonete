@@ -22,7 +22,8 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <div class="table-responsive">
-        <?php Pjax::begin(); ?>    <?= GridView::widget([
+        <?php Pjax::begin(); ?>
+        <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => [
@@ -31,7 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 'dataCompra:date',
 
-
+               [
+                   'attribute'=> 'conta.valor',
+                   'value'=>function($model){
+                        return 'R$ ' . $model->conta->valor;
+                   }
+               ],
                 ['class' => 'yii\grid\ActionColumn',
                     'template' => '{view}',
                     'header' => 'Ação',

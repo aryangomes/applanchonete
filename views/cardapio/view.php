@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Cardapio */
 
 $this->title = $model->titulo;
-$this->params['breadcrumbs'][] = ['label' => 'Cardapios', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Cardápios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="cardapio-view">

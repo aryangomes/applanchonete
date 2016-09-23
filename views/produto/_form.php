@@ -88,76 +88,79 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
 
 
         <div id="form-insumos-produtovenda">
-            <div class="insumos-form">
-                <hr>
-                <div class="form-group field-insumos-idprodutoinsumo required">
+            <div class="divborda">
+                <div class="insumos-form">
+
+                    <div class="form-group field-insumos-idprodutoinsumo required">
+                        <?php
+                        /**
+                         * Verifica se o Produto é um Produto Venda
+                         *
+                         * Caso ele seja, o campo de idprodutoInsumo(atributo de Insumo) é mostrado do usuário
+                         *
+                         * Produto Venda é composto por 1 ou mais Insumos
+                         *
+                         * idprodutoInsumo[], representa o array de idprodutoInsumo
+                         */
+                        echo (!$model->isInsumo) ? $form->field($insumo, 'idprodutoInsumo[]')->widget(Select2::classname(), [
+
+                            'data' => $insumos,
+                            'options' => ['placeholder' => 'Selecione o insumo',
+                            ],
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                            ],
+                        ]) : '';
+                        ?>
+                    </div>
                     <?php
                     /**
                      * Verifica se o Produto é um Produto Venda
                      *
-                     * Caso ele seja, o campo de idprodutoInsumo(atributo de Insumo) é mostrado do usuário
+                     * Caso ele seja, o campo de quantidade(atributo de Insumo) é mostrado do usuário
                      *
                      * Produto Venda é composto por 1 ou mais Insumos
                      *
-                     * idprodutoInsumo[], representa o array de idprodutoInsumo
+                     * quantidade[], representa o array de quantidade
                      */
-                    echo (!$model->isInsumo) ? $form->field($insumo, 'idprodutoInsumo[]')->widget(Select2::classname(), [
-
-                        'data' => $insumos,
-                        'options' => ['placeholder' => 'Selecione o insumo',
-                        ],
-                        'pluginOptions' => [
-                            'allowClear' => true,
-                        ],
-                    ]) : '';
-                    ?></div>
-                <?php
-                /**
-                 * Verifica se o Produto é um Produto Venda
-                 *
-                 * Caso ele seja, o campo de quantidade(atributo de Insumo) é mostrado do usuário
-                 *
-                 * Produto Venda é composto por 1 ou mais Insumos
-                 *
-                 * quantidade[], representa o array de quantidade
-                 */
-                echo (!$model->isInsumo) ? $form->field($insumo, 'quantidade[]')->textInput(['type' => 'number',
-                    'value' => 0, 'min' => 0, 'step' => '0.1', 'id' => 'quantidade0',
-                    'value' => Yii::$app->formatter->asDecimal($insumo->quantidade)]) : '';
+                    echo (!$model->isInsumo) ? $form->field($insumo, 'quantidade[]')->textInput(['type' => 'number',
+                        'value' => 0, 'min' => 0, 'step' => '0.1', 'id' => 'quantidade0',
+                        'value' => Yii::$app->formatter->asDecimal($insumo->quantidade)]) : '';
 
 
-                /**
-                 * Verifica se o Produto é um Produto Venda
-                 *
-                 * Caso ele seja, o campo de unidade(atributo de Insumo) é mostrado do usuário
-                 *
-                 * Produto Venda é composto por 1 ou mais Insumos
-                 *
-                 * unidade[], representa o array de unidade
-                 */
-                echo (!$model->isInsumo) ? $form->field($insumo, 'unidade[]')->dropDownList(
-                    ['kg' => 'Kg', 'l' => 'Litros', 'unidade' => 'Unidade'], ['prompt' => 'Selecione a unidade']) : '';
-                ?>
-                <?php
-                /**
-                 * Verifica se o Produto é um Produto Venda
-                 *
-                 * Caso ele seja, a opção de adicionar mais insumos é mostrado do usuário
-                 *
-                 * Produto Venda é composto por 1 ou mais Insumos
-                 *
-                 */
-                if (!$model->isInsumo) {
+                    /**
+                     * Verifica se o Produto é um Produto Venda
+                     *
+                     * Caso ele seja, o campo de unidade(atributo de Insumo) é mostrado do usuário
+                     *
+                     * Produto Venda é composto por 1 ou mais Insumos
+                     *
+                     * unidade[], representa o array de unidade
+                     */
+                    echo (!$model->isInsumo) ? $form->field($insumo, 'unidade[]')->dropDownList(
+                        ['kg' => 'Kg', 'l' => 'Litros', 'unidade' => 'Unidade'], ['prompt' => 'Selecione a unidade']) : '';
                     ?>
-                    <input class="btn btn-danger" onclick="removeins(0)" type="button" value="Remover Insumo"
-                           title="Remover insumo desse produto">
-                <?php } ?>
-                <hr>
-                <div class="table-responsive" id="input-dinamico">
+                    <?php
+                    /**
+                     * Verifica se o Produto é um Produto Venda
+                     *
+                     * Caso ele seja, a opção de adicionar mais insumos é mostrado do usuário
+                     *
+                     * Produto Venda é composto por 1 ou mais Insumos
+                     *
+                     */
+                    if (!$model->isInsumo) {
+                        ?>
+                        <input class="btn btn-danger" onclick="removeins(0)" type="button" value="Remover Insumo"
+                               title="Remover insumo desse produto">
+                    <?php } ?>
+
+
                 </div>
-
-
             </div>
+        </div>
+
+        <div class="table-responsive" id="input-dinamico">
         </div>
     </div>
     <?php
@@ -169,48 +172,49 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
     ?>
     <div class="insumos-form">
 
-    <?=
-    $form->field($models[0], 'idprodutoVenda')->textInput(['value' => $modelProdutoVenda->nome,
-        'disabled' => true]);
-    ?>
-
-
-    <?=
-    $form->field($model, 'idCategoria')->widget(Select2::classname(), [
-        'data' => $categorias,
-        'options' => ['placeholder' => 'Seleciona a categoria'],
-        'pluginOptions' => [
-        ],
-    ]);
-    ?>
-    <hr>
-    <?php
-    /**
-     * Laço de repetição usado para mostrar todos os insumos do Produto Venda,
-     * no caso de atualização de um Produto Venda
-     *
-     *
-     * @var $i integer
-     */
-    for ($i = 0; $i < count($models); $i++) {
+        <?=
+        $form->field($models[0], 'idprodutoVenda')->textInput(['value' => $modelProdutoVenda->nome,
+            'disabled' => true]);
         ?>
-        <div class
-        "form-group field-insumos-idprodutoinsumo required" id="<?= 'inputinsumo' . $i ?>">
-        <?php
-        echo Html::activeLabel($models[$i], 'idprodutoInsumo[]', ['class' => 'control-label']);
-        echo Select2::widget([
-            'model' => $models[$i],
-            'name' => 'Insumo[idprodutoInsumo][]',
-            'value' => $models[$i]->idprodutoInsumo,
-            'data' => $insumos,
-            'options' => ['placeholder' => 'Selecione o insumo',
-                'id' => 'idinsumo' . $i,
-            ],
+
+
+        <?=
+        $form->field($model, 'idCategoria')->widget(Select2::classname(), [
+            'data' => $categorias,
+            'options' => ['placeholder' => 'Seleciona a categoria'],
             'pluginOptions' => [
-                'allowClear' => true,
             ],
-            'pluginEvents' => [
-                "change" => "function() {
+        ]);
+        ?>
+
+        <?php
+        /**
+         * Laço de repetição usado para mostrar todos os insumos do Produto Venda,
+         * no caso de atualização de um Produto Venda
+         *
+         *
+         * @var $i integer
+         */
+        for ($i = 0; $i < count($models); $i++) {
+            ?>
+            <div class
+            "form-group field-insumos-idprodutoinsumo required" id="<?= 'inputinsumo' . $i ?>">
+            <div class="divborda">
+                <?php
+                echo Html::activeLabel($models[$i], 'idprodutoInsumo[]', ['class' => 'control-label']);
+                echo Select2::widget([
+                    'model' => $models[$i],
+                    'name' => 'Insumo[idprodutoInsumo][]',
+                    'value' => $models[$i]->idprodutoInsumo,
+                    'data' => $insumos,
+                    'options' => ['placeholder' => 'Selecione o insumo',
+                        'id' => 'idinsumo' . $i,
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],
+                    'pluginEvents' => [
+                        "change" => "function() {
     	var s = $(\"#idinsumo" . $i . "\").val();
     	console.log(s); 
     	if (s == \"\" || s == null) {
@@ -220,23 +224,28 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
     		$(\".help-block-insumo" . $i . "\").remove();
     	}
     }",
-            ],
-        ]);
+                    ],
+                ]);
+                ?>
+                <div class="help-block-insumo<?= $i ?>">
+
+                </div>
+                <?php
+                echo "</br>";
+                echo $form->field($models[$i], 'quantidade[]')->textInput(['type' => 'number',
+                    'value' => 0, 'min' => 0, 'step' => '0.1', 'id' => 'quantidade' . $i, 'value' => ($models[$i]->quantidade)]);
+
+                echo $form->field($models[$i], 'unidade[]')->dropDownList(
+                    ['kg' => 'Kg', 'l' => 'Litros', 'unidade' => 'Unidade'], ['prompt' => 'Selecione a unidade',
+                    'options' => [$models[$i]->unidade => ['Selected' => true]]]);
+
+                ?>
+                <input class="btn btn-danger" onclick="removeins(<?= $i ?>)" type='button' value="Remover Insumo"></div>
+            </br>
+            <?php
+        }
         ?>
-    <div class="help-block-insumo<?= $i ?>"></div><?php
-        echo "</br>";
-        echo $form->field($models[$i], 'quantidade[]')->textInput(['type' => 'number',
-            'value' => 0, 'min' => 0, 'step' => '0.1', 'id' => 'quantidade' . $i, 'value' => ($models[$i]->quantidade)]);
-
-        echo $form->field($models[$i], 'unidade[]')->dropDownList(
-            ['kg' => 'Kg', 'l' => 'Litros', 'unidade' => 'Unidade'], ['prompt' => 'Selecione a unidade',
-            'options' => [$models[$i]->unidade => ['Selected' => true]]]);
-        echo "<hr>";
-        ?><input class="btn btn-danger" onclick="removeins(<?= $i ?>)" type='button' value="Remover Insumo"></div>
-        </br> <?php
-    }
-    ?>
-
+    </div>
     <div class="table-responsive" id="input-dinamico">
         <?php
         /**
@@ -322,7 +331,7 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
              */
             $this->registerJs('var i = 1; $("#btnaddinsumo").on("click",function(){'
                 . '$("#input-dinamico").append(\'<div id="inputinsumo\'+i+\'" >' .
-                '<div class="form-group field-insumos-idprodutoinsumo required"><label class="control-label" for="insumos-idprodutoinsumo">' .
+                '<div class="divborda"><div class="form-group field-insumos-idprodutoinsumo required"><label class="control-label" for="insumos-idprodutoinsumo">' .
                 'Insumo</label><select id="insumos-idprodutoinsumo" class="form-control" name="Insumo[idprodutoInsumo][]" >'
                 . $arrayOptions . '</select><div class="help-block"></div></div><div class="form-group field-insumos-quantidade required">' .
                 '<label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" ' .
@@ -331,7 +340,7 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
                 '</label><select id="insumos-unidade\'+i+\'" class="form-control" name="Insumo[unidade][]"><option value="">Selecione a unidade' .
                 '</option><option value="kg">Kg</option><option value="l">Litros</option><option value="unidade">Unidade</option></select>' .
                 '<div class="help-block"></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Insumo">' .
-                '</div><hr></div>\');'
+                '</div></div></div>\');'
                 . '$("[name=\'Insumo[idprodutoInsumo][]\']").select2();i = i+1;'
                 . '})');
         }

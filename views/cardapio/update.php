@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Cardapio */
 
-$this->title = 'Update Cardapio: ' . ' ' . $model->idCardapio;
-$this->params['breadcrumbs'][] = ['label' => 'Cardapios', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->idCardapio, 'url' => ['view', 'id' => $model->idCardapio]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Alterar Cardapio: ' . ' ' . $model->idCardapio;
+$this->params['breadcrumbs'][] = ['label' => 'Cardápios', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' =>  'Cardápio: '.$model->titulo, 'url' => ['view', 'id' => $model->idCardapio]];
+$this->params['breadcrumbs'][] = 'Alterar';
 ?>
 <div class="cardapio-update">
 

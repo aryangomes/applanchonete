@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\CardapioSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Cardapios';
+$this->title = 'Cardápios';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="cardapio-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Criar Cardapio', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Criar Cardápio', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <div class="table-responsive">

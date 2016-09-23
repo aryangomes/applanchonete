@@ -24,7 +24,7 @@ use yii\bootstrap\Modal;
         //Cadastrar
         ?>
 
-
+<div class="divborda">
         <?=
         $form->field($itemPedido, 'idProduto[]')->widget(Select2::classname(), [
             'data' => $produtosVenda,
@@ -39,9 +39,13 @@ use yii\bootstrap\Modal;
         $form->field($itemPedido, 'quantidade[]')->textInput([ 'type' => 'number', 'value' => 1, 'min' => 0]);
         ?>
 
-
+</div>
         <?php
     } else {
+
+        ?>
+    <div class="divborda">
+        <?php
         //Atualizar
         echo $form->field($model, 'idPedido')->hiddenInput(['id' => 'idpedido'])
                 ->label(false);
@@ -73,7 +77,9 @@ use yii\bootstrap\Modal;
     }",
                 ],
             ]);
-            ?><div class="help-block-insumo<?= $i ?>"> </div><?php
+            ?>
+        </div>
+        <div class="help-block-insumo<?= $i ?>"> </div><?php
                 echo "</br>";
 
                 echo $form->field($itemPedido[$i], 'quantidade[]')->textInput([ 'type' => 'number', 'value' => $itemPedido[$i]->quantidade, 'min' => 0]);
@@ -98,7 +104,7 @@ use yii\bootstrap\Modal;
     $o = implode("", $options);
 
     $this->registerJs('var i = 1; $("#btnadprodutocompra").on("click",function(){'
-            . '$("#input-dinamico").append(\'<div id="inputinsumo\'+i+\'" ><div class="form-group field-itempedido-idprodutoinsumo required"><label class="control-label" for="itempedido-idprodutoinsumo">Produto</label><select id="itempedido-idproduto" class="form-control" name="Itempedido[idProduto][]" >' . $o . '</select><div class="help-block"></div></div><div class="form-group field-itempedido-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Itempedido[quantidade][]" value="1" min="0" step="1"><div class="help-block"></div></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Item Pedido"></div><hr></div>\');'
+            . '$("#input-dinamico").append(\'<div class="divborda" id="inputinsumo\'+i+\'" ><div class="form-group field-itempedido-idprodutoinsumo required"><label class="control-label" for="itempedido-idprodutoinsumo">Produto</label><select id="itempedido-idproduto" class="form-control" name="Itempedido[idProduto][]" >' . $o . '</select><div class="help-block"></div></div><div class="form-group field-itempedido-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Itempedido[quantidade][]" value="1" min="0" step="1"><div class="help-block"></div></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Item Pedido"></div><hr></div>\');'
             . '$("[name=\'Itempedido[idProduto][]\']").select2();i = i+1;'
             . '$("span[class=\'select2 select2-container select2-container--default select2-container--focus\']")'
             . '.addClass("select2 select2-container select2-container--krajee select2-container--focus")'
@@ -155,6 +161,6 @@ use yii\bootstrap\Modal;
 
 <script type="text/javascript">
     function removeins(id) {
-        $('#inputinsumo' + id).empty();
+        $('#inputinsumo' + id).removeClass("divborda").empty();
     }
 </script>

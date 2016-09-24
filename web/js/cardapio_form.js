@@ -13,13 +13,13 @@ $("#btAddItem").on("click", function () {
 
 function remover(id) {
 
-    $('#itemcardapio'+id).empty();
+    $('#itemcardapio'+id).removeClass('divborda').empty();
 }
 
 
 function removerItemCardapio(element) {
 
-    $(element).parent().empty();
+    $(element).parent().removeClass('divborda').empty();
 
 }
 

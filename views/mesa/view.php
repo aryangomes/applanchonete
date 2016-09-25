@@ -15,8 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->idMesa], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->idMesa], [
+        <?= Html::a('Alterar', ['update', 'id' => $model->idMesa], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Excluir', ['delete', 'id' => $model->idMesa], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -30,8 +30,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'idMesa',
             'descricao',
-            'disponivel',
-            'alerta',
+           [
+               'attribute'=> 'disponivel',
+               'value'=>$model->disponivel?'Disponível':'Não Disponível',
+           ],
+            [
+                'attribute'=>   'alerta',
+                'value'=>$model->alerta?'Ligado':'Desligado',
+            ],
+
             'qrcode',
             'chave',
             'cont',

@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 ],
                 'descricao:ntext',
-                'tipoConta',
+
                 ['attribute' => 'situacaoPagamento',
                     'format' => 'text',
                     'value' => function ($model) {

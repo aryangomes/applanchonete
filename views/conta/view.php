@@ -31,7 +31,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             // 'idconta',
-            'valor',
+            [
+                'attribute' => 'valor',
+                'value' => 'R$ ' . $model->valor,
+            ],
             'descricao:ntext',
             'tipoConta',
             ['label' => 'Consumo',

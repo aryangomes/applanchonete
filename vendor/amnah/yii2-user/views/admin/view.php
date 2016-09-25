@@ -21,40 +21,47 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('user', 'Delete'), ['delete', 'id' => $user->id], [
             'class' => 'btn btn-danger',
             'data' => [
-            'confirm' => Yii::t('user', 'Are you sure you want to delete this item?'),
-            'method' => 'post',
+                'confirm' => Yii::t('user', 'Are you sure you want to delete this item?'),
+                'method' => 'post',
             ],
-            ]) ?>
-        </p>
+        ]) ?>
+    </p>
 
-        <?= DetailView::widget([
-            'model' => $user,
-            'attributes' => [
+    <?= DetailView::widget([
+        'model' => $user,
+        'attributes' => [
             'id',
-           // 'role_id',
-            [
-           // 'attribute'=>'gender',
-            'format'=>'text',
-            'label'=>'Permissões',
-            'value'=> 
-            ($user->permissoes),
-
-            ],
-            'status',
+            // 'role_id',
+            'profile.full_name',
             'email:email',
             'username',
-            'profile.full_name',
-            'password',
-            'auth_key',
-            'access_token',
-            'logged_in_ip',
-            'logged_in_at',
-            'created_ip',
-            'created_at',
-            'updated_at',
-            'banned_at',
-            'banned_reason',
-            ],
-            ]) ?>
+            [
+                // 'attribute'=>'gender',
+                'format' => 'text',
+                'label' => 'Permissões',
+                'value' =>
+                    ($user->permissoes),
 
-        </div>
+            ],
+
+            [
+                'attribute' => 'status',
+                'value' => $user->status ? 'Ativo' : 'Não ativo',
+            ],
+
+
+
+//            'password',
+//            'auth_key',
+//            'access_token',
+//            'logged_in_ip',
+//            'logged_in_at',
+//            'created_ip',
+//            'created_at',
+//            'updated_at',
+//            'banned_at',
+//            'banned_reason',
+        ],
+    ]) ?>
+
+</div>

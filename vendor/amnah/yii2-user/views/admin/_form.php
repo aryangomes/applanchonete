@@ -23,13 +23,17 @@ $role = $module->model("Role");
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <?= $form->field($user, 'email')->textInput(['maxlength' => 255]) ?>
+        <?= $form->field($user, 'email')->textInput(['maxlength' => 255,
+        'placeholder'=>'Digite o email do usuário']) ?>
 
-        <?= $form->field($user, 'username')->textInput(['maxlength' => 255]) ?>
+        <?= $form->field($user, 'username')->textInput(['maxlength' => 255,
+            'placeholder'=>'Digite o usuário']) ?>
 
-        <?= $form->field($user, 'newPassword')->passwordInput() ?>
+        <?= $form->field($user, 'newPassword')->passwordInput([
+            'placeholder'=>'Digite a senha do usuário']) ?>
 
-        <?= $form->field($profile, 'full_name'); ?>
+        <?= $form->field($profile, 'full_name')->textInput([
+            'placeholder'=>'Digite o nome completo do usuário']); ?>
 
 
 
@@ -38,6 +42,7 @@ $role = $module->model("Role");
             'data' => $permissoes,
             'options'=>[
                 'id'=>'permissoes',
+                'prompt'=>'Selecione a(s) permissão(ões)',
             ],
             'pluginOptions' => [
 

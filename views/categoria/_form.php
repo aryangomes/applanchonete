@@ -12,7 +12,8 @@ use yii\widgets\ActiveForm;
 
 	<?php $form = ActiveForm::begin(); ?>
 
-	<?= $form->field($model, 'nome')->textInput(['maxlength' => true]) ?>
+	<?= $form->field($model, 'nome')->textInput(['maxlength' => true,
+	'placeholder'=>'Digite o nome da categoria']) ?>
 
 	<div class="form-group">
 		<?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -9,6 +9,7 @@ use kartik\datecontrol\DateControl;
 /* @var $this yii\web\View */
 /* @var $model app\models\Relatorio */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $dadosPedido array */
 $this->title = 'Relatório de Pedidos Feitos';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Relatorios'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

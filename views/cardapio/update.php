@@ -4,7 +4,10 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Cardapio */
-
+/* @var $modelItemCardapio app\models\Itemcardapio */
+/* @var $mensagem mixed */
+/* @var $produtos array */
+/* @var $itensCardapio array */
 $this->title = 'Alterar Cardapio: ' . ' ' . $model->idCardapio;
 $this->params['breadcrumbs'][] = ['label' => 'Cardápios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' =>  'Cardápio: '.$model->titulo, 'url' => ['view', 'id' => $model->idCardapio]];

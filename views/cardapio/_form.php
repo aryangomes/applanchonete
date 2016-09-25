@@ -7,6 +7,9 @@ use yii\bootstrap\Modal;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Cardapio */
+/* @var $modelItemCardapio \app\models\Itemcardapio */
+/* @var $produtos array */
+/* @var $itensCardapio array */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

@@ -5,8 +5,11 @@ use yii\helpers\Url;
 use yii\widgets\DetailView;
 use kartik\widgets\Select2;
 use yii\widgets\ActiveForm;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Produto */
+/* @var $insumos array */
+/* @var $nomeInsumo mixed */
 
 $this->title = 'Lista de produtos de venda por insumo';
 
@@ -22,11 +25,11 @@ $this->title = 'Lista de produtos de venda por insumo';
         'name' => 'idinsumo',
         'data' => $insumos,
         'options' => [
-        'required'=>true,
-        'placeholder' => 'Digite o insumo',
-      //  'multiple' => true
+            'required' => true,
+            'placeholder' => 'Digite o insumo',
+            //  'multiple' => true
         ],
-        ]);?>
+    ]); ?>
     </br>
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary btn-block']) ?>
@@ -35,11 +38,15 @@ $this->title = 'Lista de produtos de venda por insumo';
     <?php ActiveForm::end(); ?>
     <div class="panel panel-default">
 
-        <?php 
+        <?php
         if (isset($produtosVenda)) {
-            ?> <div class="panel-heading">Produtos de venda que possuem o insumo <?= $nomeInsumo ?> em sua composição</div> <?php
+            ?>
+            <div class="panel-heading">Produtos de venda que possuem o insumo <?= $nomeInsumo ?> em sua composição
+            </div> <?php
             foreach ($produtosVenda as $pv) {
-                ?> <div class="panel-body"><?= Html::a($pv->nome,Url::toRoute(['view','id'=>$pv->idProduto])) ?></div><?php
+                ?>
+                <div
+                    class="panel-body"><?= Html::a($pv->nome, Url::toRoute(['view', 'id' => $pv->idProduto])) ?></div><?php
             }
         }
 

@@ -5,7 +5,7 @@ use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Compra */
-
+/* @var $compraProdutos array */
 $this->title = 'Compra do dia ' . date("d/m/Y", strtotime($model->dataCompra));
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Compras'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </br>
     <table id="w0" class="table table-striped table-bordered detail-view">
         <p>
-            <thead><b>Lista de Produtos comprados</b></thead>
+            <trhead><b>Lista de Produtos comprados</b></trhead>
         </p>
         <tbody>
         <th>Produto</th>
@@ -61,12 +61,6 @@ $this->params['breadcrumbs'][] = $this->title;
         </tbody>
     </table>
 
-    <?php /* DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'idconta',
-            'dataCompra',
-        ],
-    ])*/ ?>
+
 
 </div>

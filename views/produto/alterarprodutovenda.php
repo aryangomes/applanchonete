@@ -5,7 +5,10 @@ use yii\widgets\ActiveForm;
 use kartik\widgets\Select2;
 use yii\helpers\Url;
 /* @var $this yii\web\View */
-/* @var $model app\models\Insumos */
+/* @var $model app\models\Insumo */
+/* @var $modelProdutoVenda yii\widgets\ActiveForm */
+/* @var $models array */
+/* @var $insumos array */
 /* @var $form yii\widgets\ActiveForm */
 $action = Yii::$app->controller->action->id;
 
@@ -97,7 +100,7 @@ echo Select2::widget([
 ?><div class="help-block-insumo<?= $i?>"> </div><?php
 echo "</br>";
 echo $form->field($models[$i],  $quantidade)->textInput([ 'type' => 'number', 
-	'value'=>0, 'min'=>0, 'step'=>'0.1','id'=>'quantidade'.$i,'value' => Yii::$app->formatter->asDecimal($models[$i]->quantidade)]);
+	 'min'=>0, 'step'=>'0.1','id'=>'quantidade'.$i,'value' => Yii::$app->formatter->asDecimal($models[$i]->quantidade)]);
 
 echo $form->field($models[$i], $unidade)->dropDownList(
 	['kg'=> 'Kg', 'l'=>'Litros', 'unidade'=>'Unidade'],

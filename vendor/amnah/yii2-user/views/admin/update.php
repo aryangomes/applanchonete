@@ -7,7 +7,10 @@ use yii\helpers\Html;
  * @var amnah\yii2\user\models\User $user
  * @var amnah\yii2\user\models\Profile $profile
  */
-
+/* @var $permissoesUser array */
+/* @var $permissoes array */
+/* @var $authAssignment \app\models\AuthAssignment */
+/* @var $mensagem mixed */
 $this->title = Yii::t('user', 'Update {modelClass}: ', [
 	'modelClass' => 'Usuário',
 	]) . ' ' . $user->email;

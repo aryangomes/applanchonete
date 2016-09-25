@@ -9,6 +9,9 @@ use yii\bootstrap\Modal;
 /* @var $model app\models\Pedido */
 /* @var $mensagem mixed */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $itemPedido \app\models\Itempedido */
+/* @var $produtosVenda array */
+/* @var $situacaopedido array */
 ?>
 
 <div class="pedido-form">

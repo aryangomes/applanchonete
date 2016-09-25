@@ -9,6 +9,7 @@ use kartik\datecontrol\DateControl;
 /* @var $this yii\web\View */
 /* @var $model app\models\Relatorio */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $dadosContasAReceber array */
 $this->title = 'Relatório de Contas A Receber';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Relatorios'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -29,25 +30,25 @@ $this->params['breadcrumbs'][] = $this->title;
         ?>
         <table class="table table-bordered">
             <thead>
-                <tr>
+            <tr>
 
-                    <th>Data</th>
-                    <th>Valor</th>
+                <th>Data</th>
+                <th>Valor</th>
 
-                </tr>
+            </tr>
             </thead>
             <tbody>
-                <?php
-                for ($i = 0; $i < count($dadosContasAReceber[0]); $i++) {
-                    ?>
-
-                    <tr>
-                        <td><?= $dadosContasAReceber[0][$i] ?></td>
-                        <td><?= 'R$ '.$dadosContasAReceber[1][$i]['data'][0] ?></td>
-                    </tr>
-                    <?php
-                }
+            <?php
+            for ($i = 0; $i < count($dadosContasAReceber[0]); $i++) {
                 ?>
+
+                <tr>
+                    <td><?= $dadosContasAReceber[0][$i] ?></td>
+                    <td><?= 'R$ ' . $dadosContasAReceber[1][$i]['data'][0] ?></td>
+                </tr>
+                <?php
+            }
+            ?>
 
             </tbody>
         </table>

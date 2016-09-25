@@ -4,6 +4,10 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Compra */
+/* @var $compraProduto app\models\Compra */
+/* @var $produtos array */
+/* @var $mensagem mixed */
+/* @var $produtosDaCompras array */
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
         'modelClass' => 'Compra do dia ',

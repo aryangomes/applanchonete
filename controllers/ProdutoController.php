@@ -184,10 +184,12 @@ class ProdutoController extends Controller
     public function actionListadeprodutosporinsumo()
     {
         $model = new Produto();
+
         $insumos = ArrayHelper::map(
             Produto::find()->join('INNER JOIN', 'insumo', 'idProduto = idprodutoInsumo ')
                 ->where(['isInsumo' => 1])->all(),
             'idProduto', 'nome');
+
         if ((Yii::$app->request->post())) {
             $searchModel = new ProdutoSearch();
 

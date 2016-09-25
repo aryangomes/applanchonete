@@ -10,10 +10,11 @@ use kartik\widgets\Select2;
  * @var amnah\yii2\user\models\User $user
  * @var amnah\yii2\user\models\Profile $profile
  * @var amnah\yii2\user\models\Role $role
- * @var yii\widgets\ActiveForm $form
+ * @var $authAssignment \app\models\AuthAssignment
  */
-
-$module = $this->context->module;
+/* @var yii\widgets\ActiveForm $form*/
+/* @var $permissoes array */
+$this->context->module;
 $role = $module->model("Role");
 
 ?>

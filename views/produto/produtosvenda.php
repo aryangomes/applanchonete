@@ -34,10 +34,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 ],
 
-                //'isInsumo',
-                //'quantidadeMinima',
-                // 'idCategoria',
-                // 'quantidadeEstoque',
 
                 ['class' => 'yii\grid\ActionColumn',
                     'template' => '{view}',

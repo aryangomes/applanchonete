@@ -17,7 +17,7 @@ use kartik\widgets\Select2;
 /* @var $models app\models\Insumo[] */
 /* @var $insumos yii\helpers\ArrayHelper de app\models\Produto */
 /* @var $categorias yii\helpers\ArrayHelper de app\models\Categoria */
-/* var @modelProdutoVenda app\models\Produto */
+/* var $modelProdutoVenda app\models\Produto */
 /* var $insumo app\models\Insumo */
 
 //Pega a ação do controlador
@@ -124,7 +124,7 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
                      * quantidade[], representa o array de quantidade
                      */
                     echo (!$model->isInsumo) ? $form->field($insumo, 'quantidade[]')->textInput(['type' => 'number',
-                        'value' => 0, 'min' => 0, 'step' => '0.1', 'id' => 'quantidade0',
+                        'min' => 0, 'step' => '0.1', 'id' => 'quantidade0',
                         'value' => Yii::$app->formatter->asDecimal($insumo->quantidade)]) : '';
 
 

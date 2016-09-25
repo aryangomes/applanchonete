@@ -9,6 +9,8 @@ use kartik\money\MaskMoney;
 /* @var $this yii\web\View */
 /* @var $model app\models\Compra */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $compraProduto \app\models\Compraproduto */
+/* @var $produtos array */
 ?>
 
 <div class="compra-form">
@@ -188,7 +190,8 @@ use kartik\money\MaskMoney;
                 <input class="btn btn-danger" onclick="removeins(<?= $i ?>)" type='button'
                        value="Remover Produto da Compra">
             </div>
-            </br><?php
+            </br>
+            <?php
         }
     }
 

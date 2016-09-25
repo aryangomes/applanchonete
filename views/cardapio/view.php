@@ -5,6 +5,8 @@ use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Cardapio */
+/* @var $itensCardapio array */
+/* @var $insumosProdutos array */
 
 $this->title = $model->titulo;
 $this->params['breadcrumbs'][] = ['label' => 'Cardápios', 'url' => ['index']];

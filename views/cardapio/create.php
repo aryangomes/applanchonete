@@ -5,6 +5,10 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Cardapio */
+/* @var $modelItemCardapio app\models\Itemcardapio */
+/* @var $mensagem mixed */
+/* @var $produtos array */
+
 
 $this->title = 'Criar Cardápio';
 $this->params['breadcrumbs'][] = ['label' => 'Cardápios', 'url' => ['index']];

@@ -5,6 +5,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Relatorio */
+/* @var $tiposRelatorio array */
 
 $this->title = Yii::t('app', 'Create {model}',
 	['model'=>Yii::t('app','Relatorio')]);

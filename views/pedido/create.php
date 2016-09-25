@@ -5,6 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Pedido */
 /* @var $mensagem mixed */
+/* @var $situacaopedido array */
+/* @var $produtosVenda mixed */
+/* @var $itemPedido \app\models\Itempedido */
+/* @var $formasPagamento array */
 
 $this->title = Yii::t('app', 'Create {model}', ['model' => 'Pedido']);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pedidos'), 'url' => ['index']];

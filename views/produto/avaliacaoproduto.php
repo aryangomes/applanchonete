@@ -8,6 +8,9 @@ use kartik\datecontrol\DateControl;
 use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Produto */
+/* @var $datainicioavaliacao mixed */
+/* @var $datafimavaliacao mixed */
+/* @var $model app\models\Produto */
 
 $this->title =  'Avaliação Produto: ' . $model->nome;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Produtos'), 'url' => ['index']];
@@ -58,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ])
       ?>
           </div>
-      <?= $form->field($model, 'groupbyavaliacao')->dropdownList(['DAY'=>'Dia','MONTH'=>'Mês','YEAR'=>'Ano']); ?>
+      <?= $form->field($model, 'groupbyavaliacao')->dropDownList(['DAY'=>'Dia','MONTH'=>'Mês','YEAR'=>'Ano']); ?>
       <div class="form-group">
         <?= Html::submitButton('Gerar gráfico <i class="fa fa-line-chart"></i>', ['class' =>  'btn btn-primary btn-block']) ?>
       </div>

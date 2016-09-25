@@ -7,6 +7,7 @@ use kartik\datecontrol\DateControl;
 /* @var $this yii\web\View */
 /* @var $model app\models\Relatorio */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $tiposRelatorio array */
 ?>
 
 <div class="relatorio-form">

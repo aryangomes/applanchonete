@@ -42,7 +42,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     'value' => function ($model) {
 
-                        return !$model->isInsumo ? $model->valorVenda : null;
+                        return !$model->isInsumo ? 'R$ ' .
+                            number_format($model->valorVenda,2) : null;
                     }
                 ],
                 [

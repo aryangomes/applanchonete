@@ -26,7 +26,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 //   'idProduto',
                 'nome',
-                'valorVenda',
+                [
+                    'attribute' => 'valorVenda',
+                    'format' => 'text',
+                    'value' => function ($model) {
+                        return 'R$ ' . number_format($model->valorVenda, 2);
+                    }
+                ],
+
                 //'isInsumo',
                 //'quantidadeMinima',
                 // 'idCategoria',

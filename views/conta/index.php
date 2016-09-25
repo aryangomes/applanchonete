@@ -28,7 +28,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
 
                 // 'idconta',
-                'valor',
+
+                'tipoConta',
+                ['attribute' => 'valor',
+                    'format' => 'text',
+                    'value' => function ($model) {
+                        return 'R$ '. number_format( $model->valor,2);
+                    }
+                ],
                 'descricao:ntext',
                 'tipoConta',
                 ['attribute' => 'situacaoPagamento',

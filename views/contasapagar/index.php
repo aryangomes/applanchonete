@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'text',
                     'value' => function ($model) {
                         return isset($model->dataVencimento) ?
-                            \Yii::$app->formatter->asDate($model->dataVencimento, 'dd/MM/yyyy') : null;
+                        date('d/m/Y',strtotime($model->dataVencimento)) : null;
                     }
                 ],
 

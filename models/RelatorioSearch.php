@@ -45,6 +45,10 @@ class RelatorioSearch extends Relatorio
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort'=> ['defaultOrder' => ['idrelatorio'=>SORT_DESC]],
             ]);
 
         $this->load($params);

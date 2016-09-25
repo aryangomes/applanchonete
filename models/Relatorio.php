@@ -49,11 +49,11 @@ class Relatorio extends \yii\db\ActiveRecord
         return [
             'idrelatorio' => Yii::t('app', 'Idrelatorio'),
             'nome' => Yii::t('app', 'Título'),
-            'datageracao' => Yii::t('app', 'Datageracao'),
+            'datageracao' => Yii::t('app', 'Data de geração'),
             'tipo' => Yii::t('app', 'Tipo'),
-            'inicio_intervalo' => Yii::t('app', 'Inicio Intervalo'),
-            'fim_intervalo' => Yii::t('app', 'Fim Intervalo'),
-            'usuario_id' => Yii::t('app', 'Usuario ID'),
+            'inicio_intervalo' => Yii::t('app', 'Inicio do intervalo'),
+            'fim_intervalo' => Yii::t('app', 'Fim do intervalo'),
+            'usuario_id' => Yii::t('app', 'Usuário'),
         ];
     }
 

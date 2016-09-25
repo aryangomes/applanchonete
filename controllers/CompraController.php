@@ -97,7 +97,7 @@ class CompraController extends Controller
         if ((Yii::$app->request->post())) {
 
             $conta->tipoConta = 'contasapagar';
-
+            $conta->descricao = 'Compra de '. date('d/m/Y',strtotime(Yii::$app->request->post()['Compra']['dataCompra']));
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
             try {

@@ -8,7 +8,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\CustofixoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Custofixos');
+$this->title = Yii::t('app', 'Custos fixos');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="custofixo-index">
@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
-                'idconta',
+
                 'consumo',
 
                 [

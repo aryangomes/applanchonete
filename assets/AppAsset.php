@@ -18,10 +18,11 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-    'css/site.css',
+
     'admin/bootstrap.css',
     'admin/sb-admin.css',
     'admin/plugins/morris.css',
+        'css/site.css',
     //'admin/metisMenu.css',
     //'admin/font-awesome.min.css',
     'admin/font-awesome/css/font-awesome.min.css',

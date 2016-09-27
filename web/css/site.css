@@ -90,12 +90,61 @@ a.desc:after {
     margin: 0 0 15px 0;
 }
 
-
-
-.divborda{
-    border: 0.2em solid #555555 ;
+.divborda {
+    border: 0.2em solid #555555;
     border-radius: 0.5em;
     padding: 0.5em;
     margin: 0.5em;
     box-shadow: 0.2em 0.2em 0.2em gray;
 }
+
+/*Sobrescrevendo css do template*/
+.navbar-inverse {
+    background-color: #440066;
+    /* border-color: #080808;*/
+}
+
+.navbar-inverse .navbar-brand {
+    color: #fff;
+}
+
+.top-nav > li > a {
+
+    color: #fff;
+}
+
+.top-nav > li > a:hover, .top-nav > li > a:focus, .top-nav > .open > a, .top-nav > .open > a:hover, .top-nav > .open > a:focus {
+    color: #fff;
+    background-color: #8f079a;
+}
+
+@media (min-width: 768px) {
+    .side-nav {
+
+        background-color: #440066;
+    }
+}
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
+    color: #fff;
+     background-color: #8f079a;
+}
+
+.navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+     background-color: #8f079a;
+}
+
+.navbar-toggle {
+    background-color: #8f079a;
+}
+
+@media (min-width: 768px){
+    .side-nav li a:hover, .side-nav li a:focus {
+        outline: none;
+         background-color: #8f079a !important;
+    }
+}
+
+body{
+    background-color: #440066;
+}
+/*Sobrescrevendo css do template*/

@@ -5,6 +5,12 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Conta */
+/* @var $tiposConta array */
+/* @var $tiposCustoFixo array */
+/* @var $modelContaapagar app\models\Contasapagar */
+/* @var $modelContasareceber app\models\Contasareceber */
+/* @var $modelCustofixo app\models\Custofixo */
+/* @var $mensagem  mixed */
 
 $this->title = Yii::t('app', 'Create {model}', ['model' => 'Conta']);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Contas'), 'url' => ['index']];

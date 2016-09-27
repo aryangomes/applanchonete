@@ -9,7 +9,11 @@ use kartik\datecontrol\DateControl;
 /* @var $this yii\web\View */
 /* @var $model app\models\Conta */
 /* @var $form yii\widgets\ActiveForm */
-
+/* @var $tiposConta array */
+/* @var $tiposCustoFixo array */
+/* @var $modelContaapagar \app\models\Contasapagar */
+/* @var $modelContasareceber \app\models\Contasareceber */
+/* @var $modelCustofixo \app\models\Custofixo */
 ?>
 
 <div class="conta-form">

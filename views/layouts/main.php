@@ -46,9 +46,10 @@ if (count($loja) > 0) {
 <html lang="<?= Yii::$app->language ?>">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
+    <link rel="shortcut icon" href="../sgl.ico" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode('App Lanchonete' /* $this->title */) ?></title>
+    <title><?= Html::encode('Sistema de Gerência de Lanchonete' /* $this->title */) ?></title>
     <?php $this->head() ?>
 
 </head>
@@ -68,7 +69,7 @@ if (count($loja) > 0) {
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <?= Html::a('AppLanchonete', ['/'], ['class' => 'navbar-brand']) ?>
+            <?= Html::a('Sistema de Gerência de Lanchonete', ['/'], ['class' => 'navbar-brand']) ?>
         </div>
 
         <!-- Top Menu Items -->
@@ -94,7 +95,7 @@ if (count($loja) > 0) {
                     </li>
                 </ul>
             </li>
-            <li><a href="#"><?= $nomeLoja ?> </a></li>
+       <!--     <li><a href="#"><?/*= $nomeLoja */?> </a></li>-->
 
             <?php
             if (Yii::$app->user->can("caixa") || Yii::$app->user->can("despesa")) {

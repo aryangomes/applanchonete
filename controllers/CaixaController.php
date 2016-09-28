@@ -95,12 +95,12 @@ class CaixaController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'modelCaixa' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new Caixa model.
+     * Creates a new Caixa modelCaixa.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
@@ -110,23 +110,23 @@ class CaixaController extends Controller
         // $caixa = new Caixa(); 
         $caixas = Caixa::find()->all();
 
-        $model = new Caixa();
-        $model->dataabertura = date('Y-m-d');
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idcaixa]);
+        $modelCaixa = new Caixa();
+        $modelCaixa->dataabertura = date('Y-m-d');
+        if ($modelCaixa->load(Yii::$app->request->post()) && $modelCaixa->save()) {
+            return $this->redirect(['view', 'id' => $modelCaixa->idcaixa]);
         } else {
-            $model->valorapurado = 0;
-            $model->valoremcaixa = 0;
-            $model->valorlucro = 0;
+            $modelCaixa->valorapurado = 0;
+            $modelCaixa->valoremcaixa = 0;
+            $modelCaixa->valorlucro = 0;
             return $this->render('create', [
-                'model' => $model,
+                'modelCaixa' => $modelCaixa,
             ]);
         }
         // $caixa = Caixa::find()->where(['user_id'=>Yii::$app->user->getId()])->one(); 
     }
 
     /**
-     * Updates an existing Caixa model.
+     * Updates an existing Caixa modelCaixa.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -134,30 +134,30 @@ class CaixaController extends Controller
     public function actionUpdate($id)
     {
 
-        $model = $this->findModel($id);
+        $modelCaixa = $this->findModel($id);
 
         $ultimocaixa =  Caixa::find()->where(['datafechamento' => null])
         ->orderBy('idcaixa DESC')->all();
         //SELECT ID FROM tabela ORDER BY ID DESC LIMIT 1
         if(!empty($ultimocaixa)){
-          if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idcaixa]);
+          if ($modelCaixa->load(Yii::$app->request->post()) && $modelCaixa->save()) {
+            return $this->redirect(['view', 'id' => $modelCaixa->idcaixa]);
           } else {
             return $this->render('update', [
-                'model' => $model,
+                'modelCaixa' => $modelCaixa,
             ]);
           }
         } else {
           throw new NotFoundHttpException('O caixa não está aberto');
 
           return $this->render('update', [
-                'model' => $model,
+                'modelCaixa' => $modelCaixa,
           ]);
         }
     }
 
     /**
-     * Deletes an existing Caixa model.
+     * Deletes an existing Caixa modelCaixa.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -174,12 +174,12 @@ class CaixaController extends Controller
     public function actionFechar($id)
     {
 
-        $model = $this->findModel($id);
+        $modelCaixa = $this->findModel($id);
         $data = date('Y-m-d');
 
-        Yii::$app->db->createCommand()->update('caixa', ['datafechamento' => $data], 'idcaixa = :idcaixa', ['idcaixa' => $model->idcaixa])->execute();
+        Yii::$app->db->createCommand()->update('caixa', ['datafechamento' => $data], 'idcaixa = :idcaixa', ['idcaixa' => $modelCaixa->idcaixa])->execute();
 
-        // Yii::$app->db->createCommand()->update('apartamento', ['estado' => 'Ocupado'], 'numero = :param', ['param' => $model->apartamento])->execute(); 
+        // Yii::$app->db->createCommand()->update('apartamento', ['estado' => 'Ocupado'], 'numero = :param', ['param' => $modelCaixa->apartamento])->execute();
 
         return $this->redirect(['index']);
     }
@@ -193,8 +193,8 @@ class CaixaController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Caixa::findOne($id)) !== null) {
-            return $model;
+        if (($modelCaixa = Caixa::findOne($id)) !== null) {
+            return $modelCaixa;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

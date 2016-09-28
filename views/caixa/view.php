@@ -4,9 +4,9 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Caixa */
+/* @var $modelCaixa app\models\Caixa */
 
-//$this->title = $model->idcaixa;
+//$this->title = $modelCaixa->idcaixa;
 $this->title = 'Caixa';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Caixa'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -17,28 +17,28 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <?= DetailView::widget([
-        'model' => $model,
+        'model' => $modelCaixa,
         'attributes' => [
             // 'idcaixa',
 
             [
                 'attribute' => 'valorapurado',
-                'value' => 'R$ ' . $model->valorapurado,
+                'value' => 'R$ ' . $modelCaixa->valorapurado,
             ],
             [
                 'attribute' => 'valoremcaixa',
-                'value' => 'R$ ' . $model->valoremcaixa,
+                'value' => 'R$ ' . $modelCaixa->valoremcaixa,
             ],
             [
                 'attribute' => 'valorlucro',
-                'value' => 'R$ ' . $model->valorlucro,
+                'value' => 'R$ ' . $modelCaixa->valorlucro,
             ],
 
         ],
     ]) ?>
     <p>
-        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->idcaixa], ['class' => 'btn btn-primary btn-block']) ?>
-        <?= Html::a(Yii::t('yii', 'Fechar Caixar'), ['fechar', 'id' => $model->idcaixa], [
+        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $modelCaixa->idcaixa], ['class' => 'btn btn-primary btn-block']) ?>
+        <?= Html::a(Yii::t('yii', 'Fechar Caixar'), ['fechar', 'id' => $modelCaixa->idcaixa], [
             'class' => 'btn btn-danger btn-block',
             'data' => [
                 'confirm' => Yii::t('yii', 'Tem certeza que quer fechar o caixa?'),

@@ -7,7 +7,7 @@ use miloschuman\highcharts\HighchartsAsset;
 use kartik\datecontrol\DateControl;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Relatorio */
+/* @var $modelRelatorio app\models\Relatorio */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $dadosContasAReceber array */
 $this->title = 'Relatório de Contas A Receber';
@@ -21,12 +21,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?=
     '<h4><p>Valores recebidos  de <b>' .
-    $model->formatarDataDiaMesAno($model->inicio_intervalo) . ' até ' .
-    $model->formatarDataDiaMesAno($model->fim_intervalo) . '</p></h4>'
+    $modelRelatorio->formatarDataDiaMesAno($modelRelatorio->inicio_intervalo) . ' até ' .
+    $modelRelatorio->formatarDataDiaMesAno($modelRelatorio->fim_intervalo) . '</p></h4>'
     ?>
 
     <?php
-    if (isset($model->idrelatorio)) {
+    if (isset($modelRelatorio->idrelatorio)) {
         ?>
         <table class="table table-bordered">
             <thead>

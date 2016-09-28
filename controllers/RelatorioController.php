@@ -100,13 +100,13 @@ class RelatorioController extends Controller
      */
     public function actionView($id)
     {
-        $model = $this->findModel($id);
+        $modelRelatorio = $this->findModel($id);
 
-//        $tipoDeRelatorio ="\\app\\models\\".$model->tipo;
+//        $tipoDeRelatorio ="\\app\\modelRelatorios\\".$model->tipo;
 
 
         return $this->render('view', [
-            'model' => $model,
+            'modelRelatorio' => $modelRelatorio,
         ]);
     }
 
@@ -118,22 +118,22 @@ class RelatorioController extends Controller
     public function actionCreate()
     {
 
-        $model = new Relatorio();
+        $modelRelatorio = new Relatorio();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['relatorio' . strtolower($model->tipo), 'id' => $model->idrelatorio]);
+        if ($modelRelatorio->load(Yii::$app->request->post()) && $modelRelatorio->save()) {
+            return $this->redirect(['relatorio' . strtolower($modelRelatorio->tipo), 'id' => $modelRelatorio->idrelatorio]);
         } else {
-            $model->inicio_intervalo= date('Y-m-d');
-            $model->fim_intervalo= date('Y-m-d');
+            $modelRelatorio->inicio_intervalo= date('Y-m-d');
+            $modelRelatorio->fim_intervalo= date('Y-m-d');
             return $this->render('create', [
-                'model' => $model,
+                'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
             ]);
         }
     }
 
     /**
-     * Updates an existing Relatorio model.
+     * Updates an existing Relatorio modelRelatorio.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -141,20 +141,20 @@ class RelatorioController extends Controller
     public function actionUpdate($id)
     {
 
-        $model = $this->findModel($id);
+        $modelRelatorio = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['relatorio' . strtolower($model->tipo), 'id' => $model->idrelatorio]);
+        if ($modelRelatorio->load(Yii::$app->request->post()) && $modelRelatorio->save()) {
+            return $this->redirect(['relatorio' . strtolower($modelRelatorio->tipo), 'id' => $modelRelatorio->idrelatorio]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
             ]);
         }
     }
 
     /**
-     * Deletes an existing Relatorio model.
+     * Deletes an existing Relatorio modelRelatorio.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -171,13 +171,13 @@ class RelatorioController extends Controller
      * Finds the Relatorio model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Relatorio the loaded model
+     * @return Relatorio the loaded modelRelatorio
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Relatorio::findOne($id)) !== null) {
-            return $model;
+        if (($modelRelatorio = Relatorio::findOne($id)) !== null) {
+            return $modelRelatorio;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
@@ -191,29 +191,29 @@ class RelatorioController extends Controller
     public function actionRelatoriocontasareceber($id = null)
     {
 
-        $model = new Relatorio();
+        $modelRelatorio = new Relatorio();
 
 
         if (Yii::$app->request->post()) {
-            $model = $this->findModel($id);
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['relatoriocontasareceber', 'id' => $model->idrelatorio]);
+            $modelRelatorio = $this->findModel($id);
+            if ($modelRelatorio->load(Yii::$app->request->post()) && $modelRelatorio->save()) {
+                return $this->redirect(['relatoriocontasareceber', 'id' => $modelRelatorio->idrelatorio]);
             }
         } else {
             if ($id == null) {
                 return $this->render('relatoriocontasareceber', [
-                    'model' => $model,
+                    'modelRelatorio' => $modelRelatorio,
                     'tiposRelatorio' => $this->tiposRelatorio
                 ]);
             }
 
             $searchContasAReceber = new ContasareceberSearch();
-            $model = $this->findModel($id);
+            $modelRelatorio = $this->findModel($id);
             return $this->render('relatoriocontasareceber', [
-                'model' => $model,
+                'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
-                'datasContasAReceber' => $searchContasAReceber->searchDatasContasAReceberPorPeriodo($model->inicio_intervalo, $model->fim_intervalo),
-                'valoresContasAReceber' => $searchContasAReceber->searchContasAReceberPorPeriodo($model->inicio_intervalo, $model->fim_intervalo),
+                'datasContasAReceber' => $searchContasAReceber->searchDatasContasAReceberPorPeriodo($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
+                'valoresContasAReceber' => $searchContasAReceber->searchContasAReceberPorPeriodo($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
             ]);
         }
     }
@@ -226,18 +226,18 @@ class RelatorioController extends Controller
     public function actionRelatoriopagamento($id = null)
     {
 
-        $model = new Relatorio();
+        $modelRelatorio = new Relatorio();
 
 
         if (Yii::$app->request->post()) {
-            $model = $this->findModel($id);
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['relatoriopagamento', 'id' => $model->idrelatorio]);
+            $modelRelatorio = $this->findModel($id);
+            if ($modelRelatorio->load(Yii::$app->request->post()) && $modelRelatorio->save()) {
+                return $this->redirect(['relatoriopagamento', 'id' => $modelRelatorio->idrelatorio]);
             }
         } else {
             if ($id == null) {
                 return $this->render('relatoriopagamento', [
-                    'model' => $model,
+                    'modelRelatorio' => $modelRelatorio,
                     'tiposRelatorio' => $this->tiposRelatorio
                 ]);
             }
@@ -245,14 +245,14 @@ class RelatorioController extends Controller
 
             $searchPagamento = new PagamentoSearch();
 
-            $model = $this->findModel($id);
+            $modelRelatorio = $this->findModel($id);
 
             return $this->render('relatoriopagamento', [
-                'model' => $model,
+                'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
-                'countTiposPagamentos' => $searchPagamento->searchCountPagamentosContasAReceberPorPeriodo($model->inicio_intervalo, $model->fim_intervalo),
-                'datasPagamentos' => $searchPagamento->searchDatasPagamentosContasAReceberPorPeriodo($model->inicio_intervalo, $model->fim_intervalo),
-                'tiposPagamentos' => $searchPagamento->searchPagamentosContasAReceberPorPeriodo($model->inicio_intervalo, $model->fim_intervalo),
+                'countTiposPagamentos' => $searchPagamento->searchCountPagamentosContasAReceberPorPeriodo($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
+                'datasPagamentos' => $searchPagamento->searchDatasPagamentosContasAReceberPorPeriodo($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
+                'tiposPagamentos' => $searchPagamento->searchPagamentosContasAReceberPorPeriodo($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
             ]);
         }
     }
@@ -265,18 +265,18 @@ class RelatorioController extends Controller
     public function actionRelatoriopedido($id = null)
     {
 
-        $model = new Relatorio();
+        $modelRelatorio = new Relatorio();
 
 
         if (Yii::$app->request->post()) {
-            $model = $this->findModel($id);
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['relatoriopedido', 'id' => $model->idrelatorio]);
+            $modelRelatorio = $this->findModel($id);
+            if ($modelRelatorio->load(Yii::$app->request->post()) && $modelRelatorio->save()) {
+                return $this->redirect(['relatoriopedido', 'id' => $modelRelatorio->idrelatorio]);
             }
         } else {
             if ($id == null) {
                 return $this->render('relatoriopedido', [
-                    'model' => $model,
+                    'modelRelatorio' => $modelRelatorio,
                     'tiposRelatorio' => $this->tiposRelatorio
                 ]);
             }
@@ -284,13 +284,13 @@ class RelatorioController extends Controller
 
             $searchPedido = new PedidoSearch();
 
-            $model = $this->findModel($id);
+            $modelRelatorio = $this->findModel($id);
 
 
             return $this->render('relatoriopedido', [
-                'model' => $model,
+                'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
-                'pedidos' => $searchPedido->searchCountPedidosContasAReceberPorPeriodo($model->inicio_intervalo, $model->fim_intervalo),
+                'pedidos' => $searchPedido->searchCountPedidosContasAReceberPorPeriodo($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
             ]);
         }
     }
@@ -303,18 +303,18 @@ class RelatorioController extends Controller
     public function actionRelatorioitempedido($id = null)
     {
 
-        $model = new Relatorio();
+        $modelRelatorio = new Relatorio();
 
 
         if (Yii::$app->request->post()) {
-            $model = $this->findModel($id);
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['relatorioitempedido', 'id' => $model->idrelatorio]);
+            $modelRelatorio = $this->findModel($id);
+            if ($modelRelatorio->load(Yii::$app->request->post()) && $modelRelatorio->save()) {
+                return $this->redirect(['relatorioitempedido', 'id' => $modelRelatorio->idrelatorio]);
             }
         } else {
             if ($id == null) {
                 return $this->render('relatorioitempedido', [
-                    'model' => $model,
+                    'modelRelatorio' => $modelRelatorio,
                     'tiposRelatorio' => $this->tiposRelatorio
                 ]);
             }
@@ -322,13 +322,13 @@ class RelatorioController extends Controller
 
             $searchItemPedido = new ItempedidoSearch();
 
-            $model = $this->findModel($id);
+            $modelRelatorio = $this->findModel($id);
 
 
             return $this->render('relatorioitempedido', [
-                'model' => $model,
+                'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
-                'produtosVendidos' => $searchItemPedido->searchItensPedido($model->inicio_intervalo, $model->fim_intervalo),
+                'produtosVendidos' => $searchItemPedido->searchItensPedido($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
             ]);
         }
     }
@@ -341,18 +341,18 @@ class RelatorioController extends Controller
     public function actionRelatoriolucro($id = null)
     {
 
-        $model = new Relatorio();
+        $modelRelatorio = new Relatorio();
 
 
         if (Yii::$app->request->post()) {
-            $model = $this->findModel($id);
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['relatoriolucro', 'id' => $model->idrelatorio]);
+            $modelRelatorio = $this->findModel($id);
+            if ($modelRelatorio->load(Yii::$app->request->post()) && $modelRelatorio->save()) {
+                return $this->redirect(['relatoriolucro', 'id' => $modelRelatorio->idrelatorio]);
             }
         } else {
             if ($id == null) {
                 return $this->render('relatoriolucro', [
-                    'model' => $model,
+                    'modelRelatorio' => $modelRelatorio,
                     'tiposRelatorio' => $this->tiposRelatorio
                 ]);
             }
@@ -360,13 +360,13 @@ class RelatorioController extends Controller
 
             $searchItemPedido = new ItempedidoSearch();
 
-            $model = $this->findModel($id);
+            $modelRelatorio = $this->findModel($id);
 
 
             return $this->render('relatoriolucro', [
-                'model' => $model,
+                'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
-                'lucros' => $searchItemPedido->searchLucro($model->inicio_intervalo, $model->fim_intervalo),
+                'lucros' => $searchItemPedido->searchLucro($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
             ]);
         }
     }
@@ -376,11 +376,11 @@ class RelatorioController extends Controller
         if ($id != null) {
 
             $searchContasAReceber = new ContasareceberSearch();
-            $model = $this->findModel($id);
+            $modelRelatorio = $this->findModel($id);
             $dadosContasAReceber = [$searchContasAReceber->searchDatasContasAReceberPorPeriodo
-            ($model->inicio_intervalo, $model->fim_intervalo),
+            ($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
                 $searchContasAReceber->searchContasAReceberPorPeriodo
-                ($model->inicio_intervalo, $model->fim_intervalo)
+                ($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo)
             ];
 
 //         Setando a data para o fuso do Brasil
@@ -388,7 +388,7 @@ class RelatorioController extends Controller
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
                 'content' => $this->renderPartial('pdfcontasareceber', [
-                    'model' => $model,
+                    'modelRelatorio' => $modelRelatorio,
                     'dadosContasAReceber' => $dadosContasAReceber,
                 ]),
                 'options' => [
@@ -417,10 +417,10 @@ class RelatorioController extends Controller
 
             $searchPagamento = new PagamentoSearch();
 
-            $model = $this->findModel($id);
+            $modelRelatorio = $this->findModel($id);
 
             $dadosPagamento = $searchPagamento->searchPagamentosContasAReceberPorPeriodo
-            ($model->inicio_intervalo, $model->fim_intervalo);
+            ($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo);
 
 
 //         Setando a data para o fuso do Brasil
@@ -428,7 +428,7 @@ class RelatorioController extends Controller
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8,
                 'content' => $this->renderPartial('pdfpagamento', [
-                    'model' => $model,
+                    'modelRelatorio' => $modelRelatorio,
                     'dadosPagamento' => $dadosPagamento,
                 ]),
                 'options' => [
@@ -457,10 +457,10 @@ class RelatorioController extends Controller
 
             $searchPedido = new PedidoSearch();
 
-            $model = $this->findModel($id);
+            $modelRelatorio = $this->findModel($id);
 
             $dadosPedido = $searchPedido->searchCountPedidosContasAReceberPorPeriodo
-            ($model->inicio_intervalo, $model->fim_intervalo);
+            ($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo);
 
 
 //         Setando a data para o fuso do Brasil
@@ -468,7 +468,7 @@ class RelatorioController extends Controller
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8,
                 'content' => $this->renderPartial('pdfpedido', [
-                    'model' => $model,
+                    'modelRelatorio' => $modelRelatorio,
                     'dadosPedido' => $dadosPedido,
                 ]),
                 'options' => [
@@ -497,10 +497,10 @@ class RelatorioController extends Controller
 
             $searchItemPedido = new ItempedidoSearch();
 
-            $model = $this->findModel($id);
+            $modelRelatorio = $this->findModel($id);
 
 
-            $dadosItemPedido = $searchItemPedido->searchItensPedido($model->inicio_intervalo, $model->fim_intervalo);
+            $dadosItemPedido = $searchItemPedido->searchItensPedido($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo);
 
 
 //         Setando a data para o fuso do Brasil
@@ -508,7 +508,7 @@ class RelatorioController extends Controller
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8,
                 'content' => $this->renderPartial('pdfitempedido', [
-                    'model' => $model,
+                    'modelRelatorio' => $modelRelatorio,
                     'dadosItemPedido' => $dadosItemPedido,
                 ]),
                 'options' => [
@@ -537,10 +537,10 @@ class RelatorioController extends Controller
 
             $searchItemPedido = new ItempedidoSearch();
 
-            $model = $this->findModel($id);
+            $modelRelatorio = $this->findModel($id);
 
 
-            $dadosLucro = $searchItemPedido->searchLucro($model->inicio_intervalo, $model->fim_intervalo);
+            $dadosLucro = $searchItemPedido->searchLucro($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo);
 
 
 //         Setando a data para o fuso do Brasil
@@ -548,7 +548,7 @@ class RelatorioController extends Controller
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8,
                 'content' => $this->renderPartial('pdflucro', [
-                    'model' => $model,
+                    'modelRelatorio' => $modelRelatorio,
                     'dadosLucro' => $dadosLucro,
                 ]),
                 'options' => [

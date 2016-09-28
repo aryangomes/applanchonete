@@ -4,9 +4,9 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Relatorio */
+/* @var $modelRelatorio app\models\Relatorio */
 
-$this->title = 'Relatório '.$model->idrelatorio;
+$this->title = 'Relatório '.$modelRelatorio->idrelatorio;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Relatorios'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -15,8 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->idrelatorio], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->idrelatorio], [
+        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $modelRelatoriol->idrelatorio], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $modelRelatorio->idrelatorio], [
             'class' => 'btn btn-danger',
             'data' => [
             'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </p>
 
         <?= DetailView::widget([
-            'model' => $model,
+            'model' => $modelRelatorio,
             'attributes' => [
             'idrelatorio',
             'nome',

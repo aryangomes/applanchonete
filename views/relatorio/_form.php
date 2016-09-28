@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 
 use kartik\datecontrol\DateControl;
 /* @var $this yii\web\View */
-/* @var $model app\models\Relatorio */
+/* @var $modelRelatorio app\models\Relatorio */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $tiposRelatorio array */
 ?>
@@ -14,15 +14,15 @@ use kartik\datecontrol\DateControl;
 
    <?php $form = ActiveForm::begin(); ?>
 
-   <?= $form->field($model, 'datageracao' )->hiddenInput(['value'=> date('Y-m-d')])->label(false); ?>
+   <?= $form->field($modelRelatorio, 'datageracao' )->hiddenInput(['value'=> date('Y-m-d')])->label(false); ?>
 
-   <?= $form->field($model, 'tipo')->dropDownList(
+   <?= $form->field($modelRelatorio, 'tipo')->dropDownList(
        $tiposRelatorio,
     ['prompt'=>'Selecione o tipo de relatório']) ?>
 
 
 
-   <?= $form->field($model, 'inicio_intervalo')->widget(DateControl::classname(), [
+   <?= $form->field($modelRelatorio, 'inicio_intervalo')->widget(DateControl::classname(), [
     'type'=>DateControl::FORMAT_DATE,
     'ajaxConversion'=>false,
     'options' => [
@@ -35,7 +35,7 @@ use kartik\datecontrol\DateControl;
     'language'=>'pt',
     ]);?>
 
-   <?= $form->field($model, 'fim_intervalo')->widget(DateControl::classname(), [
+   <?= $form->field($modelRelatorio, 'fim_intervalo')->widget(DateControl::classname(), [
     'type'=>DateControl::FORMAT_DATE,
     'ajaxConversion'=>false,
     'options' => [
@@ -47,10 +47,10 @@ use kartik\datecontrol\DateControl;
     'displayFormat' => 'dd/MM/yyyy',
     'language'=>'pt',
     ]); ?>
-    <?= $form->field($model, 'usuario_id' )->hiddenInput(['value'=>Yii::$app->user->getId()])->label(false); ?>
+    <?= $form->field($modelRelatorio, 'usuario_id' )->hiddenInput(['value'=>Yii::$app->user->getId()])->label(false); ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($modelRelatorio->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $modelRelatorio->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

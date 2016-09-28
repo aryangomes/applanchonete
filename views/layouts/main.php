@@ -186,7 +186,7 @@ if (count($loja) > 0) {
 
                 <div class="collapse navbar-collapse navbar-ex1-collapse ">
                     <ul class="nav navbar-nav side-nav">
-                        <li class="active">
+                        <li >
                             <?= Html::a('<i class="fa fa-fw fa-home"></i> Home', ['/site/index']) ?>
 
                         </li>

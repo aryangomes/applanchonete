@@ -19,21 +19,21 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
 
-    'admin/bootstrap.css',
-    'admin/sb-admin.css',
-    'admin/plugins/morris.css',
+        'admin/bootstrap.css',
+        'admin/sb-admin.css',
+        'admin/plugins/morris.css',
         'css/site.css',
-    //'admin/metisMenu.css',
-    //'admin/font-awesome.min.css',
-    'admin/font-awesome/css/font-awesome.min.css',
+        //'admin/metisMenu.css',
+        //'admin/font-awesome.min.css',
+        'admin/font-awesome/css/font-awesome.min.css',
     ];
     public $js = [
-   // 'admin/js/bootstrap.js',
-   // 'admin/js/form-insumo.js'
+        // 'admin/js/bootstrap.js',
+        // 'admin/js/form-insumo.js'
     ];
     public $depends = [
-    'yii\web\YiiAsset',
-    'yii\bootstrap\BootstrapAsset',
+        'yii\web\YiiAsset',
+        'yii\bootstrap\BootstrapAsset',
     ];
 
 

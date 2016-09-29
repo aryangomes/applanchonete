@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Pedido */
+/* @var $modelPedido app\models\Pedido */
 /* @var $mensagem mixed */
 /* @var $situacaopedido array */
 /* @var $produtosVenda mixed */
@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?=
     $this->render('_form', [
-        'model' => $model,
+        'modelPedido' => $modelPedido,
         'situacaopedido' => $situacaopedido,
         'produtosVenda' => $produtosVenda,
         'itemPedido' => $itemPedido,

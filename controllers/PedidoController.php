@@ -100,7 +100,7 @@ class PedidoController extends Controller
 
 
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'modelPedido' => $this->findModel($id),
             'formasPagamento' => $formasPagamento,
             'itensPedido' => $itensPedidos,
         ]);
@@ -113,7 +113,7 @@ class PedidoController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Pedido();
+        $modelPedido = new Pedido();
         $itemPedido = new Itempedido();
 
         $mensagem = ""; //Informa ao usuário mensagens de erro na view
@@ -128,14 +128,14 @@ class PedidoController extends Controller
         $formasPagamento = ArrayHelper::map(
             Formapagamento::find()->all(), 'idTipoPagamento', 'titulo');
 
-        if ($model->load(Yii::$app->request->post())) {
+        if ($modelPedido->load(Yii::$app->request->post())) {
             //Carrega demais modelos
 
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
             try {
                 //Tenta salvar um registro de Pedido:
-                if ($model->save()) {
+                if ($modelPedido->save()) {
                     //Carrega os dados dos itens do Pedido:
                     $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
 
@@ -149,7 +149,7 @@ class PedidoController extends Controller
                         $itemPedido->total = floatval(
                             number_format(
                                 $produtoVenda->valorVenda * $itemPedido->quantidade, 2));
-                        $itemPedido->idPedido = $model->idPedido;
+                        $itemPedido->idPedido = $modelPedido->idPedido;
                         //Tenta salvar os itens do Pedido:
                         if ($itemPedido->save()) {
                             Insumo::atualizaQtdNoEstoqueInsert(
@@ -165,7 +165,7 @@ class PedidoController extends Controller
                     //Testa se todos os itens foram inseridos (ou tudo ou nada):
                     if ($itensInseridos) {
                         $transaction->commit();
-                        return $this->redirect(['view', 'id' => $model->idPedido]);
+                        return $this->redirect(['view', 'id' => $modelPedido->idPedido]);
                     }
                 } else {
                     $mensagem = "Não foi possível salvar os dados do Pedido";
@@ -176,9 +176,9 @@ class PedidoController extends Controller
             }
         }
 //        } else {
-        $model->idSituacaoAtual = Pedido::EM_ANDAMENTO;
+        $modelPedido->idSituacaoAtual = Pedido::EM_ANDAMENTO;
         return $this->render('create', [
-            'model' => $model,
+            'modelPedido' => $modelPedido,
             'situacaopedido' => $situacaopedido,
             'produtosVenda' => $produtosVenda,
             'itemPedido' => $itemPedido,
@@ -196,7 +196,7 @@ class PedidoController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $modelPedido = $this->findModel($id);
 
         $mensagem = ""; //Informa ao usuário mensagens de erro na view
 
@@ -213,9 +213,9 @@ class PedidoController extends Controller
             Formapagamento::find()->all(), 'idTipoPagamento', 'titulo');
 
 
-        $antigaSituacao = $model->idSituacaoAtual;
+        $antigaSituacao = $modelPedido->idSituacaoAtual;
 
-        if ($model->load(Yii::$app->request->post()) &&
+        if ($modelPedido->load(Yii::$app->request->post()) &&
             (count($itensPedido) > 0)
         ) {
             //Carrega demais modelos
@@ -224,7 +224,7 @@ class PedidoController extends Controller
             $transaction = \Yii::$app->db->beginTransaction();
             try {
                 //Tenta salvar um registro de Pedido:
-                if ($model->save()) {
+                if ($modelPedido->save()) {
                     //Carrega os dados dos itens do Pedido:
                     $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
 
@@ -246,7 +246,7 @@ class PedidoController extends Controller
                         $itemPedido->total = floatval(
                             number_format(
                                 $produtoVenda->valorVenda * $itemPedido->quantidade, 2));
-                        $itemPedido->idPedido = $model->idPedido;
+                        $itemPedido->idPedido = $modelPedido->idPedido;
                         //Tenta salvar os itens do Pedido:
                         if ($itemPedido->save()) {
                             Insumo::atualizaQtdNoEstoqueInsert(
@@ -260,10 +260,10 @@ class PedidoController extends Controller
                         }
                     }
 
-                    if ($antigaSituacao != $model->idSituacaoAtual) {
+                    if ($antigaSituacao != $modelPedido->idSituacaoAtual) {
 
-                        if (!$model->mudarHistoricoSituacaoPedido(intval($model->idSituacaoAtual))
-                            && !$model->save()
+                        if (!$modelPedido->mudarHistoricoSituacaoPedido(intval($modelPedido->idSituacaoAtual))
+                            && !$modelPedido->save()
                         ) {
 
                             $itensInseridos = false;
@@ -273,7 +273,7 @@ class PedidoController extends Controller
                     //Testa se todos os itens foram inseridos (ou tudo ou nada):
                     if ($itensInseridos) {
                         $transaction->commit();
-                        return $this->redirect(['view', 'id' => $model->idPedido]);
+                        return $this->redirect(['view', 'id' => $modelPedido->idPedido]);
                     }
                 } else {
                     $mensagem = "Não foi possível salvar os dados do Pedido";
@@ -286,7 +286,7 @@ class PedidoController extends Controller
 //        } else {
 
         return $this->render('update', [
-            'model' => $model,
+            'modelPedido' => $modelPedido,
             'situacaopedido' => $situacaopedido,
             'produtosVenda' => $produtosVenda,
             'itemPedido' => $itensPedido,
@@ -318,13 +318,13 @@ class PedidoController extends Controller
      * Finds the Pedido model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Pedido the loaded model
+     * @return Pedido the loaded modelPedido
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Pedido::findOne($id)) !== null) {
-            return $model;
+        if (($modelPedido = Pedido::findOne($id)) !== null) {
+            return $modelPedido;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

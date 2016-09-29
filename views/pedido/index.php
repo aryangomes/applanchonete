@@ -43,14 +43,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     'value' => 'situacaopedido.titulo'],
                 [
                     'attribute' => 'totalPedido',
-                    'value' => function ($model) {
-                        return 'R$ ' . $model->totalPedido;
+                    'value' => function ($modelPedido) {
+                        return 'R$ ' . $modelPedido->totalPedido;
                     }
                 ],
                 [
                     'label' => 'Itens do Pedido (Produto/Quantidade)',
-                    'value' => function ($model) {
-                        $itensPedidos = $model->getItensPedido();
+                    'value' => function ($modelPedido) {
+                        $itensPedidos = $modelPedido->getItensPedido();
                         $results = [];
                         for ($i = 0; $i < count($itensPedidos); $i++) {
                             $str = $itensPedidos[$i][0] . '(' . $itensPedidos[$i][1] . ')';
@@ -62,22 +62,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 [
                     'attribute' => 'historicosituacaos.dataHora',
-                    'value' => function ($model) {
+                    'value' => function ($modelPedido) {
 
 
                         return
-                            ($model->getDataHoraPedido() != null) ?
+                            ($modelPedido->getDataHoraPedido() != null) ?
                                 date("d/m/Y H:i",
-                                    strtotime($model->getDataHoraPedido())) : null;
+                                    strtotime($modelPedido->getDataHoraPedido())) : null;
                     }
                 ],
                 ['class' => 'yii\grid\ActionColumn',
                     'template' => '{view}',
                     'header' => 'Ação',
                     'buttons' => [
-                        'view' => function ($url, $model) {
+                        'view' => function ($url, $modelPedido) {
                             return Html::a('Clique aqui para visualizar detalhes do pedido <i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $model->idPedido]),
+                                \yii\helpers\Url::toRoute(['view', 'id' => $modelPedido->idPedido]),
                                 [
                                     'title' => Yii::t('app', 'Clique aqui para visualizar detalhes do pedido'),
                                 ]);

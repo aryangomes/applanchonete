@@ -5,9 +5,9 @@ use yii\widgets\DetailView;
 use yii\bootstrap\Modal;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Pedido */
+/* @var $modelPedido app\models\Pedido */
 
-$this->title = 'Pedido: ' . $model->idPedido . ' | Situação Atual: ' . $model->situacaopedido->titulo;
+$this->title = 'Pedido: ' . $modelPedido->idPedido . ' | Situação Atual: ' . $modelPedido->situacaopedido->titulo;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pedidos'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -18,12 +18,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <p>
             <?php
 
-            echo ($model->situacaopedido->idSituacaoPedido == 1) ? Html::a(Yii::t('yii', 'Update'),
-                ['update', 'id' => $model->idPedido], ['class' => 'btn btn-primary']) : '' ?>
+            echo ($modelPedido->situacaopedido->idSituacaoPedido == 1) ? Html::a(Yii::t('yii', 'Update'),
+                ['update', 'id' => $modelPedido->idPedido], ['class' => 'btn btn-primary']) : '' ?>
             <?php
 
-          /*  echo ($model->situacaopedido->idSituacaoPedido == 1) ? Html::a(Yii::t('app', 'Delete'),
-                ['delete', 'id' => $model->idPedido], [
+          /*  echo ($modelPedido->situacaopedido->idSituacaoPedido == 1) ? Html::a(Yii::t('app', 'Delete'),
+                ['delete', 'id' => $modelPedido->idPedido], [
                     'class' => 'btn btn-danger',
                     'data' => [
                         'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
@@ -37,10 +37,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'header' => '<h2>Finalizar Pedido</h2>',
                 'id' => 'modalfinalizarpedido',
 
-                'toggleButton' => ($model->situacaopedido->idSituacaoPedido == 1) ?
+                'toggleButton' => ($modelPedido->situacaopedido->idSituacaoPedido == 1) ?
                     ['label' => 'Finalizar Pedido',
                         'class' => 'btn btn-warning',
-                        'disabled' => isset($model->datadevolucao) ? true : false] : false,
+                        'disabled' => isset($modelPedido->datadevolucao) ? true : false] : false,
             ]);
             ?>
         <div class="row">
@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'id' => 'formapagamento',
                         'prompt' => 'Escolha uma forma de pagamento'])
                     ?>
-                    <?= Html::hiddenInput('Pedido[idPedido]', $model->idPedido, [
+                    <?= Html::hiddenInput('Pedido[idPedido]', $modelPedido->idPedido, [
                         'id' => 'idpedido',
                     ]) ?>
                     <span class="input-group-btn">
@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= Html::label("Valor Total", ['class' => 'form-control'])
                 ?>
                 <?=
-                Html::input('text', null, isset($model->totalPedido) ? 'R$ ' . $model->totalPedido : ''
+                Html::input('text', null, isset($modelPedido->totalPedido) ? 'R$ ' . $modelPedido->totalPedido : ''
                     , ['class' => 'form-control',
                         'disabled' => true,])
 
@@ -90,18 +90,18 @@ $this->params['breadcrumbs'][] = $this->title;
         $this->registerJsFile(\Yii::getAlias("@web") . '/js/pedido_view.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
         ?>
         <?= DetailView::widget([
-            'model' => $model,
+            'model' => $modelPedido,
             'attributes' => [
                 'idPedido',
 
                 ['attribute' => 'totalPedido',
 
-                    'value' => 'R$ ' . $model->totalPedido
+                    'value' => 'R$ ' . $modelPedido->totalPedido
                 ],
 
                 ['attribute' => 'situacaopedido',
                     'label' => 'Situação Atual',
-                    'value' => $model->situacaopedido->titulo
+                    'value' => $modelPedido->situacaopedido->titulo
                 ],
             ],
         ]) ?>

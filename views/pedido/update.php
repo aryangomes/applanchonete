@@ -3,16 +3,16 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Pedido */
+/* @var $modelPedido app\models\Pedido */
 /* @var $situacaopedido array */
 /* @var $produtosVenda mixed */
 /* @var $itemPedido \app\models\Itempedido */
 /* @var $formasPagamento array */
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
             'modelClass' => 'Pedido ',
-        ]) . $model->idPedido;
+        ]) . $modelPedido->idPedido;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pedidos'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->idPedido, 'url' => ['view', 'id' => $model->idPedido]];
+$this->params['breadcrumbs'][] = ['label' => $modelPedido->idPedido, 'url' => ['view', 'id' => $modelPedido->idPedido]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="pedido-update">
@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
     <?=
     $this->render('_form', [
-        'model' => $model,
+        'modelPedido' => $modelPedido,
         'situacaopedido' => $situacaopedido,
         'produtosVenda' => $produtosVenda,
         'itemPedido' => $itemPedido,

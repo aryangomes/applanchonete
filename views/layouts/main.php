@@ -492,7 +492,7 @@ if (count($loja) > 0) {
             </div>
             <footer class="footer">
                 <div class="container">
-                    <p class="pull-left">&copy; Sigir <?= date('Y') ?></p>
+                    <p class="pull-left">&copy; Sistema de Gerência de Lanchonete <?= date('Y') ?></p>
 
                     <p class="pull-right"><?= Yii::powered() ?></p>
                 </div>

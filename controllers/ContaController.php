@@ -80,7 +80,7 @@ class ContaController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'modelConta' => $this->findModel($id),
         ]);
     }
 
@@ -95,7 +95,7 @@ class ContaController extends Controller
         date_default_timezone_set('America/Sao_Paulo');
 
 
-        $model = new Conta();
+        $modelConta = new Conta();
 
         $mensagem = ""; //Informa ao usuário mensagens de erro na view
 
@@ -111,14 +111,14 @@ class ContaController extends Controller
         $tiposCustoFixo = ArrayHelper::map(Tipocustofixo::find()->all(),
             'idtipocustofixo', 'tipocustofixo');
 //       
-        if ($model->load(Yii::$app->request->post())) {
+        if ($modelConta->load(Yii::$app->request->post())) {
 
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
             try {
                 //Tenta salvar um registro :
 
-                if ($model->save()) {
+                if ($modelConta->save()) {
 
                     $itemInserido = true;
 
@@ -128,7 +128,7 @@ class ContaController extends Controller
                     $contasareceber = Yii::$app->request->post()['Contasareceber'];
                     $custofixo = Yii::$app->request->post()['Custofixo'];
                     if ($conta['tipoConta'] == 'contasapagar') {
-                        $modelContaapagar->idconta = $model->idconta;
+                        $modelContaapagar->idconta = $modelConta->idconta;
 //                        $modelContaapagar->situacaoPagamento = $contasapagar['situacaoPagamento'];
                         $modelContaapagar->dataVencimento = $contasapagar['dataVencimento'];
                         if (!$modelContaapagar->save()) {
@@ -138,7 +138,7 @@ class ContaController extends Controller
                         }
 
                     } else if ($conta['tipoConta'] == 'contasareceber') {
-                        $modelContasareceber->idconta = $model->idconta;
+                        $modelContasareceber->idconta = $modelConta->idconta;
                         if (($contasareceber['dataHora']) != null) {
                             $modelContasareceber->dataHora = $contasareceber['dataHora'];
                             if (!$modelContasareceber->save()) {
@@ -151,10 +151,10 @@ class ContaController extends Controller
 
                     } else if ($conta['tipoConta'] == 'custofixo') {
 
-                        $modelCustofixo->idconta = $model->idconta;
-                        $modelContaapagar->idconta = $model->idconta;
-                        $modelContaapagar->dataVencimento = $contasapagar['dataVencimento'];
-                        $modelCustofixo->consumo = $custofixo['consumo'];
+                        $modelCustofixo->idconta = $modelConta->idconta;
+                        $modelContaContaapagar->idconta = $modelConta->idconta;
+                        $modelContaContaapagar->dataVencimento = $contasapagar['dataVencimento'];
+                        $modelContaCustofixo->consumo = $custofixo['consumo'];
                         $modelCustofixo->tipocustofixo_idtipocustofixo = $custofixo['tipocustofixo_idtipocustofixo'];
                         if ($modelContaapagar->save()) {
 
@@ -174,7 +174,7 @@ class ContaController extends Controller
 
                     if ($itemInserido) {
                         $transaction->commit();
-                        return $this->redirect(['view', 'id' => $model->idconta]);
+                        return $this->redirect(['view', 'id' => $modelConta->idconta]);
                     }
 
                 }
@@ -188,7 +188,7 @@ class ContaController extends Controller
 
         $modelContasareceber->dataHora = date('Y-m-d H:i:s');
         return $this->render('create', [
-            'model' => $model,
+            'modelConta' => $modelConta,
             'tiposConta' => $tiposConta,
             'modelContaapagar' => $modelContaapagar,
             'modelContasareceber' => $modelContasareceber,
@@ -207,10 +207,10 @@ class ContaController extends Controller
     public
     function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $modelConta = $this->findModel($id);
 
         //Guarda o tipo de conta
-        $tipodeConta = $model->tipoConta;
+        $tipodeConta = $modelConta->tipoConta;
 
         $mensagem = ""; //Informa ao usuário mensagens de erro na view
 
@@ -242,9 +242,9 @@ class ContaController extends Controller
 
 
 
-        if ($model->load(Yii::$app->request->post())) {
+        if ($modelConta->load(Yii::$app->request->post())) {
 
-            $model->tipoConta =  $tipodeConta;
+            $modelConta->tipoConta =  $tipodeConta;
 
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
@@ -253,7 +253,7 @@ class ContaController extends Controller
 
                 //Tenta salvar um registro :
 
-                if ($model->save()) {
+                if ($modelConta->save()) {
                     $itemInserido = true;
 
                     $conta = Yii::$app->request->post()['Conta'];
@@ -262,7 +262,7 @@ class ContaController extends Controller
                     $contasareceber = Yii::$app->request->post()['Contasareceber'];
                     $custofixo = Yii::$app->request->post()['Custofixo'];
                     if ($conta['tipoConta'] == 'contasapagar') {
-                        $modelContaapagar->idconta = $model->idconta;
+                        $modelContaapagar->idconta = $modelConta->idconta;
 //                        $modelContaapagar->situacaoPagamento = $contasapagar['situacaoPagamento'];
                         $modelContaapagar->dataVencimento = $contasapagar['dataVencimento'];
                         if (!$modelContaapagar->save()) {
@@ -272,7 +272,7 @@ class ContaController extends Controller
                         }
 
                     } else if ($conta['tipoConta'] == 'contasareceber') {
-                        $modelContasareceber->idconta = $model->idconta;
+                        $modelContasareceber->idconta = $modelConta->idconta;
                         if (($contasareceber['dataHora']) != null) {
                             $modelContasareceber->dataHora = $contasareceber['dataHora'];
                             if (!$modelContasareceber->save()) {
@@ -285,8 +285,8 @@ class ContaController extends Controller
 
                     } else if ($conta['tipoConta'] == 'custofixo') {
 
-                        $modelCustofixo->idconta = $model->idconta;
-                        $modelContaapagar->idconta = $model->idconta;
+                        $modelCustofixo->idconta = $modelConta->idconta;
+                        $modelContaapagar->idconta = $modelConta->idconta;
                         $modelContaapagar->dataVencimento = $contasapagar['dataVencimento'];
                         $modelCustofixo->consumo = $custofixo['consumo'];
                         $modelCustofixo->tipocustofixo_idtipocustofixo = $custofixo['tipocustofixo_idtipocustofixo'];
@@ -308,7 +308,7 @@ class ContaController extends Controller
 
                     if ($itemInserido) {
                         $transaction->commit();
-                        return $this->redirect(['view', 'id' => $model->idconta]);
+                        return $this->redirect(['view', 'id' => $modelConta->idconta]);
                     }
                 }
             } catch (\Exception $exception) {
@@ -319,7 +319,7 @@ class ContaController extends Controller
 
         }
         return $this->render('update', [
-            'model' => $model,
+            'modelConta' => $modelConta,
             'tiposConta' => $tiposConta,
             'modelContaapagar' => $modelContaapagar,
             'modelContasareceber' => $modelContasareceber,
@@ -362,8 +362,8 @@ class ContaController extends Controller
     protected
     function findModel($id)
     {
-        if (($model = Conta::findOne($id)) !== null) {
-            return $model;
+        if (($modelConta = Conta::findOne($id)) !== null) {
+            return $modelConta;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

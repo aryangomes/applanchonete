@@ -4,9 +4,9 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Conta */
+/* @var $modelConta app\models\Conta */
 
-$this->title = $model->descricao;
+$this->title = $modelConta->descricao;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Contas'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -17,8 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->idconta], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->idconta], [
+        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $modelConta->idconta], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $modelConta->idconta], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
@@ -28,54 +28,54 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?= DetailView::widget([
-        'model' => $model,
+        'model' => $modelConta,
         'attributes' => [
             // 'idconta',
             [
                 'attribute' => 'valor',
-                'value' => 'R$ ' . $model->valor,
+                'value' => 'R$ ' . $modelConta->valor,
             ],
             'descricao:ntext',
             'tipoConta',
             ['label' => 'Consumo',
-                'visible' => ($model->tipoConta == 'custofixo') ? true : false,
+                'visible' => ($modelConta->tipoConta == 'custofixo') ? true : false,
                 'format' => 'text',
-                'value' => ($model->tipoConta == 'custofixo') ?
-                    $model->custofixo->consumo : '',
+                'value' => ($modelConta->tipoConta == 'custofixo') ?
+                    $modelConta->custofixo->consumo : '',
             ],
             ['label' => 'Tipo de Custo Fixo',
-                'visible' => ($model->tipoConta == 'custofixo') ? true : false,
+                'visible' => ($modelConta->tipoConta == 'custofixo') ? true : false,
                 'format' => 'text',
-                'value' => ($model->tipoConta == 'custofixo') ? $model->custofixo
+                'value' => ($modelConta->tipoConta == 'custofixo') ? $modelConta->custofixo
                     ->tipocustofixoIdtipocustofixo->tipocustofixo : null,
             ],
 
 
             ['attribute' => 'contasapagar.dataVencimento',
-                'value' => ($model->tipoConta == 'contasapagar') ? $model->contasapagar->dataVencimento : '',
+                'value' => ($modelConta->tipoConta == 'contasapagar') ? $modelConta->contasapagar->dataVencimento : '',
                 'format' => 'date',
-                'visible' => ($model->tipoConta == 'contasapagar') ? true : false,
+                'visible' => ($modelConta->tipoConta == 'contasapagar') ? true : false,
 
             ],
             ['attribute' => 'custofixo.dataVencimento',
-                'value' => ($model->tipoConta == 'custofixo') ? $model->contasapagar->dataVencimento : '',
+                    'value' => ($modelConta->tipoConta == 'custofixo') ? $modelConta->contasapagar->dataVencimento : '',
                 'format' => 'date',
-                'visible' => ($model->tipoConta == 'custofixo') ? true : false,
+                'visible' => ($modelConta->tipoConta == 'custofixo') ? true : false,
 
             ],
 
             ['attribute' => 'contasareceber.dataHora',
-                'value' => ($model->tipoConta == 'contasareceber' && isset($model->contasareceber->dataHora))
+                'value' => ($modelConta->tipoConta == 'contasareceber' && isset($modelConta->contasareceber->dataHora))
                     ? date('d/m/Y H:h:i',
-                        strtotime($model->contasareceber->dataHora)) : '',
+                        strtotime($modelConta->contasareceber->dataHora)) : '',
 
-                'visible' => ($model->tipoConta == 'contasareceber') ? true : false,
+                'visible' => ($modelConta->tipoConta == 'contasareceber') ? true : false,
 
             ],
 
             ['attribute' => 'situacaoPagamento',
                 'format' => 'text',
-                'value' => $model->situacaoPagamento ? 'Paga' : 'Não paga'
+                'value' => $modelConta->situacaoPagamento ? 'Paga' : 'Não paga'
             ],
         ],
     ]) ?>

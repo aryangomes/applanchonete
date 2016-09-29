@@ -83,15 +83,15 @@ use yii\bootstrap\Modal;
                 ]);
                 ?>
 
-            <div class="help-block-insumo<?= $i ?>">
-            </div>
-            <?php
-            echo "</br>";
+                <div class="help-block-insumo<?= $i ?>">
+                </div>
+                <?php
+                echo "</br>";
 
-            echo $form->field($itemPedido[$i], 'quantidade[]')->textInput(['type' => 'number', 'value' => $itemPedido[$i]->quantidade, 'min' => 0]);
-            ?>
-            <input class="btn btn-danger" onclick="removeins(<?= $i ?>)" type='button' value="Remover Item Pedido"
-                   title='Remover item do pedido'>
+                echo $form->field($itemPedido[$i], 'quantidade[]')->textInput(['type' => 'number', 'value' => $itemPedido[$i]->quantidade, 'min' => 0]);
+                ?>
+                <input class="btn btn-danger" onclick="removeins(<?= $i ?>)" type='button' value="Remover Item Pedido"
+                       title='Remover item do pedido'>
 
             </div>
             </br>

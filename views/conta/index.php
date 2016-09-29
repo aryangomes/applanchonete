@@ -32,16 +32,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'tipoConta',
                 ['attribute' => 'valor',
                     'format' => 'text',
-                    'value' => function ($model) {
-                        return 'R$ '. number_format( $model->valor,2);
+                    'value' => function ($modelConta) {
+                        return 'R$ '. number_format( $modelConta->valor,2);
                     }
                 ],
                 'descricao:ntext',
 
                 ['attribute' => 'situacaoPagamento',
                     'format' => 'text',
-                    'value' => function ($model) {
-                        return $model->situacaoPagamento ? 'Paga' : 'Não paga';
+                    'value' => function ($modelConta) {
+                        return $modelConta->situacaoPagamento ? 'Paga' : 'Não paga';
                     }
                 ],
 
@@ -49,9 +49,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'template' => '{view}',
                     'header' => 'Ação',
                     'buttons' => [
-                        'view' => function ($url, $model) {
+                        'view' => function ($url, $modelConta) {
                             return Html::a('Clique aqui para visualizar detalhes da conta <i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $model->idconta]),
+                                \yii\helpers\Url::toRoute(['view', 'id' => $modelConta->idconta]),
                                 [
                                     'title' => Yii::t('app', 'Clique aqui para visualizar detalhes da conta'),
                                 ]);

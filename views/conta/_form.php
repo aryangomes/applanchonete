@@ -7,7 +7,7 @@ use kartik\money\MaskMoney;
 use kartik\datecontrol\DateControl;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Conta */
+/* @var $modelConta app\models\Conta */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $tiposConta array */
 /* @var $tiposCustoFixo array */
@@ -20,7 +20,7 @@ use kartik\datecontrol\DateControl;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'valor')->widget(MaskMoney::classname(), [
+    <?= $form->field($modelConta, 'valor')->widget(MaskMoney::classname(), [
         'pluginOptions' => [
             'prefix' => 'R$ ',
 
@@ -28,19 +28,19 @@ use kartik\datecontrol\DateControl;
         ]
     ]); ?>
 
-    <?= $form->field($model, 'descricao')->textarea(
+    <?= $form->field($modelConta, 'descricao')->textarea(
         ['rows' => 6, 'placeholder' => 'Digite a descrição da conta']) ?>
 
-    <?= $form->field($model, 'tipoConta')->dropDownList(
+    <?= $form->field($modelConta, 'tipoConta')->dropDownList(
         $tiposConta,
         ['prompt' => 'Selecione o tipo de Conta',
-        'disabled'=>$model->isNewRecord ? false: true]) ?>
+        'disabled'=>$modelConta->isNewRecord ? false: true]) ?>
 
 
-    <? echo $model->isNewRecord ? '':  $form->field($model, 'tipoConta')->hiddenInput(
+    <? echo $modelConta->isNewRecord ? '':  $form->field($modelConta, 'tipoConta')->hiddenInput(
        )->label(false) ?>
 
-    <?= $form->field($model, 'situacaoPagamento')->dropDownList(
+    <?= $form->field($modelConta, 'situacaoPagamento')->dropDownList(
         [1 => 'Paga', 0 => 'Não paga'], ['prompt' => 'Seleciona a situação do pagamento']) ?>
 
     <?= $form->field($modelContaapagar, 'dataVencimento')->widget(DateControl::classname(), [
@@ -89,7 +89,7 @@ use kartik\datecontrol\DateControl;
     ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($modelConta->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $modelConta->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

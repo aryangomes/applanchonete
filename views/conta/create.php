@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Conta */
+/* @var $modelConta app\models\Conta */
 /* @var $tiposConta array */
 /* @var $tiposCustoFixo array */
 /* @var $modelContaapagar app\models\Contasapagar */
@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
-        'model' => $model,
+        'modelConta' => $modelConta,
         'tiposConta' => $tiposConta,
         'modelContaapagar' => $modelContaapagar,
         'modelContasareceber' => $modelContasareceber,

@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Conta */
+/* @var $modelConta app\models\Conta */
 /* @var $tiposConta array */
 /* @var $tiposCustoFixo array */
 /* @var $modelContaapagar app\models\Contasapagar */
@@ -12,9 +12,9 @@ use yii\helpers\Html;
 /* @var $mensagem  mixed */
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
         'modelClass' => 'Conta: ',
-    ]) . $model->idconta;
+    ]) . $modelConta->idconta;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Contas'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => 'Conta', 'url' => ['view', 'id' => $model->idconta]];
+$this->params['breadcrumbs'][] = ['label' => 'Conta', 'url' => ['view', 'id' => $modelConta->idconta]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="conta-update">
@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
-        'model' => $model,
+        'modelConta' => $modelConta,
         'tiposConta' => $tiposConta,
         'modelContaapagar' => $modelContaapagar,
         'modelContasareceber' => $modelContasareceber,

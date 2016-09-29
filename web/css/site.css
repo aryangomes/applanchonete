@@ -101,7 +101,7 @@ a.desc:after {
 /*Sobrescrevendo css do template*/
 .navbar-inverse {
     background-color: #440066;
-    /* border-color: #080808;*/
+     border-color: #f0f0f0;
 }
 
 .navbar-inverse .navbar-brand {

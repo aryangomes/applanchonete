@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Categoria */
+/* @var $modelCategoria app\models\Categoria */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -12,11 +12,11 @@ use yii\widgets\ActiveForm;
 
 	<?php $form = ActiveForm::begin(); ?>
 
-	<?= $form->field($model, 'nome')->textInput(['maxlength' => true,
+	<?= $form->field($modelCategoria, 'nome')->textInput(['maxlength' => true,
 	'placeholder'=>'Digite o nome da categoria']) ?>
 
 	<div class="form-group">
-		<?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+		<?= Html::submitButton($modelCategoria->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $modelCategoria->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 	</div>
 
 	<?php ActiveForm::end(); ?>

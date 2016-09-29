@@ -74,7 +74,7 @@ class CategoriaController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'modelCategoria' => $this->findModel($id),
             ]);
     }
 
@@ -85,13 +85,13 @@ class CategoriaController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Categoria();
+        $modelCategoria = new Categoria();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idCategoria]);
+        if ($modelCategoria->load(Yii::$app->request->post()) && $modelCategoria->save()) {
+            return $this->redirect(['view', 'id' => $modelCategoria->idCategoria]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                'modelCategoria' => $modelCategoria,
                 ]);
         }
     }
@@ -104,13 +104,13 @@ class CategoriaController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $modelCategoria = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idCategoria]);
+        if ($modelCategoria->load(Yii::$app->request->post()) && $modelCategoria->save()) {
+            return $this->redirect(['view', 'id' => $modelCategoria->idCategoria]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'modelCategoria' => $modelCategoria,
                 ]);
         }
     }
@@ -132,13 +132,13 @@ class CategoriaController extends Controller
      * Finds the Categoria model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Categoria the loaded model
+     * @return Categoria the loaded modelCategoria
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Categoria::findOne($id)) !== null) {
-            return $model;
+        if (($modelCategoria = Categoria::findOne($id)) !== null) {
+            return $modelCategoria;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

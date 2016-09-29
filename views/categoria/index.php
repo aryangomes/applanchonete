@@ -33,9 +33,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'template' => '{view}',
                     'header' => 'Ação',
                     'buttons' => [
-                        'view' => function ($url, $model) {
+                        'view' => function ($url, $modelCategoria) {
                             return Html::a('Clique aqui para visualizar detalhes do categoria <i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $model->idCategoria]),
+                                \yii\helpers\Url::toRoute(['view', 'id' => $modelCategoria->idCategoria]),
                                 [
                                     'title' => Yii::t('app', 'Clique aqui para visualizar detalhes do categoria'),
                                 ]);

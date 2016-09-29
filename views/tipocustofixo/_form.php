@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Tipocustofixo */
+/* @var $modelTipocustofixo app\models\Tipocustofixo */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -12,10 +12,11 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'tipocustofixo')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($modelTipocustofixo, 'tipocustofixo')->textInput(['maxlength' => true,
+    'placeholder'=>'Digite o Tipo de Custo Fixo']) ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($modelTipocustofixo->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $modelTipocustofixo->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

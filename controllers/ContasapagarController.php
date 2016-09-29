@@ -73,7 +73,7 @@ class ContasapagarController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'modelContasapagar' => $this->findModel($id),
             ]);
     }
 
@@ -108,17 +108,17 @@ class ContasapagarController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $modelContasapagar = $this->findModel($id);
         $contas = ArrayHelper::map(
             Conta::find()->where('idconta not in (select idconta from contasareceber) && 
                 idconta not in (select idconta from contasapagar)')->all(),
             'idconta','descricao'
             );
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idconta]);
+        if ($modelContasapagar->load(Yii::$app->request->post()) && $modelContasapagar->save()) {
+            return $this->redirect(['view', 'id' => $modelContasapagar->idconta]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'modelContasapagar' => $modelContasapagar,
                 'contas'=>$contas,
                 ]);
         }
@@ -141,13 +141,13 @@ class ContasapagarController extends Controller
      * Finds the Contasapagar model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Contasapagar the loaded model
+     * @return Contasapagar the loaded modelContasapagar
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Contasapagar::findOne($id)) !== null) {
-            return $model;
+        if (($modelContasapagar = Contasapagar::findOne($id)) !== null) {
+            return $modelContasapagar;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

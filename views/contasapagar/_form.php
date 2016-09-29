@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use kartik\datecontrol\DateControl;
 /* @var $this yii\web\View */
-/* @var $model app\models\Contasapagar */
+/* @var $modelContasapagar app\models\Contasapagar */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -13,13 +13,13 @@ use kartik\datecontrol\DateControl;
 
 	<?php $form = ActiveForm::begin(); ?>
 
-	<?= $form->field($model, 'idconta')->hiddenInput([$model->idconta])->label(false) ?>
+	<?= $form->field($modelContasapagar, 'idconta')->hiddenInput([$modelContasapagar->idconta])->label(false) ?>
 
 
 	<?/*= $form->field($model, 'situacaoPagamento')->dropDownList(
 	[1=>'Paga',0=>'Não paga'],['prompt'=>'Seleciona a situação do pagamento']) */?>
 
-	<?= $form->field($model, 'dataVencimento')->widget(DateControl::classname(), [
+	<?= $form->field($modelContasapagar, 'dataVencimento')->widget(DateControl::classname(), [
 		'type'=>DateControl::FORMAT_DATE,
 		'ajaxConversion'=>false,
 		'options' => [
@@ -33,7 +33,7 @@ use kartik\datecontrol\DateControl;
 		]);?>
 
 		<div class="form-group">
-			<?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+			<?= Html::submitButton($modelContasapagar->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $modelContasapagar->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 		</div>
 
 		<?php ActiveForm::end(); ?>

@@ -7,7 +7,8 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\TipocustofixoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Tipocustofixos');
+
+$this->title = Yii::t('app', 'Create {model}', ['model' => 'Tipo de Custo Fixo']);
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tipocustofixo-index">
@@ -16,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Tipocustofixo'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create {model}', ['model' => 'Tipo de Custo Fixo']), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'idtipocustofixo',
+//            'idtipocustofixo',
             'tipocustofixo',
 
             ['class' => 'yii\grid\ActionColumn'],

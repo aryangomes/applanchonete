@@ -31,16 +31,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['attribute' => 'conta',
                     'format' => 'text',
                     'label' => 'Conta',
-                    'value' => function ($model) {
-                        return $model->conta->descricao;
+                    'value' => function ($modelContasapagar) {
+                        return $modelContasapagar->conta->descricao;
                     }
                 ],
 
                 ['attribute' => 'dataVencimento',
                     'format' => 'text',
-                    'value' => function ($model) {
-                        return isset($model->dataVencimento) ?
-                        date('d/m/Y',strtotime($model->dataVencimento)) : null;
+                    'value' => function ($modelContasapagar) {
+                        return isset($modelContasapagar->dataVencimento) ?
+                        date('d/m/Y',strtotime($modelContasapagar->dataVencimento)) : null;
                     }
                 ],
 
@@ -49,9 +49,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'template' => '{view}',
                     'header' => 'Ação',
                     'buttons' => [
-                        'view' => function ($url, $model) {
+                        'view' => function ($url, $modelContasapagar) {
                             return Html::a('Clique aqui para visualizar detalhes da conta a pagar<i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $model->idconta]),
+                                \yii\helpers\Url::toRoute(['view', 'id' => $modelContasapagar->idconta]),
                                 [
                                     'title' => Yii::t('app', 'Clique aqui para visualizar detalhes da conta a pagar'),
                                 ]);

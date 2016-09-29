@@ -27,6 +27,8 @@ return [
 'Quantidade Minima'=>'Quantidade mínima', 
 'Users'=>'Usuários',
 'Tipocustofixo'=>'Tipo de Custo Fixo',
+    'Create'=>'Cadastrar',
+    'Update'=>'Alterar',
 ];
 
 

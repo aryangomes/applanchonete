@@ -6,8 +6,9 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Custofixo */
 
-$this->title = $model->idconta;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Custofixos'), 'url' => ['index']];
+$this->title = 'Tipo de Custo Fixo: ' . $modelCustofixo->tipocustofixoIdtipocustofixo->tipocustofixo . ' | Consumo:'
+.$modelCustofixo->consumo;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Custo Fixos'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="custofixo-view">
@@ -15,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->idconta], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->idconta], [
+        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $modelCustofixo->idconta], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $modelCustofixo->idconta], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
@@ -26,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?= DetailView::widget([
-        'model' => $model,
+        'model' => $modelCustofixo,
         'attributes' => [
             'idconta',
             'consumo',

@@ -3,13 +3,13 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Tipocustofixo */
+/* @var $modelTipocustofixo app\models\Tipocustofixo */
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
     'modelClass' => 'Tipocustofixo',
-]) . $model->idtipocustofixo;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tipocustofixos'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->idtipocustofixo, 'url' => ['view', 'id' => $model->idtipocustofixo]];
+]) . $modelTipocustofixo->idtipocustofixo;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tipo de Custo Fixos'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $modelTipocustofixo->tipocustofixo, 'url' => ['view', 'id' => $modelTipocustofixo->idtipocustofixo]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="tipocustofixo-update">
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
-        'model' => $model,
+        'modelTipocustofixo' => $modelTipocustofixo,
     ]) ?>
 
 </div>

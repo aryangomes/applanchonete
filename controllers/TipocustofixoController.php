@@ -52,7 +52,7 @@ class TipocustofixoController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'modelTipocustofixo' => $this->findModel($id),
         ]);
     }
 
@@ -63,13 +63,13 @@ class TipocustofixoController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Tipocustofixo();
+        $modelTipocustofixo = new Tipocustofixo();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idtipocustofixo]);
+        if ($modelTipocustofixo->load(Yii::$app->request->post()) && $modelTipocustofixo->save()) {
+            return $this->redirect(['view', 'id' => $modelTipocustofixo->idtipocustofixo]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                'modelTipocustofixo' => $modelTipocustofixo,
             ]);
         }
     }
@@ -82,13 +82,13 @@ class TipocustofixoController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $modelTipocustofixo = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idtipocustofixo]);
+        if ($modelTipocustofixo->load(Yii::$app->request->post()) && $modelTipocustofixo->save()) {
+            return $this->redirect(['view', 'id' => $modelTipocustofixo->idtipocustofixo]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'modelTipocustofixo' => $modelTipocustofixo,
             ]);
         }
     }
@@ -115,8 +115,8 @@ class TipocustofixoController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Tipocustofixo::findOne($id)) !== null) {
-            return $model;
+        if (($modelTipocustofixo = Tipocustofixo::findOne($id)) !== null) {
+            return $modelTipocustofixo;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

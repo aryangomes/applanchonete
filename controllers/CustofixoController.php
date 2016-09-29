@@ -54,7 +54,7 @@ class CustofixoController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'modelCustofixo' => $this->findModel($id),
         ]);
     }
 
@@ -86,14 +86,14 @@ class CustofixoController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $modelCustofixo = $this->findModel($id);
         $tiposCustoFixo = ArrayHelper::map(Tipocustofixo::find()->all(),
             'idtipocustofixo','tipocustofixo');
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idconta]);
+        if ($modelCustofixo->load(Yii::$app->request->post()) && $modelCustofixo->save()) {
+            return $this->redirect(['view', 'id' => $modelCustofixo->idconta]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'modelCustofixo' => $modelCustofixo,
                 'tiposCustoFixo'=>$tiposCustoFixo,
             ]);
         }
@@ -116,13 +116,13 @@ class CustofixoController extends Controller
      * Finds the Custofixo model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Custofixo the loaded model
+     * @return Custofixo the loaded modelCustofixo
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Custofixo::findOne($id)) !== null) {
-            return $model;
+        if (($modelCustofixo = Custofixo::findOne($id)) !== null) {
+            return $modelCustofixo;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

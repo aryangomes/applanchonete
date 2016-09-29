@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
 
         <?= Html::a(Yii::t('app', 'Create {model}', ['model' => 'Tipo de Custo Fixo']), ['tipocustofixo/create'], ['class' => 'btn btn-success']) ?>
+
     </p>
     <?php Pjax::begin(); ?>
     <div class="table-responsive">
@@ -42,9 +43,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'template' => '{view}',
                     'header' => 'Ação',
                     'buttons' => [
-                        'view' => function ($url, $model) {
+                        'view' => function ($url, $modelCustofixo) {
                             return Html::a('Clique aqui para visualizar detalhes do custo fixo<i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $model->idconta]),
+                                \yii\helpers\Url::toRoute(['view', 'id' => $modelCustofixo->idconta]),
                                 [
                                     'title' => Yii::t('app', 'Clique aqui para visualizar detalhes do custo fixo'),
                                 ]);

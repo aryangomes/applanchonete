@@ -44,9 +44,9 @@ class Custofixo extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idconta' => Yii::t('app', 'Idconta'),
+            'idconta' => Yii::t('app', 'Conta'),
             'consumo' => Yii::t('app', 'Consumo'),
-            'tipocustofixo_idtipocustofixo' => Yii::t('app', 'Tipocustofixo Idtipocustofixo'),
+            'tipocustofixo_idtipocustofixo' => Yii::t('app', 'Tipo de Custo Fixo'),
         ];
     }
 

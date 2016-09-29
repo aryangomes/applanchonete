@@ -7,7 +7,7 @@ use kartik\widgets\Select2;
 use kartik\money\MaskMoney;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Compra */
+/* @var $modelCompra app\models\Compra */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $compraProduto \app\models\Compraproduto */
 /* @var $produtos array */
@@ -22,7 +22,7 @@ use kartik\money\MaskMoney;
     <?php if (Yii::$app->controller->action->id == 'create') {
 
         ?>
-        <?= $form->field($model, 'dataCompra')->widget(DateControl::classname(), [
+        <?= $form->field($modelCompra, 'dataCompra')->widget(DateControl::classname(), [
             'type' => DateControl::FORMAT_DATE,
             'ajaxConversion' => false,
             'options' => [
@@ -93,7 +93,7 @@ use kartik\money\MaskMoney;
         </div>
     <?php } else {
 
-        echo $form->field($model, 'dataCompra')->widget(DateControl::classname(), [
+        echo $form->field($modelCompra, 'dataCompra')->widget(DateControl::classname(), [
             'type' => DateControl::FORMAT_DATE,
             'ajaxConversion' => false,
             'options' => [
@@ -202,9 +202,9 @@ use kartik\money\MaskMoney;
 
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Cadastrar a Compra')
+        <?= Html::submitButton($modelCompra->isNewRecord ? Yii::t('yii', 'Cadastrar a Compra')
             : Yii::t('yii', 'Atualizar a Compra'),
-            ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+            ['class' => $modelCompra->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                 'title' => 'Clique aqui para cadastrar a compra']) ?>
 
         <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar mais um Produto"
@@ -217,7 +217,7 @@ use kartik\money\MaskMoney;
             'header' => '<h2>Cadastrar Novo Produto</h2>',
             'id' => 'modalnovoproduto',
 
-            'toggleButton' => $model->isNewRecord ?
+            'toggleButton' => $modelCompra->isNewRecord ?
                 ['label' => 'Cadastrar Novo Produto',
                     'class' => 'btn btn-warning',
                     'id' => 'btnovoproduto',
@@ -255,7 +255,7 @@ use kartik\money\MaskMoney;
                     <?= Html::label("Categoria", ['class' => 'form-control'])
                     ?>
                     <?=
-                    $model->isNewRecord ?
+                    $modelCompra->isNewRecord ?
                         Html::dropDownList('Produto[idCategoria]', null, $categorias, ['class' => 'form-control',
                             'id' => 'produto-idcategoria', 'prompt' => 'Seleciona a categoria...']) : ''
 
@@ -264,7 +264,7 @@ use kartik\money\MaskMoney;
 
 
                 <?=
-                $model->isNewRecord ? Html::Button('Cadastra Novo Produto',
+                $modelCompra->isNewRecord ? Html::Button('Cadastra Novo Produto',
                     ['class' => 'btn btn-success',
                         'id' => 'btCadastrarNovoProduto',
                         'title' => 'Clique aqui para cadastrar um novo produto']) : '' ?>

@@ -4,9 +4,9 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Compra */
+/* @var $modelCompra app\models\Compra */
 /* @var $compraProdutos array */
-$this->title = 'Compra do dia ' . date("d/m/Y", strtotime($model->dataCompra));
+$this->title = 'Compra do dia ' . date("d/m/Y", strtotime($modelCompra->dataCompra));
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Compras'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -17,8 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->idconta], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->idconta], [
+        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $modelCompra->idconta], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $modelCompra->idconta], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
@@ -45,10 +45,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <td><?= $cp->produto->nome ?></td>
                 <td><?= $cp->quantidade ?></td>
-                <td><?= 'R$ '.$cp->valorCompra ?></td>
+                <td><?= 'R$ ' . $cp->valorCompra ?></td>
                 <td>-</td>
             </tr>
-        <?php
+            <?php
 
         }
         ?>
@@ -56,11 +56,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <td></td>
             <td></td>
             <td></td>
-            <td><?= 'R$ '.   $model->conta->valor ?></td>
+            <td><?= 'R$ ' . $modelCompra->conta->valor ?></td>
         </tr>
         </tbody>
     </table>
-
 
 
 </div>

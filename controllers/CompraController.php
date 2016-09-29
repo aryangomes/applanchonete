@@ -59,7 +59,7 @@ class CompraController extends Controller
         $compraProdutos = Compraproduto::find()->where(['idCompra' => $id])
             ->all();
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'modelCompra' => $this->findModel($id),
             'compraProdutos' => $compraProdutos,
         ]);
     }
@@ -71,7 +71,7 @@ class CompraController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Compra();
+        $modelCompra = new Compra();
 
         $mensagem = ""; //Informa ao usuário mensagens de erro na view
 
@@ -107,15 +107,15 @@ class CompraController extends Controller
 
                     $itensInseridos = true;
 
-                    $model->idconta = $conta->idconta;
-                    $model->dataCompra = Yii::$app->request->post()['Compra']['dataCompra'];
-                    if ($model->save(false)) {
+                    $modelCompra->idconta = $conta->idconta;
+                    $modelCompra->dataCompra = Yii::$app->request->post()['Compra']['dataCompra'];
+                    if ($modelCompra->save(false)) {
                         $compraprodutos = Yii::$app->request->post()['Compraproduto'];
                         $valorescompraprodutos = Yii::$app->request->post()['compraproduto-valorcompra-disp'];
 
                         for ($i = 0; $i < count($compraprodutos['idProduto']); $i++) {
                             $cp = new Compraproduto();
-                            $cp->idCompra = $model->idconta;
+                            $cp->idCompra = $modelCompra->idconta;
                             $cp->idProduto = $compraprodutos['idProduto'][$i];
                             $cp->quantidade = $compraprodutos['quantidade'][$i];
 
@@ -136,14 +136,14 @@ class CompraController extends Controller
 
                         }
 
-                        $model->valor = $valorTotalDaCompra;
+                        $modelCompra->valor = $valorTotalDaCompra;
 
-                        if (!$model->save(false)) {
+                        if (!$modelCompra->save(false)) {
                             $mensagem = "Não foi possível salvar os dados ";
                             $transaction->rollBack(); //desfaz alterações no BD
                             $itensInseridos = false;
                         }else{
-                            $conta->valor= $model->valor;
+                            $conta->valor= $modelCompra->valor;
                             if (!$conta->save(false)) {
                                 $mensagem = "Não foi possível salvar os dados ";
                                 $transaction->rollBack(); //desfaz alterações no BD
@@ -155,7 +155,7 @@ class CompraController extends Controller
 
                         if ($itensInseridos) {
                             $transaction->commit();
-                            return $this->redirect(['view', 'id' => $model->idconta]);
+                            return $this->redirect(['view', 'id' => $modelCompra->idconta]);
                         }
 
                     } else {
@@ -175,10 +175,10 @@ class CompraController extends Controller
 
 
         }
-        $model->dataCompra = date('Y-m-d');
+        $modelCompra->dataCompra = date('Y-m-d');
 
         return $this->render('create', [
-            'model' => $model,
+            'modelCompra' => $modelCompra,
             'compraProduto' => $compraProduto,
             'produtos' => $produtos,
             'mensagem' => $mensagem,
@@ -195,9 +195,9 @@ class CompraController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $modelCompra = $this->findModel($id);
 
-        $conta = Conta::findOne($model->idconta);
+        $conta = Conta::findOne($modelCompra->idconta);
 
         $mensagem = ""; //Informa ao usuário mensagens de erro na view
 
@@ -256,16 +256,16 @@ class CompraController extends Controller
 
                 }
 
-                $model->valor = $valorTotalDaCompra;
+                $modelCompra->valor = $valorTotalDaCompra;
 
 
 
-                if (!$model->save(false)) {
+                if (!$modelCompra->save(false)) {
                     $mensagem = "Não foi possível salvar os dados ";
                     $transaction->rollBack(); //desfaz alterações no BD
                     $itensInseridos = false;
                 }else{
-                    $conta->valor= $model->valor;
+                    $conta->valor= $modelCompra->valor;
                     if (!$conta->save(false)) {
                         $mensagem = "Não foi possível salvar os dados ";
                         $transaction->rollBack(); //desfaz alterações no BD
@@ -276,7 +276,7 @@ class CompraController extends Controller
 
                 if ($itensInseridos) {
                     $transaction->commit();
-                    return $this->redirect(['view', 'id' => $model->idconta]);
+                    return $this->redirect(['view', 'id' => $modelCompra->idconta]);
                 }
 
             } catch (\Exception $exception) {
@@ -286,7 +286,7 @@ class CompraController extends Controller
         }
 
         return $this->render('update', [
-            'model' => $model,
+            'modelCompra' => $modelCompra,
             'compraProduto' => $compraProduto,
             'produtos' => $produtos,
             'produtosDaCompras' => $produtosDaCompras,
@@ -345,13 +345,13 @@ class CompraController extends Controller
      * Finds the Compra model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Compra the loaded model
+     * @return Compra the loaded modelCompra
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Compra::findOne($id)) !== null) {
-            return $model;
+        if (($modelCompra = Compra::findOne($id)) !== null) {
+            return $modelCompra;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

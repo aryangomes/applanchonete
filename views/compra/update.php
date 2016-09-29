@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Compra */
+/* @var $modelCompra app\models\Compra */
 /* @var $compraProduto app\models\Compra */
 /* @var $produtos array */
 /* @var $mensagem mixed */
@@ -11,9 +11,9 @@ use yii\helpers\Html;
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
         'modelClass' => 'Compra do dia ',
-    ]) . date("d/m/Y",strtotime($model->dataCompra));
+    ]) . date("d/m/Y",strtotime($modelCompra->dataCompra));
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Compras'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => 'Compra do dia '. date("d/m/Y",strtotime($model->dataCompra)), 'url' => ['view', 'id' => $model->idconta]];
+$this->params['breadcrumbs'][] = ['label' => 'Compra do dia '. date("d/m/Y",strtotime($modelCompra->dataCompra)), 'url' => ['view', 'id' => $modelCompra->idconta]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="compra-update">
@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
-        'model' => $model,
+        'modelCompra' => $modelCompra,
         'compraProduto' => $compraProduto,
         'produtos' => $produtos,
         'produtosDaCompras' => $produtosDaCompras,

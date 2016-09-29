@@ -10,7 +10,7 @@ use kartik\datecontrol\DateControl;
 /* @var $modelRelatorio app\models\Relatorio */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $lucros array */
-$this->title = $model->isNewRecord ? Yii::t('app', 'Create {model}', ['model' => 'Relatório']) :
+$this->title = $modelRelatorio->isNewRecord ? Yii::t('app', 'Create {model}', ['model' => 'Relatório']) :
     Yii::t('app', 'View {model}', ['model' => 'Relatório']);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Relatorios'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

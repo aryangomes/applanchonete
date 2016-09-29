@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $modelRelatoriol->idrelatorio], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $modelRelatorio->idrelatorio], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $modelRelatorio->idrelatorio], [
             'class' => 'btn btn-danger',
             'data' => [

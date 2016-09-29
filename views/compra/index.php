@@ -34,17 +34,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
                [
                    'attribute'=> 'conta.valor',
-                   'value'=>function($model){
-                        return 'R$ ' . $model->conta->valor;
+                   'value'=>function($modelCompra){
+                        return 'R$ ' . $modelCompra->conta->valor;
                    }
                ],
                 ['class' => 'yii\grid\ActionColumn',
                     'template' => '{view}',
                     'header' => 'Ação',
                     'buttons' => [
-                        'view' => function ($url, $model) {
+                        'view' => function ($url, $modelCompra) {
                             return Html::a('Clique aqui para visualizar detalhes da compra <i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $model->idconta]),
+                                \yii\helpers\Url::toRoute(['view', 'id' => $modelCompra->idconta]),
                                 [
                                     'title' => Yii::t('app', 'Clique aqui para visualizar detalhes da compra'),
                                 ]);

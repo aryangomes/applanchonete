@@ -236,7 +236,7 @@ class Produto extends \yii\db\ActiveRecord
 
     /**
      * @return array|null
-     * Gera a lista de Permissões com optgroups
+     * Gera a lista dos produtos cadastrados
      */
     public static function getListToDropDownList()
     {

@@ -6,7 +6,7 @@ use kartik\datecontrol\DateControl;
 use yii\bootstrap\Modal;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Cardapio */
+/* @var $modelCardapio app\models\Cardapio */
 /* @var $modelItemCardapio \app\models\Itemcardapio */
 /* @var $produtos array */
 /* @var $itensCardapio array */
@@ -17,7 +17,7 @@ use yii\bootstrap\Modal;
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <?= $form->field($model, 'data')->widget(DateControl::classname(), [
+        <?= $form->field($modelCardapio, 'data')->widget(DateControl::classname(), [
             'type' => DateControl::FORMAT_DATE,
             'ajaxConversion' => false,
             'options' => [
@@ -30,11 +30,11 @@ use yii\bootstrap\Modal;
             'language' => 'pt',
         ]); ?>
 
-        <?= $form->field($model, 'titulo')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($modelCardapio, 'titulo')->textInput(['maxlength' => true]) ?>
 
 
         <?php
-        if ($model->isNewRecord) {
+        if ($modelCardapio->isNewRecord) {
             ?>
             <div id="item">
 
@@ -145,7 +145,7 @@ use yii\bootstrap\Modal;
         $this->registerJsFile(\Yii::getAlias('@web') . "/js/cardapio_form.js", ['depends' => [\yii\web\JqueryAsset::className()]]);
         ?>
         <div class="form-group">
-            <?= Html::submitButton($model->isNewRecord ? 'Criar' : 'Alterar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?= Html::submitButton($modelCardapio->isNewRecord ? 'Criar' : 'Alterar', ['class' => $modelCardapio->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
             <?= Html::Button('Adicionar mais um Item Cardápio', ['class' => 'btn btn-primary',
                     'id' => 'btAddItem']
             ) ?>

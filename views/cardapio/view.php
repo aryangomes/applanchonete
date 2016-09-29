@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Cardapio */
+/* @var $modelCardapio app\models\Cardapio */
 /* @var $itensCardapio array */
 /* @var $insumosProdutos array */
 
-$this->title = $model->titulo;
+$this->title = $modelCardapio->titulo;
 $this->params['breadcrumbs'][] = ['label' => 'Cardápios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -17,8 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Alterar', ['update', 'id' => $model->idCardapio], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Excluir', ['delete', 'id' => $model->idCardapio], [
+        <?= Html::a('Alterar', ['update', 'id' => $modelCardapio->idCardapio], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Excluir', ['delete', 'id' => $modelCardapio->idCardapio], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?= DetailView::widget([
-        'model' => $model,
+        'model' => $modelCardapio,
         'attributes' => [
 
             'data:date',
@@ -59,9 +59,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 ?>
                 <tr>
                     <td><?= $ic->produto->nome ?></td>
-                    <td>R$ <?= number_format($ic->produto->valorVenda,2) ?></td>
+                    <td>R$ <?= number_format($ic->produto->valorVenda, 2) ?></td>
                     <td><?= $ic->produto->categoria->nome ?></td>
-                    <td><?= implode(", ",$insumosProdutos[$count]) ?></td>
+                    <td><?= implode(", ", $insumosProdutos[$count]) ?></td>
                     <td><?= isset($ic->produto->foto) ?
                             Html::img('data:image/jpeg;base64,' . base64_encode($ic->produto->foto),
                                 ['class' => 'img-responsive',

@@ -3,14 +3,14 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Cardapio */
+/* @var $modelCardapio app\models\Cardapio */
 /* @var $modelItemCardapio app\models\Itemcardapio */
 /* @var $mensagem mixed */
 /* @var $produtos array */
 /* @var $itensCardapio array */
-$this->title = 'Alterar Cardapio: ' . ' ' . $model->idCardapio;
+$this->title = 'Alterar Cardapio: ' . ' ' . $modelCardapio->idCardapio;
 $this->params['breadcrumbs'][] = ['label' => 'Cardápios', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' =>  'Cardápio: '.$model->titulo, 'url' => ['view', 'id' => $model->idCardapio]];
+$this->params['breadcrumbs'][] = ['label' =>  'Cardápio: '.$modelCardapio->titulo, 'url' => ['view', 'id' => $modelCardapio->idCardapio]];
 $this->params['breadcrumbs'][] = 'Alterar';
 ?>
 <div class="cardapio-update">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = 'Alterar';
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
-        'model' => $model,
+        'modelCardapio' => $modelCardapio,
         'modelItemCardapio'=>$modelItemCardapio,
         'mensagem' => $mensagem,
         'itensCardapio'=>$itensCardapio,

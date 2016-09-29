@@ -99,35 +99,35 @@ class CardapioController extends Controller
         ) {
             //Recebe os itens do cardápio
             $itensCardapio = Itemcardapio::find()->where(
-                ['idCardapio'=>$id]
+                ['idCardapio' => $id]
             )->orderBy('ordem ASC')->all();
 
             //Recebe os insumos do Produto Venda do item do Cardápio
             $insumosProdutos = [];
 
 
-            foreach ($itensCardapio as $ic){
+            foreach ($itensCardapio as $ic) {
                 $aux = [];
                 $produtoVenda = Produto::findOne($ic->idProduto);
 
-                if($produtoVenda != null){
-                    $insumos = Insumo::findAll(['idProdutoVenda'=>$produtoVenda->idProduto]);
-                    foreach ($insumos as $i){
+                if ($produtoVenda != null) {
+                    $insumos = Insumo::findAll(['idProdutoVenda' => $produtoVenda->idProduto]);
+                    foreach ($insumos as $i) {
 
-                        array_push($aux,$i->produtoInsumo->nome);
+                        array_push($aux, $i->produtoInsumo->nome);
                     }
                     //Adiciona os insumos produtos na lista de insumos do produto
                     //do item do cardápio
-                    array_push($insumosProdutos,$aux);
+                    array_push($insumosProdutos, $aux);
                 }
 
             }
 
 
             return $this->render('view', [
-                'model' => $this->findModel($id),
-                'itensCardapio'=>$itensCardapio,
-                'insumosProdutos'=>$insumosProdutos,
+                'modelCardapio' => $this->findModel($id),
+                'itensCardapio' => $itensCardapio,
+                'insumosProdutos' => $insumosProdutos,
             ]);
         } else {
             throw new ForbiddenHttpException("Acesso negado!");
@@ -144,20 +144,17 @@ class CardapioController extends Controller
         if (Yii::$app->user->can("create-cardapio") ||
             Yii::$app->user->can("cardapio")
         ) {
-            $model = new Cardapio();
+            $modelCardapio = new Cardapio();
 
             $modelItemCardapio = new Itemcardapio();
 
             $mensagem = "";
 
-            $produtos = Produto::getListToDropDownList();
+            $produtos = ArrayHelper::map(Produto::find()->
+            where(['isInsumo' => 0])->all(), 'idProduto', 'nome');
 
-            /*$produtos = ArrayHelper::map(
-                Produto::find()->all(),
-                'idProduto','nome'
-            );*/
 
-            if ($model->load(Yii::$app->request->post())) {
+            if ($modelCardapio->load(Yii::$app->request->post())) {
 
                 //Inicia a transação:
                 $transaction = \Yii::$app->db->beginTransaction();
@@ -165,13 +162,13 @@ class CardapioController extends Controller
 
                     $itensInseridos = true;
 
-                    if ($model->save()) {
+                    if ($modelCardapio->save()) {
 
                         $itensCardapio = Yii::$app->request->post()['Itemcardapio'];
 
                         for ($i = 0; $i < count($itensCardapio['idProduto']); $i++) {
                             $itemCardapio = new Itemcardapio();
-                            $itemCardapio->idCardapio = $model->idCardapio;
+                            $itemCardapio->idCardapio = $modelCardapio->idCardapio;
                             $itemCardapio->idProduto = $itensCardapio['idProduto'][$i];
                             $itemCardapio->ordem = $itensCardapio['ordem'][$i];
                             var_dump($itensCardapio['idProduto'][$i]);
@@ -182,7 +179,7 @@ class CardapioController extends Controller
 
                         if ($itensInseridos) {
                             $transaction->commit();
-                            return $this->redirect(['view', 'id' => $model->idCardapio]);
+                            return $this->redirect(['view', 'id' => $modelCardapio->idCardapio]);
                         } else {
                             $mensagem = "Não foi possível salvar os dados";
                             $transaction->rollBack(); //desfaz alterações no BD
@@ -199,13 +196,13 @@ class CardapioController extends Controller
             }
             //Seta o fuso horário brasileiro
             date_default_timezone_set('America/Sao_Paulo');
-            $model->data = date('Y-m-d');
+            $modelCardapio->data = date('Y-m-d');
 
             return $this->render('create', [
-                'model' => $model,
+                'modelCardapio' => $modelCardapio,
                 'modelItemCardapio' => $modelItemCardapio,
                 'mensagem' => $mensagem,
-                'produtos'=>$produtos,
+                'produtos' => $produtos,
             ]);
 
 
@@ -225,7 +222,7 @@ class CardapioController extends Controller
         if (Yii::$app->user->can("update-cardapio") ||
             Yii::$app->user->can("cardapio")
         ) {
-            $model = $this->findModel($id);
+            $modelCardapio = $this->findModel($id);
             $modelItemCardapio = new Itemcardapio();
 
             $mensagem = "";
@@ -235,9 +232,11 @@ class CardapioController extends Controller
                 ->where(['idCardapio' => $id])
                 ->orderBy('ordem ASC')
                 ->all();
-            $produtos = Produto::getListToDropDownList();
+            $produtos = ArrayHelper::map(Produto::find()->
+            where(['isInsumo' => 0])->all(), 'idProduto', 'nome');
 
-            if ($model->load(Yii::$app->request->post())) {
+
+            if ($modelCardapio->load(Yii::$app->request->post())) {
 
                 //Inicia a transação:
                 $transaction = \Yii::$app->db->beginTransaction();
@@ -245,7 +244,7 @@ class CardapioController extends Controller
 
                     $itensInseridos = true;
 
-                    if ($model->save()) {
+                    if ($modelCardapio->save()) {
 
 
                         if (Itemcardapio::deleteAll(['idCardapio' => $id]) > 0) {
@@ -254,7 +253,7 @@ class CardapioController extends Controller
 
                             for ($i = 0; $i < count($itensCardapio['idProduto']); $i++) {
                                 $itemCardapio = new Itemcardapio();
-                                $itemCardapio->idCardapio = $model->idCardapio;
+                                $itemCardapio->idCardapio = $modelCardapio->idCardapio;
                                 $itemCardapio->idProduto = $itensCardapio['idProduto'][$i];
                                 $itemCardapio->ordem = $itensCardapio['ordem'][$i];
 
@@ -265,7 +264,7 @@ class CardapioController extends Controller
 
                             if ($itensInseridos) {
                                 $transaction->commit();
-                                return $this->redirect(['view', 'id' => $model->idCardapio]);
+                                return $this->redirect(['view', 'id' => $modelCardapio->idCardapio]);
                             } else {
                                 $mensagem = "Não foi possível salvar os dados";
                                 $transaction->rollBack(); //desfaz alterações no BD
@@ -285,11 +284,11 @@ class CardapioController extends Controller
 
 
             return $this->render('update', [
-                'model' => $model,
+                'modelCardapio' => $modelCardapio,
                 'modelItemCardapio' => $modelItemCardapio,
                 'mensagem' => $mensagem,
-                'itensCardapio'=>$itensCardapio,
-                'produtos'=>$produtos,
+                'itensCardapio' => $itensCardapio,
+                'produtos' => $produtos,
             ]);
         } else {
             throw new ForbiddenHttpException("Acesso negado!");
@@ -319,28 +318,27 @@ class CardapioController extends Controller
      * Finds the Cardapio model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Cardapio the loaded model
+     * @return Cardapio the loaded modelCardapio
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Cardapio::findOne($id)) !== null) {
-            return $model;
+        if (($modelCardapio = Cardapio::findOne($id)) !== null) {
+            return $modelCardapio;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 
 
-
     public function actionGetFotoProduto($idProduto)
     {
-        if(isset($idProduto)){
+        if (isset($idProduto)) {
             $produto = Produto::findOne($idProduto);
 
-            if($produto !=null){
-                return Json::encode([($produto->nome),base64_encode($produto->foto)]);
-            }else{
+            if ($produto != null) {
+                return Json::encode([($produto->nome), base64_encode($produto->foto)]);
+            } else {
                 return Json::encode(false);
             }
         }

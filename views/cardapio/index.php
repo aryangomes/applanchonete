@@ -34,9 +34,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'template' => '{view}',
                     'header' => 'Ação',
                     'buttons' => [
-                        'view' => function ($url, $model) {
+                        'view' => function ($url, $modelCardapio) {
                             return Html::a('Clique aqui para visualizar detalhes do cardápio <i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $model->idCardapio]),
+                                \yii\helpers\Url::toRoute(['view', 'id' => $modelCardapio->idCardapio]),
                                 [
                                     'title' => Yii::t('app', 'Clique aqui para visualizar detalhes do cardápio'),
                                 ]);

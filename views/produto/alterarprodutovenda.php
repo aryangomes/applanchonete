@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use kartik\widgets\Select2;
 use yii\helpers\Url;
 /* @var $this yii\web\View */
-/* @var $model app\models\Insumo */
+/* @var $modelProduto app\models\Insumo */
 /* @var $modelProdutoVenda yii\widgets\ActiveForm */
 /* @var $models array */
 /* @var $insumos array */

@@ -6,12 +6,12 @@ use kartik\widgets\RangeInput;
 use kartik\money\MaskMoney;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Produto */
+/* @var $modelProduto app\models\Produto */
 /* @var $form yii\widgets\ActiveForm */
 
-$this->title = Yii::t('app', 'Definir Valor de ' . $model->nome);
+$this->title = Yii::t('app', 'Definir Valor de ' . $modelProduto->nome);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Produtos'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->nome, 'url' => ['view', 'id' => $model->idProduto]];
+$this->params['breadcrumbs'][] = ['label' => $modelProduto->nome, 'url' => ['view', 'id' => $modelProduto->idProduto]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <script src="/applanchonete/web/admin/js/jquery.js"></script>
@@ -20,9 +20,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <?= $form->field($model, 'nome')->textInput(['maxlength' => true])->label('Produto Venda') ?>
+        <?= $form->field($modelProduto, 'nome')->textInput(['maxlength' => true])->label('Produto Venda') ?>
 
-        <?= $form->field($model, 'valorVenda')->widget(MaskMoney::classname(), [
+        <?= $form->field($modelProduto, 'valorVenda')->widget(MaskMoney::classname(), [
             'options' => ['disabled' => true,
               ],
             'pluginOptions' => [
@@ -38,13 +38,13 @@ $this->params['breadcrumbs'][] = $this->title;
        
         MaskMoney::widget([
     'name' => 'calculoPrecoProduto',
-    'value' => $model->calculoPrecoProduto($model->idProduto),
+    'value' => $modelProduto->calculoPrecoProduto($modelProduto->idProduto),
             'options' => ['id' => 'valorantigo',],
 ]);
         ?>
 
    </p>
-        <?= $form->field($model, 'valorVenda')->widget(MaskMoney::classname(), [
+        <?= $form->field($modelProduto, 'valorVenda')->widget(MaskMoney::classname(), [
             'options' => ['id' => 'valornovo',],
             'pluginOptions' => [
                 'prefix' => 'R$ ',
@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ])->label('Novo valor de venda'); ?>
 
 
-        <?= $form->field($model, 'nome')->widget(MaskMoney::classname(), [
+        <?= $form->field($modelProduto, 'nome')->widget(MaskMoney::classname(), [
             'options' => ['id' => 'diferencavalor',],
             'pluginOptions' => [
                 'prefix' => 'R$ ',
@@ -82,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="form-group">
             <?= Html::submitButton(Yii::t('app', 'Salvar valor'),
-                ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                ['class' => $modelProduto->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

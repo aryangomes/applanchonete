@@ -103,10 +103,10 @@ class ProdutoController extends Controller
     public function actionView($id)
     {
         $searchModel = new ProdutoSearch();
-        $model = $this->findModel($id);
-        if ($model->isInsumo) {
+        $modelProduto = $this->findModel($id);
+        if ($modelProduto->isInsumo) {
             return $this->render('view', [
-                'model' => $model,
+                'modelProduto' => $modelProduto,
 
             ]);
 
@@ -129,7 +129,7 @@ class ProdutoController extends Controller
 
 
             return $this->render('view', [
-                'model' => $model,
+                'modelProduto' => $modelProduto,
                 'insumos' => $insumos,
                 'produtoVenda' => $produtoVenda,
             ]);
@@ -144,7 +144,7 @@ class ProdutoController extends Controller
 
     public function actionListadeinsumos()
     {
-        $model = new Produto();
+        $modelProduto = new Produto();
         $produtosVenda = ArrayHelper::map(
             Produto::find()->join('INNER JOIN', 'insumo', 'idProduto = idprodutoVenda ')
                 ->where(['isInsumo' => 0])->all(),
@@ -155,16 +155,16 @@ class ProdutoController extends Controller
             $listadeinsumos = $searchModel->searchInsumos(Yii::$app->request->post());
 
             $insumos = array();
-            $model = $this->findModel(Yii::$app->request->post()['produtovenda']);
+            $modelProduto = $this->findModel(Yii::$app->request->post()['produtovenda']);
             foreach ($listadeinsumos as $insumo) {
                 array_push($insumos,
-                    $model::findOne($insumo->idprodutoInsumo));
+                    $modelProduto::findOne($insumo->idprodutoInsumo));
             }
 
             return $this->render('listadeinsumos', [
                 'insumos' => $insumos,
                 'produtosVenda' => $produtosVenda,
-                'model' => $model,
+                'modelProduto' => $modelProduto,
             ]);
         } else {
 
@@ -183,7 +183,7 @@ class ProdutoController extends Controller
 
     public function actionListadeprodutosporinsumo()
     {
-        $model = new Produto();
+        $modelProduto = new Produto();
 
         $insumos = ArrayHelper::map(
             Produto::find()->join('INNER JOIN', 'insumo', 'idProduto = idprodutoInsumo ')
@@ -202,7 +202,7 @@ class ProdutoController extends Controller
 
             foreach ($listadeprodutosvenda as $pv) {
                 array_push($produtosVenda,
-                    $model::findOne($pv->idprodutoVenda));
+                    $modelProduto::findOne($pv->idprodutoVenda));
             }
 
             return $this->render('listadeprodutosporinsumo', [
@@ -227,12 +227,12 @@ class ProdutoController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Produto();
+        $modelProduto = new Produto();
 
         $mensagem = ""; //Informa ao usuário mensagens de erro na view
 
 
-        $insumo = new Insumo();
+        $modelInsumo = new Insumo();
 
         $categorias = ArrayHelper::map(
             Categoria::find()->all(),
@@ -242,20 +242,20 @@ class ProdutoController extends Controller
             Produto::find()->where(['isInsumo' => 1])->all(),
             'idProduto', 'nome');
 
-        if ($model->load(Yii::$app->request->post())) {
+        if ($modelProduto->load(Yii::$app->request->post())) {
             //Faz o upload da image
-            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            if (isset($model->imageFile)) {
+            $modelProduto->imageFile = UploadedFile::getInstance($modelProduto, 'imageFile');
+            if (isset($modelProduto->imageFile)) {
 
                 //Converte a imagem em binário
-                $model->foto = file_get_contents($model->imageFile->tempName);
+                $modelProduto->foto = file_get_contents($modelProduto->imageFile->tempName);
             }
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
             try {
                 //Tenta salvar um registro :
 
-                if ($model->save()) {
+                if ($modelProduto->save()) {
 
                     $itensInseridos = true;
 
@@ -274,7 +274,7 @@ class ProdutoController extends Controller
                       quantidade,unidade ) 
                   VALUES (:idprodutoVenda, :idprodutoInsumo,
                     :quantidade,:unidade)", [
-                                    ':idprodutoVenda' => $model->idProduto,
+                                    ':idprodutoVenda' => $modelProduto->idProduto,
                                     ':idprodutoInsumo' => $aux['idprodutoInsumo'][$i],
                                     ':quantidade' => $aux['quantidade'][$i],
                                     ':unidade' => $aux['unidade'][$i],
@@ -283,20 +283,20 @@ class ProdutoController extends Controller
 
                         }
 
-                        $model->valorVenda = $model->calculoPrecoProduto($model->idProduto);
-                        if (!$model->save()) {
+                        $modelProduto->valorVenda = $modelProduto->calculoPrecoProduto($modelProduto->idProduto);
+                        if (!$modelProduto->save()) {
                             $mensagem = "Não foi possível salvar os dados";
                             $transaction->rollBack(); //desfaz alterações no BD
                             $itensInseridos = false;
                         }
                         if ($itensInseridos) {
                             $transaction->commit();
-                            return $this->redirect(['definirvalorprodutovenda', 'idProduto' => $model->idProduto]);
+                            return $this->redirect(['definirvalorprodutovenda', 'idProduto' => $modelProduto->idProduto]);
                         }
                     }
                     if ($itensInseridos) {
                         $transaction->commit();
-                        return $this->redirect(['view', 'id' => $model->idProduto]);
+                        return $this->redirect(['view', 'id' => $modelProduto->idProduto]);
                     }
 
 
@@ -308,10 +308,10 @@ class ProdutoController extends Controller
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'modelProduto' => $modelProduto,
             'categorias' => $categorias,
             'insumos' => $insumos,
-            'insumo' => $insumo,
+            'modelInsumo' => $modelInsumo,
             'mensagem' => $mensagem,
         ]);
     }
@@ -325,9 +325,9 @@ class ProdutoController extends Controller
 
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $modelProduto = $this->findModel($id);
 
-        $insumo = new Insumo();
+        $modelInsumo = new Insumo();
 
         $mensagem = ""; //Informa ao usuário mensagens de erro na view
 
@@ -335,11 +335,12 @@ class ProdutoController extends Controller
             Categoria::find()->all(),
             'idCategoria', 'nome');
 
-        if (!$model->isInsumo) {
+        if (!$modelProduto->isInsumo) {
             $insumos = ArrayHelper::map(
                 Produto::find()->where(['isInsumo' => 1])->all(),
                 'idProduto', 'nome');
-            $models = Insumo::find()->where(['idprodutoVenda' => $id])->all();
+
+            $modelsInsumos = Insumo::find()->where(['idprodutoVenda' => $id])->all();
 
             $modelProdutoVenda = $this::findModel($id);
         }
@@ -353,19 +354,19 @@ class ProdutoController extends Controller
 
                 $itensInseridos = true;
 
-                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-                if (isset($model->imageFile)) {
+                $modelProduto->imageFile = UploadedFile::getInstance($modelProduto, 'imageFile');
+                if (isset($modelProduto->imageFile)) {
 
                     //Converte a imagem em binário
-                    $model->foto = file_get_contents($model->imageFile->tempName);
+                    $modelProduto->foto = file_get_contents($modelProduto->imageFile->tempName);
                 }
 
 
-                if (!$model->isInsumo) {
+                if (!$modelProduto->isInsumo) {
                     if (isset(Yii::$app->request->post()['produto-valorvenda-disp'])) {
-                        $model->valorVenda = Yii::$app->request->post()['Produto']['valorVenda'];
-                        $model->idCategoria = Yii::$app->request->post()['Produto']['idCategoria'];
-                        $model->save();
+                        $modelProduto->valorVenda = Yii::$app->request->post()['Produto']['valorVenda'];
+                        $modelProduto->idCategoria = Yii::$app->request->post()['Produto']['idCategoria'];
+                        $modelProduto->save();
                     }
                     $aux = Yii::$app->request->post()['Insumo'];
 
@@ -393,15 +394,15 @@ class ProdutoController extends Controller
                         }
 
                     }
-                    $model->valorVenda = $model->calculoPrecoProduto($model->idProduto);
-                    if (!$model->save()) {
+                    $modelProduto->valorVenda = $modelProduto->calculoPrecoProduto($modelProduto->idProduto);
+                    if (!$modelProduto->save()) {
                         $mensagem = "Não foi possível salvar os dados";
                         $transaction->rollBack(); //desfaz alterações no BD
                         $itensInseridos = false;
                     }
                 } else {
-                    $model->load(Yii::$app->request->post());
-                    if (!$model->save()) {
+                    $modelProduto->load(Yii::$app->request->post());
+                    if (!$modelProduto->save()) {
                         $mensagem = "Não foi possível salvar os dados";
                         $transaction->rollBack(); //desfaz alterações no BD
                         $itensInseridos = false;
@@ -409,7 +410,7 @@ class ProdutoController extends Controller
                 }
                 if ($itensInseridos) {
                     $transaction->commit();
-                    return $this->redirect(['view', 'id' => $model->idProduto]);
+                    return $this->redirect(['view', 'id' => $modelProduto->idProduto]);
                 }
 
             } catch (\Exception $exception) {
@@ -420,22 +421,22 @@ class ProdutoController extends Controller
 
         }
 
-        $model->quantidadeEstoque = 0;
-        $model->quantidadeMinima = 0;
-        if (!$model->isInsumo) {
+        $modelProduto->quantidadeEstoque = 0;
+        $modelProduto->quantidadeMinima = 0;
+        if (!$modelProduto->isInsumo) {
             return $this->render('update', [
-                'model' => $model,
-                'models' => $models,
+                'modelProduto' => $modelProduto,
+                'modelsInsumos' => $modelsInsumos,
                 'categorias' => $categorias,
                 'insumos' => $insumos,
-                'insumo' => $insumo,
+                'insumo' => $modelInsumo,
                 'modelProdutoVenda' => $modelProdutoVenda,
                 'mensagem' => $mensagem,
                 'idprodutoVenda' => $id,
             ]);
         }
         return $this->render('update', [
-            'model' => $model,
+            'modelProduto' => $modelProduto,
             'mensagem' => $mensagem,
             'categorias' => $categorias,
 
@@ -467,7 +468,7 @@ class ProdutoController extends Controller
 
     public function actionAvaliacaoproduto($idproduto)
     {
-        $model = $this->findModel($idproduto);
+        $modelProduto = $this->findModel($idproduto);
         if (Yii::$app->request->post()) {
 
             $groupbyavaliacao = Yii::$app->request->post()['Produto']['groupbyavaliacao'];
@@ -530,12 +531,12 @@ class ProdutoController extends Controller
                 'datafim' => ($datafimavaliacao),
                 'datainicioavaliacao' => date('d/m/Y', strtotime($datainicioavaliacao)),
                 'datafimavaliacao' => date('d/m/Y', strtotime($datafimavaliacao)),
-                'model' => $model,
+                'modelProduto' => $modelProduto,
 
             ]);
         } else {
             return $this->render('avaliacaoproduto', [
-                'model' => $model,
+                'modelProduto' => $modelProduto,
             ]);
         }
     }
@@ -544,13 +545,13 @@ class ProdutoController extends Controller
      * Finds the Produto model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Produto the loaded model
+     * @return Produto the loaded modelProduto
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Produto::findOne($id)) !== null) {
-            return $model;
+        if (($modelProduto = Produto::findOne($id)) !== null) {
+            return $modelProduto;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
@@ -565,17 +566,17 @@ class ProdutoController extends Controller
     public function actionDefinirvalorprodutovenda($idProduto)
     {
 
-        $model = $this->findModel($idProduto);
+        $modelProduto = $this->findModel($idProduto);
         if (Yii::$app->request->post()) {
             $porcentagemLucro = (Yii::$app->request->post()['porcentagemLucro']);
-            $model->valorVenda = $model->calculoPrecoProduto($idProduto)
-                + ($model->calculoPrecoProduto($idProduto) * ($porcentagemLucro / 100));
-            if ($model->save()) {
-                return $this->redirect(['view', 'id' => $model->idProduto]);
+            $modelProduto->valorVenda = $modelProduto->calculoPrecoProduto($idProduto)
+                + ($modelProduto->calculoPrecoProduto($idProduto) * ($porcentagemLucro / 100));
+            if ($modelProduto->save()) {
+                return $this->redirect(['view', 'id' => $modelProduto->idProduto]);
             }
         } else {
             return $this->render('definirvalorprodutovenda', [
-                'model' => $model,
+                'modelProduto' => $modelProduto,
             ]);
         }
     }

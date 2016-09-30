@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Produto */
+/* @var $modelProduto app\models\Produto */
 /* @var $categorias array */
 /* @var $insumos array */
 /* @var $insumo \app\models\Insumo */
@@ -22,10 +22,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
-        'model' => $model,
+        'modelProduto' => $modelProduto,
         'categorias' => $categorias,
         'insumos' => $insumos,
-        'insumo' => $insumo,
+        'modelInsumo' => $modelInsumo,
         'mensagem' => $mensagem,
     ]) ?>
 

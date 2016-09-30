@@ -11,14 +11,14 @@ use kartik\money\MaskMoney;
 use kartik\widgets\Select2;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Produto */
+/* @var $modelProduto app\models\Produto */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $action Yii::$app->controller->action->id */
-/* @var $models app\models\Insumo[] */
+/* @var $modelsInsumos app\models\Insumo[] */
 /* @var $insumos yii\helpers\ArrayHelper de app\models\Produto */
 /* @var $categorias yii\helpers\ArrayHelper de app\models\Categoria */
 /* var $modelProdutoVenda app\models\Produto */
-/* var $insumo app\models\Insumo */
+/* var $modelInsumo app\models\Insumo */
 
 //Pega a ação do controlador
 $action = Yii::$app->controller->action->id;
@@ -34,17 +34,17 @@ $action = Yii::$app->controller->action->id;
  * Essa última verificação é feita para mostrar somente
  * os campos que são de um Produto que é Insumo
  */
-if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
+if ($action == 'create' || ($modelProduto->isInsumo && $action == 'update')) {
     ?>
     <div class="produto-form">
 
 
-        <?= $form->field($model, 'nome')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($modelProduto, 'nome')->textInput(['maxlength' => true]) ?>
 
 
 
         <?php
-        echo $form->field($model, 'isInsumo')->dropDownList([1 => 'Sim', 0 => 'Não'], ['prompt' => 'Informe se o produto cadastrado é insumo']);
+        echo $form->field($modelProduto, 'isInsumo')->dropDownList([1 => 'Sim', 0 => 'Não'], ['prompt' => 'Informe se o produto cadastrado é insumo']);
         ?>
 
         <?php
@@ -54,18 +54,18 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
          * Caso ele não seja um Insumo, conclui-se que é um Produto Venda,
          * logo o campo de quantidadeMinima(atributo de um Produto que é Insumo) é escondido do usuário
          */
-        if (isset($model) && !$model->isInsumo) {
+        if (isset($modelProduto) && !$modelProduto->isInsumo) {
             $this->registerJs("$(\"[class~='field-produto-quantidademinima']\").hide(); ");
         }
 
-        echo $form->field($model, 'quantidadeMinima')->textInput(['type' => 'number',
+        echo $form->field($modelProduto, 'quantidadeMinima')->textInput(['type' => 'number',
             'min' => '0',
             'step' => '0.01',
-            'value' => isset($model->quantidadeMinima) ? $model->quantidadeMinima : 0]);
+            'value' => isset($modelProduto->quantidadeMinima) ? $modelProduto->quantidadeMinima : 0]);
         ?>
 
         <?=
-        $form->field($model, 'idCategoria')->widget(Select2::classname(), [
+        $form->field($modelProduto, 'idCategoria')->widget(Select2::classname(), [
             'data' => $categorias,
             'options' => ['placeholder' => 'Seleciona a categoria'],
             'pluginOptions' => [
@@ -80,7 +80,7 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
          * Caso ele não seja um Insumo, conclui-se que é um Produto Venda,
          * logo o campo de quantidadeEstoque(atributo de um Produto que é Insumo) é escondido do usuário
          */
-        if (isset($model) && !$model->isInsumo) {
+        if (isset($modelProduto) && !$modelProduto->isInsumo) {
             $this->registerJs("$(\"[class~='field-produto-quantidadeestoque']\").hide(); ");
         }
 
@@ -88,7 +88,7 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
 
 
         <div id="form-insumos-produtovenda">
-            <div class="divborda">
+            <div  class="<?= !$modelProduto->isInsumo ? "divborda" : ''  ?>">
                 <div class="insumos-form">
 
                     <div class="form-group field-insumos-idprodutoinsumo required">
@@ -102,7 +102,7 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
                          *
                          * idprodutoInsumo[], representa o array de idprodutoInsumo
                          */
-                        echo (!$model->isInsumo) ? $form->field($insumo, 'idprodutoInsumo[]')->widget(Select2::classname(), [
+                        echo (!$modelProduto->isInsumo) ? $form->field($modelInsumo, 'idprodutoInsumo[]')->widget(Select2::classname(), [
 
                             'data' => $insumos,
                             'options' => ['placeholder' => 'Selecione o insumo',
@@ -123,9 +123,9 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
                      *
                      * quantidade[], representa o array de quantidade
                      */
-                    echo (!$model->isInsumo) ? $form->field($insumo, 'quantidade[]')->textInput(['type' => 'number',
+                    echo (!$modelProduto->isInsumo) ? $form->field($modelInsumo, 'quantidade[]')->textInput(['type' => 'number',
                         'min' => 0, 'step' => '0.1', 'id' => 'quantidade0',
-                        'value' => Yii::$app->formatter->asDecimal($insumo->quantidade)]) : '';
+                        'value' => Yii::$app->formatter->asDecimal($modelInsumo->quantidade)]) : '';
 
 
                     /**
@@ -137,7 +137,7 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
                      *
                      * unidade[], representa o array de unidade
                      */
-                    echo (!$model->isInsumo) ? $form->field($insumo, 'unidade[]')->dropDownList(
+                    echo (!$modelProduto->isInsumo) ? $form->field($modelInsumo, 'unidade[]')->dropDownList(
                         ['kg' => 'Kg', 'l' => 'Litros', 'unidade' => 'Unidade'], ['prompt' => 'Selecione a unidade']) : '';
                     ?>
                     <?php
@@ -149,7 +149,7 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
                      * Produto Venda é composto por 1 ou mais Insumos
                      *
                      */
-                    if (!$model->isInsumo) {
+                    if (!$modelProduto->isInsumo) {
                         ?>
                         <input class="btn btn-danger" onclick="removeins(0)" type="button" value="Remover Insumo"
                                title="Remover insumo desse produto">
@@ -168,18 +168,18 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
      * Verifica se a ação é de atualizar um produto
      * e se esse Produto não é um Insumo, ou seja, é um Produto Venda.
      */
-} elseif (!$model->isInsumo && $action == 'update') {
+} elseif (!$modelProduto->isInsumo && $action == 'update') {
     ?>
     <div class="insumos-form">
 
         <?=
-        $form->field($models[0], 'idprodutoVenda')->textInput(['value' => $modelProdutoVenda->nome,
+        $form->field($modelsInsumos[0], 'idprodutoVenda')->textInput(['value' => $modelProdutoVenda->nome,
             'disabled' => true]);
         ?>
 
 
         <?=
-        $form->field($model, 'idCategoria')->widget(Select2::classname(), [
+        $form->field($modelProduto, 'idCategoria')->widget(Select2::classname(), [
             'data' => $categorias,
             'options' => ['placeholder' => 'Seleciona a categoria'],
             'pluginOptions' => [
@@ -195,17 +195,17 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
          *
          * @var $i integer
          */
-        for ($i = 0; $i < count($models); $i++) {
+        for ($i = 0; $i < count($modelsInsumos); $i++) {
             ?>
             <div class
             "form-group field-insumos-idprodutoinsumo required" id="<?= 'inputinsumo' . $i ?>">
             <div class="divborda">
                 <?php
-                echo Html::activeLabel($models[$i], 'idprodutoInsumo[]', ['class' => 'control-label']);
+                echo Html::activeLabel($modelsInsumos[$i], 'idprodutoInsumo[]', ['class' => 'control-label']);
                 echo Select2::widget([
-                    'model' => $models[$i],
+                    'model' => $modelsInsumos[$i],
                     'name' => 'Insumo[idprodutoInsumo][]',
-                    'value' => $models[$i]->idprodutoInsumo,
+                    'value' => $modelsInsumos[$i]->idprodutoInsumo,
                     'data' => $insumos,
                     'options' => ['placeholder' => 'Selecione o insumo',
                         'id' => 'idinsumo' . $i,
@@ -232,12 +232,12 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
                 </div>
                 <?php
                 echo "</br>";
-                echo $form->field($models[$i], 'quantidade[]')->textInput(['type' => 'number',
-                    'value' => 0, 'min' => 0, 'step' => '0.1', 'id' => 'quantidade' . $i, 'value' => ($models[$i]->quantidade)]);
+                echo $form->field($modelsInsumos[$i], 'quantidade[]')->textInput(['type' => 'number',
+                    'value' => 0, 'min' => 0, 'step' => '0.1', 'id' => 'quantidade' . $i, 'value' => ($modelsInsumos[$i]->quantidade)]);
 
-                echo $form->field($models[$i], 'unidade[]')->dropDownList(
+                echo $form->field($modelsInsumos[$i], 'unidade[]')->dropDownList(
                     ['kg' => 'Kg', 'l' => 'Litros', 'unidade' => 'Unidade'], ['prompt' => 'Selecione a unidade',
-                    'options' => [$models[$i]->unidade => ['Selected' => true]]]);
+                    'options' => [$modelsInsumos[$i]->unidade => ['Selected' => true]]]);
 
                 ?>
                 <input class="btn btn-danger" onclick="removeins(<?= $i ?>)" type='button' value="Remover Insumo"></div>
@@ -263,7 +263,7 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
     <div class="form-group">
         <?= Html::submitButton($action == 'create' ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => 'btn btn-success']) ?>
         <?php
-        if (!$model->isInsumo) {
+        if (!$modelProduto->isInsumo) {
             ?>
             <input class="btn btn-primary" type='button' id='btnaddinsumo' value="Adicionar mais insumos"
                    title="Adicionar mais um insumo a esse produto">
@@ -273,7 +273,7 @@ if ($action == 'create' || ($model->isInsumo && $action == 'update')) {
 
     </div>
 
-<?= $form->field($model, 'imageFile')->fileInput() ?>
+<?= $form->field($modelProduto, 'imageFile')->fileInput() ?>
 
 <?php ActiveForm::end(); ?>
     <script>

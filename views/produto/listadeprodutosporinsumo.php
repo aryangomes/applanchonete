@@ -7,7 +7,7 @@ use kartik\widgets\Select2;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Produto */
+/* @var $modelProduto app\models\Produto */
 /* @var $insumos array */
 /* @var $nomeInsumo mixed */
 

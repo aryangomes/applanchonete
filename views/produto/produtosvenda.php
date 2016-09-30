@@ -29,8 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'valorVenda',
                     'format' => 'text',
-                    'value' => function ($model) {
-                        return 'R$ ' . number_format($model->valorVenda, 2);
+                    'value' => function ($modelProduto) {
+                        return 'R$ ' . number_format($modelProduto->valorVenda, 2);
                     }
                 ],
 
@@ -39,9 +39,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'template' => '{view}',
                     'header' => 'Ação',
                     'buttons' => [
-                        'view' => function ($url, $model) {
+                        'view' => function ($url, $modelProduto) {
                             return Html::a('Clique aqui para visualizar detalhes do produto<i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $model->idProduto]),
+                                \yii\helpers\Url::toRoute(['view', 'id' => $modelProduto->idProduto]),
                                 [
                                     'title' => Yii::t('app', 'Clique aqui para visualizar detalhes do produto'),
                                 ]);

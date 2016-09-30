@@ -7,12 +7,12 @@ use miloschuman\highcharts\HighchartsAsset;
 use kartik\datecontrol\DateControl;
 use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
-/* @var $model app\models\Produto */
+/* @var $modelProduto app\models\Produto */
 /* @var $datainicioavaliacao mixed */
 /* @var $datafimavaliacao mixed */
-/* @var $model app\models\Produto */
 
-$this->title =  'Avaliação Produto: ' . $model->nome;
+
+$this->title =  'Avaliação Produto: ' . $modelProduto->nome;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Produtos'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ])
       ?>
           </div>
-      <?= $form->field($model, 'groupbyavaliacao')->dropDownList(['DAY'=>'Dia','MONTH'=>'Mês','YEAR'=>'Ano']); ?>
+      <?= $form->field($modelProduto, 'groupbyavaliacao')->dropDownList(['DAY'=>'Dia','MONTH'=>'Mês','YEAR'=>'Ano']); ?>
       <div class="form-group">
         <?= Html::submitButton('Gerar gráfico <i class="fa fa-line-chart"></i>', ['class' =>  'btn btn-primary btn-block']) ?>
       </div>
@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
        'chart'=>[
        'type'=>'area'],
 
-       'title' => ['text' => 'Total de vendas do produto: <b>' . $model->nome
+       'title' => ['text' => 'Total de vendas do produto: <b>' . $modelProduto->nome
        . '</b> - de ' . $datainicioavaliacao . ' até ' . $datafimavaliacao ],
        'xAxis' => [
        'categories' =>$datasvendas
@@ -101,7 +101,7 @@ $this->params['breadcrumbs'][] = $this->title;
       if (count($qtdvendas) <= 0) {
         ?>
         <div class="alert alert-danger">
-          Não há vendas cadastradas para o produto <b><?= $model->nome ?></b> nesse período
+          Não há vendas cadastradas para o produto <b><?= $modelProduto->nome ?></b> nesse período
         </div>
         <?php
       }

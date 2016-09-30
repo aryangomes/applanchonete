@@ -7,7 +7,7 @@ use kartik\widgets\Select2;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Produto */
+/* @var $modelProduto app\models\Produto */
 /* @var $produtosVenda array */
 
 $this->title = 'Lista de insumos de um Produto';
@@ -40,11 +40,11 @@ $this->title = 'Lista de insumos de um Produto';
         <?php
         if (isset($insumos)) {
             ?>
-            <div class="panel-heading">Insumos de <?= $model->nome ?></div> <?php
+            <div class="panel-heading">Insumos de <?= $modelProduto->nome ?></div> <?php
             foreach ($insumos as $insumo) {
                 ?>
                 <div class="panel-body"><?= Html::a($insumo->nome, Url::toRoute(['/insumo/view',
-                'idprodutoVenda' => $model->idProduto, 'idprodutoInsumo' => $insumo->idProduto])) ?></div><?php
+                'idprodutoVenda' => $modelProduto->idProduto, 'idprodutoInsumo' => $insumo->idProduto])) ?></div><?php
             }
         }
 

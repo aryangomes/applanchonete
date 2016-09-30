@@ -30,9 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'nome',
                     'format' => 'raw',
-                    'value' => function ($model) {
+                    'value' => function ($modelProduto) {
 
-                        return Html::a($model->nome, ['view', 'id' => $model->idProduto]);
+                        return Html::a($modelProduto->nome, ['view', 'id' => $modelProduto->idProduto]);
                     }
                 ],
 
@@ -40,27 +40,27 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'valorVenda',
                     'format' => 'text',
 
-                    'value' => function ($model) {
+                    'value' => function ($modelProduto) {
 
-                        return !$model->isInsumo ? 'R$ ' .
-                            number_format($model->valorVenda,2) : null;
+                        return !$modelProduto->isInsumo ? 'R$ ' .
+                            number_format($modelProduto->valorVenda,2) : null;
                     }
                 ],
                 [
                     'attribute' => 'isInsumo',
                     'format' => 'text',
-                    'value' => function ($model) {
+                    'value' => function ($modelProduto) {
 
-                        return $model->isInsumo ? 'Sim' : 'Não';
+                        return $modelProduto->isInsumo ? 'Sim' : 'Não';
                     }
                 ],
                 [
                     'attribute' => 'quantidadeEstoque',
                     'format' => 'text',
 
-                    'value' => function ($model) {
+                    'value' => function ($modelProduto) {
 
-                        return $model->isInsumo ? $model->quantidadeEstoque : null;
+                        return $modelProduto->isInsumo ? $modelProduto->quantidadeEstoque : null;
                     }
                 ],
 

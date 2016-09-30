@@ -5,10 +5,10 @@ use yii\widgets\DetailView;
 use  yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Produto */
+/* @var $modelProduto app\models\Produto */
 /* @var $produtoVenda app\models\Produto */
 
-$this->title = 'Produto ' . $model->nome;
+$this->title = 'Produto ' . $modelProduto->nome;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Produtos'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -17,8 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->idProduto], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->idProduto], [
+        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $modelProduto->idProduto], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $modelProduto->idProduto], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
@@ -27,13 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
 
         <?php
-        echo (!$model->isInsumo) ?
-            Html::a(Yii::t('app', 'Alterar valor de venda'), ['definirvalorprodutovenda', 'idProduto' => $model->idProduto],
+        echo (!$modelProduto->isInsumo) ?
+            Html::a(Yii::t('app', 'Alterar valor de venda'), ['definirvalorprodutovenda', 'idProduto' => $modelProduto->idProduto],
                 ['class' => 'btn btn-success']) : '' ?>
     </p>
 
     <?= DetailView::widget([
-        'model' => $model,
+        'model' => $modelProduto,
         'attributes' => [
             // 'idProduto',
             'nome',
@@ -41,46 +41,46 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'valorVenda',
                 'format' => 'text',
-                'value' => 'R$ ' . \Yii::$app->formatter->asDecimal($model->valorVenda, 2),
-                'visible' => !($model->isInsumo),
+                'value' => 'R$ ' . \Yii::$app->formatter->asDecimal($modelProduto->valorVenda, 2),
+                'visible' => !($modelProduto->isInsumo),
             ],
             [
                 'attribute' => 'isInsumo',
                 'format' => 'text',
-                'value' => $model->isInsumo ? 'Sim' : 'Não',
-                'visible' => $model->isInsumo,
+                'value' => $modelProduto->isInsumo ? 'Sim' : 'Não',
+                'visible' => $modelProduto->isInsumo,
             ],
             [
                 'attribute' => 'quantidadeMinima',
                 'format' => 'text',
-                'value' => $model->quantidadeMinima,
-                'visible' => $model->isInsumo,
+                'value' => $modelProduto->quantidadeMinima,
+                'visible' => $modelProduto->isInsumo,
             ],
             [
                 'label' => 'Categoria',
                 'format' => 'text',
-                'value' => $model->nomeCategoria,
+                'value' => $modelProduto->nomeCategoria,
 
             ],
             [
                 'attribute' => 'quantidadeEstoque',
                 'format' => 'text',
-                'value' => $model->quantidadeEstoque,
-                'visible' => $model->isInsumo,
+                'value' => $modelProduto->quantidadeEstoque,
+                'visible' => $modelProduto->isInsumo,
             ],
             [
                 'label' => 'Preço de custo',
                 'format' => 'raw',
-                'value' => $model->isInsumo ? null :
+                'value' => $modelProduto->isInsumo ? null :
                     'R$ ' . \Yii::$app->formatter
-                        ->asDecimal(($model->calculoPrecoProduto($model->idProduto)), 2) .
+                        ->asDecimal(($modelProduto->calculoPrecoProduto($modelProduto->idProduto)), 2) .
                     Yii::$app->session->getFlash('custofixozerados'),
-                'visible' => !($model->isInsumo),
+                'visible' => !($modelProduto->isInsumo),
             ],
             [
                 'attribute' => 'foto',
                 'format' => 'raw',
-                'value' => isset($model->foto) ? Html::img('data:image/jpeg;base64,' . base64_encode($model->foto),
+                'value' => isset($modelProduto->foto) ? Html::img('data:image/jpeg;base64,' . base64_encode($modelProduto->foto),
                     ['class'=>'img-responsive'])
                     : 'Sem imagem cadastrada',
 
@@ -95,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
         if (isset($insumos) && !($produtoVenda->isInsumo)) {
 
         ?>
-        <div class="panel-heading">Insumos de <?= $model->nome ?></div>
+        <div class="panel-heading">Insumos de <?= $modelProduto->nome ?></div>
         <table class="table table-hover">
             <thead>
             <tr>
@@ -132,9 +132,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php
 
-    if (!$model->isInsumo) {
+    if (!$modelProduto->isInsumo) {
         echo Html::a('Avaliar produto <i class="fa fa-line-chart"></i>',
-            Url::toRoute(['produto/avaliacaoproduto', 'idproduto' => $model->idProduto]),
+            Url::toRoute(['produto/avaliacaoproduto', 'idproduto' => $modelProduto->idProduto]),
             ['class' => 'btn btn-primary btn-block']);
     }
     ?>

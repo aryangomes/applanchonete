@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Produto */
+/* @var $modelProduto app\models\Produto */
 /* @var $categorias array */
 /* @var $insumos array */
 /* @var $insumo \app\models\Insumo */
@@ -14,9 +14,9 @@ use yii\helpers\Html;
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
 		'modelClass' => 'Produto',
-	]) . ' ' . $model->nome;
+	]) . ' ' . $modelProduto->nome;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Produtos'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' =>'Produto '.$model->nome, 'url' => ['view', 'id' => $model->idProduto]];
+$this->params['breadcrumbs'][] = ['label' =>'Produto '.$modelProduto->nome, 'url' => ['view', 'id' => $modelProduto->idProduto]];
 $this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 ?>
 <div class="produto-update">
@@ -24,10 +24,10 @@ $this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 	<h1><?= Html::encode($this->title) ?></h1>
 
 	<?php
-	if(!$model->isInsumo) {
+	if(!$modelProduto->isInsumo) {
 		echo $this->render('_form', [
-			'model' => $model,
-			'models' => $models,
+			'modelProduto' => $modelProduto,
+			'modelsInsumos' => $modelsInsumos,
 			'categorias' => $categorias,
 			'insumos' => $insumos,
 			'insumo' => $insumo,
@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 
 	}else{
 		echo $this->render('_form', [
-			'model' => $model,
+			'modelProduto' => $modelProduto,
 
 			'categorias' => $categorias,
 			'mensagem'=> $mensagem,

@@ -4,9 +4,9 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Mesa */
+/* @var $modelMesa app\models\Mesa */
 
-$this->title = 'Mesa: ' . $model->idMesa;
+$this->title = 'Mesa: ' . $modelMesa->idMesa;
 $this->params['breadcrumbs'][] = ['label' => 'Mesas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -15,8 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Alterar', ['update', 'id' => $model->idMesa], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Excluir', ['delete', 'id' => $model->idMesa], [
+        <?= Html::a('Alterar', ['update', 'id' => $modelMesa->idMesa], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Excluir', ['delete', 'id' => $modelMesa->idMesa], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -26,17 +26,17 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?= DetailView::widget([
-        'model' => $model,
+        'model' => $modelMesa,
         'attributes' => [
             'idMesa',
             'descricao',
            [
                'attribute'=> 'disponivel',
-               'value'=>$model->disponivel?'Disponível':'Não Disponível',
+               'value'=>$modelMesa->disponivel?'Disponível':'Não Disponível',
            ],
             [
                 'attribute'=>   'alerta',
-                'value'=>$model->alerta?'Ligado':'Desligado',
+                'value'=>$modelMesa->alerta?'Ligado':'Desligado',
             ],
 
             'qrcode',

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Mesa */
+/* @var $modelMesa app\models\Mesa */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -12,9 +12,10 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'descricao')->textarea(['maxlength' => true]) ?>
+    <?= $form->field($modelMesa, 'descricao')->textarea(['maxlength' => true,
+    'placeholder'=>'Digite a descrição da mesa']) ?>
 
-    <?= $form->field($model, 'disponivel')->dropDownList([
+    <?= $form->field($modelMesa, 'disponivel')->dropDownList([
         '1'=>'Disponível','0'=>'Não Disponível'
     ],['prompt'=>'Selecione...']) ?>
 
@@ -23,7 +24,7 @@ use yii\widgets\ActiveForm;
 
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Cadastrar' : 'Alterar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($modelMesa->isNewRecord ? 'Cadastrar' : 'Alterar', ['class' => $modelMesa->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -29,15 +29,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'descricao',
                 [
                     'attribute' => 'disponivel',
-                    'value' => function ($model) {
-                        return $model->disponivel ? 'Disponível' : 'Não Disponível';
+                    'value' => function ($modelMesa) {
+                        return $modelMesa->disponivel ? 'Disponível' : 'Não Disponível';
                     }
 
                 ],
                 [
                     'attribute' => 'alerta',
-                    'value' => function ($model) {
-                        return $model->alerta ? 'Ligado' : 'Desligado';
+                    'value' => function ($modelMesa) {
+                        return $modelMesa->alerta ? 'Ligado' : 'Desligado';
                     }
 
                 ],
@@ -50,9 +50,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'template' => '{view}',
                     'header' => 'Ação',
                     'buttons' => [
-                        'view' => function ($url, $model) {
+                        'view' => function ($url, $modelMesa) {
                             return Html::a('Clique aqui para visualizar detalhes da mesa<i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $model->idMesa]),
+                                \yii\helpers\Url::toRoute(['view', 'id' => $modelMesa->idMesa]),
                                 [
                                     'title' => Yii::t('app', 'Clique aqui para visualizar detalhes da mesa'),
                                 ]);

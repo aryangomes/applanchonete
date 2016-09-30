@@ -3,11 +3,11 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Mesa */
+/* @var $modelMesa app\models\Mesa */
 
-$this->title = 'Update Mesa: ' . ' ' . $model->idMesa;
+$this->title = 'Update Mesa: ' . ' ' . $modelMesa->idMesa;
 $this->params['breadcrumbs'][] = ['label' => 'Mesas', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->idMesa, 'url' => ['view', 'id' => $model->idMesa]];
+$this->params['breadcrumbs'][] = ['label' => $modelMesa->idMesa, 'url' => ['view', 'id' => $modelMesa->idMesa]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="mesa-update">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = 'Update';
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
-        'model' => $model,
+        'modelMesa' => $modelMesa,
     ]) ?>
 
 </div>

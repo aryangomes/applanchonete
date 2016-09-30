@@ -93,7 +93,7 @@ class MesaController extends Controller
         ) {
 
             return $this->render('view', [
-                'model' => $this->findModel($id),
+                'modelMesa' => $this->findModel($id),
             ]);
         } else {
             throw new ForbiddenHttpException("Acesso negado!");
@@ -111,13 +111,13 @@ class MesaController extends Controller
             Yii::$app->user->can("mesa")
         ) {
 
-            $model = new Mesa();
+            $modelMesa = new Mesa();
 
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->idMesa]);
+            if ($modelMesa->load(Yii::$app->request->post()) && $modelMesa->save()) {
+                return $this->redirect(['view', 'id' => $modelMesa->idMesa]);
             } else {
                 return $this->render('create', [
-                    'model' => $model,
+                    'modelMesa' => $modelMesa,
                 ]);
             }
         } else {
@@ -137,13 +137,13 @@ class MesaController extends Controller
             Yii::$app->user->can("mesa")
         ) {
 
-            $model = $this->findModel($id);
+            $modelMesa = $this->findModel($id);
 
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->idMesa]);
+            if ($modelMesa->load(Yii::$app->request->post()) && $modelMesa->save()) {
+                return $this->redirect(['view', 'id' => $modelMesa->idMesa]);
             } else {
                 return $this->render('update', [
-                    'model' => $model,
+                    'modelMesa' => $modelMesa,
                 ]);
             }
         } else {
@@ -175,13 +175,13 @@ class MesaController extends Controller
      * Finds the Mesa model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Mesa the loaded model
+     * @return Mesa the loaded modelMesa
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Mesa::findOne($id)) !== null) {
-            return $model;
+        if (($modelMesa = Mesa::findOne($id)) !== null) {
+            return $modelMesa;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

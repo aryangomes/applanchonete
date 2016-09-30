@@ -46,7 +46,7 @@ if (count($loja) > 0) {
 <html lang="<?= Yii::$app->language ?>">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
-    <link rel="shortcut icon" href="../sgl.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="<?=  \Yii::getAlias('@web') . '/sgl.ico' ?>" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode('Sistema de Gerência de Lanchonete' /* $this->title */) ?></title>

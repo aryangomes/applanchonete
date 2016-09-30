@@ -14,6 +14,7 @@ use kartik\widgets\Select2;
  */
 /* @var yii\widgets\ActiveForm $form*/
 /* @var $permissoes array */
+$module = $this->context->module;
 $this->context->module;
 $role = $module->model("Role");
 

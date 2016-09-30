@@ -4,9 +4,9 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Contasareceber */
+/* @var $modelContasareceber app\models\Contasareceber */
 
-$this->title = $model->conta->descricao;
+$this->title = $modelContasareceber->conta->descricao;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Conta a receber'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -15,22 +15,26 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->idconta], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->idconta], [
+        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $modelContasareceber->idconta], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $modelContasareceber->idconta], [
             'class' => 'btn btn-danger',
             'data' => [
-            'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-            'method' => 'post',
+                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                'method' => 'post',
             ],
-            ]) ?>
-        </p>
+        ]) ?>
+    </p>
 
-        <?= DetailView::widget([
-            'model' => $model,
-            'attributes' => [
+    <?= DetailView::widget([
+        'model' => $modelContasareceber,
+        'attributes' => [
             'idconta',
-            'dataHora',
+            ['attribute' => 'dataHora',
+                'format' => 'text',
+                'value' => isset($modelContasareceber->dataHora) ?
+                    date("d/m/Y H:i", strtotime($modelContasareceber->dataHora)) : null,
             ],
-            ]) ?>
+        ],
+    ]) ?>
 
-        </div>
+</div>

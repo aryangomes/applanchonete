@@ -73,7 +73,7 @@ class ContasareceberController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'modelContasareceber' => $this->findModel($id),
             ]);
     }
 
@@ -108,17 +108,17 @@ class ContasareceberController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $modelContasareceber = $this->findModel($id);
         $contas = ArrayHelper::map(
             Conta::find()->where('idconta not in (select idconta from contasareceber) && 
                 idconta not in (select idconta from contasapagar)')->all(),
             'idconta','descricao'
             );
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idconta]);
+        if ($modelContasareceber->load(Yii::$app->request->post()) && $modelContasareceber->save()) {
+            return $this->redirect(['view', 'id' => $modelContasareceber->idconta]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'modelContasareceber' => $modelContasareceber,
                 'contas'=>$contas,
                 ]);
         }
@@ -141,13 +141,13 @@ class ContasareceberController extends Controller
      * Finds the Contasareceber model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Contasareceber the loaded model
+     * @return Contasareceber the loaded modelContasareceber
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Contasareceber::findOne($id)) !== null) {
-            return $model;
+        if (($modelContasareceber = Contasareceber::findOne($id)) !== null) {
+            return $modelContasareceber;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

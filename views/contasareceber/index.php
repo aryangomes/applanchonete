@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ContasareceberSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -20,44 +21,42 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
     <?php Pjax::begin(); ?>
     <div class="table-responsive">
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-        ['class' => 'yii\grid\SerialColumn'],
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
 
-        ['attribute'=>'conta',
-        'format'=>'text',
-        'label'=>'Conta',
-        'value'=>function ($model)
-        {
-            return $model->conta->descricao;
-        }
-        ],
-        ['attribute'=>'dataHora',
-        'format'=>'text',
-        'value'=>function ($model)
-        {
-            return isset($model->dataHora) ?
-           date("d/m/Y H:i",strtotime($model->dataHora)) : null ;
-        }
-        ],
-
-            ['class' => 'yii\grid\ActionColumn',
-                'template' => '{view}',
-                'header' => 'Ação',
-                'buttons' => [
-                    'view' => function ($url, $model) {
-                        return Html::a('Clique aqui para visualizar detalhes da conta a receber<i class="fa fa-search-plus"></i>',
-                            \yii\helpers\Url::toRoute(['view', 'id' => $model->idconta]),
-                            [
-                                'title' => Yii::t('app', 'Clique aqui para visualizar detalhes da conta a receber'),
-                            ]);
+                ['attribute' => 'conta',
+                    'format' => 'text',
+                    'label' => 'Conta',
+                    'value' => function ($modelContasareceber) {
+                        return $modelContasareceber->conta->descricao;
+                    }
+                ],
+                ['attribute' => 'dataHora',
+                    'format' => 'text',
+                    'value' => function ($modelContasareceber) {
+                        return isset($modelContasareceber->dataHora) ?
+                            date("d/m/Y H:i", strtotime($modelContasareceber->dataHora)) : null;
                     }
                 ],
 
+                ['class' => 'yii\grid\ActionColumn',
+                    'template' => '{view}',
+                    'header' => 'Ação',
+                    'buttons' => [
+                        'view' => function ($url, $modelContasareceber) {
+                            return Html::a('Clique aqui para visualizar detalhes da conta a receber<i class="fa fa-search-plus"></i>',
+                                \yii\helpers\Url::toRoute(['view', 'id' => $modelContasareceber->idconta]),
+                                [
+                                    'title' => Yii::t('app', 'Clique aqui para visualizar detalhes da conta a receber'),
+                                ]);
+                        }
+                    ],
+
+                ],
             ],
-        ],
         ]); ?>
         <?php Pjax::end(); ?>
     </div>

@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 
 use kartik\datecontrol\DateControl;
 /* @var $this yii\web\View */
-/* @var $model app\models\Contasareceber */
+/* @var $modelContasareceber app\models\Contasareceber */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -13,9 +13,9 @@ use kartik\datecontrol\DateControl;
 
 	<?php $form = ActiveForm::begin(); ?>
 
-	<?= $form->field($model, 'idconta')->hiddenInput([$model->idconta])->label(false)?>
+	<?= $form->field($modelContasareceber, 'idconta')->hiddenInput([$modelContasareceber->idconta])->label(false)?>
 
-	<?= $form->field($model, 'dataHora')->widget(DateControl::classname(), [
+	<?= $form->field($modelContasareceber, 'dataHora')->widget(DateControl::classname(), [
 		'type'=>DateControl::FORMAT_DATETIME,
 		'ajaxConversion'=>false,
 		'options' => [
@@ -29,7 +29,7 @@ use kartik\datecontrol\DateControl;
 		]); ?>
 
 		<div class="form-group">
-			<?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+			<?= Html::submitButton($modelContasareceber->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $modelContasareceber->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 		</div>
 
 		<?php ActiveForm::end(); ?>

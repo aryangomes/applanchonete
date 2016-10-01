@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\FormapagamentoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Formapagamentos');
+$this->title = Yii::t('app', 'Forma de Pagamentos');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="formapagamento-index">
@@ -16,7 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Formapagamento'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create {model}', ['model' => 'Forma de Pagamento']), ['create'], ['class' => 'btn btn-success']) ?>
+
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,11 +25,24 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'idTipoPagamento',
+
             'titulo',
             'descricao:ntext',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+                'template' => '{view}',
+                'header' => 'Ação',
+                'buttons' => [
+                    'view' => function ($url, $modelFormapagamento) {
+                        return Html::a('Clique aqui para visualizar detalhes do pedido <i class="fa fa-search-plus"></i>',
+                            \yii\helpers\Url::toRoute(['view', 'id' => $modelFormapagamento->idTipoPagamento]),
+                            [
+                                'title' => Yii::t('app', 'Clique aqui para visualizar detalhes do pedido'),
+                            ]);
+                    }
+                ],
+
+            ],
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

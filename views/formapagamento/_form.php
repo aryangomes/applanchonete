@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Formapagamento */
+/* @var $modelFormapagamento app\models\Formapagamento */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -12,12 +12,14 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'titulo')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($modelFormapagamento, 'titulo')->textInput(['maxlength' => true,
+    'placeholder'=>'Digite a forma de pagamento']) ?>
 
-    <?= $form->field($model, 'descricao')->textarea(['rows' => 6]) ?>
+    <?= $form->field($modelFormapagamento, 'descricao')->textarea(['rows' => 6,
+        'placeholder'=>'Digite a descrição de forma de pagamento']) ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($modelFormapagamento->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $modelFormapagamento->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

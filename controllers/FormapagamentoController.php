@@ -52,7 +52,7 @@ class FormapagamentoController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'modelFormapagamento' => $this->findModel($id),
         ]);
     }
 
@@ -63,13 +63,13 @@ class FormapagamentoController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Formapagamento();
+        $modelFormapagamento = new Formapagamento();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idTipoPagamento]);
+        if ($modelFormapagamento->load(Yii::$app->request->post()) && $modelFormapagamento->save()) {
+            return $this->redirect(['view', 'id' => $modelFormapagamento->idTipoPagamento]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                'modelFormapagamento' => $modelFormapagamento,
             ]);
         }
     }
@@ -82,13 +82,13 @@ class FormapagamentoController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $modelFormapagamento = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idTipoPagamento]);
+        if ($modelFormapagamento->load(Yii::$app->request->post()) && $modelFormapagamento->save()) {
+            return $this->redirect(['view', 'id' => $modelFormapagamento->idTipoPagamento]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'modelFormapagamento' => $modelFormapagamento,
             ]);
         }
     }
@@ -110,13 +110,13 @@ class FormapagamentoController extends Controller
      * Finds the Formapagamento model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Formapagamento the loaded model
+     * @return Formapagamento the loaded modelFormapagamento
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Formapagamento::findOne($id)) !== null) {
-            return $model;
+        if (($modelFormapagamento = Formapagamento::findOne($id)) !== null) {
+            return $modelFormapagamento;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

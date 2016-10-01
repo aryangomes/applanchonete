@@ -4,10 +4,10 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Formapagamento */
+/* @var $modelFormapagamento app\models\Formapagamento */
 
-$this->title = Yii::t('app', 'Create Formapagamento');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Formapagamentos'), 'url' => ['index']];
+$this->title =Yii::t('app', 'Create {model}', ['model' => 'Forma de Pagamento']);
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Forma de Pagamentos'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="formapagamento-create">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
-        'model' => $model,
+        'modelFormapagamento' => $modelFormapagamento,
     ]) ?>
 
 </div>

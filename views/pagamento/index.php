@@ -37,7 +37,21 @@ $this->params['breadcrumbs'][] = $this->title;
                             $modelPagamento->formapagamentoIdTipoPagamento->titulo : null;
                 },
             ],
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+                'template' => '{view}',
+                'header' => 'Ação',
+                'buttons' => [
+                    'view' => function ($url, $modelPagamento) {
+                        return Html::a('Clique aqui para visualizar detalhes do pedido <i class="fa fa-search-plus"></i>',
+                            \yii\helpers\Url::toRoute(['view', 'idConta' => $modelPagamento->idConta, 'idPedido'=>
+                                $modelPagamento->idPedido]),
+                            [
+                                'title' => Yii::t('app', 'Clique aqui para visualizar detalhes do pedido'),
+                            ]);
+                    }
+                ],
+
+            ],
         ],
     ]);
     ?>

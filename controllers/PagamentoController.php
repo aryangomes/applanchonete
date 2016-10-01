@@ -53,7 +53,7 @@ class PagamentoController extends Controller
     public function actionView($idConta, $idPedido)
     {
         return $this->render('view', [
-            'model' => $this->findModel($idConta, $idPedido),
+            'modelPagamento' => $this->findModel($idConta, $idPedido),
         ]);
     }
 
@@ -64,13 +64,13 @@ class PagamentoController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Pagamento();
+        $modelPagamento = new Pagamento();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'idConta' => $model->idConta, 'idPedido' => $model->idPedido]);
+        if ($modelPagamento->load(Yii::$app->request->post()) && $modelPagamento->save()) {
+            return $this->redirect(['view', 'idConta' => $modelPagamento->idConta, 'idPedido' => $modelPagamento->idPedido]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                'modelPagamento' => $modelPagamento,
             ]);
         }
     }
@@ -84,13 +84,13 @@ class PagamentoController extends Controller
      */
     public function actionUpdate($idConta, $idPedido)
     {
-        $model = $this->findModel($idConta, $idPedido);
+        $modelPagamento = $this->findModel($idConta, $idPedido);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'idConta' => $model->idConta, 'idPedido' => $model->idPedido]);
+        if ($modelPagamento->load(Yii::$app->request->post()) && $modelPagamento->save()) {
+            return $this->redirect(['view', 'idConta' => $modelPagamento->idConta, 'idPedido' => $modelPagamento->idPedido]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'modelPagamento' => $modelPagamento,
             ]);
         }
     }
@@ -114,13 +114,13 @@ class PagamentoController extends Controller
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $idConta
      * @param integer $idPedido
-     * @return Pagamento the loaded model
+     * @return Pagamento the loaded modelPagamento
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($idConta, $idPedido)
     {
-        if (($model = Pagamento::findOne(['idConta' => $idConta, 'idPedido' => $idPedido])) !== null) {
-            return $model;
+        if (($modelPagamento = Pagamento::findOne(['idConta' => $idConta, 'idPedido' => $idPedido])) !== null) {
+            return $modelPagamento;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

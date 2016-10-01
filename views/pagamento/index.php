@@ -17,7 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Pagamento'), ['create'], ['class' => 'btn btn-success']) ?>
+
+        <?= Html::a(Yii::t('app', 'Create {model}', ['model' => 'Pagamento']), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?php Pjax::begin(); ?>    <?=
     GridView::widget([
@@ -30,10 +31,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'formapagamentoIdTipoPagamento',
                 'label'=>'Forma de Pagamento',
-                'value' => function ($model) {
-                    return isset($model->formapagamento_idTipoPagamento) &&
-                            ($model->formapagamento_idTipoPagamento > 0) ?
-                            $model->formapagamentoIdTipoPagamento->titulo : null;
+                'value' => function ($modelPagamento) {
+                    return isset($modelPagamento->formapagamento_idTipoPagamento) &&
+                            ($modelPagamento->formapagamento_idTipoPagamento > 0) ?
+                            $modelPagamento->formapagamentoIdTipoPagamento->titulo : null;
                 },
             ],
             ['class' => 'yii\grid\ActionColumn'],

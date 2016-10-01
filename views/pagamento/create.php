@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Pagamento */
+/* @var $modelPagamento app\models\Pagamento */
 
 $this->title = Yii::t('app', 'Create Pagamento');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pagamentos'), 'url' => ['index']];
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
-        'model' => $model,
+        'modelPagamento' => $modelPagamento,
     ]) ?>
 
 </div>

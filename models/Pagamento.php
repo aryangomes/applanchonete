@@ -41,8 +41,8 @@ class Pagamento extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idConta' => Yii::t('app', 'Id Conta'),
-            'idPedido' => Yii::t('app', 'Id Pedido'),
+            'idConta' => Yii::t('app', 'Conta'),
+            'idPedido' => Yii::t('app', 'Pedido'),
             'formapagamento_idTipoPagamento' => Yii::t('app', 'Forma de Pagamento'),
         ];
     }

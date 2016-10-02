@@ -46,7 +46,7 @@ if (count($loja) > 0) {
 <html lang="<?= Yii::$app->language ?>">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
-        <link rel="shortcut icon" href="<?=  \Yii::getAlias('@web') . '/sgl.ico' ?>" type="image/x-icon" />
+    <link rel="shortcut icon" href="<?= \Yii::getAlias('@web') . '/sgl.ico' ?>" type="image/x-icon"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode('Sistema de Gerência de Lanchonete' /* $this->title */) ?></title>
@@ -76,6 +76,61 @@ if (count($loja) > 0) {
         <ul class="nav navbar-right top-nav">
 
             <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-align-justify"></i>
+                    Acesso Rápido<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+
+                    <?php
+                    if (Yii::$app->user->can("create-pedido") || Yii::$app->user->can("pedido")) {
+                        ?>
+                        <li>
+                            <?= Html::a('<i class="fa fa-external-link-square"></i> Cadastrar Pedido', ['/pedido/create']) ?>
+
+                        </li>
+                        <?php
+                    }
+                    ?>
+
+                    <li class="divider"></li>
+                    <?php
+                    if (Yii::$app->user->can("create-produto") || Yii::$app->user->can("produto")) {
+                        ?>
+                        <li>
+                            <?= Html::a('<i class="fa fa-external-link-square"></i> Cadastrar Produto', ['/produto/create']) ?>
+
+                        </li>
+                        <?php
+                    }
+                    ?>
+                    <li class="divider"></li>
+                    <?php
+                    if (Yii::$app->user->can("create-conta") || Yii::$app->user->can("conta")) {
+                        ?>
+                        <li>
+                            <?= Html::a('<i class="fa fa-external-link-square"></i> Cadastrar Conta', ['/conta/create']) ?>
+
+                        </li>
+                        <?php
+                    }
+                    ?>
+                    
+                    <li class="divider"></li>
+                    <?php
+                    if (Yii::$app->user->can("index-cardapio") || Yii::$app->user->can("cardapio")) {
+                        ?>
+                        <li>
+                            <?= Html::a('<i class="fa fa-external-link-square"></i> Lista de Cardápios', ['/cardapio/index']) ?>
+
+                        </li>
+                        <?php
+                    }
+                    ?>
+
+                </ul>
+            </li>
+
+
+            <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
                     <?= Yii::$app->user->displayName ?><b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -95,7 +150,7 @@ if (count($loja) > 0) {
                     </li>
                 </ul>
             </li>
-       <!--     <li><a href="#"><?/*= $nomeLoja */?> </a></li>-->
+            <!--     <li><a href="#"><?/*= $nomeLoja */ ?> </a></li>-->
 
             <?php
             if (Yii::$app->user->can("caixa") || Yii::$app->user->can("despesa")) {
@@ -186,7 +241,7 @@ if (count($loja) > 0) {
 
                 <div class="collapse navbar-collapse navbar-ex1-collapse ">
                     <ul class="nav navbar-nav side-nav">
-                        <li >
+                        <li>
                             <?= Html::a('<i class="fa fa-fw fa-home"></i> Home', ['/site/index']) ?>
 
                         </li>

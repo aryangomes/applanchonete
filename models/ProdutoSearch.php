@@ -47,6 +47,10 @@ class ProdutoSearch extends Produto
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort'=> ['defaultOrder' => ['idProduto'=>SORT_DESC]],
         ]);
 
         $this->load($params);

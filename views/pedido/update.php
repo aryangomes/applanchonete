@@ -5,9 +5,11 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $modelPedido app\models\Pedido */
 /* @var $situacaopedido array */
+/* @var $mensagem mixed */
 /* @var $produtosVenda mixed */
 /* @var $itemPedido \app\models\Itempedido */
 /* @var $formasPagamento array */
+
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
             'modelClass' => 'Pedido ',
         ]) . $modelPedido->idPedido;
@@ -26,6 +28,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
         'produtosVenda' => $produtosVenda,
         'itemPedido' => $itemPedido,
         'formasPagamento' => $formasPagamento,
+        'mensagem' => $mensagem,
     ])
     ?>
 

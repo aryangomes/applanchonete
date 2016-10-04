@@ -273,7 +273,7 @@ if ($action == 'create' || ($modelProduto->isInsumo && $action == 'update')) {
 
     </div>
 
-<?= $form->field($modelProduto, 'imageFile')->fileInput() ?>
+<?= $form->field($modelProduto, 'imageFile')->fileInput(['class'=>'form-control']) ?>
 
 <?php ActiveForm::end(); ?>
     <script>

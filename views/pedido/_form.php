@@ -14,7 +14,26 @@ use yii\bootstrap\Modal;
 /* @var $situacaopedido array */
 ?>
 
+<?php
+
+if (isset($mensagem) && !empty($mensagem)) {
+
+    ?>
+
+    <?= \kartik\alert\Alert::widget([
+        'options' => [
+            'class' => 'alert-danger',
+        ],
+        'body' => $mensagem,
+    ]);
+
+    ?>
+    <?php
+}
+?>
+
 <div class="pedido-form">
+
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -157,15 +176,6 @@ use yii\bootstrap\Modal;
 
     <?php ActiveForm::end(); ?>
 
-
-    <?php
-
-    if (isset($mensagem) && !empty($mensagem)) {
-        ?>
-        <script type="text/javascript">alert('<?= $mensagem; ?>');</script>
-        <?php
-    }
-    ?>
 
 </div>
 

@@ -204,7 +204,7 @@ class Produto extends \yii\db\ActiveRecord
         }
 
         if (($arrayTipoCustoFixoZero) != null) {
-                        Yii::$app->session->setFlash('custofixozerados', "<div class=\"alert alert-warning\">
+            Yii::$app->session->setFlash('custofixozerados', "<div class=\"alert alert-warning\">
                Não foram calculados os custos fixos de " . implode(",", $arrayTipoCustoFixoZero) . " pois não
                 há registro(s) dele(s) no mês anterior
             </div>");
@@ -245,9 +245,9 @@ class Produto extends \yii\db\ActiveRecord
         $optGroups = Categoria::find()->all();
 
         foreach ($optGroups as $categoria) {
-            $produtosCategoria= [];
+            $produtosCategoria = [];
             $produtos = Produto::find()->
-            where(['idCategoria'=>$categoria->idCategoria])->all();
+            where(['idCategoria' => $categoria->idCategoria])->all();
 
             foreach ($produtos as $p) {
                 $key = $p->idProduto;
@@ -259,6 +259,29 @@ class Produto extends \yii\db\ActiveRecord
         }
 
         return $options;
+    }
+
+    /**
+     * Verifica a quantidade no estoque antes de efetuar um
+     * pedido
+     * @param $qtdProdutoPedido int
+     * @return bool
+     */
+    public function verificaQtdEstProdutoPedido($qtdProdutoPedido)
+    {
+        $produto = Produto::findOne($this->idProduto);
+        if ($produto != null & $qtdProdutoPedido > 0) {
+            if (($produto->quantidadeEstoque - $qtdProdutoPedido) >
+                $produto->quantidadeMinima
+            ) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } else {
+            return false;
+        }
     }
 
 }

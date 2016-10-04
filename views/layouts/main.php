@@ -75,6 +75,7 @@ if (count($loja) > 0) {
         <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav">
 
+            <!--      Dropdown Acesso Rápido      -->
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-align-justify"></i>
                     Acesso Rápido<b class="caret"></b></a>
@@ -113,7 +114,7 @@ if (count($loja) > 0) {
                         <?php
                     }
                     ?>
-                    
+
                     <li class="divider"></li>
                     <?php
                     if (Yii::$app->user->can("index-cardapio") || Yii::$app->user->can("cardapio")) {
@@ -128,30 +129,11 @@ if (count($loja) > 0) {
 
                 </ul>
             </li>
+            <!--      Dropdown Acesso Rápido      -->
 
 
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
-                    <?= Yii::$app->user->displayName ?><b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a href="<?= Url::toRoute('/user/account') ?>"><i class="fa fa-fw fa-user"></i> Perfil</a>
-                    </li>
-                    <!--      <li>
-                             <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                         </li>
-                         <li>
-                             <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                         </li> -->
-                    <li class="divider"></li>
-                    <li>
-                        <a href="<?= Url::toRoute('/user/logout') ?>" data-method='POST'><i
-                                class="fa fa-fw fa-power-off"></i> Sair</a>
-                    </li>
-                </ul>
-            </li>
-            <!--     <li><a href="#"><?/*= $nomeLoja */ ?> </a></li>-->
 
+            <!--      Dropdown Notificações      -->
             <?php
             if (Yii::$app->user->can("caixa") || Yii::$app->user->can("despesa")) {
             ?>
@@ -160,80 +142,80 @@ if (count($loja) > 0) {
 
             </li>
             <li class="dropdown">
-                <?php
-                if (Yii::$app->user->can("caixa")) {
-                ?>
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-
-            <?php
-            if (isset($caixa) && $caixa->valoremcaixa < 1 || count($qtdProdutoMinimo) > 0) {
-            ?>
-            <i class="fa fa-bell"></i>
-            <span class="label label-danger">
-                                                !
-                                            </span>
-            <b class="caret"></b></a>
-                <ul class="dropdown-menu alert-dropdown">
                     <?php
-                    if (isset($caixa) && $caixa->valoremcaixa < 1) {
-                        ?>
-                        <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
-                        </li>
-                        <li class="divider"></li>
+                    if (Yii::$app->user->can("caixa")) {
+                    ?>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+                <?php
+                if (isset($caixa) && $caixa->valoremcaixa < 1 || count($qtdProdutoMinimo) > 0) {
+                ?>
+                <i class="fa fa-bell"></i>
+                <span class="label label-danger">
+                                                    !
+                                                </span>
+                <b class="caret"></b></a>
+                    <ul class="dropdown-menu alert-dropdown">
                         <?php
-                    }
-
-
-                    if (count($qtdProdutoMinimo) > 0) {
-                        echo "<li><a><b>Produtos com quantidade em estoque com valor mínimo</b></a></li>";
-                        foreach ($qtdProdutoMinimo as $p) {
+                        if (isset($caixa) && $caixa->valoremcaixa < 1) {
                             ?>
-                            <li>
-                                <a href="<?= Url::toRoute(['/produto/view', 'id' => $p->idProduto]) ?>"> <?= $p->nome ?> </a>
+                            <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
                             </li>
                             <li class="divider"></li>
                             <?php
                         }
-                    }
-                    } else {
-                    ?>
-                    <i class="fa fa-bell"></i>
 
-                    <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown">
-                        <li>
-                            &nbsp; Não há alertas
-                        </li>
-                        <?php
+
+                        if (count($qtdProdutoMinimo) > 0) {
+                            echo "<li><a><b>Produtos com quantidade em estoque com valor mínimo</b></a></li>";
+                            foreach ($qtdProdutoMinimo as $p) {
+                                ?>
+                                <li>
+                                    <a href="<?= Url::toRoute(['/produto/view', 'id' => $p->idProduto]) ?>"> <?= $p->nome ?> </a>
+                                </li>
+                                <li class="divider"></li>
+                                <?php
+                            }
                         }
                         }
+                        else
+                                    {
+                                    ?>
+                                    <i class="fa fa-bell"></i>
+
+                                    <b class="caret"></b></a>
+                                    <ul class="dropdown-menu alert-dropdown">
+                                        <li>
+                                            &nbsp; Não há alertas
+                                        </li>
+                                        <?php
+                                        }
+                            }
                         }
                         ?>
 
 
                     </ul>
                     </li>
+                        <!--      Dropdown Notificações      -->
 
-                    <!--
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> 
-                        <?= Yii::$app->user->displayName ?><b class="caret"></b></a>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <a href="<?= Url::toRoute('/user/account') ?>"><i class="fa fa-fw fa-user"></i> Profile</a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                                            </li>
-                                            <li class="divider"></li>
-                                            <li>
-                                                <a href="<?= Url::toRoute('/user/logout') ?>" data-method='POST'><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                                            </li>
-                                        </ul>
-                                    </li> -->
+                        <!--      Dropdown Usuário      -->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
+                                <?= Yii::$app->user->displayName ?><b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="<?= Url::toRoute('/user/account') ?>"><i class="fa fa-fw fa-user"></i> Perfil</a>
+                                </li>
+
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="<?= Url::toRoute('/user/logout') ?>" data-method='POST'><i
+                                            class="fa fa-fw fa-power-off"></i> Sair</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!--      Dropdown Usuário      -->
                 </ul>
 
 
@@ -264,10 +246,7 @@ if (count($loja) > 0) {
                         <?php
                         if (Yii::$app->user->can("index-fornecedor") || Yii::$app->user->can("fornecedor")) {
                             ?>
-                            <!--  <li>
-                                <?php // Html::a('<i class="fa fa-truck"></i> Fornecedor', ['/fornecedor/index']) ?>
 
-                            </li> -->
 
                             <?php
                         }
@@ -501,20 +480,7 @@ if (count($loja) > 0) {
                     </ul>
                 </div>
 
-                <!--    <div class="collapse navbar-collapse navbar-ex1-collapse ">
-                    <ul class="nav navbar-nav side-nav">
 
-                      <li>
-                    <?= Html::a('<i class="fa fa-truck"></i> Fornecedor', ['/fornecedor/index']) ?>
-
-                    </li>
-                </ul>
-            </div> -->
-
-
-                <!--   <div class="collapse navbar-collapse navbar-ex1-collapse "> -->
-
-                <!--  </div> -->
                 <?php
                 }
                 ?>
@@ -570,7 +536,7 @@ $this->registerJsFile('@web/admin/js/plugins/morris/raphael.min.js');
 $this->registerJsFile('@web/admin/js/plugins/morris/morris.min.js');
 $this->registerJsFile('@web/admin/js/plugins/morris/morris-data.js');
 ?>
-<?php // Html::jsFile("/applanchonete/web/admin/js/cadastro-permissoes.js") ?>
+
 
 
 

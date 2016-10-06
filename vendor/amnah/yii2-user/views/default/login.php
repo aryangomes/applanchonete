@@ -14,16 +14,16 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="row text-center">
-    <div class="col-lg-3">
-       &nbsp;
+    <div class="col-md-4">
+    &nbsp;
     </div>
-    <div class="col-lg-6">
-        <?=  Html::img('../sgl.png',
+    <div class="col-md-4">
+    <?=  Html::img('../sgl.png',
             ['class' => 'img-responsive',
               ]) ?>
     </div>
-    <div class="col-lg-3">
-        &nbsp;
+    <div class="col-md-4">
+    &nbsp;
     </div>
 </div>
 <div class="row text-center">

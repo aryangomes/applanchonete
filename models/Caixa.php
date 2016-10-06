@@ -75,7 +75,8 @@ class Caixa extends \yii\db\ActiveRecord {
     }
 
     /**
-     * @return string
+     * @param $idPedido
+     * @return float
      */
     public function calculaValorLucroPedido($idPedido)
     {

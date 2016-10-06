@@ -38,9 +38,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
 
 
-                ['attribute' => 'situacaopedido',
-                    'label' => 'Situação Atual',
-                    'value' => 'situacaopedido.titulo'],
+                [
+                    'attribute' => 'situacaopedido',
+                    'format' => 'raw',
+                    'value' => function ($modelPedido) {
+
+                        return Html::a($modelPedido->situacaopedido->titulo, ['view', 'id' => $modelPedido->idPedido]);
+                    }
+                ],
                 [
                     'attribute' => 'totalPedido',
                     'value' => function ($modelPedido) {
@@ -71,20 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     strtotime($modelPedido->getDataHoraPedido())) : null;
                     }
                 ],
-                ['class' => 'yii\grid\ActionColumn',
-                    'template' => '{view}',
-                    'header' => 'Ação',
-                    'buttons' => [
-                        'view' => function ($url, $modelPedido) {
-                            return Html::a('Clique aqui para visualizar detalhes do pedido <i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $modelPedido->idPedido]),
-                                [
-                                    'title' => Yii::t('app', 'Clique aqui para visualizar detalhes do pedido'),
-                                ]);
-                        }
-                    ],
-
-                ],
+                ['class' => 'yii\grid\ActionColumn'],
 
 
             ],

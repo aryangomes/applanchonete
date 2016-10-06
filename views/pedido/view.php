@@ -98,6 +98,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     'value' => 'R$ ' . $model->totalPedido
                 ],
+                
+                ['attribute' => 'idMesa',
+                    'label' => 'Mesa',
+                    'value' => $model->idMesa
+                ],
 
                 ['attribute' => 'situacaopedido',
                     'label' => 'Situação Atual',

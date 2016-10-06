@@ -23,7 +23,15 @@ use yii\bootstrap\Modal;
     if (Yii::$app->controller->action->id == 'create') {
         //Cadastrar
         ?>
-
+        <?=
+        $form->field($model, 'idMesa')->widget(Select2::classname(), [
+            'data' => $mesa,
+            'options' => ['placeholder' => 'Selecione a mesa'],
+            'pluginOptions' => [
+                'allowClear' => true,
+            ],
+        ]);
+        ?>
 
         <?=
         $form->field($itemPedido, 'idProduto[]')->widget(Select2::classname(), [

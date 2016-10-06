@@ -257,7 +257,7 @@ use kartik\money\MaskMoney;
 if (isset($mensagem) && !empty($mensagem)) {
     ?>
     <script type="text/javascript">alert('<?= $mensagem; ?>');</script>
-    <?
+    <?php
 }
 ?>
 <script type="text/javascript">

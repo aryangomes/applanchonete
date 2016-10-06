@@ -30,8 +30,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
 
 
-                'consumo',
+                [
+                    'attribute' => 'consumo',
+                    'format' => 'raw',
+                    'value' => function ($modelCustofixo) {
 
+                        return Html::a('Consumo: '.$modelCustofixo->consumo, ['view', 'id' => $modelCustofixo->idconta]);
+                    }
+                ],
                 [
                     'attribute' => 'tipocustofixoIdtipocustofixo',
                     'label' => 'Tipo de Custo Fixo',
@@ -39,20 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 ],
 
-                ['class' => 'yii\grid\ActionColumn',
-                    'template' => '{view}',
-                    'header' => 'Ação',
-                    'buttons' => [
-                        'view' => function ($url, $modelCustofixo) {
-                            return Html::a('Clique aqui para visualizar detalhes do custo fixo<i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $modelCustofixo->idconta]),
-                                [
-                                    'title' => Yii::t('app', 'Clique aqui para visualizar detalhes do custo fixo'),
-                                ]);
-                        }
-                    ],
-
-                ],
+                ['class' => 'yii\grid\ActionColumn'],
             ],
         ]); ?>
         <?php Pjax::end(); ?>

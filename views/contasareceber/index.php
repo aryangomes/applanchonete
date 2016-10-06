@@ -27,13 +27,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
-                ['attribute' => 'conta',
-                    'format' => 'text',
-                    'label' => 'Conta',
+
+                [
+                    'attribute' => 'conta',
+                    'format' => 'raw',
                     'value' => function ($modelContasareceber) {
-                        return $modelContasareceber->conta->descricao;
+
+                        return Html::a($modelContasareceber->conta->descricao, ['view', 'id' => $modelContasareceber->idconta]);
                     }
                 ],
+
+
                 ['attribute' => 'dataHora',
                     'format' => 'text',
                     'value' => function ($modelContasareceber) {
@@ -42,20 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 ],
 
-                ['class' => 'yii\grid\ActionColumn',
-                    'template' => '{view}',
-                    'header' => 'Ação',
-                    'buttons' => [
-                        'view' => function ($url, $modelContasareceber) {
-                            return Html::a('Clique aqui para visualizar detalhes da conta a receber<i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $modelContasareceber->idconta]),
-                                [
-                                    'title' => Yii::t('app', 'Clique aqui para visualizar detalhes da conta a receber'),
-                                ]);
-                        }
-                    ],
-
-                ],
+                ['class' => 'yii\grid\ActionColumn'],
             ],
         ]); ?>
         <?php Pjax::end(); ?>

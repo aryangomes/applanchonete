@@ -25,7 +25,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
-                'idMesa',
+
+                [
+                    'attribute' => 'idMesa',
+                    'format' => 'raw',
+                    'value' => function ($modelMesa) {
+
+                        return Html::a('Mesa: '.$modelMesa->idMesa, ['view', 'id' => $modelMesa->idMesa]);
+                    }
+                ],
                 'descricao',
                 [
                     'attribute' => 'disponivel',

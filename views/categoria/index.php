@@ -27,22 +27,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
 
                 //'idCategoria',
-                'nome',
 
-                ['class' => 'yii\grid\ActionColumn',
-                    'template' => '{view}',
-                    'header' => 'Ação',
-                    'buttons' => [
-                        'view' => function ($url, $modelCategoria) {
-                            return Html::a('Clique aqui para visualizar detalhes do categoria <i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $modelCategoria->idCategoria]),
-                                [
-                                    'title' => Yii::t('app', 'Clique aqui para visualizar detalhes do categoria'),
-                                ]);
-                        }
-                    ],
+                [
+                    'attribute' => 'nome',
+                    'format' => 'raw',
+                    'value' => function ($modelCategoria) {
 
+                        return Html::a($modelCategoria->nome, ['view', 'id' => $modelCategoria->idCategoria]);
+                    }
                 ],
+                ['class' => 'yii\grid\ActionColumn'],
             ],
         ]); ?>
         <?php Pjax::end(); ?>

@@ -29,8 +29,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
+                [
+                    'attribute' =>  'dataCompra',
+                    'format' => 'raw',
+                    'value' => function ($modelCompra) {
 
-                'dataCompra:date',
+                        return Html::a(date('d/m/Y',
+                                strtotime($modelCompra->dataCompra))
+                            , ['view', 'id' => $modelCompra->idconta]);
+                    }
+                ],
+
 
                [
                    'attribute'=> 'conta.valor',
@@ -38,20 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return 'R$ ' . $modelCompra->conta->valor;
                    }
                ],
-                ['class' => 'yii\grid\ActionColumn',
-                    'template' => '{view}',
-                    'header' => 'Ação',
-                    'buttons' => [
-                        'view' => function ($url, $modelCompra) {
-                            return Html::a('Clique aqui para visualizar detalhes da compra <i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $modelCompra->idconta]),
-                                [
-                                    'title' => Yii::t('app', 'Clique aqui para visualizar detalhes da compra'),
-                                ]);
-                        }
-                    ],
-
-                ],
+                ['class' => 'yii\grid\ActionColumn'],
             ],
         ]); ?>
         <?php Pjax::end(); ?>

@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'raw',
                     'label' => 'Ação',
                     'value' => function ($modelRelatorio) {
-                        return Html::a('Gerar relatório', ['relatorio' . strtolower($modelRelatorio->tipo), 'id' => $modelRelatorio->idrelatorio]);
+                        return Html::a('Visualizar relatório', ['relatorio' . strtolower($modelRelatorio->tipo), 'id' => $modelRelatorio->idrelatorio]);
                     },
                 ],
                 'datageracao:date',

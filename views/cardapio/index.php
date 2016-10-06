@@ -27,9 +27,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
 
                 //'idCardapio',
-                'data:date',
-                'titulo',
 
+
+                [
+                    'attribute' =>  'titulo',
+                    'format' => 'raw',
+                    'value' => function ($modelCardapio) {
+
+                        return Html::a($modelCardapio->titulo, ['view', 'id' => $modelCardapio->idCardapio]);
+                    }
+                ],
+                'data:date',
                 ['class' => 'yii\grid\ActionColumn',
                     'template' => '{view}',
                     'header' => 'Ação',

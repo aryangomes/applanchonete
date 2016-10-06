@@ -28,11 +28,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
 
                 // 'idconta',
-                ['attribute' => 'conta',
-                    'format' => 'text',
-                    'label' => 'Conta',
+
+
+                [
+                    'attribute' => 'conta',
+                    'format' => 'raw',
                     'value' => function ($modelContasapagar) {
-                        return $modelContasapagar->conta->descricao;
+
+                        return Html::a($modelContasapagar->conta->descricao, ['view', 'id' => $modelContasapagar->idconta]);
                     }
                 ],
 
@@ -45,20 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
 
 
-                ['class' => 'yii\grid\ActionColumn',
-                    'template' => '{view}',
-                    'header' => 'Ação',
-                    'buttons' => [
-                        'view' => function ($url, $modelContasapagar) {
-                            return Html::a('Clique aqui para visualizar detalhes da conta a pagar<i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $modelContasapagar->idconta]),
-                                [
-                                    'title' => Yii::t('app', 'Clique aqui para visualizar detalhes da conta a pagar'),
-                                ]);
-                        }
-                    ],
-
-                ],
+                ['class' => 'yii\grid\ActionColumn' ],
             ],
         ]); ?>
         <?php Pjax::end(); ?>

@@ -29,7 +29,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 // 'idconta',
 
-                'tipoConta',
+
+                [
+                    'attribute' =>  'tipoConta',
+                    'format' => 'raw',
+                    'value' => function ($modelConta) {
+
+                        return Html::a($modelConta->tipoConta, ['view', 'id' => $modelConta->idconta]);
+                    }
+                ],
                 ['attribute' => 'valor',
                     'format' => 'text',
                     'value' => function ($modelConta) {
@@ -45,20 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 ],
 
-                ['class' => 'yii\grid\ActionColumn',
-                    'template' => '{view}',
-                    'header' => 'Ação',
-                    'buttons' => [
-                        'view' => function ($url, $modelConta) {
-                            return Html::a('Clique aqui para visualizar detalhes da conta <i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $modelConta->idconta]),
-                                [
-                                    'title' => Yii::t('app', 'Clique aqui para visualizar detalhes da conta'),
-                                ]);
-                        }
-                    ],
-
-                ],
+                ['class' => 'yii\grid\ActionColumn'],
             ],
         ]); ?>
         <?php Pjax::end(); ?>

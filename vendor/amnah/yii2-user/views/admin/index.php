@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -39,8 +39,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
 
 //                'id',
+                [
+                    'attribute' => 'email',
+                    'format' => 'raw',
+                    'value' => function ($model) {
+
+                        return Html::a($model->email, ['view', 'id' => $model->id]);
+                    }
+                ],
                 'profile.full_name',
-                'email:email',
+
+
                 [
                     'attribute' => 'status',
                     'label' => Yii::t('user', 'Status'),
@@ -76,20 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 // 'banned_at',
                 // 'banned_reason',
 
-                ['class' => 'yii\grid\ActionColumn',
-                    'template' => '{view}',
-                    'header' => 'Ação',
-                    'buttons' => [
-                        'view' => function ($url, $model) {
-                            return Html::a('Clique aqui para visualizar detalhes do usuário<i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $model->id]),
-                                [
-                                    'title' => Yii::t('app', 'Clique aqui para visualizar detalhes do usuário'),
-                                ]);
-                        }
-                    ],
-
-                ],
+                ['class' => 'yii\grid\ActionColumn'  ],
             ],
         ]); ?>
         <?php \yii\widgets\Pjax::end(); ?>

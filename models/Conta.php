@@ -103,4 +103,16 @@ class Conta extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Custofixo::className(), ['idconta' => 'idconta']);
     }
+
+
+    /**
+     * Retorna o tipo de conta
+     * @return string
+     */
+    public function getTipoConta()
+    {
+        $tiposConta = ['contasapagar' => 'Conta a pagar', 'contasareceber' => 'Conta a receber',
+            'custofixo' => 'Custo Fixo'];
+        return $tiposConta[$this->tipoConta];
+    }
 }

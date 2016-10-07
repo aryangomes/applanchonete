@@ -48,7 +48,7 @@ class Mesa extends \yii\db\ActiveRecord
     {
         return [
             'idMesa' => 'Identificador da Mesa',
-            'numeroDaMesa' => 'Descrição',
+            'numeroDaMesa' => 'Número da Mesa',
             'disponivel' => 'Disponibilidade',
             'alerta' => 'Alerta',
             'qrcode' => 'Qrcode',

@@ -7,6 +7,7 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ContaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $modelConta \app\models\Conta */
 
 $this->title = Yii::t('app', 'Contas');
 $this->params['breadcrumbs'][] = $this->title;
@@ -35,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'raw',
                     'value' => function ($modelConta) {
 
-                        return Html::a($modelConta->tipoConta, ['view', 'id' => $modelConta->idconta]);
+                        return Html::a($modelConta->getTipoConta(), ['view', 'id' => $modelConta->idconta]);
                     }
                 ],
                 ['attribute' => 'valor',

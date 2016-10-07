@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Html::a('Mesa: '.$modelMesa->idMesa, ['view', 'id' => $modelMesa->idMesa]);
                     }
                 ],
-                'descricao',
+                'numeroDaMesa',
                 [
                     'attribute' => 'disponivel',
                     'value' => function ($modelMesa) {

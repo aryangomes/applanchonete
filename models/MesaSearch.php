@@ -19,7 +19,7 @@ class MesaSearch extends Mesa
     {
         return [
             [['idMesa', 'disponivel', 'alerta', 'cont'], 'integer'],
-            [['descricao', 'qrcode', 'chave'], 'safe'],
+            [['numeroDaMesa', 'qrcode', 'chave'], 'safe'],
         ];
     }
 
@@ -62,7 +62,7 @@ class MesaSearch extends Mesa
             'cont' => $this->cont,
         ]);
 
-        $query->andFilterWhere(['like', 'descricao', $this->descricao])
+        $query->andFilterWhere(['like', 'numeroDaMesa', $this->numeroDaMesa])
             ->andFilterWhere(['like', 'qrcode', $this->qrcode])
             ->andFilterWhere(['like', 'chave', $this->chave]);
 

@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'idMesa') ?>
 
-    <?= $form->field($model, 'descricao') ?>
+    <?= $form->field($model, 'numeroDaMesa') ?>
 
     <?= $form->field($model, 'disponivel') ?>
 

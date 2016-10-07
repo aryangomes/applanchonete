@@ -90,6 +90,7 @@ class RelatorioController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+
         ]);
     }
 
@@ -209,9 +210,11 @@ class RelatorioController extends Controller
 
             $searchContasAReceber = new ContasareceberSearch();
             $modelRelatorio = $this->findModel($id);
+
             return $this->render('relatoriocontasareceber', [
                 'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
+                'tipoRelatorio'=>$this->tiposRelatorio[$modelRelatorio->tipo],
                 'datasContasAReceber' => $searchContasAReceber->searchDatasContasAReceberPorPeriodo($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
                 'valoresContasAReceber' => $searchContasAReceber->searchContasAReceberPorPeriodo($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
             ]);
@@ -250,6 +253,7 @@ class RelatorioController extends Controller
             return $this->render('relatoriopagamento', [
                 'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
+                'tipoRelatorio'=>$this->tiposRelatorio[$modelRelatorio->tipo],
                 'countTiposPagamentos' => $searchPagamento->searchCountPagamentosContasAReceberPorPeriodo($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
                 'datasPagamentos' => $searchPagamento->searchDatasPagamentosContasAReceberPorPeriodo($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
                 'tiposPagamentos' => $searchPagamento->searchPagamentosContasAReceberPorPeriodo($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
@@ -290,6 +294,7 @@ class RelatorioController extends Controller
             return $this->render('relatoriopedido', [
                 'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
+                'tipoRelatorio'=>$this->tiposRelatorio[$modelRelatorio->tipo],
                 'pedidos' => $searchPedido->searchCountPedidosContasAReceberPorPeriodo($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
             ]);
         }
@@ -328,6 +333,7 @@ class RelatorioController extends Controller
             return $this->render('relatorioitempedido', [
                 'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
+                'tipoRelatorio'=>$this->tiposRelatorio[$modelRelatorio->tipo],
                 'produtosVendidos' => $searchItemPedido->searchItensPedido($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
             ]);
         }
@@ -366,6 +372,7 @@ class RelatorioController extends Controller
             return $this->render('relatoriolucro', [
                 'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
+                'tipoRelatorio'=>$this->tiposRelatorio[$modelRelatorio->tipo],
                 'lucros' => $searchItemPedido->searchLucro($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
             ]);
         }

@@ -94,16 +94,28 @@ class AuthItem extends \yii\db\ActiveRecord
         return $this->hasMany(AuthItemChild::className(), ['child' => 'name']);
     }
 
+    /**
+     * @param $role_id
+     * @return array|null|\yii\db\ActiveRecord
+     */
     public function getDescription($role_id)
     {
         return $this->find('description')->where(['type' => $role_id])->one();
     }
 
+    /**
+     * @param $name
+     * @return array|null|\yii\db\ActiveRecord
+     */
     public function getDescriptionByName($name)
     {
         return $this->find()->where(['name' => $name])->one();
     }
 
+    /**
+     * @param $role_id
+     * @return array|null|\yii\db\ActiveRecord
+     */
     public function getPermissao($role_id)
     {
         return AuthItem::find()->where(['type' => $role_id])->one();

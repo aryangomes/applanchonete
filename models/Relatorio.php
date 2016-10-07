@@ -78,4 +78,23 @@ class Relatorio extends \yii\db\ActiveRecord
         
         return $dataFormatada;
     }
+
+
+    /**
+     * Retorna o tipo de relatório
+     * @return string
+     */
+    public function getTipoRelatorio()
+    {
+        $tiposRelatorio = [
+
+            'Contasareceber' => 'Contas a Receber',
+            'Pagamento' => 'Pagamento',
+            'Pedido' => 'Pedidos',
+            'Itempedido' => 'Item(ns) Pedido',
+            'Lucro' => 'Lucro',
+        ];
+
+        return $tiposRelatorio[$this->tipo];
+    }
 }

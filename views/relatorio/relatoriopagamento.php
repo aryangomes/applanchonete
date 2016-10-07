@@ -10,6 +10,9 @@ use kartik\datecontrol\DateControl;
 /* @var $modelRelatorio app\models\Relatorio */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $tiposPagamentos array */
+/* @var $tiposRelatorio array */
+/* @var $tipoRelatorio string */
+
 $this->title = $modelRelatorio->isNewRecord ? Yii::t('app', 'Create {model}', ['model' => 'Relatório']) :
     Yii::t('app', 'View {model}', ['model' => 'Relatório']);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Relatorios'), 'url' => ['index']];
@@ -28,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $form->field($modelRelatorio, 'datageracao')->hiddenInput(['value' => date('Y-m-d')])->label(false); ?>
 
         <?= $form->field($modelRelatorio, 'tipo')->textInput(
-            ['disabled' => true])
+            ['disabled' => true,'value'=>$tipoRelatorio])
         ?>
 
 

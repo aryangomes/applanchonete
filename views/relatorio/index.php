@@ -6,6 +6,8 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\RelatorioSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $modelRelatorio \app\models\Relatorio */
+
 
 $this->title = Yii::t('app', 'Relatorios');
 $this->params['breadcrumbs'][] = $this->title;
@@ -35,7 +37,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                 ],
                 'datageracao:date',
-                'tipo',
+
+                [
+                    'attribute' =>'tipo',
+
+                    'value' => function ($modelRelatorio) {
+
+                        return $modelRelatorio->getTipoRelatorio();
+                    }
+                ],
                 'inicio_intervalo:date',
                 'fim_intervalo:date',
                 // 'usuario_id',

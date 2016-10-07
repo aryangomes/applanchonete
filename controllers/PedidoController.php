@@ -191,8 +191,7 @@ class PedidoController extends Controller
                     if ($itensInseridos) {
                         $transaction->commit();
 
-                        return $this->redirect(['view',  'idPedido' => $modelPedido->idPedido,
-                            'idMesa' => $modelPedido->idMesa]);
+                        return $this->redirect(['view',  'id' => $modelPedido->idPedido,]);
                     }
                 } else {
                     $mensagem = "Não foi possível salvar os dados do Pedido";

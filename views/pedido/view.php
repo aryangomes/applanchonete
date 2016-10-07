@@ -19,7 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php
 
             echo ($modelPedido->situacaopedido->idSituacaoPedido == 1) ? Html::a(Yii::t('yii', 'Update'),
-                ['update', 'id' => $modelPedido->idPedido], ['class' => 'btn btn-primary']) : '' ?>
+                ['update',  'id' => $modelPedido->idPedido,
+                  ], ['class' => 'btn btn-primary']) : '' ?>
             <?php
 
           /*  echo ($modelPedido->situacaopedido->idSituacaoPedido == 1) ? Html::a(Yii::t('app', 'Delete'),

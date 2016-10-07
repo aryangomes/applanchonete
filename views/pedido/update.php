@@ -9,6 +9,7 @@ use yii\helpers\Html;
 /* @var $produtosVenda mixed */
 /* @var $itemPedido \app\models\Itempedido */
 /* @var $formasPagamento array */
+/* @var $mesa array */
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
             'modelClass' => 'Pedido ',
@@ -29,6 +30,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
         'itemPedido' => $itemPedido,
         'formasPagamento' => $formasPagamento,
         'mensagem' => $mensagem,
+        'mesa' => $mesa,
     ])
     ?>
 

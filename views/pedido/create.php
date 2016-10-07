@@ -10,6 +10,7 @@ use app\models\Mesa;
 /* @var $produtosVenda mixed */
 /* @var $itemPedido \app\models\Itempedido */
 /* @var $formasPagamento array */
+/* @var $mesa array */
 
 $this->title = Yii::t('app', 'Create {model}', ['model' => 'Pedido']);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pedidos'), 'url' => ['index']];

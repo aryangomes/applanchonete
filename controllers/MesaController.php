@@ -113,18 +113,13 @@ class MesaController extends Controller
 
             $modelMesa = new Mesa();
 
-            if ($modelMesa->load(Yii::$app->request->post())) {
+            if ($modelMesa->load(Yii::$app->request->post()) && $modelMesa->save()) {
 
-                if ($modelMesa->save()) {
-                    if ($modelMesa->descricao == '') {
-                        $modelMesa->descricao = 'Mesa ' . $modelMesa->idMesa;
-                        $modelMesa->save();
-                    }
                     return $this->redirect(['view', 'id' => $modelMesa->idMesa]);
-                }
 
             } else {
                 $modelMesa->disponivel = 1;
+
                 return $this->render('create', [
                     'modelMesa' => $modelMesa,
                 ]);

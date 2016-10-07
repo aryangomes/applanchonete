@@ -132,7 +132,7 @@ class PedidoController extends Controller
 
         //Recebe todas as mesas registradas
         $mesa = ArrayHelper::map(Mesa::find()->where(['disponivel'=>1])
-            ->all(), 'idMesa', 'descricao');
+            ->all(), 'idMesa', 'numeroDaMesa');
 
         if ($modelPedido->load(Yii::$app->request->post())) {
             //Carrega demais modelos
@@ -191,7 +191,8 @@ class PedidoController extends Controller
                     if ($itensInseridos) {
                         $transaction->commit();
 
-                        return $this->redirect(['view', 'id' => $modelPedido->idPedido]);
+                        return $this->redirect(['view',  'idPedido' => $modelPedido->idPedido,
+                            'idMesa' => $modelPedido->idMesa]);
                     }
                 } else {
                     $mensagem = "Não foi possível salvar os dados do Pedido";
@@ -243,6 +244,10 @@ class PedidoController extends Controller
 
         $antigaSituacao = $modelPedido->idSituacaoAtual;
 
+        //Recebe todas as mesas registradas
+        $mesa = ArrayHelper::map(Mesa::find()->where(['disponivel'=>1])
+            ->all(), 'idMesa', 'numeroDaMesa');
+
         if ($modelPedido->load(Yii::$app->request->post()) &&
             (count($itensPedido) > 0)
         ) {
@@ -250,9 +255,10 @@ class PedidoController extends Controller
 
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
+            var_dump(Yii::$app->request->post());
             try {
                 //Tenta salvar um registro de Pedido:
-                if ($modelPedido->save()) {
+                    if ($modelPedido->save()) {
                     //Carrega os dados dos itens do Pedido:
                     $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
 

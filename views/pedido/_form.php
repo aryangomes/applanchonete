@@ -75,11 +75,15 @@ if (isset($mensagem) && !empty($mensagem)) {
     } else {
 
         ?>
-
+        <?=
+        $form->field($modelPedido, 'idMesa')->textInput(['disabled'=>false]);
+        ?>
         <?php
         //Atualizar
         echo $form->field($modelPedido, 'idPedido')->hiddenInput(['id' => 'idpedido'])
             ->label(false);
+
+
         for ($i = 0; $i < count($itemPedido); $i++) {
             ?>
             <div class="form-group field-insumos-idprodutoinsumo required divborda" id="<?= 'inputinsumo' . $i ?>">

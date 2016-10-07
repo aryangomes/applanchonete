@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "mesa".
  *
  * @property integer $idMesa
- * @property string $descricao
+ * @property string $numeroDaMesa
  * @property integer $disponivel
  * @property integer $alerta
  * @property string $qrcode
@@ -33,10 +33,10 @@ class Mesa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-//            [['descricao', 'disponivel', 'alerta', 'qrcode', 'chave'], 'required'],
+//            [['numeroDaMesa', 'disponivel', 'alerta', 'qrcode', 'chave'], 'required'],
             [['disponivel'], 'required'],
             [['disponivel', 'alerta', 'cont'], 'integer'],
-            [['descricao', 'chave'], 'string', 'max' => 45],
+            [['numeroDaMesa', 'chave'], 'string', 'max' => 45],
             [['qrcode'], 'string', 'max' => 100]
         ];
     }
@@ -48,7 +48,7 @@ class Mesa extends \yii\db\ActiveRecord
     {
         return [
             'idMesa' => 'Identificador da Mesa',
-            'descricao' => 'Descrição',
+            'numeroDaMesa' => 'Descrição',
             'disponivel' => 'Disponibilidade',
             'alerta' => 'Alerta',
             'qrcode' => 'Qrcode',

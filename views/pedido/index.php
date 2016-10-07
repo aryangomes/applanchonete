@@ -43,7 +43,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'raw',
                     'value' => function ($modelPedido) {
 
-                        return Html::a($modelPedido->situacaopedido->titulo, ['view', 'id' => $modelPedido->idPedido]);
+                        return Html::a($modelPedido->situacaopedido->titulo, ['view',
+                            'id' => $modelPedido->idPedido]);
                     }
                 ],
                 [

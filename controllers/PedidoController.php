@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Caixa;
+use app\models\Mesa;
 use Yii;
 use app\models\Pedido;
 use app\models\PedidoSearch;
@@ -129,7 +130,10 @@ class PedidoController extends Controller
         $formasPagamento = ArrayHelper::map(
             Formapagamento::find()->all(), 'idTipoPagamento', 'titulo');
 
-        if ($modelPedido->load(Yii::$app->request->post())) {
+        $mesa = ArrayHelper::map(Mesa::find()->all(), 'idMesa', 'descricao');
+
+        if ($model->load(Yii::$app->request->post())) {
+            //Carrega demais modelos
 
 
             //Inicia a transação:
@@ -205,6 +209,7 @@ class PedidoController extends Controller
             'itemPedido' => $itemPedido,
             'formasPagamento' => $formasPagamento,
             'mensagem' => $mensagem,
+            'mesa' => $mesa, 
         ]);
         // }
     }
@@ -333,6 +338,7 @@ class PedidoController extends Controller
             'itemPedido' => $itensPedido,
             'formasPagamento' => $formasPagamento,
             'mensagem' => $mensagem,
+            'mesa' => $mesa, 
         ]);
     }
 

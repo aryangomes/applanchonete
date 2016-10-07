@@ -45,6 +45,15 @@ if (isset($mensagem) && !empty($mensagem)) {
     if (Yii::$app->controller->action->id == 'create') {
         //Cadastrar
         ?>
+        <?=
+        $form->field($model, 'idMesa')->widget(Select2::classname(), [
+            'data' => $mesa,
+            'options' => ['placeholder' => 'Selecione a mesa'],
+            'pluginOptions' => [
+                'allowClear' => true,
+            ],
+        ]);
+        ?>
 
         <div class="divborda">
             <?=

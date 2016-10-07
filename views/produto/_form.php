@@ -363,6 +363,6 @@ if ($action == 'create' || ($modelProduto->isInsumo && $action == 'update')) {
 if (isset($mensagem) && !empty($mensagem)) {
     ?>
     <script type="text/javascript">alert('<?= $mensagem; ?>');</script>
-    <?
+    <?php
 }
 ?>

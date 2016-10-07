@@ -65,6 +65,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     }
                 ],
+               
+                ['attribute' => 'idMesa',
+                    'label' => 'Mesa',
+                    'value' => 'idMesa'],
+
                 [
                     'attribute' => 'historicosituacaos.dataHora',
                     'value' => function ($modelPedido) {

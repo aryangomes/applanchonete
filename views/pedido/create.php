@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use app\models\Mesa;
 
 /* @var $this yii\web\View */
 /* @var $modelPedido app\models\Pedido */
@@ -26,6 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'itemPedido' => $itemPedido,
         'formasPagamento' => $formasPagamento,
         'mensagem' => $mensagem,
+        'mesa' => $mesa, 
     ])
     ?>
 

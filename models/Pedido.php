@@ -41,8 +41,8 @@ class Pedido extends \yii\db\ActiveRecord
     {
         return [
             [['totalPedido'], 'double'],
-            [['idSituacaoAtual'], 'required'],
-            [['idSituacaoAtual'], 'integer'],
+            [['idSituacaoAtual', 'idMesa'], 'required'],
+            [['idSituacaoAtual', 'idMesa'], 'integer'],
             [['situacaopedido'], 'safe'],
             [['idSituacaoAtual'], 'exist', 'skipOnError' => true, 'targetClass' => Situacaopedido::className(), 'targetAttribute' => ['idSituacaoAtual' => 'idSituacaoPedido']],
         ];
@@ -57,6 +57,7 @@ class Pedido extends \yii\db\ActiveRecord
             'idPedido' => Yii::t('app', 'Id Pedido'),
             'totalPedido' => Yii::t('app', 'Total Pedido'),
             'idSituacaoAtual' => Yii::t('app', 'Situação Atual'),
+            'idMesa' => Yii::t('app', 'Mesa'),
         ];
     }
 

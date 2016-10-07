@@ -101,7 +101,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 
                 ['attribute' => 'idMesa',
                     'label' => 'Mesa',
-                    'value' => $model->idMesa
+                    'value' => $modelPedido->idMesa
                 ],
 
                 ['attribute' => 'situacaopedido',

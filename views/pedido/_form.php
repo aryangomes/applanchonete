@@ -46,7 +46,7 @@ if (isset($mensagem) && !empty($mensagem)) {
         //Cadastrar
         ?>
         <?=
-        $form->field($model, 'idMesa')->widget(Select2::classname(), [
+        $form->field($modelPedido, 'idMesa')->widget(Select2::classname(), [
             'data' => $mesa,
             'options' => ['placeholder' => 'Selecione a mesa'],
             'pluginOptions' => [

@@ -30,32 +30,32 @@ class MesaController extends Controller
 //        ],
 //        ]
 //        ],
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['post'],
-                    ],
-                ],
-//            ],
-          /*  'autorizacao' => [
-                'class' => AccessFilter::className(),
+            'verbs' => [
+                'class' => VerbFilter::className(),
                 'actions' => [
-
-                    'mesa' => [
-                        'index-mesa',
-                        'update-mesa',
-                        'delete-mesa',
-                        'view-mesa',
-                        'create-mesa',
-                    ],
-
-                    'index' => 'index-mesa',
-                    'update' => 'update-mesa',
-                    'delete' => 'delete-mesa',
-                    'view' => 'view-mesa',
-                    'create' => 'create-mesa',
+                    'delete' => ['post'],
                 ],
-            ],*/
+            ],
+//            ],
+            /*  'autorizacao' => [
+                  'class' => AccessFilter::className(),
+                  'actions' => [
+
+                      'mesa' => [
+                          'index-mesa',
+                          'update-mesa',
+                          'delete-mesa',
+                          'view-mesa',
+                          'create-mesa',
+                      ],
+
+                      'index' => 'index-mesa',
+                      'update' => 'update-mesa',
+                      'delete' => 'delete-mesa',
+                      'view' => 'view-mesa',
+                      'create' => 'create-mesa',
+                  ],
+              ],*/
         ];
     }
 
@@ -113,9 +113,18 @@ class MesaController extends Controller
 
             $modelMesa = new Mesa();
 
-            if ($modelMesa->load(Yii::$app->request->post()) && $modelMesa->save()) {
-                return $this->redirect(['view', 'id' => $modelMesa->idMesa]);
+            if ($modelMesa->load(Yii::$app->request->post())) {
+
+                if ($modelMesa->save()) {
+                    if ($modelMesa->descricao == '') {
+                        $modelMesa->descricao = 'Mesa ' . $modelMesa->idMesa;
+                        $modelMesa->save();
+                    }
+                    return $this->redirect(['view', 'id' => $modelMesa->idMesa]);
+                }
+
             } else {
+                $modelMesa->disponivel = 1;
                 return $this->render('create', [
                     'modelMesa' => $modelMesa,
                 ]);

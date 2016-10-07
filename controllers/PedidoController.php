@@ -130,9 +130,11 @@ class PedidoController extends Controller
         $formasPagamento = ArrayHelper::map(
             Formapagamento::find()->all(), 'idTipoPagamento', 'titulo');
 
-        $mesa = ArrayHelper::map(Mesa::find()->all(), 'idMesa', 'descricao');
+        //Recebe todas as mesas registradas
+        $mesa = ArrayHelper::map(Mesa::find()->where(['disponivel'=>1])
+            ->all(), 'idMesa', 'descricao');
 
-        if ($model->load(Yii::$app->request->post())) {
+        if ($modelPedido->load(Yii::$app->request->post())) {
             //Carrega demais modelos
 
 

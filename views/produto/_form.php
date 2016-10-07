@@ -88,7 +88,7 @@ if ($action == 'create' || ($modelProduto->isInsumo && $action == 'update')) {
 
 
         <div id="form-insumos-produtovenda">
-            <div  class="<?= !$modelProduto->isInsumo ? "divborda" : ''  ?>">
+            <div class="<?= !$modelProduto->isInsumo ? "divborda" : '' ?>">
                 <div class="insumos-form">
 
                     <div class="form-group field-insumos-idprodutoinsumo required">
@@ -260,6 +260,7 @@ if ($action == 'create' || ($modelProduto->isInsumo && $action == 'update')) {
     <?php
 }
 ?>
+    <?= $form->field($modelProduto, 'imageFile')->fileInput(['class' => 'form-control']) ?>
     <div class="form-group">
         <?= Html::submitButton($action == 'create' ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => 'btn btn-success']) ?>
         <?php
@@ -273,7 +274,6 @@ if ($action == 'create' || ($modelProduto->isInsumo && $action == 'update')) {
 
     </div>
 
-<?= $form->field($modelProduto, 'imageFile')->fileInput(['class'=>'form-control']) ?>
 
 <?php ActiveForm::end(); ?>
     <script>

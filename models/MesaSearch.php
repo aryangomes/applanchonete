@@ -18,7 +18,7 @@ class MesaSearch extends Mesa
     public function rules()
     {
         return [
-            [['idMesa', 'disponivel', 'alerta', 'cont'], 'integer'],
+            [['idMesa',  'alerta', 'cont'], 'integer'],
             [['numeroDaMesa', 'qrcode', 'chave'], 'safe'],
         ];
     }
@@ -45,6 +45,11 @@ class MesaSearch extends Mesa
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort'=> ['defaultOrder' => ['idMesa'=>SORT_DESC]],
+
         ]);
 
         $this->load($params);
@@ -57,7 +62,7 @@ class MesaSearch extends Mesa
 
         $query->andFilterWhere([
             'idMesa' => $this->idMesa,
-            'disponivel' => $this->disponivel,
+
             'alerta' => $this->alerta,
             'cont' => $this->cont,
         ]);

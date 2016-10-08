@@ -25,7 +25,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
 
                 //   'idProduto',
-                'nome',
+                [
+                    'attribute' => 'nome',
+                    'format' => 'raw',
+                    'value' => function ($modelProduto) {
+
+                        return Html::a($modelProduto->nome, ['view', 'id' => $modelProduto->idProduto]);
+                    }
+                ],
                 [
                     'attribute' => 'valorVenda',
                     'format' => 'text',
@@ -35,20 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
 
 
-                ['class' => 'yii\grid\ActionColumn',
-                    'template' => '{view}',
-                    'header' => 'Ação',
-                    'buttons' => [
-                        'view' => function ($url, $modelProduto) {
-                            return Html::a('Clique aqui para visualizar detalhes do produto<i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $modelProduto->idProduto]),
-                                [
-                                    'title' => Yii::t('app', 'Clique aqui para visualizar detalhes do produto'),
-                                ]);
-                        }
-                    ],
-
-                ],
+                ['class' => 'yii\grid\ActionColumn'],
             ],
         ]); ?>
 

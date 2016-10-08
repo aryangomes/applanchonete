@@ -118,7 +118,7 @@ class MesaController extends Controller
                     return $this->redirect(['view', 'id' => $modelMesa->idMesa]);
 
             } else {
-                $modelMesa->disponivel = 1;
+
 
                 return $this->render('create', [
                     'modelMesa' => $modelMesa,

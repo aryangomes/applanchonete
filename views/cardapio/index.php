@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                 [
-                    'attribute' =>  'titulo',
+                    'attribute' => 'titulo',
                     'format' => 'raw',
                     'value' => function ($modelCardapio) {
 
@@ -38,20 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 ],
                 'data:date',
-                ['class' => 'yii\grid\ActionColumn',
-                    'template' => '{view}',
-                    'header' => 'Ação',
-                    'buttons' => [
-                        'view' => function ($url, $modelCardapio) {
-                            return Html::a('Clique aqui para visualizar detalhes do cardápio <i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $modelCardapio->idCardapio]),
-                                [
-                                    'title' => Yii::t('app', 'Clique aqui para visualizar detalhes do cardápio'),
-                                ]);
-                        }
-                    ],
-
-                ],
+                ['class' => 'yii\grid\ActionColumn'],
             ],
         ]); ?>
 

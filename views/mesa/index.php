@@ -26,22 +26,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
 
 
-                [
+                /*[
                     'attribute' => 'idMesa',
                     'format' => 'raw',
                     'value' => function ($modelMesa) {
 
                         return Html::a('Mesa: '.$modelMesa->idMesa, ['view', 'id' => $modelMesa->idMesa]);
                     }
-                ],
+                ],*/
                 'numeroDaMesa',
-                [
-                    'attribute' => 'disponivel',
-                    'value' => function ($modelMesa) {
-                        return $modelMesa->disponivel ? 'Disponível' : 'Não Disponível';
-                    }
 
-                ],
                 [
                     'attribute' => 'alerta',
                     'value' => function ($modelMesa) {
@@ -54,20 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 // 'chave',
                 // 'cont',
 
-                ['class' => 'yii\grid\ActionColumn',
-                    'template' => '{view}',
-                    'header' => 'Ação',
-                    'buttons' => [
-                        'view' => function ($url, $modelMesa) {
-                            return Html::a('Clique aqui para visualizar detalhes da mesa<i class="fa fa-search-plus"></i>',
-                                \yii\helpers\Url::toRoute(['view', 'id' => $modelMesa->idMesa]),
-                                [
-                                    'title' => Yii::t('app', 'Clique aqui para visualizar detalhes da mesa'),
-                                ]);
-                        }
-                    ],
-
-                ],
+                ['class' => 'yii\grid\ActionColumn'],
             ],
         ]); ?>
     </div>

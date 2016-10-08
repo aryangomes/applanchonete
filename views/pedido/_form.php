@@ -29,6 +29,7 @@ if (isset($mensagem) && !empty($mensagem)) {
 
     ?>
     <?php
+//    header('refresh:0');
 }
 ?>
 
@@ -76,7 +77,14 @@ if (isset($mensagem) && !empty($mensagem)) {
 
         ?>
         <?=
-        $form->field($modelPedido, 'idMesa')->textInput(['disabled'=>false]);
+        $form->field($modelPedido, 'idMesa')->widget(Select2::classname(), [
+            'data' => $mesa,
+            'options' => ['placeholder' => 'Selecione a mesa'],
+//            'disabled'=>true,
+            'pluginOptions' => [
+                'allowClear' => true,
+            ],
+        ]);
         ?>
         <?php
         //Atualizar

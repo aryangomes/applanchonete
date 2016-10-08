@@ -29,14 +29,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $modelMesa,
         'attributes' => [
             'idMesa',
-            'descricao',
-           [
-               'attribute'=> 'disponivel',
-               'value'=>$modelMesa->disponivel?'Disponível':'Não Disponível',
-           ],
+            'numeroDaMesa',
+
             [
-                'attribute'=>   'alerta',
-                'value'=>$modelMesa->alerta?'Ligado':'Desligado',
+                'attribute' => 'alerta',
+                'value' => $modelMesa->alerta ? 'Ligado' : 'Desligado',
             ],
 
             'qrcode',

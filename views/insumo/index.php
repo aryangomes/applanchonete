@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = 'Insumos';
                         return $model->quantidade . ' ' . $model->unidade;
                     },
                 ],
-
+                ['class' => 'yii\grid\ActionColumn'],
             ],
         ]); ?>
 

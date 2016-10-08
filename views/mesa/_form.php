@@ -12,15 +12,8 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($modelMesa, 'descricao')->textarea(['maxlength' => true,
-    'placeholder'=>'Digite a descrição da mesa']) ?>
-
-    <?= $form->field($modelMesa, 'disponivel')->dropDownList([
-        '1'=>'Disponível','0'=>'Não Disponível'
-    ],['prompt'=>'Selecione...']) ?>
-
-
-
+    <?= $form->field($modelMesa, 'numeroDaMesa')->textInput(['maxlength' => true,
+        'placeholder' => 'Digite o número da mesa', 'type' => 'number', 'min' => 1]) ?>
 
 
     <div class="form-group">

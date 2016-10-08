@@ -11,6 +11,9 @@ use Yii;
  * @property integer $idSituacaoPedido
  * @property string $dataHora
  *
+ * @property integer $user_id
+ *
+ * @property User $user
  * @property Pedido $idPedido0
  * @property Situacaopedido $idSituacaoPedido0
  */
@@ -30,10 +33,12 @@ class Historicosituacao extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idPedido', 'idSituacaoPedido', 'dataHora'], 'required'],
-            [['idPedido', 'idSituacaoPedido'], 'integer'],
-            [['dataHora'], 'safe']
-        ];
+            [['idPedido', 'idSituacaoPedido', 'dataHora', 'user_id'], 'required'],
+            [['idPedido', 'idSituacaoPedido', 'user_id'], 'integer'],
+            [['dataHora'], 'safe'],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['idSituacaoPedido'], 'exist', 'skipOnError' => true, 'targetClass' => Situacaopedido::className(), 'targetAttribute' => ['idSituacaoPedido' => 'idSituacaoPedido']],
+            [['idPedido'], 'exist', 'skipOnError' => true, 'targetClass' => Pedido::className(), 'targetAttribute' => ['idPedido' => 'idPedido']],];
     }
 
     /**
@@ -45,6 +50,7 @@ class Historicosituacao extends \yii\db\ActiveRecord
             'idPedido' => 'Id Pedido',
             'idSituacaoPedido' => 'Id Situacao Pedido',
             'dataHora' => 'Data Hora',
+            'user_id' => Yii::t('app', 'Usuário'),
         ];
     }
 
@@ -63,4 +69,14 @@ class Historicosituacao extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Situacaopedido::className(), ['idSituacaoPedido' => 'idSituacaoPedido']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+
+   public function getUser()
+   {
+
+       return $this->hasOne(User::className(), ['id' => 'user_id']);
+   }
 }

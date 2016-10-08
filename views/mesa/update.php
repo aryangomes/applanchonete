@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $modelMesa app\models\Mesa */
 
-$this->title = 'Update Mesa: ' . ' ' . $modelMesa->idMesa;
+$this->title = 'Alterar Mesa: ' . ' ' . $modelMesa->idMesa;
 $this->params['breadcrumbs'][] = ['label' => 'Mesas', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $modelMesa->idMesa, 'url' => ['view', 'id' => $modelMesa->idMesa]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = ['label' => $modelMesa->numeroDaMesa, 'url' => ['view', 'id' => $modelMesa->idMesa]];
+$this->params['breadcrumbs'][] =$this->title;
 ?>
 <div class="mesa-update">
 

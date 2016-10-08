@@ -146,20 +146,20 @@ class Pedido extends \yii\db\ActiveRecord
         }
     }
 
-
     /**
      * Insere uma nova situação de pedido ao histórico da situação do pedido
      * @param $novaSituacao
      * @return bool
      */
-    public function mudarHistoricoSituacaoPedido($novaSituacao)
+    public function mudarHistoricoSituacaoPedido($novaSituacao, $idUsuario)
     {
-        $historicoPedido = Historicosituacao::findOne([$this->idPedido, $this->idSituacaoAtual]);
+        $historicoPedido = Historicosituacao::findOne([$this->idPedido, $this->idSituacaoAtual,$idUsuario]);
         if ($historicoPedido != null) {
 
             $historicoPedido = new Historicosituacao();
             $historicoPedido->idPedido = $this->idPedido;
             $historicoPedido->idSituacaoPedido = $novaSituacao;
+            $historicoPedido->user_id = $idUsuario;
 
             date_default_timezone_set('America/Sao_Paulo');
 
@@ -174,5 +174,41 @@ class Pedido extends \yii\db\ActiveRecord
         } else {
             return false;
         }
+    }
+
+
+    /**
+     * Insere u mnovo histórico da situação do pedido
+     * @param $idPedido int ,$idSituacaoAtual int ,$idUsuario int
+     * @return bool
+     */
+    public function cadastrarNovaHistoricoSituacaoPedido($idPedido,$idSituacaoAtual,$idUsuario)
+    {
+        $historicosituacao = new Historicosituacao();
+        if($idPedido != null && $idSituacaoAtual != null && $idUsuario != null ){
+
+            $historicosituacao->idPedido=$idPedido;
+
+            $historicosituacao->idSituacaoPedido=$idSituacaoAtual;
+
+            $historicosituacao->user_id=$idUsuario;
+
+            date_default_timezone_set('America/Sao_Paulo');
+
+            $historicosituacao->dataHora=date('Y-m-d H:i    ');
+
+            if($historicosituacao->save()){
+
+                return true;
+            }else{
+
+                return false;
+            }
+
+        }else{
+
+            return false;
+        }
+
     }
 }

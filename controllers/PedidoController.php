@@ -131,7 +131,7 @@ class PedidoController extends Controller
             Formapagamento::find()->all(), 'idTipoPagamento', 'titulo');
 
         //Recebe todas as mesas registradas
-        $mesa = ArrayHelper::map(Mesa::find()->where(['disponivel'=>1])
+        $mesa = ArrayHelper::map(Mesa::find()
             ->all(), 'idMesa', 'numeroDaMesa');
 
         if ($modelPedido->load(Yii::$app->request->post())) {
@@ -142,7 +142,10 @@ class PedidoController extends Controller
             $transaction = \Yii::$app->db->beginTransaction();
             try {
                 //Tenta salvar um registro de Pedido:
-                if ($modelPedido->save()) {
+                if ($modelPedido->save() &&
+                    ( $modelPedido->cadastrarNovaHistoricoSituacaoPedido(  intval($modelPedido->idPedido),
+                        intval($modelPedido->idSituacaoAtual),
+                      Yii::$app->getUser()->id))) {
                     //Carrega os dados dos itens do Pedido:
                     $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
 
@@ -244,7 +247,7 @@ class PedidoController extends Controller
         $antigaSituacao = $modelPedido->idSituacaoAtual;
 
         //Recebe todas as mesas registradas
-        $mesa = ArrayHelper::map(Mesa::find()->where(['disponivel'=>1])
+        $mesa = ArrayHelper::map(Mesa::find()
             ->all(), 'idMesa', 'numeroDaMesa');
 
         if ($modelPedido->load(Yii::$app->request->post()) &&
@@ -254,9 +257,11 @@ class PedidoController extends Controller
 
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
-            var_dump(Yii::$app->request->post());
+
             try {
                 //Tenta salvar um registro de Pedido:
+
+
                     if ($modelPedido->save()) {
                     //Carrega os dados dos itens do Pedido:
                     $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
@@ -314,7 +319,8 @@ class PedidoController extends Controller
 
                     if ($antigaSituacao != $modelPedido->idSituacaoAtual) {
 
-                        if (!$modelPedido->mudarHistoricoSituacaoPedido(intval($modelPedido->idSituacaoAtual))
+                        if (!$modelPedido->mudarHistoricoSituacaoPedido(intval($modelPedido->idSituacaoAtual),
+                                Yii::$app->getUser()->id)
                             && !$modelPedido->save()
                         ) {
 
@@ -411,7 +417,11 @@ class PedidoController extends Controller
                             $pedido->idSituacaoAtual = $situacaoPedido;
 
 
-                            if ($pedido->save() && $pedido->mudarHistoricoSituacaoPedido(intval($pedido->idSituacaoAtual))) {
+//                            if ($pedido->save() && $pedido->mudarHistoricoSituacaoPedido(intval($pedido->idSituacaoAtual))) {
+                            if ($pedido->save() &&
+                                ( $pedido->cadastrarNovaHistoricoSituacaoPedido( intval($pedido->idPedido),
+                                    intval($pedido->idSituacaoAtual),
+                                   Yii::$app->getUser()->id))) {
                                 $caixa = new Caixa();
                                 $caixa = $caixa->getCaixaAberto(Yii::$app->user->getId());
                                 if ($caixa != null) {

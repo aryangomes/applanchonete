@@ -19,7 +19,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'numeroDaMesa') ?>
 
-    <?= $form->field($model, 'disponivel') ?>
 
     <?= $form->field($model, 'alerta') ?>
 

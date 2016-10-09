@@ -109,6 +109,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     'label' => 'Situação Atual',
                     'value' => $modelPedido->situacaopedido->titulo
                 ],
+                [
+                    'attribute' => 'historicosituacaos.user.username',
+                    'label'=>'Registrado por',
+                    'value' => $modelPedido->historicosituacaos->user->username,
+
+                ],
             ],
         ]) ?>
 

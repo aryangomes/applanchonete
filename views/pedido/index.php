@@ -82,6 +82,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                     strtotime($modelPedido->getDataHoraPedido())) : null;
                     }
                 ],
+                [
+                    'attribute' => 'historicosituacaos.user.username',
+                    'label'=>'Registrado por',
+                    'value' => function ($modelPedido) {
+
+
+                        return $modelPedido->historicosituacaos->user->username;
+                    }
+                ],
                 ['class' => 'yii\grid\ActionColumn'],
 
 

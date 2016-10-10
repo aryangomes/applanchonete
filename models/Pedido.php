@@ -106,6 +106,7 @@ class Pedido extends \yii\db\ActiveRecord
 
     /**
      * Retorna a data hora da situação do pedido
+     * @return mixed|null
      */
     public function getDataHoraPedido()
     {

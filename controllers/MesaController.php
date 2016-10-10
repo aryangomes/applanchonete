@@ -115,7 +115,7 @@ class MesaController extends Controller
 
             if ($modelMesa->load(Yii::$app->request->post()) && $modelMesa->save()) {
 
-                    return $this->redirect(['view', 'id' => $modelMesa->idMesa]);
+                return $this->redirect(['view', 'id' => $modelMesa->idMesa]);
 
             } else {
 

@@ -132,7 +132,6 @@ if (count($loja) > 0) {
             <!--      Dropdown Acesso Rápido      -->
 
 
-
             <!--      Dropdown Notificações      -->
             <?php
             if (Yii::$app->user->can("caixa") || Yii::$app->user->can("despesa")) {
@@ -142,80 +141,81 @@ if (count($loja) > 0) {
 
             </li>
             <li class="dropdown">
-                    <?php
-                    if (Yii::$app->user->can("caixa")) {
-                    ?>
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-
                 <?php
-                if (isset($caixa) && $caixa->valoremcaixa < 1 || count($qtdProdutoMinimo) > 0) {
+                if (Yii::$app->user->can("caixa")) {
                 ?>
-                <i class="fa fa-bell"></i>
-                <span class="label label-danger">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+            <?php
+            if (isset($caixa) && $caixa->valoremcaixa < 1 || count($qtdProdutoMinimo) > 0) {
+            ?>
+            <i class="fa fa-bell"></i>
+            <span class="label label-danger">
                                                     !
                                                 </span>
-                <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown">
+            <b class="caret"></b></a>
+                <ul class="dropdown-menu alert-dropdown">
+                    <?php
+                    if (isset($caixa) && $caixa->valoremcaixa < 1) {
+                        ?>
+                        <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
+                        </li>
+                        <li class="divider"></li>
                         <?php
-                        if (isset($caixa) && $caixa->valoremcaixa < 1) {
+                    }
+
+
+                    if (count($qtdProdutoMinimo) > 0) {
+                        echo "<li><a><b>Produtos com quantidade em estoque com valor mínimo</b></a></li>";
+                        foreach ($qtdProdutoMinimo as $p) {
                             ?>
-                            <li><a href="<?= Url::toRoute('/caixa') ?>"> Há um déficit no caixa </a>
+                            <li>
+                                <a href="<?= Url::toRoute(['/produto/view', 'id' => $p->idProduto]) ?>"> <?= $p->nome ?> </a>
                             </li>
                             <li class="divider"></li>
                             <?php
                         }
+                    }
+                    }
+                    else
+                    {
+                    ?>
+                    <i class="fa fa-bell"></i>
 
-
-                        if (count($qtdProdutoMinimo) > 0) {
-                            echo "<li><a><b>Produtos com quantidade em estoque com valor mínimo</b></a></li>";
-                            foreach ($qtdProdutoMinimo as $p) {
-                                ?>
-                                <li>
-                                    <a href="<?= Url::toRoute(['/produto/view', 'id' => $p->idProduto]) ?>"> <?= $p->nome ?> </a>
-                                </li>
-                                <li class="divider"></li>
-                                <?php
-                            }
+                    <b class="caret"></b></a>
+                    <ul class="dropdown-menu alert-dropdown">
+                        <li>
+                            &nbsp; Não há alertas
+                        </li>
+                        <?php
                         }
                         }
-                        else
-                                    {
-                                    ?>
-                                    <i class="fa fa-bell"></i>
-
-                                    <b class="caret"></b></a>
-                                    <ul class="dropdown-menu alert-dropdown">
-                                        <li>
-                                            &nbsp; Não há alertas
-                                        </li>
-                                        <?php
-                                        }
-                            }
                         }
                         ?>
 
 
                     </ul>
                     </li>
-                        <!--      Dropdown Notificações      -->
+                    <!--      Dropdown Notificações      -->
 
-                        <!--      Dropdown Usuário      -->
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
-                                <?= Yii::$app->user->displayName ?><b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="<?= Url::toRoute('/user/account') ?>"><i class="fa fa-fw fa-user"></i> Perfil</a>
-                                </li>
+                    <!--      Dropdown Usuário      -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
+                            <?= Yii::$app->user->displayName ?><b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="<?= Url::toRoute('/user/account') ?>"><i class="fa fa-fw fa-user"></i>
+                                    Perfil</a>
+                            </li>
 
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="<?= Url::toRoute('/user/logout') ?>" data-method='POST'><i
-                                            class="fa fa-fw fa-power-off"></i> Sair</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <!--      Dropdown Usuário      -->
+                            <li class="divider"></li>
+                            <li>
+                                <a href="<?= Url::toRoute('/user/logout') ?>" data-method='POST'><i
+                                        class="fa fa-fw fa-power-off"></i> Sair</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!--      Dropdown Usuário      -->
                 </ul>
 
 
@@ -526,11 +526,32 @@ if (count($loja) > 0) {
 
 </div>
 <!-- /#wrapper -->
+<?php
 
+//Pega o controlador e a ação e junta numa string
+$actionFull = Yii::$app->controller->id . '/' . Yii::$app->controller->action->id;
+
+//Actions que possuem algum elemento que utilizam outro arquivo de boostrap.js(exe.: Modal)
+$actionsSemBoostrapNativo = [
+    'compra/create', 'compra/update', 'pedido/view'
+];
+
+
+$verificaAction = false;
+
+
+//Testa se a action está no array de verificação
+if (in_array($actionFull, $actionsSemBoostrapNativo)) {
+    $verificaAction = true;
+
+}
+
+?>
 <?=
 //<!-- jQuery -->
 $this->registerJsFile('@web/admin/js/jquery.js');
-$this->registerJsFile('@web/admin/js/bootstrap.min.js');
+//$this->registerJsFile('@web/admin/js/bootstrap.min.js');
+(!$verificaAction) ? $this->registerJsFile('@web/admin/js/bootstrap.min.js') : '';
 //<!-- Morris Charts JavaScript -->
 $this->registerJsFile('@web/admin/js/plugins/morris/raphael.min.js');
 $this->registerJsFile('@web/admin/js/plugins/morris/morris.min.js');

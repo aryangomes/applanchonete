@@ -11,6 +11,7 @@ use yii\helpers\Inflector;
 use ReflectionClass;
 use app\models\AuthItem;
 use app\models\AuthAssignment;
+
 /**
  * This is the model class for table "tbl_user".
  *
@@ -97,27 +98,27 @@ class User extends ActiveRecord implements IdentityInterface
         // set initial rules
         $rules = [
             // general email and username rules
-        [['email', 'username'], 'string', 'max' => 255],
-        [['email', 'username'], 'unique'],
-        [['email', 'username'], 'filter', 'filter' => 'trim'],
-        [['email'], 'email'],
-        [['username'], 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u', 'message' => Yii::t('user', '{attribute} can contain only letters, numbers, and "_"')],
+            [['email', 'username'], 'string', 'max' => 255],
+            [['email', 'username'], 'unique'],
+            [['email', 'username'], 'filter', 'filter' => 'trim'],
+            [['email'], 'email'],
+            [['username'], 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u', 'message' => Yii::t('user', '{attribute} can contain only letters, numbers, and "_"')],
 
             // password rules
-        [['newPassword'], 'string', 'min' => 3],
-        [['newPassword'], 'filter', 'filter' => 'trim'],
-        [['newPassword'], 'required', 'on' => ['register', 'reset']],
-        [['newPasswordConfirm'], 'required', 'on' => ['reset']],
-        [['newPasswordConfirm'], 'compare', 'compareAttribute' => 'newPassword', 'message' => Yii::t('user', 'Passwords do not match')],
+            [['newPassword'], 'string', 'min' => 3],
+            [['newPassword'], 'filter', 'filter' => 'trim'],
+            [['newPassword'], 'required', 'on' => ['register', 'reset']],
+            [['newPasswordConfirm'], 'required', 'on' => ['reset']],
+            [['newPasswordConfirm'], 'compare', 'compareAttribute' => 'newPassword', 'message' => Yii::t('user', 'Passwords do not match')],
 
             // account page
-        [['currentPassword'], 'validateCurrentPassword', 'on' => ['account']],
+            [['currentPassword'], 'validateCurrentPassword', 'on' => ['account']],
 
             // admin crud rules
-        [['role_id', 'status'], 'required', 'on' => ['admin']],
-        [['role_id', 'status'], 'integer', 'on' => ['admin']],
-        [['banned_at'], 'integer', 'on' => ['admin']],
-        [['banned_reason'], 'string', 'max' => 255, 'on' => 'admin'],
+            [['role_id', 'status'], 'required', 'on' => ['admin']],
+            [['role_id', 'status'], 'integer', 'on' => ['admin']],
+            [['banned_at'], 'integer', 'on' => ['admin']],
+            [['banned_reason'], 'string', 'max' => 255, 'on' => 'admin'],
         ];
 
         // add required for currentPassword on account page
@@ -154,26 +155,26 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-        'id' => Yii::t('user', 'ID'),
-        'role_id' => Yii::t('user', 'Role ID'),
-        'status' => Yii::t('user', 'Status'),
-        'email' => Yii::t('user', 'Email'),
-        'username' => Yii::t('user', 'Username'),
-        'password' => Yii::t('user', 'Password'),
-        'auth_key' => Yii::t('user', 'Auth Key'),
-        'access_token' => Yii::t('user', 'Access Token'),
-        'logged_in_ip' => Yii::t('user', 'Logged In Ip'),
-        'logged_in_at' => Yii::t('user', 'Logged In At'),
-        'created_ip' => Yii::t('user', 'Created Ip'),
-        'created_at' => Yii::t('user', 'Created At'),
-        'updated_at' => Yii::t('user', 'Updated At'),
-        'banned_at' => Yii::t('user', 'Banned At'),
-        'banned_reason' => Yii::t('user', 'Banned Reason'),
+            'id' => Yii::t('user', 'ID'),
+            'role_id' => Yii::t('user', 'Role ID'),
+            'status' => Yii::t('user', 'Status'),
+            'email' => Yii::t('user', 'Email'),
+            'username' => Yii::t('user', 'Username'),
+            'password' => Yii::t('user', 'Password'),
+            'auth_key' => Yii::t('user', 'Auth Key'),
+            'access_token' => Yii::t('user', 'Access Token'),
+            'logged_in_ip' => Yii::t('user', 'Logged In Ip'),
+            'logged_in_at' => Yii::t('user', 'Logged In At'),
+            'created_ip' => Yii::t('user', 'Created Ip'),
+            'created_at' => Yii::t('user', 'Created At'),
+            'updated_at' => Yii::t('user', 'Updated At'),
+            'banned_at' => Yii::t('user', 'Banned At'),
+            'banned_reason' => Yii::t('user', 'Banned Reason'),
 
             // virtual attributes set above
-        'currentPassword' => Yii::t('user', 'Current Password'),
-        'newPassword' => $this->isNewRecord ? Yii::t('user', 'Password') : Yii::t('user', 'New Password'),
-        'newPasswordConfirm' => Yii::t('user', 'New Password Confirm'),
+            'currentPassword' => Yii::t('user', 'Current Password'),
+            'newPassword' => $this->isNewRecord ? Yii::t('user', 'Password') : Yii::t('user', 'New Password'),
+            'newPasswordConfirm' => Yii::t('user', 'New Password Confirm'),
         ];
     }
 
@@ -183,12 +184,12 @@ class User extends ActiveRecord implements IdentityInterface
     public function behaviors()
     {
         return [
-        'timestamp' => [
-        'class' => 'yii\behaviors\TimestampBehavior',
-        'value' => function ($event) {
-            return gmdate("Y-m-d H:i:s");
-        },
-        ],
+            'timestamp' => [
+                'class' => 'yii\behaviors\TimestampBehavior',
+                'value' => function ($event) {
+                    return gmdate("Y-m-d H:i:s");
+                },
+            ],
         ];
     }
 
@@ -329,11 +330,11 @@ class User extends ActiveRecord implements IdentityInterface
     {
         // set default attributes
         $attributes = [
-        "role_id" => $roleId,
-        "created_ip" => Yii::$app->request->userIP,
-        "auth_key" => Yii::$app->security->generateRandomString(),
-        "access_token" => Yii::$app->security->generateRandomString(),
-        "status" => static::STATUS_ACTIVE,
+            "role_id" => $roleId,
+            "created_ip" => Yii::$app->request->userIP,
+            "auth_key" => Yii::$app->security->generateRandomString(),
+            "access_token" => Yii::$app->security->generateRandomString(),
+            "status" => static::STATUS_ACTIVE,
         ];
 
         // determine if we need to change status based on module properties
@@ -353,14 +354,17 @@ class User extends ActiveRecord implements IdentityInterface
         return $this;
     }
 
+    /**
+     * @param $role
+     * @param $userId
+     */
     public function setPermissoes($role, $userId)
     {
-      /*  $auth_assignment = new AuthAssignment();
-        $auth_assignment->item_name = 'create-fornecedor';
-        $auth_assignment->user_id = $userId;
-        $auth_assignment->save();*/
+        /*  $auth_assignment = new AuthAssignment();
+          $auth_assignment->item_name = 'create-fornecedor';
+          $auth_assignment->user_id = $userId;
+          $auth_assignment->save();*/
         $authItem = new AuthItem();
-
 
 
         Yii::$app->db->createCommand(
@@ -368,26 +372,26 @@ class User extends ActiveRecord implements IdentityInterface
             (item_name, user_id ) 
             VALUES (:item, :iduser)", [
             ':item' => $role,
-            ':iduser'=> $userId,
-            ])->execute();
+            ':iduser' => $userId,
+        ])->execute();
     }
 
     public function alterarPermissoes($role, $userId)
     {
-      /*  $auth_assignment = new AuthAssignment();
-        $auth_assignment->item_name = 'create-fornecedor';
-        $auth_assignment->user_id = $userId;
-        $auth_assignment->save();*/
+        /*  $auth_assignment = new AuthAssignment();
+          $auth_assignment->item_name = 'create-fornecedor';
+          $auth_assignment->user_id = $userId;
+          $auth_assignment->save();*/
         $authItem = new AuthItem();
-        
+
 
         Yii::$app->db->createCommand(
             "INSERT INTO auth_assignment
             (item_name, user_id ) 
             VALUES (:item, :iduser)", [
             ':item' => $role,
-            ':iduser'=> $userId,
-            ])->execute();
+            ':iduser' => $userId,
+        ])->execute();
     }
 
 
@@ -492,9 +496,9 @@ class User extends ActiveRecord implements IdentityInterface
     {
         // define possible fields
         $possibleNames = [
-        "username",
-        "email",
-        "id",
+            "username",
+            "email",
+            "id",
         ];
 
         // go through each and return if valid
@@ -528,9 +532,9 @@ class User extends ActiveRecord implements IdentityInterface
         $email = $userToken->data ?: $user->email;
         $subject = Yii::$app->id . " - " . Yii::t("user", "Email Confirmation");
         $result = $mailer->compose('confirmEmail', compact("subject", "user", "profile", "userToken"))
-        ->setTo($email)
-        ->setSubject($subject)
-        ->send();
+            ->setTo($email)
+            ->setSubject($subject)
+            ->send();
 
         // restore view path and return result
         $mailer->viewPath = $oldViewPath;
@@ -567,13 +571,14 @@ class User extends ActiveRecord implements IdentityInterface
         return $dropdown;
     }
 
-
-
+    /**
+     * @return null|string
+     */
     public function getPermissoes()
     {
         if (is_null($this->cachePermissoes)) {
-            $obj = AuthAssignment::find()->where(['user_id'=>$this->id])
-            ->all();
+            $obj = AuthAssignment::find()->where(['user_id' => $this->id])
+                ->all();
             if (!is_null($obj)) {
                 if (count($obj) > 0) {
 
@@ -583,13 +588,13 @@ class User extends ActiveRecord implements IdentityInterface
                     $this->cachePermissoes = $obj;
                     $aux = array();
                     foreach ($obj as $p) {
-                        array_push($aux, 
+                        array_push($aux,
                             $authitem->getDescriptionByName($p->item_name)->description
-                            );
+                        );
                     }
 
                     return join(', ', $aux);
-                }else{
+                } else {
                     return "Não há permissões cadastradas";
                 }
                 //return $obj;

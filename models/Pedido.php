@@ -179,13 +179,14 @@ class Pedido extends \yii\db\ActiveRecord
 
 
     /**
-     * Insere u mnovo histórico da situação do pedido
+     * Insere um novo histórico da situação do pedido
      * @param $idPedido int ,$idSituacaoAtual int ,$idUsuario int
      * @return bool
      */
     public function cadastrarNovaHistoricoSituacaoPedido($idPedido,$idSituacaoAtual,$idUsuario)
     {
         $historicosituacao = new Historicosituacao();
+
         if($idPedido != null && $idSituacaoAtual != null && $idUsuario != null ){
 
             $historicosituacao->idPedido=$idPedido;
@@ -196,13 +197,11 @@ class Pedido extends \yii\db\ActiveRecord
 
             date_default_timezone_set('America/Sao_Paulo');
 
-            $historicosituacao->dataHora=date('Y-m-d H:i    ');
+            $historicosituacao->dataHora=date('Y-m-d H:i');
 
             if($historicosituacao->save()){
-
                 return true;
             }else{
-
                 return false;
             }
 

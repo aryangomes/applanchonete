@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Caixa;
+use app\models\Historicosituacao;
 use app\models\Mesa;
 use Yii;
 use app\models\Pedido;
@@ -143,9 +144,10 @@ class PedidoController extends Controller
             try {
                 //Tenta salvar um registro de Pedido:
                 if ($modelPedido->save() &&
-                    ( $modelPedido->cadastrarNovaHistoricoSituacaoPedido(  intval($modelPedido->idPedido),
+                    ($modelPedido->cadastrarNovaHistoricoSituacaoPedido(intval($modelPedido->idPedido),
                         intval($modelPedido->idSituacaoAtual),
-                      Yii::$app->getUser()->id))) {
+                        Yii::$app->getUser()->id))
+                ) {
                     //Carrega os dados dos itens do Pedido:
                     $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
 
@@ -166,7 +168,8 @@ class PedidoController extends Controller
                         $itemPedido->idPedido = $modelPedido->idPedido;
 
                         if ($itemPedido->verificaQtdEstProdutoPedido($itemPedido->idProduto,
-                            $itemPedido->quantidade)) {
+                            $itemPedido->quantidade)
+                        ) {
 
 
                             //Tenta salvar os itens do Pedido:
@@ -180,7 +183,7 @@ class PedidoController extends Controller
                                 $itensInseridos = false;
                                 break; //encerra o laço for
                             }
-                        }else {
+                        } else {
                             $mensagem = "<b>Pedido não foi cadastrado com sucesso! </b>Quantidade dos insumos
                               do produto pedido ultrapassa a quantidade de insumos em estoque.";
                             $transaction->rollBack(); //desfaz alterações no BD
@@ -194,7 +197,7 @@ class PedidoController extends Controller
                     if ($itensInseridos) {
                         $transaction->commit();
 
-                        return $this->redirect(['view',  'id' => $modelPedido->idPedido,]);
+                        return $this->redirect(['view', 'id' => $modelPedido->idPedido,]);
                     }
                 } else {
                     $mensagem = "Não foi possível salvar os dados do Pedido";
@@ -214,7 +217,7 @@ class PedidoController extends Controller
             'itemPedido' => $itemPedido,
             'formasPagamento' => $formasPagamento,
             'mensagem' => $mensagem,
-            'mesa' => $mesa, 
+            'mesa' => $mesa,
         ]);
         // }
     }
@@ -246,6 +249,14 @@ class PedidoController extends Controller
 
         $antigaSituacao = $modelPedido->idSituacaoAtual;
 
+        $historicoSituacao = Historicosituacao::findOne([$modelPedido->idPedido, $modelPedido->idSituacaoAtual,
+            Yii::$app->getUser()->id]);
+
+        $historicoSituacao = Historicosituacao::find()->where([
+           'idPedido'=> $modelPedido->idPedido,
+            'user_id'=>  Yii::$app->getUser()->id
+        ])->orderBy('dataHora')->one();
+
         //Recebe todas as mesas registradas
         $mesa = ArrayHelper::map(Mesa::find()
             ->all(), 'idMesa', 'numeroDaMesa');
@@ -262,7 +273,7 @@ class PedidoController extends Controller
                 //Tenta salvar um registro de Pedido:
 
 
-                    if ($modelPedido->save()) {
+                if ($modelPedido->save()) {
                     //Carrega os dados dos itens do Pedido:
                     $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
 
@@ -294,8 +305,7 @@ class PedidoController extends Controller
 
                         if ($itemPedido->verificaQtdEstProdutoPedido($itemPedido->idProduto,
                             $itemPedido->quantidade)
-                        )
-                        {
+                        ) {
 
                             if ($itemPedido->save()) {
                                 Insumo::atualizaQtdNoEstoqueInsert(
@@ -307,8 +317,7 @@ class PedidoController extends Controller
                                 $itensInseridos = false;
                                 break; //encerra o laço for
                             }
-                        }
-                        else {
+                        } else {
                             $mensagem = "<b>Pedido não foi alterado com sucesso! </b>Quantidade dos insumos
                               do produto pedido ultrapassa a quantidade de insumos em estoque.";
                             $transaction->rollBack(); //desfaz alterações no BD
@@ -317,19 +326,17 @@ class PedidoController extends Controller
                         }
                     }
 
-                    if ($antigaSituacao != $modelPedido->idSituacaoAtual) {
+                    if ($antigaSituacao != $modelPedido->idSituacaoAtual ||
+                        $historicoSituacao->user_id != Yii::$app->getUser()->id) {
 
-                        if (!$modelPedido->mudarHistoricoSituacaoPedido(intval($modelPedido->idSituacaoAtual),
-                                Yii::$app->getUser()->id)
-                            && !$modelPedido->save()
-                        ) {
-
-                            $itensInseridos = false;
-                        }
+                        $modelPedido->cadastrarNovaHistoricoSituacaoPedido(($modelPedido->idPedido),
+                            ($modelPedido->idSituacaoAtual),
+                            Yii::$app->getUser()->id);
                     }
 
                     //Testa se todos os itens foram inseridos (ou tudo ou nada):
                     if ($itensInseridos) {
+
                         $transaction->commit();
 
                         return $this->redirect(['view', 'id' => $modelPedido->idPedido]);
@@ -351,7 +358,7 @@ class PedidoController extends Controller
             'itemPedido' => $itensPedido,
             'formasPagamento' => $formasPagamento,
             'mensagem' => $mensagem,
-            'mesa' => $mesa, 
+            'mesa' => $mesa,
         ]);
     }
 
@@ -419,9 +426,10 @@ class PedidoController extends Controller
 
 //                            if ($pedido->save() && $pedido->mudarHistoricoSituacaoPedido(intval($pedido->idSituacaoAtual))) {
                             if ($pedido->save() &&
-                                ( $pedido->cadastrarNovaHistoricoSituacaoPedido( intval($pedido->idPedido),
+                                ($pedido->cadastrarNovaHistoricoSituacaoPedido(intval($pedido->idPedido),
                                     intval($pedido->idSituacaoAtual),
-                                   Yii::$app->getUser()->id))) {
+                                    Yii::$app->getUser()->id))
+                            ) {
                                 $caixa = new Caixa();
                                 $caixa = $caixa->getCaixaAberto(Yii::$app->user->getId());
                                 if ($caixa != null) {

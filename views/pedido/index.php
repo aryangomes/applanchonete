@@ -87,8 +87,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'label'=>'Registrado por',
                     'value' => function ($modelPedido) {
 
-
-                        return $modelPedido->historicosituacaos->user->username;
+                        return isset($modelPedido->historicosituacaos->user->username)?
+                            $modelPedido->historicosituacaos->user->username : null;
                     }
                 ],
                 ['class' => 'yii\grid\ActionColumn'],

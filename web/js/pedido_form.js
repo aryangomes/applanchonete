@@ -46,3 +46,38 @@ $('#btFinalizarPedido').click(function () {
         alert('Escolha a forma de pagamento!');
     }
 });
+
+
+function mudarFoto(element) {
+
+    var idProduto =+element.value;
+
+    var elementoImg = $(element).parent().parent().parent();
+
+    console.log(elementoImg);
+    $.get('../cardapio/get-foto-produto', {idProduto: idProduto
+    }, function (data) {
+
+        var data = $.parseJSON(data);
+
+        if (data != 'false') {
+            if(data[1] != ""){
+                console.log(data);
+                $("div:last img",elementoImg).attr("src",
+                    'data:image/jpeg;base64,'+data[1]);
+                $("div:last img",elementoImg).attr("alt",
+                    data[0]);
+            }else{
+                $("div:last img",elementoImg).attr("src",
+                    "/applanchonete/web/imgs/semfoto.jpg");
+                $("div:last img",elementoImg).attr("alt","Sem foto cadastrada");
+            }
+
+
+        } else {
+
+
+        }
+
+    });
+}

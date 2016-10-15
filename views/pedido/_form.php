@@ -57,16 +57,24 @@ if (isset($mensagem) && !empty($mensagem)) {
         ?>
 
         <div class="divborda">
-            <?=
-            $form->field($itemPedido, 'idProduto[]')->widget(Select2::classname(), [
-                'data' => $produtosVenda,
-                'options' => ['placeholder' => 'Selecione o produto'],
-                'pluginOptions' => [
-                    'allowClear' => true,
-                ],
-            ]);
-            ?>
-
+            <div class="row">
+                <div class="col-md-6">
+                    <?=
+                    $form->field($itemPedido, 'idProduto[]')->widget(Select2::classname(), [
+                        'data' => $produtosVenda,
+                        'options' => ['placeholder' => 'Selecione o produto',
+                            'onChange' => 'mudarFoto(this)'],
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                        ],
+                    ]);
+                    ?>
+                </div>
+                <div class="col-md-6">
+                    Imagem
+                    <img width="200" src="" class="img-responsive">
+                </div>
+            </div>
             <?=
             $form->field($itemPedido, 'quantidade[]')->textInput(['type' => 'number', 'value' => 1, 'min' => 0]);
             ?>
@@ -76,6 +84,8 @@ if (isset($mensagem) && !empty($mensagem)) {
     } else {
 
         ?>
+
+
         <?=
         $form->field($modelPedido, 'idMesa')->widget(Select2::classname(), [
             'data' => $mesa,
@@ -95,21 +105,26 @@ if (isset($mensagem) && !empty($mensagem)) {
         for ($i = 0; $i < count($itemPedido); $i++) {
             ?>
             <div class="form-group field-insumos-idprodutoinsumo required divborda" id="<?= 'inputinsumo' . $i ?>">
-                <?php
-                echo Html::activeLabel($itemPedido[$i], 'idProduto', ['class' => 'control-label']);
-                echo Select2::widget([
-                    'model' => $itemPedido[$i],
-                    'name' => 'Itempedido[idProduto][]',
-                    'value' => $itemPedido[$i]->idProduto,
-                    'data' => $produtosVenda,
-                    'options' => ['placeholder' => 'Selecione o insumo',
-                        'id' => 'idinsumo' . $i,
-                    ],
-                    'pluginOptions' => [
-                        'allowClear' => true,
-                    ],
-                    'pluginEvents' => [
-                        "change" => "function() {
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group field-itempedido-idproduto required has-success">
+                        <?php
+                        echo Html::activeLabel($itemPedido[$i], 'idProduto', ['class' => 'control-label']);
+                        echo Select2::widget([
+                            'model' => $itemPedido[$i],
+                            'name' => 'Itempedido[idProduto][]',
+                            'value' => $itemPedido[$i]->idProduto,
+                            'data' => $produtosVenda,
+                            'options' => ['placeholder' => 'Selecione o insumo',
+                                'id' => 'idinsumo' . $i,
+                            ],
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                            ],
+                            'pluginEvents' => [
+                                "change" => "function() {
+                                mudarFoto(this);
     	var s = $(\"#idinsumo" . $i . "\").val();
     	console.log(s); 
     	if (s == \"\" || s == null) {
@@ -119,11 +134,20 @@ if (isset($mensagem) && !empty($mensagem)) {
     		$(\".help-block-insumo" . $i . "\").remove();
     	}
     }",
-                    ],
-                ]);
-                ?>
-
-                <div class="help-block-insumo<?= $i ?>">
+                            ],
+                        ]);
+                        ?>
+</div>
+                        <div class="help-block-insumo<?= $i ?>">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        Imagem
+                        <img width="200" src="<?=
+                        ($itemPedido[$i]->produto->foto) ?
+                            'data:image/jpeg;base64,' . base64_encode($itemPedido[$i]->produto->foto) :
+                            '../imgs/semfoto.jpg' ?>" class="img-responsive">
+                    </div>
                 </div>
                 <?php
                 echo "</br>";
@@ -155,7 +179,7 @@ if (isset($mensagem) && !empty($mensagem)) {
     $o = implode("", $options);
 
     $this->registerJs('var i = 1; $("#btnadprodutocompra").on("click",function(){'
-        . '$("#input-dinamico").append(\'<div class="divborda" id="inputinsumo\'+i+\'" ><div class="form-group field-itempedido-idprodutoinsumo required"><label class="control-label" for="itempedido-idprodutoinsumo">Produto</label><select id="itempedido-idproduto" class="form-control" name="Itempedido[idProduto][]" >' . $o . '</select><div class="help-block"></div></div><div class="form-group field-itempedido-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Itempedido[quantidade][]" value="1" min="0" step="1"><div class="help-block"></div></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Item Pedido"></div><hr></div>\');'
+        . '$("#input-dinamico").append(\'<div class="divborda" id="inputinsumo\'+i+\'" ><div class="form-group field-itempedido-idprodutoinsumo required"><div class="row"><div class="col-md-6"><div class="form-group field-itempedido-idproduto required has-success"><label class="control-label" for="itempedido-idprodutoinsumo">Produto</label><select onChange="mudarFoto(this)" id="itempedido-idproduto" class="form-control" name="Itempedido[idProduto][]" >' . $o . '</select><div class="help-block"></div></div></div><div class="col-md-6">Imagem<img width="200" src="" class="img-responsive"></div></div><div class="form-group field-itempedido-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Itempedido[quantidade][]" value="1" min="0" step="1"><div class="help-block"></div></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Item Pedido"></div><hr></div>\');'
         . '$("[name=\'Itempedido[idProduto][]\']").select2();i = i+1;'
         . '$("span[class=\'select2 select2-container select2-container--default select2-container--focus\']")'
         . '.addClass("select2 select2-container select2-container--krajee select2-container--focus")'

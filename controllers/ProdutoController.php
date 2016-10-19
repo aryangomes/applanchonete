@@ -31,7 +31,7 @@ class ProdutoController extends Controller
                     'delete' => ['post'],
                 ],
             ],
-            /*'autorizacao' => [
+            'autorizacao' => [
                 'class' => AccessFilter::className(),
                 'actions' => [
 
@@ -48,7 +48,8 @@ class ProdutoController extends Controller
                         'cadastrarprodutovenda',
                         'alterarprodutovenda',
                         'definirvalorprodutovenda',
-                        'lucroproduto' => 'lucroproduto',
+                        'lucroproduto',
+                        'cadastrarnovoproduto',
                     ],
 
                     'index' => 'index-produto',
@@ -64,8 +65,11 @@ class ProdutoController extends Controller
                     'alterarprodutovenda' => 'alterarprodutovenda',
                     'definirvalorprodutovenda' => 'definirvalorprodutovenda',
                     'lucroproduto' => 'lucroproduto',
+                    'cadastrar-novo-produto' => 'produto',
+                    'get-produto' => 'produto',
+                    'get-produtos' => 'produto',
                 ],
-            ],*/
+            ],
         ];
     }
 

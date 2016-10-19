@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\AccessFilter;
 use Yii;
 use app\models\Compraproduto;
 use app\models\CompraprodutoSearch;
@@ -24,6 +25,28 @@ class CompraprodutoController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+
+            'autorizacao' => [
+                'class' => AccessFilter::className(),
+                'actions' => [
+
+                    'compra' => [
+                        'index-compra',
+                        'update-compra',
+                        'delete-compra',
+                        'view-compra',
+                        'create-compra',
+
+                    ],
+
+                    'index' => 'index-compra',
+                    'update' => 'update-compra',
+                    'delete' => 'delete-compra',
+                    'view' => 'view-compra',
+                    'create' => 'create-compra',
+
                 ],
             ],
         ];

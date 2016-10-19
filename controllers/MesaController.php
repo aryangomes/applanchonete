@@ -37,25 +37,25 @@ class MesaController extends Controller
                 ],
             ],
 //            ],
-            /*  'autorizacao' => [
-                  'class' => AccessFilter::className(),
-                  'actions' => [
+            'autorizacao' => [
+                'class' => AccessFilter::className(),
+                'actions' => [
 
-                      'mesa' => [
-                          'index-mesa',
-                          'update-mesa',
-                          'delete-mesa',
-                          'view-mesa',
-                          'create-mesa',
-                      ],
+                    'mesa' => [
+                        'index-mesa',
+                        'update-mesa',
+                        'delete-mesa',
+                        'view-mesa',
+                        'create-mesa',
+                    ],
 
-                      'index' => 'index-mesa',
-                      'update' => 'update-mesa',
-                      'delete' => 'delete-mesa',
-                      'view' => 'view-mesa',
-                      'create' => 'create-mesa',
-                  ],
-              ],*/
+                    'index' => 'index-mesa',
+                    'update' => 'update-mesa',
+                    'delete' => 'delete-mesa',
+                    'view' => 'view-mesa',
+                    'create' => 'create-mesa',
+                ],
+            ],
         ];
     }
 

@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use app\models\Conta;
 use yii\helpers\ArrayHelper;
 use app\components\AccessFilter;
+
 /**
  * ContasareceberController implements the CRUD actions for Contasareceber model.
  */
@@ -22,31 +23,31 @@ class ContasareceberController extends Controller
     public function behaviors()
     {
         return [
-        'verbs' => [
-        'class' => VerbFilter::className(),
-        'actions' => [
-        'delete' => ['POST'],
-        ],
-        ],
-        'autorizacao'=>[
-        'class'=>AccessFilter::className(),
-        'actions'=>[
-        
-        'contasareceber'=>[
-        'index-contasareceber',
-        'update-contasareceber',
-        'delete-contasareceber',
-        'view-contasareceber',
-        'create-contasareceber',
-        ],
-        
-        'index'=>'index-contasareceber',
-        'update'=>'update-contasareceber',
-        'delete'=>'delete-contasareceber',
-        'view'=>'view-contasareceber',
-        'create'=>'create-contasareceber',
-        ],
-        ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+            'autorizacao' => [
+                'class' => AccessFilter::className(),
+                'actions' => [
+
+                    'contasareceber' => [
+                        'index-contasareceber',
+                        'update-contasareceber',
+                        'delete-contasareceber',
+                        'view-contasareceber',
+                        'create-contasareceber',
+                    ],
+
+                    'index' => 'index-contasareceber',
+                    'update' => 'update-contasareceber',
+                    'delete' => 'delete-contasareceber',
+                    'view' => 'view-contasareceber',
+                    'create' => 'create-contasareceber',
+                ],
+            ],
         ];
     }
 
@@ -62,7 +63,7 @@ class ContasareceberController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            ]);
+        ]);
     }
 
     /**
@@ -74,7 +75,7 @@ class ContasareceberController extends Controller
     {
         return $this->render('view', [
             'modelContasareceber' => $this->findModel($id),
-            ]);
+        ]);
     }
 
     /**
@@ -112,15 +113,15 @@ class ContasareceberController extends Controller
         $contas = ArrayHelper::map(
             Conta::find()->where('idconta not in (select idconta from contasareceber) && 
                 idconta not in (select idconta from contasapagar)')->all(),
-            'idconta','descricao'
-            );
+            'idconta', 'descricao'
+        );
         if ($modelContasareceber->load(Yii::$app->request->post()) && $modelContasareceber->save()) {
             return $this->redirect(['view', 'id' => $modelContasareceber->idconta]);
         } else {
             return $this->render('update', [
                 'modelContasareceber' => $modelContasareceber,
-                'contas'=>$contas,
-                ]);
+                'contas' => $contas,
+            ]);
         }
     }
 

@@ -36,7 +36,7 @@ class ItemcardapioController extends Controller
                     ],
                 ],
 //            ],
-            /*'autorizacao' => [
+            'autorizacao' => [
                 'class' => AccessFilter::className(),
                 'actions' => [
 
@@ -54,7 +54,7 @@ class ItemcardapioController extends Controller
                     'view' => 'view-itemcardapio',
                     'create' => 'create-itemcardapio',
                 ],
-            ],*/
+            ],
         ];
     }
 

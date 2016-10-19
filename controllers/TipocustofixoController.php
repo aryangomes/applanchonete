@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\AccessFilter;
 use Yii;
 use app\models\Tipocustofixo;
 use app\models\TipocustofixoSearch;
@@ -24,6 +25,26 @@ class TipocustofixoController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+
+            'autorizacao' => [
+                'class' => AccessFilter::className(),
+                'actions' => [
+
+                    'tipocustofixo' => [
+                        'index-tipocustofixo',
+                        'update-tipocustofixo',
+                        'delete-tipocustofixo',
+                        'view-tipocustofixo',
+                        'create-tipocustofixo',
+                    ],
+
+                    'index' => 'index-tipocustofixo',
+                    'update' => 'update-tipocustofixo',
+                    'delete' => 'delete-tipocustofixo',
+                    'view' => 'view-tipocustofixo',
+                    'create' => 'create-tipocustofixo',
                 ],
             ],
         ];

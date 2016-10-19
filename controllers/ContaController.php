@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Custofixo;
+use app\models\Insumo;
 use app\models\Tipocustofixo;
 use Yii;
 use app\models\Conta;
@@ -35,25 +36,25 @@ class ContaController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-            /* 'autorizacao' => [
-                 'class' => AccessFilter::className(),
-                 'actions' => [
+            'autorizacao' => [
+                'class' => AccessFilter::className(),
+                'actions' => [
 
-                     'conta' => [
-                         'index-conta',
-                         'update-conta',
-                         'delete-conta',
-                         'view-conta',
-                         'create-conta',
-                     ],
+                    'conta' => [
+                        'index-conta',
+                        'update-conta',
+                        'delete-conta',
+                        'view-conta',
+                        'create-conta',
+                    ],
 
-                     'index' => 'index-conta',
-                     'update' => 'update-conta',
-                     'delete' => 'delete-conta',
-                     'view' => 'view-conta',
-                     'create' => 'create-conta',
-                 ],
-             ],*/
+                    'index' => 'index-conta',
+                    'update' => 'update-conta',
+                    'delete' => 'delete-conta',
+                    'view' => 'view-conta',
+                    'create' => 'create-conta',
+                ],
+            ],
         ];
     }
 
@@ -240,11 +241,9 @@ class ContaController extends Controller
             'idtipocustofixo', 'tipocustofixo');
 
 
-
-
         if ($modelConta->load(Yii::$app->request->post())) {
 
-            $modelConta->tipoConta =  $tipodeConta;
+            $modelConta->tipoConta = $tipodeConta;
 
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
@@ -343,7 +342,7 @@ class ContaController extends Controller
             $itenspedido = Itempedido::find()->where(['idPedido' => $idpedido->idPedido])->all();
 
             foreach ($itenspedido as $p) {
-                Insumos::atualizaQtdNoEstoqueDelete($p->idProduto, $p->quantidade);
+                Insumo::atualizaQtdNoEstoqueDelete($p->idProduto, $p->quantidade);
             }
 
         }

@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $modelMesa,
         'attributes' => [
             'idMesa',
-            'numeroDaMesa',
+//            'numeroDaMesa',
 
             [
                 'attribute' => 'alerta',
@@ -37,8 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             'qrcode',
-            'chave',
-            'cont',
+//            'chave',
+//            'cont',
         ],
     ]) ?>
 

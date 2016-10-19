@@ -53,27 +53,46 @@ class RelatorioController extends Controller
                     'delete' => ['post'],
                 ],
             ],
-            /* 'autorizacao' => [
-              'class' => AccessFilter::className(),
-              'actions' => [
+            'autorizacao' => [
+                'class' => AccessFilter::className(),
+                'actions' => [
 
-              'relatorio' => [
-              'index-relatorio',
-              'update-relatorio',
-              'delete-relatorio',
-              'view-relatorio',
-              'create-relatorio',
-              'relatorio-contasa-receber',
-              ],
+                    'relatorio' => [
+                        'index-relatorio',
+                        'update-relatorio',
+                        'delete-relatorio',
+                        'view-relatorio',
+                        'create-relatorio',
+                        'relatoriocontasareceber',
+                        'relatoriopagamento',
+                        'relatoriopedido',
+                        'relatorioitempedido',
+                        'relatoriolucro',
+                        'pdfcontasareceber',
+                        'pdfpagamento',
+                        'pdfpedido',
+                        'pdfitempedido',
+                        'pdflucro',
+                    ],
 
-              'index' => 'index-relatorio',
-              'update' => 'update-relatorio',
-              'delete' => 'delete-relatorio',
-              'view' => 'view-relatorio',
-              'create' => 'create-relatorio',
+                    'index' => 'index-relatorio',
+                    'update' => 'update-relatorio',
+                    'delete' => 'delete-relatorio',
+                    'view' => 'view-relatorio',
+                    'create' => 'create-relatorio',
+                    'relatoriocontasareceber' => 'relatoriocontasareceber',
+                    'relatoriopagamento' => 'relatoriocontasareceber',
+                    'relatoriopedido' => 'relatoriocontasareceber',
+                    'relatorioitempedido' => 'relatoriocontasareceber',
+                    'relatoriolucro' => 'relatoriocontasareceber',
+                    'pdfcontasareceber' => 'relatoriocontasareceber',
+                    'pdfpagamento' => 'relatoriocontasareceber',
+                    'pdfpedido' => 'relatoriocontasareceber',
+                    'pdfitempedido' => 'relatoriocontasareceber',
+                    'pdflucro' => 'relatoriocontasareceber',
 
-              ],
-              ], */
+                ],
+            ],
         ];
     }
 
@@ -124,8 +143,8 @@ class RelatorioController extends Controller
         if ($modelRelatorio->load(Yii::$app->request->post()) && $modelRelatorio->save()) {
             return $this->redirect(['relatorio' . strtolower($modelRelatorio->tipo), 'id' => $modelRelatorio->idrelatorio]);
         } else {
-            $modelRelatorio->inicio_intervalo= date('Y-m-d');
-            $modelRelatorio->fim_intervalo= date('Y-m-d');
+            $modelRelatorio->inicio_intervalo = date('Y-m-d');
+            $modelRelatorio->fim_intervalo = date('Y-m-d');
             return $this->render('create', [
                 'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
@@ -214,7 +233,7 @@ class RelatorioController extends Controller
             return $this->render('relatoriocontasareceber', [
                 'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
-                'tipoRelatorio'=>$this->tiposRelatorio[$modelRelatorio->tipo],
+                'tipoRelatorio' => $this->tiposRelatorio[$modelRelatorio->tipo],
                 'datasContasAReceber' => $searchContasAReceber->searchDatasContasAReceberPorPeriodo($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
                 'valoresContasAReceber' => $searchContasAReceber->searchContasAReceberPorPeriodo($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
             ]);
@@ -253,7 +272,7 @@ class RelatorioController extends Controller
             return $this->render('relatoriopagamento', [
                 'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
-                'tipoRelatorio'=>$this->tiposRelatorio[$modelRelatorio->tipo],
+                'tipoRelatorio' => $this->tiposRelatorio[$modelRelatorio->tipo],
                 'countTiposPagamentos' => $searchPagamento->searchCountPagamentosContasAReceberPorPeriodo($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
                 'datasPagamentos' => $searchPagamento->searchDatasPagamentosContasAReceberPorPeriodo($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
                 'tiposPagamentos' => $searchPagamento->searchPagamentosContasAReceberPorPeriodo($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
@@ -294,7 +313,7 @@ class RelatorioController extends Controller
             return $this->render('relatoriopedido', [
                 'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
-                'tipoRelatorio'=>$this->tiposRelatorio[$modelRelatorio->tipo],
+                'tipoRelatorio' => $this->tiposRelatorio[$modelRelatorio->tipo],
                 'pedidos' => $searchPedido->searchCountPedidosContasAReceberPorPeriodo($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
             ]);
         }
@@ -333,7 +352,7 @@ class RelatorioController extends Controller
             return $this->render('relatorioitempedido', [
                 'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
-                'tipoRelatorio'=>$this->tiposRelatorio[$modelRelatorio->tipo],
+                'tipoRelatorio' => $this->tiposRelatorio[$modelRelatorio->tipo],
                 'produtosVendidos' => $searchItemPedido->searchItensPedido($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
             ]);
         }
@@ -372,7 +391,7 @@ class RelatorioController extends Controller
             return $this->render('relatoriolucro', [
                 'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
-                'tipoRelatorio'=>$this->tiposRelatorio[$modelRelatorio->tipo],
+                'tipoRelatorio' => $this->tiposRelatorio[$modelRelatorio->tipo],
                 'lucros' => $searchItemPedido->searchLucro($modelRelatorio->inicio_intervalo, $modelRelatorio->fim_intervalo),
             ]);
         }

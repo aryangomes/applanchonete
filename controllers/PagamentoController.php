@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\AccessFilter;
 use Yii;
 use app\models\Pagamento;
 use app\models\PagamentoSearch;
@@ -24,6 +25,25 @@ class PagamentoController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'autorizacao' => [
+                'class' => AccessFilter::className(),
+                'actions' => [
+
+                    'pagamento' => [
+                        'index-pagamento',
+                        'update-pagamento',
+                        'delete-pagamento',
+                        'view-pagamento',
+                        'create-pagamento',
+                    ],
+
+                    'index' => 'index-pagamento',
+                    'update' => 'update-pagamento',
+                    'delete' => 'delete-pagamento',
+                    'view' => 'view-pagamento',
+                    'create' => 'create-pagamento',
                 ],
             ],
         ];

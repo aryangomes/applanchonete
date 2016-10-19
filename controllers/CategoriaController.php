@@ -21,33 +21,33 @@ class CategoriaController extends Controller
     public function behaviors()
     {
         return [
-        'verbs' => [
-        'class' => VerbFilter::className(),
-        'actions' => [
-        'delete' => ['POST'],
-        ],
-        ],
-        'autorizacao'=>[
-        'class'=>AccessFilter::className(),
-        'actions'=>[
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+            'autorizacao' => [
+                'class' => AccessFilter::className(),
+                'actions' => [
 
-        'categoria'=>[
-        'index-categoria',
-        'update-categoria',
-        'delete-categoria',
-        'view-categoria',
-        'create-categoria',
+                    'categoria' => [
+                        'index-categoria',
+                        'update-categoria',
+                        'delete-categoria',
+                        'view-categoria',
+                        'create-categoria',
 
-        ],
+                    ],
 
-        'index'=>'index-categoria',
-        'update'=>'update-categoria',
-        'delete'=>'delete-categoria',
-        'view'=>'view-categoria',
-        'create'=>'create-categoria',
+                    'index' => 'index-categoria',
+                    'update' => 'update-categoria',
+                    'delete' => 'delete-categoria',
+                    'view' => 'view-categoria',
+                    'create' => 'create-categoria',
 
-        ],
-        ],
+                ],
+            ],
         ];
     }
 
@@ -63,7 +63,7 @@ class CategoriaController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            ]);
+        ]);
     }
 
     /**
@@ -75,7 +75,7 @@ class CategoriaController extends Controller
     {
         return $this->render('view', [
             'modelCategoria' => $this->findModel($id),
-            ]);
+        ]);
     }
 
     /**
@@ -92,7 +92,7 @@ class CategoriaController extends Controller
         } else {
             return $this->render('create', [
                 'modelCategoria' => $modelCategoria,
-                ]);
+            ]);
         }
     }
 
@@ -111,7 +111,7 @@ class CategoriaController extends Controller
         } else {
             return $this->render('update', [
                 'modelCategoria' => $modelCategoria,
-                ]);
+            ]);
         }
     }
 

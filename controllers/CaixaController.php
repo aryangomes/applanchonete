@@ -38,27 +38,27 @@ class CaixaController extends Controller
                 ],
             ],
 
-            /*       'autorizacao'=>[
-              'class'=>AccessFilter::className(),
-      'actions'=>[
+            'autorizacao' => [
+                'class' => AccessFilter::className(),
+                'actions' => [
 
-          'caixa'=>[
-              'index-caixa',
-              'update-caixa',
-              'delete-caixa',
-              'view-caixa',
-              'create-caixa',
-              'fechar-caixa'
-          ],
+                    'caixa' => [
+                        'index-caixa',
+                        'update-caixa',
+                        'delete-caixa',
+                        'view-caixa',
+                        'create-caixa',
+                        'fechar-caixa'
+                    ],
 
-          'index'=>'index-caixa',
-          'update'=>'update-caixa',
-          'delete'=>'delete-caixa',
-            'view'=>'view-caixa',
-            'create'=>'create-caixa',
-            'fechar' => 'fechar-caixa'
-      ],
-              ],*/
+                    'index' => 'index-caixa',
+                    'update' => 'update-caixa',
+                    'delete' => 'delete-caixa',
+                    'view' => 'view-caixa',
+                    'create' => 'create-caixa',
+                    'fechar' => 'fechar-caixa'
+                ],
+            ],
         ];
     }
 
@@ -73,7 +73,7 @@ class CaixaController extends Controller
         $ultimocaixa = Yii::$app->db->createCommand('SELECT * FROM caixa ORDER BY idcaixa DESC LIMIT 1')->queryOne();
 
 
-        if ($ultimocaixa != null && empty($ultimocaixa['datafechamento']) ) {
+        if ($ultimocaixa != null && empty($ultimocaixa['datafechamento'])) {
             return $this->redirect(['view', 'id' => $ultimocaixa['idcaixa']]);
         } else {
 
@@ -136,23 +136,23 @@ class CaixaController extends Controller
 
         $modelCaixa = $this->findModel($id);
 
-        $ultimocaixa =  Caixa::find()->where(['datafechamento' => null])
-        ->orderBy('idcaixa DESC')->all();
+        $ultimocaixa = Caixa::find()->where(['datafechamento' => null])
+            ->orderBy('idcaixa DESC')->all();
         //SELECT ID FROM tabela ORDER BY ID DESC LIMIT 1
-        if(!empty($ultimocaixa)){
-          if ($modelCaixa->load(Yii::$app->request->post()) && $modelCaixa->save()) {
-            return $this->redirect(['view', 'id' => $modelCaixa->idcaixa]);
-          } else {
+        if (!empty($ultimocaixa)) {
+            if ($modelCaixa->load(Yii::$app->request->post()) && $modelCaixa->save()) {
+                return $this->redirect(['view', 'id' => $modelCaixa->idcaixa]);
+            } else {
+                return $this->render('update', [
+                    'modelCaixa' => $modelCaixa,
+                ]);
+            }
+        } else {
+            throw new NotFoundHttpException('O caixa não está aberto');
+
             return $this->render('update', [
                 'modelCaixa' => $modelCaixa,
             ]);
-          }
-        } else {
-          throw new NotFoundHttpException('O caixa não está aberto');
-
-          return $this->render('update', [
-                'modelCaixa' => $modelCaixa,
-          ]);
         }
     }
 

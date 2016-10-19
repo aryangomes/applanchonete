@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\AccessFilter;
 use Yii;
 use app\models\Formapagamento;
 use app\models\FormapagamentoSearch;
@@ -24,6 +25,26 @@ class FormapagamentoController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+
+            'autorizacao' => [
+                'class' => AccessFilter::className(),
+                'actions' => [
+
+                    'formapagamento' => [
+                        'index-formapagamento',
+                        'update-formapagamento',
+                        'delete-formapagamento',
+                        'view-formapagamento',
+                        'create-formapagamento',
+                    ],
+
+                    'index' => 'index-formapagamento',
+                    'update' => 'update-formapagamento',
+                    'delete' => 'delete-formapagamento',
+                    'view' => 'view-formapagamento',
+                    'create' => 'create-formapagamento',
                 ],
             ],
         ];

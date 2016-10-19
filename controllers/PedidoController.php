@@ -253,8 +253,8 @@ class PedidoController extends Controller
             Yii::$app->getUser()->id]);
 
         $historicoSituacao = Historicosituacao::find()->where([
-           'idPedido'=> $modelPedido->idPedido,
-            'user_id'=>  Yii::$app->getUser()->id
+            'idPedido' => $modelPedido->idPedido,
+            'user_id' => Yii::$app->getUser()->id
         ])->orderBy('dataHora')->one();
 
         //Recebe todas as mesas registradas
@@ -327,7 +327,8 @@ class PedidoController extends Controller
                     }
 
                     if ($antigaSituacao != $modelPedido->idSituacaoAtual ||
-                        $historicoSituacao->user_id != Yii::$app->getUser()->id) {
+                        $historicoSituacao->user_id != Yii::$app->getUser()->id
+                    ) {
 
                         $modelPedido->cadastrarNovaHistoricoSituacaoPedido(($modelPedido->idPedido),
                             ($modelPedido->idSituacaoAtual),

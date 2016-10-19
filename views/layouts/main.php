@@ -239,9 +239,6 @@ if (count($loja) > 0) {
                             <?php
                         }
                         ?>
-                        <!--     <li>
-                            <?php // Html::a('<i class="fa fa-fw fa-table"></i> Loja', ['loja/index']) ?>
-                        </li> -->
 
                         <?php
                         if (Yii::$app->user->can("index-fornecedor") || Yii::$app->user->can("fornecedor")) {
@@ -318,27 +315,6 @@ if (count($loja) > 0) {
 
 
                         <?php
-                        if (Yii::$app->user->can("index-historicosituacao") || Yii::$app->user->can("historicosituacao")) {
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="fa fa-shopping-basket"></i> HIstórico Situação', ['/historicosituacao/index']) ?>
-
-                            </li>
-                            <?php
-                        }
-                        ?>
-                        <?php
-                        if (Yii::$app->user->can("index-itemcardapio") || Yii::$app->user->can("itemcardapio")) {
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Item Cardapio', ['/itemcardapio/index']) ?>
-
-                            </li>
-                            <?php
-                        }
-                        ?>
-
-                        <?php
                         if (Yii::$app->user->can("index-conta") || Yii::$app->user->can("conta")) {
                             ?>
 
@@ -392,16 +368,7 @@ if (count($loja) > 0) {
                         }
                         ?>
 
-                        <?php
-                        if (Yii::$app->user->can("index-loja") || Yii::$app->user->can("loja")) {
-                            ?>
-                            <li>
-                                <?= Html::a('<i class="fa fa-shopping-basket"></i> Loja', ['/loja/index']) ?>
 
-                            </li>
-                            <?php
-                        }
-                        ?>
                         <?php
                         if (Yii::$app->user->can("index-mesa") || Yii::$app->user->can("mesa")) {
                             ?>
@@ -513,9 +480,10 @@ if (count($loja) > 0) {
             </div>
             <footer class="footer">
                 <div class="container">
-                    <p class="pull-left">&copy; Sistema de Gerência de Lanchonete <?= date('Y') ?></p>
 
-                    <p class="pull-right"><?= Yii::powered() ?></p>
+                    <p class="col-md-6">&copy; Sistema de Gerência de Lanchonete <?= date('Y') ?></p>
+
+                 <!--   <p class="col-md-6"><?/*= Yii::powered() */?></p>-->
                 </div>
             </footer>
             <!-- /.row -->

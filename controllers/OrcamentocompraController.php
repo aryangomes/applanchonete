@@ -2,12 +2,49 @@
 
 namespace app\controllers;
 
+use app\components\AccessFilter;
 use Yii;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use app\models\OrcamentoCompra;
 
 class OrcamentocompraController extends Controller
 {
+
+    public function behaviors()
+    {
+        return [
+//            'access' => [
+//        'class' => AccessControl::classname(),
+//        'only'=> ['create','update','view','delete','index'],
+//        'rules'=> [
+//        ['allow'=>true,
+//        'roles' => ['mesa','index-mesa'],
+//        ],
+//        ]
+//        ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+//            ],
+            'autorizacao' => [
+                'class' => AccessFilter::className(),
+                'actions' => [
+
+                    'produto' => [
+                        'orcamentocomprainsumos' =>  'produto',
+                    ],
+
+                    'orcamentocomprainsumos' =>  'produto',
+
+                ],
+            ],
+        ];
+    }
+
     public function actionOrcamentocomprainsumos()
     {
         $model = new OrcamentoCompra();

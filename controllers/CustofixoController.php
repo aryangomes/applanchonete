@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\AccessFilter;
 use app\models\Tipocustofixo;
 use Yii;
 use app\models\Custofixo;
@@ -26,6 +27,26 @@ class CustofixoController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+
+            'autorizacao' => [
+                'class' => AccessFilter::className(),
+                'actions' => [
+
+                    'custofixo' => [
+                        'index-custofixo',
+                        'update-custofixo',
+                        'delete-custofixo',
+                        'view-custofixo',
+                        'create-custofixo',
+                    ],
+
+                    'index' => 'index-custofixo',
+                    'update' => 'update-custofixo',
+                    'delete' => 'delete-custofixo',
+                    'view' => 'view-custofixo',
+                    'create' => 'create-custofixo',
                 ],
             ],
         ];

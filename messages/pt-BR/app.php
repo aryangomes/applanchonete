@@ -32,6 +32,17 @@ return [
     'Inactive'=>'Inativo',
     'Active'=>'Ativo',
     'Unconfirmed email'=>'Email não confirmado',
+    'user'=>'Usuario',
+    'historicosituacao'=>'Historico Situacao',
+    'itemcardapio'=>'Item Cardapio',
+    'itempedido'=>'Item Pedido',
+    'contasapagar'=>'Contas A Pagar',
+    'contasareceber'=>'Contas A Receber',
+    'cadastrarnovoproduto'=>'Cadastrar Novo Produto',
+    'relatoriocontasareceber'=>'Relatorio Contas A Receber',
+    'custofixo'=>'Custo Fixo',
+    'formapagamento'=>'Forma Pagamento',
+    'tipocustofixo'=>'Tipo Custo Fixo',
 
 ];
 

@@ -159,13 +159,18 @@ class AuthItem extends \yii\db\ActiveRecord
                 "name like 'index-" . $macroPermissao->name . ""
                 . "' or " .
                 "name like 'update-" . $macroPermissao->name . "'";
+
             $auxPermissoes = AuthItem::find()->
             where($sqlWhere)->orderBy('type ASC')->all();
+
             foreach ($auxPermissoes as $p) {
                 $key = $p->name;
                 $permissao[$key] = $p->description;
+
             }
-            $options[$macroPermissao->name] = $permissao;
+
+            $options[strtoupper(Yii::t('app',$macroPermissao->name))] = $permissao;
+
         }
 
         return $options;

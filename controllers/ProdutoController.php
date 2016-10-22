@@ -68,6 +68,7 @@ class ProdutoController extends Controller
                     'cadastrar-novo-produto' => 'produto',
                     'get-produto' => 'produto',
                     'get-produtos' => 'produto',
+
                 ],
             ],
         ];
@@ -586,6 +587,10 @@ class ProdutoController extends Controller
     }
 
 
+    /**
+     * Recupera um produto pelo nome
+     * @param $busca
+     */
     public function actionGetProdutos($busca)
     {
         $buscaProdutos = Produto::find()
@@ -609,6 +614,9 @@ class ProdutoController extends Controller
 
     }
 
+    /**
+     * Recupera todos os produtos
+     */
     public function actionGetProduto()
     {
         $produtos = ArrayHelper::map(Produto::find()->all(),
@@ -618,6 +626,12 @@ class ProdutoController extends Controller
 
     }
 
+    /**
+     * Cadastra um novo produto
+     * @param null $nome
+     * @param null $categoria
+     * @param null $estoqueMinimo
+     */
     public function actionCadastrarNovoProduto($nome = null,
                                                $categoria = null,
                                                $estoqueMinimo = null)
@@ -642,5 +656,7 @@ class ProdutoController extends Controller
 
 
     }
+
+
 
 }

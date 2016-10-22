@@ -7,6 +7,7 @@ use app\models\Categoria;
 use Yii;
 use app\models\Compra;
 use app\models\CompraSearch;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -52,6 +53,7 @@ class CompraController extends Controller
                     'delete' => 'delete-compra',
                     'view' => 'view-compra',
                     'create' => 'create-compra',
+                    'get-foto-produto' => 'compra',
 
                 ],
             ],
@@ -103,7 +105,7 @@ class CompraController extends Controller
 
         $compraProduto = new Compraproduto();
 
-        $produtos = ArrayHelper::map(Produto::find()->all(),
+        $produtos = ArrayHelper::map(Produto::find()->orderBy('nome ASC')->all(),
             'idProduto', 'nome');
 
         //Recebe o valor total da compra
@@ -374,6 +376,24 @@ class CompraController extends Controller
             return $modelCompra;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    /**
+     * Recupera a foto do produto
+     * @param $idProduto
+     * @return string
+     */
+    public function actionGetFotoProduto($idProduto)
+    {
+        if (isset($idProduto)) {
+            $produto = Produto::findOne($idProduto);
+
+            if ($produto != null) {
+                return Json::encode([($produto->nome), base64_encode($produto->foto)]);
+            } else {
+                return Json::encode(false);
+            }
         }
     }
 }

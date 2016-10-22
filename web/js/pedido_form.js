@@ -55,7 +55,7 @@ function mudarFoto(element) {
     var elementoImg = $(element).parent().parent().parent();
 
     console.log(elementoImg);
-    $.get('../cardapio/get-foto-produto', {idProduto: idProduto
+    $.get('../pedido/get-foto-produto', {idProduto: idProduto
     }, function (data) {
 
         var data = $.parseJSON(data);

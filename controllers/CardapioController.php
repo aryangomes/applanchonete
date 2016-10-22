@@ -55,12 +55,15 @@ class CardapioController extends Controller
                         'get-foto-produto'
                     ],
 
+
+
                     'index' => 'index-cardapio',
                     'update' => 'update-cardapio',
                     'delete' => 'delete-cardapio',
                     'view' => 'view-cardapio',
                     'create' => 'create-cardapio',
-                    'get-foto-produto' => 'cardapio',
+                    'get-foto-produto' => 'create-cardapio',
+
                 ],
             ],
         ];
@@ -145,7 +148,7 @@ class CardapioController extends Controller
         $mensagem = "";
 
         $produtos = ArrayHelper::map(Produto::find()->
-        where(['isInsumo' => 0])->all(), 'idProduto', 'nome');
+        where(['isInsumo' => 0])->orderBy('nome ASC')->all(), 'idProduto', 'nome');
 
 
         if ($modelCardapio->load(Yii::$app->request->post())) {
@@ -314,6 +317,11 @@ class CardapioController extends Controller
     }
 
 
+    /**
+     * Recupera a foto do produto
+     * @param $idProduto
+     * @return string
+     */
     public function actionGetFotoProduto($idProduto)
     {
         if (isset($idProduto)) {

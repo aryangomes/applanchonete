@@ -57,6 +57,7 @@ class PedidoController extends Controller
                     'view' => 'view-pedido',
                     'create' => 'create-pedido',
                     'finalizar-pedido' => 'pedido',
+                    'get-foto-produto' => 'pedido',
                 ],
             ],
         ];
@@ -126,7 +127,7 @@ class PedidoController extends Controller
             , 'idSituacaoPedido', 'titulo');
 
         $produtosVenda = ArrayHelper::map(
-            Produto::find()->where(['isInsumo' => 0])->all(), 'idProduto', 'nome');
+            Produto::find()->where(['isInsumo' => 0])->orderBy('nome ASC')->all(), 'idProduto', 'nome');
 
         $formasPagamento = ArrayHelper::map(
             Formapagamento::find()->all(), 'idTipoPagamento', 'titulo');
@@ -487,6 +488,24 @@ class PedidoController extends Controller
             }
         } else {
             echo Json::encode(false);
+        }
+    }
+
+    /**
+     * Recupera a foto do produto
+     * @param $idProduto
+     * @return string
+     */
+    public function actionGetFotoProduto($idProduto)
+    {
+        if (isset($idProduto)) {
+            $produto = Produto::findOne($idProduto);
+
+            if ($produto != null) {
+                return Json::encode([($produto->nome), base64_encode($produto->foto)]);
+            } else {
+                return Json::encode(false);
+            }
         }
     }
 

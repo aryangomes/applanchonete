@@ -555,6 +555,7 @@ class User extends ActiveRecord implements IdentityInterface
             // create a reflection class to get constants
             $reflClass = new ReflectionClass(get_called_class());
             $constants = $reflClass->getConstants();
+            $constants = $reflClass->getConstants();
 
             // check for status constants (e.g., STATUS_ACTIVE)
             foreach ($constants as $constantName => $constantValue) {
@@ -563,7 +564,8 @@ class User extends ActiveRecord implements IdentityInterface
                 if (strpos($constantName, $constPrefix) === 0) {
                     $prettyName = str_replace($constPrefix, "", $constantName);
                     $prettyName = Inflector::humanize(strtolower($prettyName));
-                    $dropdown[$constantValue] = $prettyName;
+
+                    $dropdown[$constantValue] = Yii::t('app',$prettyName);
                 }
             }
         }

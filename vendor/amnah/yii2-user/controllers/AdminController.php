@@ -190,8 +190,8 @@ class AdminController extends Controller
      */
     public function actionUpdate($id)
     {
-        if (Yii::$app->user->can("update-user") ||
-            Yii::$app->user->can("user")
+        if ((Yii::$app->user->can("update-user") ||
+            Yii::$app->user->can("user")) && ($id != 1)
         ) {
 
             $permissoes = AuthItem::getListToDropDownList();
@@ -291,8 +291,8 @@ class AdminController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::$app->user->can("delete-user") ||
-            Yii::$app->user->can("user")
+        if ((Yii::$app->user->can("delete-user") ||
+            Yii::$app->user->can("user")) && ($id != 1)
         ) {
             // delete profile and userTokens first to handle foreign key constraint
             $user = $this->findModel($id);

@@ -132,18 +132,38 @@ if (count($loja) > 0) {
             <!--      Dropdown Acesso Rápido      -->
 
 
+
+            <!--      Dropdown Usuário      -->
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
+                    <?= Yii::$app->user->displayName ?><b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="<?= Url::toRoute('/user/account') ?>"><i class="fa fa-fw fa-user"></i>
+                            Perfil</a>
+                    </li>
+
+                    <li class="divider"></li>
+                    <li>
+                        <a href="<?= Url::toRoute('/user/logout') ?>" data-method='POST'><i
+                                class="fa fa-fw fa-power-off"></i> Sair</a>
+                    </li>
+                </ul>
+            </li>
+            <!--      Dropdown Usuário      -->
+
             <!--      Dropdown Notificações      -->
-            <?php
-            if (Yii::$app->user->can("caixa") || Yii::$app->user->can("despesa")) {
-            ?>
+    <?php
+    if (Yii::$app->user->can("caixa") || Yii::$app->user->can("despesa")) {
+    ?>
             <li class="dropdown">
 
 
             </li>
             <li class="dropdown">
-                <?php
-                if (Yii::$app->user->can("caixa")) {
-                ?>
+        <?php
+        if (Yii::$app->user->can("caixa")) {
+        ?>
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
             <?php
@@ -176,10 +196,10 @@ if (count($loja) > 0) {
                             <?php
                         }
                     }
-                    }
-                    else
-                    {
-                    ?>
+            }
+            else
+            {
+                       ?>
                     <i class="fa fa-bell"></i>
 
                     <b class="caret"></b></a>
@@ -187,35 +207,17 @@ if (count($loja) > 0) {
                         <li>
                             &nbsp; Não há alertas
                         </li>
-                        <?php
-                        }
-                        }
-                        }
+                     <?php
+            }
+        }
+    }
                         ?>
-
 
                     </ul>
                     </li>
                     <!--      Dropdown Notificações      -->
 
-                    <!--      Dropdown Usuário      -->
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
-                            <?= Yii::$app->user->displayName ?><b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="<?= Url::toRoute('/user/account') ?>"><i class="fa fa-fw fa-user"></i>
-                                    Perfil</a>
-                            </li>
 
-                            <li class="divider"></li>
-                            <li>
-                                <a href="<?= Url::toRoute('/user/logout') ?>" data-method='POST'><i
-                                        class="fa fa-fw fa-power-off"></i> Sair</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!--      Dropdown Usuário      -->
                 </ul>
 
 
@@ -483,7 +485,7 @@ if (count($loja) > 0) {
 
                     <p class="col-md-6">&copy; Sistema de Gerência de Lanchonete <?= date('Y') ?></p>
 
-                 <!--   <p class="col-md-6"><?/*= Yii::powered() */?></p>-->
+                    <!--   <p class="col-md-6"><? /*= Yii::powered() */ ?></p>-->
                 </div>
             </footer>
             <!-- /.row -->

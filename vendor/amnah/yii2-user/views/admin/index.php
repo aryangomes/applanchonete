@@ -56,8 +56,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'filter' => $user::statusDropdown(),
                     'value' => function ($model, $index, $dataColumn) use ($user) {
 
-                       /* $statusDropdown = $user::statusDropdown();
-                        return $statusDropdown[$model->status];*/
                        return $model->status ? 'Ativo':'Não ativo';
                     },
                 ],

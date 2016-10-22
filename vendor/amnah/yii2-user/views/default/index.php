@@ -5,13 +5,15 @@ use yii\grid\GridView;
 use yii\helpers\Url;
 /**
  * @var yii\web\View $this
+ * @var yii\data\ActiveDataProvider $dataProvider
+ * @var amnah\yii2\user\Module $module
  * @var amnah\yii2\user\Module $module
  * @var array $actions
  */
 
 $module = $this->context->module;
-
-$this->title = Yii::t('user', 'Yii 2 User');
+$user = $module->model("User");
+$this->title = Yii::t('user', 'Users');
 ?>
 <?php 
 if (isset($actions)) {
@@ -68,19 +70,38 @@ else{
             'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            //'id',
-            [
-           // 'attribute'=>'gender',
-            'format'=>'text',
-            'label'=>'Permissões',
-            'value'=> function($model){
-                return $model->permissoes;
-            }
+                [
+                    'attribute' => 'email',
+                    'format' => 'raw',
+                    'value' => function ($model) {
 
-            ],
-            'status',
-            'email:email',
-            'username',
+                        return Html::a($model->email, ['admin/view', 'id' => $model->id]);
+                    }
+                ],
+                'profile.full_name',
+
+
+                [
+                    'attribute' => 'status',
+                    'label' => Yii::t('user', 'Status'),
+                    'filter' => $user::statusDropdown(),
+                    'value' => function ($model, $index, $dataColumn) use ($user) {
+
+                        return $model->status ? 'Ativo':'Não ativo';
+                    },
+                ],
+
+
+                [
+                    'attribute' => 'role_id',
+                    'label' => 'Permissões',
+
+                    'value' => function ($data) {
+                        return $data->permissoes;
+
+                    }
+                ],
+                'created_at:datetime',
             // 'password',
             // 'auth_key',
             // 'access_token',

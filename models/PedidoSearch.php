@@ -76,7 +76,7 @@ class PedidoSearch extends Pedido
 
     public function searchPedidos($situacaoDoPedido)
     {
-        $query = Pedido::find();
+        $query = Pedido::find()->joinWith('historicosituacaos');
 
         // add conditions that should always apply here
 
@@ -95,6 +95,7 @@ class PedidoSearch extends Pedido
             'idPedido' => $this->idPedido,
             'totalPedido' => $this->totalPedido,
             'idSituacaoAtual' => $situacaoDoPedido,
+            'user_id'=>Yii::$app->user->id,
         ]);
 
         return $dataProvider;

@@ -239,22 +239,36 @@ class AdminController extends Controller
                 try {
                     $itensInseridos = true;
 
-                    if (isset($post['AuthAssignment']['item_name'])) {
-                        // var_dump($post['User']['role_id']);
-                        $roles = $post['AuthAssignment']['item_name'];
+                    if (isset($post['AuthAssignment']['item_name']) &&
+                        !(empty($post['AuthAssignment']['item_name']))) {
 
-                    }
 
-                    Yii::$app->db->createCommand(
-                        "DELETE from auth_assignment WHERE 
+                        Yii::$app->db->createCommand(
+                            "DELETE from auth_assignment WHERE 
                 user_id = :iduser ", [
 
-                        ':iduser' => $user->id,
-                    ])->execute();
-                    foreach ($roles as $role) {
+                            ':iduser' => $user->id,
+                        ])->execute();
 
-                        $user->alterarPermissoes($role, $user->id);
+                        $roles = $post['AuthAssignment']['item_name'];
+
+                        foreach ($roles as $role) {
+
+                            $user->alterarPermissoes($role, $user->id);
+                        }
+
+                    }else{
+                        Yii::$app->db->createCommand(
+                            "DELETE from auth_assignment WHERE 
+                user_id = :iduser ", [
+
+                            ':iduser' => $user->id,
+                        ])->execute();
                     }
+
+
+
+
 
 
                     if (!$user->save()) {

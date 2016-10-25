@@ -3,6 +3,7 @@
 namespace amnah\yii2\user\controllers;
 
 use app\models\AuthAssignment;
+use kartik\form\ActiveForm;
 use Yii;
 use amnah\yii2\user\models\User;
 use amnah\yii2\user\models\UserToken;
@@ -13,6 +14,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\AuthItem;
 use yii\helpers\ArrayHelper;
+use yii\web\Response;
 
 /**
  * AdminController implements the CRUD actions for User model.
@@ -132,11 +134,6 @@ class AdminController extends Controller
                     Yii::$app->response->format = Response::FORMAT_JSON;
                     return ActiveForm::validate($user, $profile);
                 }
-                if (isset($post['AuthAssignment']['item_name'])) {
-                    // var_dump($post['User']['role_id']);
-                    $roles = $post['AuthAssignment']['item_name'];
-
-                }
 
 
                 // validate for normal request
@@ -161,10 +158,19 @@ class AdminController extends Controller
 
                     $idUser = $user->id;
 
-                    foreach ($roles as $role) {
+                    if (isset($post['AuthAssignment']['item_name']) &&
+                        !(empty($post['AuthAssignment']['item_name']))) {
+                        // var_dump($post['User']['role_id']);
+                        $roles = $post['AuthAssignment']['item_name'];
 
-                        $user->setPermissoes($role, $idUser);
+                        foreach ($roles as $role) {
+
+                            $user->setPermissoes($role, $idUser);
+                        }
+
                     }
+
+
 
                     if ($itensInseridos) {
                         $transaction->commit();

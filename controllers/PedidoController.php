@@ -433,7 +433,8 @@ class PedidoController extends Controller
                                     Yii::$app->getUser()->id))
                             ) {
                                 $caixa = new Caixa();
-                                $caixa = $caixa->getCaixaAberto(Yii::$app->user->getId());
+                                $caixa = $caixa->getCaixaAberto();
+
                                 if ($caixa != null) {
                                     $caixa = Caixa::findOne($caixa->idcaixa);
                                     $caixa->valoremcaixa += $pedido->totalPedido;

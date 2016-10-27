@@ -120,12 +120,18 @@ class ProdutoSearch extends Produto
         return $dataProvider;
     }
 
+    /**
+     * Retorna um Compraproduto de acordo com o id do produto passado,
+     * pegando a ultima compra feita que contenha esse produto
+     * @param $idProduto
+     * @return array|null|\yii\db\ActiveRecord
+     */
     public function searchProdutosCompra($idProduto)
     {
 
         $query = Compraproduto::find()->join(
             'INNER JOIN', 'compra', 'idCompra = idconta')->
-        where(['idProduto' => $idProduto])->orderBy('dataCompra DESC')->one();
+        where(['idProduto' => $idProduto])->orderBy('dataCompra, idconta DESC')->one();
 
 
         return $query;

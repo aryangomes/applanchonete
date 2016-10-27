@@ -126,13 +126,6 @@ class Produto extends \yii\db\ActiveRecord
         return $this->hasMany(Pedido::className(), ['idPedido' => 'idPedido'])->viaTable('itempedido', ['idProduto' => 'idProduto']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getItensProdutos()
-    {
-        return $this->hasMany(ItensProduto::className(), ['produto_idProduto' => 'idProduto']);
-    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -172,6 +165,7 @@ class Produto extends \yii\db\ActiveRecord
 
         //Busca e guarda todos os insumos do Produto Venda
         $insumos = Insumo::find()->where(['idprodutoVenda' => $idprodutoVenda])->all();
+
         $precosugerido = 0;
 
         //Model para a busca dos dados de Produto
@@ -182,6 +176,7 @@ class Produto extends \yii\db\ActiveRecord
 
         //Busca e guarda todos os tipos de Custo Fixo
         $tiposCustoFixo = Tipocustofixo::find()->all();
+
         $consumosCustoFixo = [];
 
         //Model para a busca dos dados de Custo Fixo
@@ -192,12 +187,17 @@ class Produto extends \yii\db\ActiveRecord
         //Guarda o consumo mensal de cada tipo de Custo Fixo
         foreach ($tiposCustoFixo as $custoFixo) {
             $consumoCustoFixo = $searchModelCustoFixo
-                ->searchConsumoCustoFixoporTipoMensal($custoFixo->idtipocustofixo, date('m'));
+                ->searchConsumoCustoFixoporTipoMensal($custoFixo->idtipocustofixo);
+
             array_push($consumosCustoFixo, $consumoCustoFixo);
+
             if ($consumoCustoFixo > 0) {
                 $ct = ($sumQuantidadeVendaProdutoVenda / $consumoCustoFixo);
+
                 $precosugerido += $ct;
+
             } else {
+
                 array_push($arrayTipoCustoFixoZero, $custoFixo->tipocustofixo);
 
             }
@@ -210,25 +210,16 @@ class Produto extends \yii\db\ActiveRecord
             </div>");
         }
 
-        //Soma o(s) valor(es) médio(s) de custos fixos do mês ao custo do produto
-        /* foreach ($consumosCustoFixo as $custo) {
-             if($custo > 0){
-             $ct = ($sumQuantidadeVendaProdutoVenda / $custo);
-             $precosugerido += $ct;
-             }else{
-                 echo "Não há vendas no mês anterior";
-             }
-         }*/
 
         //Soma o(s) valor(es) do(s) insumo(s) do produto venda ao custo do produto
         foreach ($insumos as $key => $insumo) {
+
             $produtoCompra = ($searchModel->searchProdutosCompra($insumo->idprodutoInsumo));
 
             $precosugerido +=
                 (($produtoCompra->valorCompra * $insumo->quantidade) / $produtoCompra->quantidade);
 
         }
-
 
         return $precosugerido;
 

@@ -8,6 +8,7 @@ use  yii\helpers\Url;
 /* @var $modelProduto app\models\Produto */
 /* @var $produtoVenda app\models\Produto */
 
+
 $this->title = 'Produto ' . $modelProduto->nome;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Produtos'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

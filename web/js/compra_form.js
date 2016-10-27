@@ -9,53 +9,56 @@ $('#btCadastrarNovoProduto').click(function () {
     var categoriaProduto = $('#produto-idcategoria').val();
     var validacao = true;
 
-    if(nomeProduto.length <= 0){
+    if (nomeProduto.length <= 0) {
         alert('Digite o nome do produto');
         validacao = false;
     }
 
-    if(qtdMinimaProduto.length <= 0){
+    if (qtdMinimaProduto.length <= 0) {
         alert('Digite o estoque mínimo do produto');
         validacao = false;
     }
 
-    if(categoriaProduto.length <= 0){
+    if (categoriaProduto.length <= 0) {
         alert('Escolha a categoria do  produto');
         validacao = false;
     }
 
-    if(validacao){
+    if (validacao) {
 
 
+        $.get('../produto/cadastrar-novo-produto', {
+            nome: nomeProduto,
+            categoria: categoriaProduto,
+            estoqueMinimo: qtdMinimaProduto
+        }, function (data) {
 
-    $.get('../produto/cadastrar-novo-produto', {nome:nomeProduto,
-        categoria:categoriaProduto,
-        estoqueMinimo:qtdMinimaProduto
-    }, function (data) {
+            // var data = $.parseJSON(data);
+            console.log(data);
+            if (data != 'false') {
+                $.get('../produto/get-produto', function (data) {
+                    console.log(data);
+                    var data = $.parseJSON(data);
+                    var $el = $(".compra-form select");
+                    $el.empty(); // remove old options
+                    $.each(data, function (key, value) {
+                        $el.append($("<option></option>")
+                            .attr("value", value).text(key));
+                    });
 
-        // var data = $.parseJSON(data);
-        console.log(data);
-        if (data != 'false') {
-            $.get('../produto/get-produto' , function (data) {
-                console.log(data);
-                var data = $.parseJSON(data);
-                var $el = $(".compra-form select");
-                $el.empty(); // remove old options
-                $.each(data, function(key,value) {
-                    $el.append($("<option></option>")
-                        .attr("value", value).text(key));
                 });
+                alert('Novo produto cadastrado com sucesso. Agora você pode fechar essa janela.');
+                $('#produto-nome').val('');
 
-            });
-            alert('Novo produto cadastrado com sucesso. Agora você pode fechar essa janela.');
-        } else {
+                $('#produto-quantidademinima').val(0);
 
-          alert('Não foi possível cadastrar o novo produto');
-        }
+            } else {
+
+                alert('Não foi possível cadastrar o novo produto');
+            }
 
 
-
-    });
+        });
     } else {
 
         alert('Não foi possível cadastrar o novo produto. Verifique os dados.');
@@ -65,12 +68,12 @@ $('#btCadastrarNovoProduto').click(function () {
 });
 
 $('#btnadprodutocompra').click(function () {
-    $.get('../produto/get-produto' , function (data) {
+    $.get('../produto/get-produto', function (data) {
         console.log(data);
         var data = $.parseJSON(data);
         var $el = $(".compra-form select");
         $el.empty(); // remove old options
-        $.each(data, function(key,value) {
+        $.each(data, function (key, value) {
             $el.append($("<option></option>")
                 .attr("value", value).text(key));
         });
@@ -84,23 +87,24 @@ function mudarFoto(element) {
 
     var elementoImg = $(element).parent().parent().parent();
     // var elementoImg = $(element).parent().parent();
-    console.log('elementoImg.:'+elementoImg);
-    $.get('../compra/get-foto-produto', {idProduto: idProduto
+    console.log('elementoImg.:' + elementoImg);
+    $.get('../compra/get-foto-produto', {
+        idProduto: idProduto
     }, function (data) {
 
         var data = $.parseJSON(data);
         console.log(data);
         if (data != 'false') {
-            if(data[1] != ""){
+            if (data[1] != "") {
 
-                $("div:last img",elementoImg).attr("src",
-                    'data:image/jpeg;base64,'+data[1]);
-                $("div:last img",elementoImg).attr("alt",
+                $("div:last img", elementoImg).attr("src",
+                    'data:image/jpeg;base64,' + data[1]);
+                $("div:last img", elementoImg).attr("alt",
                     data[0]);
-            }else{
-                $("div:last img",elementoImg).attr("src",
+            } else {
+                $("div:last img", elementoImg).attr("src",
                     "/applanchonete/web/imgs/semfoto.jpg");
-                $("div:last img",elementoImg).attr("alt","Sem foto cadastrada");
+                $("div:last img", elementoImg).attr("alt", "Sem foto cadastrada");
             }
 
 

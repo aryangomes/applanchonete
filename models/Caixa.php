@@ -87,18 +87,25 @@ class Caixa extends \yii\db\ActiveRecord {
         if(count($itensPedido) > 0){
             foreach ($itensPedido as $ip){
                 $produto = Produto::findOne($ip->idProduto);
+
                 if($produto != null){
+
                     $quantidade = $ip->quantidade;
+
                     $valorProduto = $produto->valorVenda;
+
                     $precoCustoProduto = $produto->calculoPrecoProduto($produto->idProduto);
+
                     $diferenca = ($valorProduto * $quantidade) - ($precoCustoProduto * $quantidade);
+
                     $lucroTotal += $diferenca;
+
                 }
             }
         }
 
 
-        return $lucroTotal;
+        return number_format($lucroTotal,2);
     }
 
 }

@@ -266,9 +266,10 @@ class ProdutoController extends Controller
 
                     if (!Yii::$app->request->post()['Produto']['isInsumo']) {
                         $aux = Yii::$app->request->post()['Insumo'];
-                        $n = count($aux['idprodutoInsumo']);
 
-                        for ($i = 0; $i < $n; $i++) {
+                        $numeroDeInsumo = count($aux['idprodutoInsumo']);
+
+                        for ($i = 0; $i <  $numeroDeInsumo; $i++) {
 
                             if (($aux['idprodutoInsumo'][$i]) > 0) {
 
@@ -375,13 +376,13 @@ class ProdutoController extends Controller
                     }
                     $aux = Yii::$app->request->post()['Insumo'];
 
-                    $n = count($aux['idprodutoInsumo']);
+                    $numeroDeInsumo = count($aux['idprodutoInsumo']);
 
                     Yii::$app->db->createCommand(
                         "DELETE FROM insumo WHERE idprodutoVenda = :idprodutoVenda", [
                         ':idprodutoVenda' => $id,
                     ])->execute();
-                    for ($i = 0; $i < $n; $i++) {
+                    for ($i = 0; $i <  $numeroDeInsumo; $i++) {
 
                         if (($aux['idprodutoInsumo'][$i]) > 0) {
 
@@ -427,7 +428,9 @@ class ProdutoController extends Controller
         }
 
         $modelProduto->quantidadeEstoque = 0;
+
         $modelProduto->quantidadeMinima = 0;
+
         if (!$modelProduto->isInsumo) {
             return $this->render('update', [
                 'modelProduto' => $modelProduto,
@@ -571,13 +574,19 @@ class ProdutoController extends Controller
     public function actionDefinirvalorprodutovenda($idProduto)
     {
 
+        //Guarda um modelo de Produto
         $modelProduto = $this->findModel($idProduto);
+
         if (Yii::$app->request->post()) {
+
             $porcentagemLucro = (Yii::$app->request->post()['porcentagemLucro']);
+
             $modelProduto->valorVenda = $modelProduto->calculoPrecoProduto($idProduto)
                 + ($modelProduto->calculoPrecoProduto($idProduto) * ($porcentagemLucro / 100));
+
             if ($modelProduto->save()) {
                 return $this->redirect(['view', 'id' => $modelProduto->idProduto]);
+
             }
         } else {
             return $this->render('definirvalorprodutovenda', [

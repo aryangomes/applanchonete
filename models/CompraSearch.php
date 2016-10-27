@@ -50,7 +50,7 @@ class CompraSearch extends Compra
             'pagination' => [
                 'pageSize' => 10,
             ],
-            'sort'=> ['defaultOrder' => ['dataCompra'=>SORT_DESC]],
+            'sort'=> ['defaultOrder' => ['dataCompra'=>SORT_DESC,'idconta'=>SORT_DESC]],
         ]);
 
         $this->load($params);

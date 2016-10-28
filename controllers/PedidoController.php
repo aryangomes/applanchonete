@@ -336,6 +336,36 @@ class PedidoController extends Controller
                             Yii::$app->getUser()->id);
                     }
 
+
+                    if($modelPedido->idSituacaoAtual == Pedido::CONCLUIDO){
+                        $caixa = new Caixa();
+
+                        $caixa = $caixa->getCaixaAberto();
+
+                        if ($caixa != null) {
+                            $caixa = Caixa::findOne($caixa->idcaixa);
+
+                            $caixa->valoremcaixa += floatval($modelPedido->totalPedido);
+
+                            $caixa->valorapurado += floatval($modelPedido->totalPedido);
+
+                            $caixa->valorlucro += number_format($caixa->calculaValorLucroPedido($modelPedido->idPedido), 2);
+
+                            if (!$caixa->save()) {
+                                $mensagem = "Não foi possível salvar os dados  do Pedido";
+                                $transaction->rollBack(); //desfaz alterações no BD
+                                $itensInseridos = false;
+
+
+                            }
+                        } else {
+                            $mensagem = "Não foi possível concluir o Pedido, pois Caixa não está aberto";
+                            $transaction->rollBack(); //desfaz alterações no BD
+                            $itensInseridos = false;
+
+                        }
+                    }
+
                     //Testa se todos os itens foram inseridos (ou tudo ou nada):
                     if ($itensInseridos) {
 
@@ -433,13 +463,18 @@ class PedidoController extends Controller
                                     Yii::$app->getUser()->id))
                             ) {
                                 $caixa = new Caixa();
+
                                 $caixa = $caixa->getCaixaAberto();
 
                                 if ($caixa != null) {
                                     $caixa = Caixa::findOne($caixa->idcaixa);
+
                                     $caixa->valoremcaixa += $pedido->totalPedido;
+
                                     $caixa->valorapurado += $pedido->totalPedido;
+
                                     $caixa->valorlucro += number_format($caixa->calculaValorLucroPedido($pedido->idPedido), 2);
+
                                     if (!$caixa->save()) {
                                         $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
                                         $transaction->rollBack(); //desfaz alterações no BD

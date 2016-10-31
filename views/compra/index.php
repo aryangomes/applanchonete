@@ -53,3 +53,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php Pjax::end(); ?>
     </div>
 </div>
+<?php
+if (isset($mensagem) && !empty($mensagem)) {
+    ?>
+    <script type="text/javascript">alert('<?= $mensagem; ?>');</script>
+    <?php
+}
+?>

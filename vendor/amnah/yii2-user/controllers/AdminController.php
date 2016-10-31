@@ -159,7 +159,8 @@ class AdminController extends Controller
                     $idUser = $user->id;
 
                     if (isset($post['AuthAssignment']['item_name']) &&
-                        !(empty($post['AuthAssignment']['item_name']))) {
+                        !(empty($post['AuthAssignment']['item_name']))
+                    ) {
                         // var_dump($post['User']['role_id']);
                         $roles = $post['AuthAssignment']['item_name'];
 
@@ -169,7 +170,6 @@ class AdminController extends Controller
                         }
 
                     }
-
 
 
                     if ($itensInseridos) {
@@ -197,7 +197,7 @@ class AdminController extends Controller
     public function actionUpdate($id)
     {
         if ((Yii::$app->user->can("update-user") ||
-            Yii::$app->user->can("user")) && ($id != 1)
+                Yii::$app->user->can("user")) && ($id != 1)
         ) {
 
             $permissoes = AuthItem::getListToDropDownList();
@@ -240,7 +240,8 @@ class AdminController extends Controller
                     $itensInseridos = true;
 
                     if (isset($post['AuthAssignment']['item_name']) &&
-                        !(empty($post['AuthAssignment']['item_name']))) {
+                        !(empty($post['AuthAssignment']['item_name']))
+                    ) {
 
 
                         Yii::$app->db->createCommand(
@@ -257,7 +258,7 @@ class AdminController extends Controller
                             $user->alterarPermissoes($role, $user->id);
                         }
 
-                    }else{
+                    } else {
                         Yii::$app->db->createCommand(
                             "DELETE from auth_assignment WHERE 
                 user_id = :iduser ", [
@@ -265,10 +266,6 @@ class AdminController extends Controller
                             ':iduser' => $user->id,
                         ])->execute();
                     }
-
-
-
-
 
 
                     if (!$user->save()) {
@@ -312,17 +309,37 @@ class AdminController extends Controller
     public function actionDelete($id)
     {
         if ((Yii::$app->user->can("delete-user") ||
-            Yii::$app->user->can("user")) && ($id != 1)
+                Yii::$app->user->can("user")) && ($id != 1)
         ) {
-            // delete profile and userTokens first to handle foreign key constraint
-            $user = $this->findModel($id);
-            $profile = $user->profile;
-            UserToken::deleteAll(['user_id' => $user->id]);
-            UserAuth::deleteAll(['user_id' => $user->id]);
-            $profile->delete();
-            $user->delete();
 
-            return $this->redirect(['index']);
+
+            //Guarda a mensagem
+            $mensagem = "";
+
+            $transaction = \Yii::$app->db->beginTransaction();
+            try {
+                // delete profile and userTokens first to handle foreign key constraint
+                $user = $this->findModel($id);
+                $profile = $user->profile;
+                UserToken::deleteAll(['user_id' => $user->id]);
+                UserAuth::deleteAll(['user_id' => $user->id]);
+                $profile->delete();
+
+                if ($user->delete()) {
+                    $transaction->commit();
+                }
+
+            } catch (\Exception $exception) {
+                $transaction->rollBack();
+                $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
+            }
+
+            /** @var \amnah\yii2\user\models\search\UserSearch $searchModel */
+            $searchModel = $this->module->model("UserSearch");
+            $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+
+            return $this->render('index', compact('searchModel', 'dataProvider'));
+
         } else {
             throw new ForbiddenHttpException("Acesso negado!");
         }

@@ -1,4 +1,4 @@
-    <?php
+<?php
 
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'filter' => $user::statusDropdown(),
                     'value' => function ($model, $index, $dataColumn) use ($user) {
 
-                       return $model->status ? 'Ativo':'Não ativo';
+                        return $model->status ? 'Ativo' : 'Não ativo';
                     },
                 ],
 
@@ -83,10 +83,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 // 'banned_at',
                 // 'banned_reason',
 
-                ['class' => 'yii\grid\ActionColumn'  ],
+                ['class' => 'yii\grid\ActionColumn'],
             ],
         ]); ?>
         <?php \yii\widgets\Pjax::end(); ?>
 
     </div>
 </div>
+
+<?php
+if (isset($mensagem) && !empty($mensagem)) {
+    ?>
+    <script type="text/javascript">alert('<?= $mensagem; ?>');</script>
+    <?php
+}
+?>

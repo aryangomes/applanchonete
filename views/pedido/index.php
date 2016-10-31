@@ -41,6 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'situacaopedido',
                     'format' => 'raw',
+                    'label'=>'Situação do Pedido',
                     'value' => function ($modelPedido) {
 
                         return Html::a($modelPedido->situacaopedido->titulo, ['view',
@@ -100,3 +101,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
     </div>
 </div>
+
+
+<?php
+if (isset($mensagem) && !empty($mensagem)) {
+    ?>
+    <script type="text/javascript">alert('<?= $mensagem; ?>');</script>
+    <?php
+}
+?>

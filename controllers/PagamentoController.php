@@ -124,9 +124,31 @@ class PagamentoController extends Controller
      */
     public function actionDelete($idConta, $idPedido)
     {
-        $this->findModel($idConta, $idPedido)->delete();
 
-        return $this->redirect(['index']);
+        //Guarda a mensagem
+        $mensagem = "";
+
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            if ($this->findModel($idConta, $idPedido)->delete()) {
+                $transaction->commit();
+            }
+
+        } catch (\Exception $exception) {
+            $transaction->rollBack();
+            $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
+        }
+
+        $searchModel = new PagamentoSearch();
+
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'mensagem' => $mensagem
+
+        ]);
     }
 
     /**

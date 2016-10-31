@@ -337,18 +337,46 @@ class ContaController extends Controller
     public
     function actionDelete($id)
     {
-        $idpedido = Pagamento::find()->where(['idconta' => $id])->one();
-        if (isset($idpedido)) {
-            $itenspedido = Itempedido::find()->where(['idPedido' => $idpedido->idPedido])->all();
 
-            foreach ($itenspedido as $p) {
-                Insumo::atualizaQtdNoEstoqueDelete($p->idProduto, $p->quantidade);
+
+        //Guarda a mensagem
+        $mensagem = "";
+
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+
+            $idpedido = Pagamento::find()->where(['idconta' => $id])->one();
+
+            if (isset($idpedido)) {
+                $itenspedido = Itempedido::find()->where(['idPedido' => $idpedido->idPedido])->all();
+
+                foreach ($itenspedido as $p) {
+                    Insumo::atualizaQtdNoEstoqueDelete($p->idProduto, $p->quantidade);
+                }
+
             }
 
-        }
-        $this->findModel($id)->delete();
+            if ($this->findModel($id)->delete()) {
+                $transaction->commit();
+            }
 
-        return $this->redirect(['index']);
+        } catch (\Exception $exception) {
+            $transaction->rollBack();
+            $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
+        }
+
+        $searchModel = new ContaSearch();
+
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'mensagem' => $mensagem
+
+        ]);
+
+
     }
 
     /**

@@ -106,9 +106,9 @@ class ItempedidoSearch extends Itempedido
             ->joinWith('pagamento.contasareceber')
             ->where(
 
-            ['between','dataHora',$dataInicio,$dataFinal]
-        )
-            ->where( ['idSituacaoAtual'=>2])->all();
+                ['between', 'dataHora', $dataInicio, $dataFinal]
+            )
+            ->where(['idSituacaoAtual' => 2])->all();
 
         //Guarda os valores de lucro total dos pedidos concluidos diarios
         $valoresLucroTotal = [];
@@ -117,39 +117,36 @@ class ItempedidoSearch extends Itempedido
         $caixa = new Caixa();
 
         //Guarda as datas que tiveram os pedidos concluidos de acordo com o intervalo informado
-        $datasPedidosConcluidos = ($this->getDatasParaCalculoDeLucro($dataInicio,$dataFinal));
+        $datasPedidosConcluidos = ($this->getDatasParaCalculoDeLucro($dataInicio, $dataFinal));
 
         foreach ($datasPedidosConcluidos as $dataPedConc) {
 
             $auxValorLucro = 0;
 
-            foreach ($pedidosConcluidos as $pedConc){
+            foreach ($pedidosConcluidos as $pedConc) {
 
                 //Guarda a data do Pedido Concluido
-                $dataPedidoConcluido = date('Y-m-d',strtotime($pedConc['pagamento']['contasareceber']->dataHora));
+                $dataPedidoConcluido = date('Y-m-d', strtotime($pedConc['pagamento']['contasareceber']->dataHora));
 
-                if( $dataPedidoConcluido  == $dataPedConc) {
-                  $auxValorLucro += floatval(number_format(($caixa->calculaValorLucroPedido($pedConc->idPedido))
-                      , 2));
+                if ($dataPedidoConcluido == $dataPedConc) {
+                    $auxValorLucro += floatval(number_format(($caixa->calculaValorLucroPedido($pedConc->idPedido))
+                        , 2));
 
                 }
 
             }
-            
+
             //Guarda o valor do lucro no array tendo como chave a data do dia desse lucro
             $auxLucro = [
                 'name' => date('d/m/Y', strtotime($dataPedConc)),
-                'data' =>  [$auxValorLucro],
+                'data' => [$auxValorLucro],
             ];
 
             //Adiciona o valor total do lucro de um dia ao array
             array_push($valoresLucroTotal, $auxLucro);
 
         }
-
-
         return $valoresLucroTotal;
-
 
     }
 
@@ -164,19 +161,19 @@ class ItempedidoSearch extends Itempedido
             ->joinWith('pagamento.contasareceber')
             ->where(
 
-                ['between','dataHora',$dataInicio,$dataFinal]
+                ['between', 'dataHora', $dataInicio, $dataFinal]
             )
-            ->where( ['idSituacaoAtual'=>2])
+            ->where(['idSituacaoAtual' => 2])
             ->all();
 
 
-        foreach ($pedidosConcluidos as $pedConc){
-           //Guarda a data do pedido
-            $data = date('Y-m-d',strtotime($pedConc['pagamento']['contasareceber']->dataHora));
+        foreach ($pedidosConcluidos as $pedConc) {
+            //Guarda a data do pedido
+            $data = date('Y-m-d', strtotime($pedConc['pagamento']['contasareceber']->dataHora));
 
-            if(!in_array($data,$datasPedidosConcluidos)){
+            if (!in_array($data, $datasPedidosConcluidos)) {
 
-                array_push($datasPedidosConcluidos,$data);
+                array_push($datasPedidosConcluidos, $data);
 
             }
 

@@ -88,11 +88,13 @@ if (count($loja) > 0) {
                             <?= Html::a('<i class="fa fa-external-link-square"></i> Cadastrar Pedido', ['/pedido/create']) ?>
 
                         </li>
+
+                        <li class="divider"></li>
                         <?php
                     }
                     ?>
 
-                    <li class="divider"></li>
+
                     <?php
                     if (Yii::$app->user->can("create-produto") || Yii::$app->user->can("produto")) {
                         ?>
@@ -100,10 +102,12 @@ if (count($loja) > 0) {
                             <?= Html::a('<i class="fa fa-external-link-square"></i> Cadastrar Produto', ['/produto/create']) ?>
 
                         </li>
+
+                        <li class="divider"></li>
                         <?php
                     }
                     ?>
-                    <li class="divider"></li>
+
                     <?php
                     if (Yii::$app->user->can("create-conta") || Yii::$app->user->can("conta")) {
                         ?>
@@ -111,11 +115,12 @@ if (count($loja) > 0) {
                             <?= Html::a('<i class="fa fa-external-link-square"></i> Cadastrar Conta', ['/conta/create']) ?>
 
                         </li>
+                        <li class="divider"></li>
                         <?php
                     }
                     ?>
 
-                    <li class="divider"></li>
+
                     <?php
                     if (Yii::$app->user->can("index-cardapio") || Yii::$app->user->can("cardapio")) {
                         ?>
@@ -191,7 +196,7 @@ if (count($loja) > 0) {
                             ?>
                             <li>
                                 <a href="<?= Url::toRoute(['/produto/view', 'id' => $p->idProduto]) ?>"> <?= $p->nome ?> </a>
-                            </li>
+                            </li>\
                             <li class="divider"></li>
                             <?php
                         }

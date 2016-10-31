@@ -181,10 +181,30 @@ class RelatorioController extends Controller
      */
     public function actionDelete($id)
     {
+        //Guarda a mensagem
+        $mensagem = "";
 
-        $this->findModel($id)->delete();
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            if ($this->findModel($id)->delete()) {
+                $transaction->commit();
+            }
 
-        return $this->redirect(['index']);
+        } catch (\Exception $exception) {
+            $transaction->rollBack();
+            $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
+        }
+
+        $searchModel = new RelatorioSearch();
+
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'mensagem' => $mensagem
+
+        ]);
     }
 
     /**

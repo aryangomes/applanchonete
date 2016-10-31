@@ -202,9 +202,33 @@ class InsumoController extends Controller
      */
     public function actionDelete($idprodutoVenda, $idprodutoInsumo)
     {
-        $this->findModel($idprodutoVenda, $idprodutoInsumo)->delete();
 
-        return $this->redirect(['index']);
+        //Guarda a mensagem
+        $mensagem = "";
+
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            if ($this->findModel($idprodutoVenda, $idprodutoInsumo)->delete()) {
+                $transaction->commit();
+            }
+
+        } catch (\Exception $exception) {
+            $transaction->rollBack();
+            $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
+        }
+
+        $searchModel = new InsumoSearch();
+
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'mensagem' => $mensagem
+
+        ]);
+
+
     }
 
     /**

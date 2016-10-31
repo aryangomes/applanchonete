@@ -337,7 +337,7 @@ class PedidoController extends Controller
                     }
 
 
-                    if($modelPedido->idSituacaoAtual == Pedido::CONCLUIDO){
+                    if ($modelPedido->idSituacaoAtual == Pedido::CONCLUIDO) {
                         $caixa = new Caixa();
 
                         $caixa = $caixa->getCaixaAberto();
@@ -403,14 +403,39 @@ class PedidoController extends Controller
     public function actionDelete($id)
     {
 
-        $itenspedido = Itempedido::find()->where(['idPedido' => $id])->all();
+        //Guarda a mensagem
+        $mensagem = "";
 
-        foreach ($itenspedido as $p) {
-            Insumo::atualizaQtdNoEstoqueDelete($p->idProduto, $p->quantidade);
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+
+            $itenspedido = Itempedido::find()->where(['idPedido' => $id])->all();
+
+            foreach ($itenspedido as $p) {
+                Insumo::atualizaQtdNoEstoqueDelete($p->idProduto, $p->quantidade);
+            }
+
+            if ($this->findModel($id)->delete()) {
+                $transaction->commit();
+            }
+
+        } catch (\Exception $exception) {
+            $transaction->rollBack();
+            $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
         }
-        $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        $searchModel = new RelatorioSearch();
+
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'mensagem' => $mensagem
+
+        ]);
+
+
     }
 
     /**

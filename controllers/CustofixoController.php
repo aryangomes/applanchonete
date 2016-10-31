@@ -128,9 +128,30 @@ class CustofixoController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        //Guarda a mensagem
+        $mensagem = "";
 
-        return $this->redirect(['index']);
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            if ($this->findModel($id)->delete()) {
+                $transaction->commit();
+            }
+
+        } catch (\Exception $exception) {
+            $transaction->rollBack();
+            $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
+        }
+
+        $searchModel = new CustofixoSearch();
+
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'mensagem' => $mensagem
+
+        ]);
     }
 
     /**

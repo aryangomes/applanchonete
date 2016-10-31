@@ -325,6 +325,8 @@ class CompraController extends Controller
     public function actionDelete($id)
     {
 
+        $mensagem ="";
+
         //Inicia a transação:
         $transaction = \Yii::$app->db->beginTransaction();
         try {
@@ -359,7 +361,16 @@ class CompraController extends Controller
             $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
         }
 
-        return $this->redirect(['view', 'id' => $id]);
+        $searchModel = new RelatorioSearch();
+
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'mensagem' => $mensagem
+
+        ]);
 
     }
 

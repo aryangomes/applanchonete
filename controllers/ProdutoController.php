@@ -269,7 +269,7 @@ class ProdutoController extends Controller
 
                         $numeroDeInsumo = count($aux['idprodutoInsumo']);
 
-                        for ($i = 0; $i <  $numeroDeInsumo; $i++) {
+                        for ($i = 0; $i < $numeroDeInsumo; $i++) {
 
                             if (($aux['idprodutoInsumo'][$i]) > 0) {
 
@@ -382,7 +382,7 @@ class ProdutoController extends Controller
                         "DELETE FROM insumo WHERE idprodutoVenda = :idprodutoVenda", [
                         ':idprodutoVenda' => $id,
                     ])->execute();
-                    for ($i = 0; $i <  $numeroDeInsumo; $i++) {
+                    for ($i = 0; $i < $numeroDeInsumo; $i++) {
 
                         if (($aux['idprodutoInsumo'][$i]) > 0) {
 
@@ -460,10 +460,30 @@ class ProdutoController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        //Guarda a mensagem
+        $mensagem = "";
 
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            if ($this->findModel($id)->delete()) {
+                $transaction->commit();
+            }
 
-        return $this->redirect(['index']);
+        } catch (\Exception $exception) {
+            $transaction->rollBack();
+            $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
+        }
+
+        $searchModel = new ProdutoSearch();
+
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'mensagem' => $mensagem
+
+        ]);
     }
 
 
@@ -665,7 +685,6 @@ class ProdutoController extends Controller
 
 
     }
-
 
 
 }

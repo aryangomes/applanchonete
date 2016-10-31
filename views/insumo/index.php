@@ -53,3 +53,12 @@ $this->params['breadcrumbs'][] = 'Insumos';
 
     </div>
 </div>
+
+
+<?php
+if (isset($mensagem) && !empty($mensagem)) {
+    ?>
+    <script type="text/javascript">alert('<?= $mensagem; ?>');</script>
+    <?php
+}
+?>

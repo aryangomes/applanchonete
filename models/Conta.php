@@ -20,6 +20,11 @@ use Yii;
 class Conta extends \yii\db\ActiveRecord
 {
 
+    public static $tiposDeConta = [
+        'custofixo'=>'Custo Fixo',
+        'contasareceber'=>'Contas A Receber',
+        'contasapagar'=>'Contas A Pagar',
+        ];
 
     /**
      * @inheritdoc

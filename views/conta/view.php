@@ -35,8 +35,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'valor',
                 'value' => 'R$ ' . $modelConta->valor,
             ],
+
             'descricao:ntext',
-            'tipoConta',
+
+
+            ['attribute' => 'tipoConta',
+
+                'value' => isset(\app\models\Conta::$tiposDeConta[$modelConta->tipoConta])?
+                    \app\models\Conta::$tiposDeConta[$modelConta->tipoConta] : $modelConta->tipoConta,
+            ],
+
             ['label' => 'Consumo',
                 'visible' => ($modelConta->tipoConta == 'custofixo') ? true : false,
                 'format' => 'text',

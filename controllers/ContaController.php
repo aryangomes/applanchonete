@@ -126,25 +126,39 @@ class ContaController extends Controller
                     $conta = Yii::$app->request->post()['Conta'];
 
                     $contasapagar = Yii::$app->request->post()['Contasapagar'];
+
                     $contasareceber = Yii::$app->request->post()['Contasareceber'];
+
                     $custofixo = Yii::$app->request->post()['Custofixo'];
+
                     if ($conta['tipoConta'] == 'contasapagar') {
+
                         $modelContaapagar->idconta = $modelConta->idconta;
-//                        $modelContaapagar->situacaoPagamento = $contasapagar['situacaoPagamento'];
                         $modelContaapagar->dataVencimento = $contasapagar['dataVencimento'];
+
                         if (!$modelContaapagar->save()) {
+
                             $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
+
                             $transaction->rollBack(); //desfaz alterações no BD
+
                             $itemInserido = false;
                         }
 
                     } else if ($conta['tipoConta'] == 'contasareceber') {
+
                         $modelContasareceber->idconta = $modelConta->idconta;
+
                         if (($contasareceber['dataHora']) != null) {
+
                             $modelContasareceber->dataHora = $contasareceber['dataHora'];
+
                             if (!$modelContasareceber->save()) {
+
                                 $mensagem = "Não foi possível salvar os dados";
+
                                 $transaction->rollBack(); //desfaz alterações no BD
+
                                 $itemInserido = false;
                             }
 
@@ -153,10 +167,15 @@ class ContaController extends Controller
                     } else if ($conta['tipoConta'] == 'custofixo') {
 
                         $modelCustofixo->idconta = $modelConta->idconta;
-                        $modelContaContaapagar->idconta = $modelConta->idconta;
-                        $modelContaContaapagar->dataVencimento = $contasapagar['dataVencimento'];
-                        $modelContaCustofixo->consumo = $custofixo['consumo'];
+
+                        $modelContaapagar->idconta = $modelConta->idconta;
+
+                        $modelContaapagar->dataVencimento = $contasapagar['dataVencimento'];
+
+                        $modelCustofixo->consumo = $custofixo['consumo'];
+
                         $modelCustofixo->tipocustofixo_idtipocustofixo = $custofixo['tipocustofixo_idtipocustofixo'];
+
                         if ($modelContaapagar->save()) {
 
                             if (!$modelCustofixo->save()) {
@@ -170,11 +189,11 @@ class ContaController extends Controller
                             $itemInserido = false;
                         }
 
-
                     }
 
                     if ($itemInserido) {
                         $transaction->commit();
+
                         return $this->redirect(['view', 'id' => $modelConta->idconta]);
                     }
 
@@ -188,6 +207,9 @@ class ContaController extends Controller
         }
 
         $modelContasareceber->dataHora = date('Y-m-d H:i:s');
+
+        $modelContaapagar->dataVencimento= date('Y-m-d');
+
         return $this->render('create', [
             'modelConta' => $modelConta,
             'tiposConta' => $tiposConta,
@@ -258,25 +280,40 @@ class ContaController extends Controller
                     $conta = Yii::$app->request->post()['Conta'];
 
                     $contasapagar = Yii::$app->request->post()['Contasapagar'];
+
                     $contasareceber = Yii::$app->request->post()['Contasareceber'];
+
                     $custofixo = Yii::$app->request->post()['Custofixo'];
+
                     if ($conta['tipoConta'] == 'contasapagar') {
+
                         $modelContaapagar->idconta = $modelConta->idconta;
-//                        $modelContaapagar->situacaoPagamento = $contasapagar['situacaoPagamento'];
+
                         $modelContaapagar->dataVencimento = $contasapagar['dataVencimento'];
+
                         if (!$modelContaapagar->save()) {
+
                             $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
+
                             $transaction->rollBack(); //desfaz alterações no BD
+
                             $itemInserido = false;
                         }
 
                     } else if ($conta['tipoConta'] == 'contasareceber') {
+
                         $modelContasareceber->idconta = $modelConta->idconta;
+
                         if (($contasareceber['dataHora']) != null) {
+
                             $modelContasareceber->dataHora = $contasareceber['dataHora'];
+
                             if (!$modelContasareceber->save()) {
+
                                 $mensagem = "Não foi possível salvar os dados";
+
                                 $transaction->rollBack(); //desfaz alterações no BD
+
                                 $itemInserido = false;
                             }
 
@@ -285,10 +322,15 @@ class ContaController extends Controller
                     } else if ($conta['tipoConta'] == 'custofixo') {
 
                         $modelCustofixo->idconta = $modelConta->idconta;
+
                         $modelContaapagar->idconta = $modelConta->idconta;
+
                         $modelContaapagar->dataVencimento = $contasapagar['dataVencimento'];
+
                         $modelCustofixo->consumo = $custofixo['consumo'];
+
                         $modelCustofixo->tipocustofixo_idtipocustofixo = $custofixo['tipocustofixo_idtipocustofixo'];
+
                         if ($modelContaapagar->save()) {
 
                             if (!$modelCustofixo->save()) {
@@ -337,7 +379,6 @@ class ContaController extends Controller
     public
     function actionDelete($id)
     {
-
 
         //Guarda a mensagem
         $mensagem = "";

@@ -623,12 +623,7 @@ class ProdutoController extends Controller
     public function actionGetProdutos($busca)
     {
         $buscaProdutos = Produto::find()
-            ->where(['like', 'nome', $busca])->all();/*ArrayHelper::map(
-            Produto::find()
-                ->where(['like','nome',$busca])
-                ->all(),
-            'idProduto','nome'
-        );*/
+            ->where(['like', 'nome', $busca])->all();
 
         if ($buscaProdutos != null) {
             $produtos = [];

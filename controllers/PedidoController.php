@@ -424,7 +424,7 @@ class PedidoController extends Controller
             $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
         }
 
-        $searchModel = new RelatorioSearch();
+        $searchModel = new PedidoSearch();
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

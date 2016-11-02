@@ -26,15 +26,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
 
 
-                /*[
-                    'attribute' => 'idMesa',
+                [
+                    'attribute' => 'numeroDaMesa',
                     'format' => 'raw',
+                    'label'=>'Situação do Pedido',
                     'value' => function ($modelMesa) {
 
-                        return Html::a('Mesa: '.$modelMesa->idMesa, ['view', 'id' => $modelMesa->idMesa]);
+                        return Html::a($modelMesa->numeroDaMesa , ['view',
+                            'id' => $modelMesa->idMesa]);
                     }
-                ],*/
-                'numeroDaMesa',
+                ],
+
 
                 [
                     'attribute' => 'alerta',

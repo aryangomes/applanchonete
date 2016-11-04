@@ -31,7 +31,8 @@ $this->title = 'Lista de insumos de um Produto';
     ]); ?>
     </br>
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary btn-block']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary btn-block',
+            'title' => 'Clique para listar os insumos do Produto selecionado',]) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
@@ -44,7 +45,10 @@ $this->title = 'Lista de insumos de um Produto';
             foreach ($insumos as $insumo) {
                 ?>
                 <div class="panel-body"><?= Html::a($insumo->nome, Url::toRoute(['/insumo/view',
-                'idprodutoVenda' => $modelProduto->idProduto, 'idprodutoInsumo' => $insumo->idProduto])) ?></div><?php
+                        'idprodutoVenda' => $modelProduto->idProduto, 'idprodutoInsumo' => $insumo->idProduto,
+                       ])) ?>
+                </div>
+                <?php
             }
         }
 

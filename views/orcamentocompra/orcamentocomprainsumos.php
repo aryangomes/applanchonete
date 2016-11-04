@@ -22,7 +22,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="form-group">
-  <?= Html::submitButton('Gerar Orçamento', ['class' => 'btn btn-primary']) ?>
+  <?= Html::submitButton('Gerar Orçamento', ['class' => 'btn btn-primary',
+      'title'=>'Clique aqui para gerar um orçamento de uma Compra']) ?>
 </div>
 
 <?php ActiveForm::end(); ?>

@@ -22,7 +22,10 @@ use yii\widgets\ActiveForm;
     ]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton($modelCustofixo->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $modelCustofixo->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($modelCustofixo->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'),
+            ['class' => $modelCustofixo->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+                'title'=>$modelCustofixo->isNewRecord ? 'Clique para cadastrar um novo Custo Fixo':
+                    'Clique para salvar os dados do Custo Fixo']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -59,7 +59,9 @@ $modelCaixa->dataabertura = date('d/m/Y');
 
 
     <div class="form-group">
-<?= Html::submitButton($modelCaixa->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $modelCaixa->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+<?= Html::submitButton($modelCaixa->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'),
+    ['class' => $modelCaixa->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+        'title'=>'Clique para alterar os valores do Caixa']) ?>
     </div>
 
 <?php ActiveForm::end(); ?>

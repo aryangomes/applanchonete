@@ -152,7 +152,7 @@ if ($action == 'create' || ($modelProduto->isInsumo && $action == 'update')) {
                     if (!$modelProduto->isInsumo) {
                         ?>
                         <input class="btn btn-danger" onclick="removeins(0)" type="button" value="Remover Insumo"
-                               title="Remover insumo desse produto">
+                               title="Remover insumo desse Produto">
                     <?php } ?>
 
 
@@ -240,7 +240,8 @@ if ($action == 'create' || ($modelProduto->isInsumo && $action == 'update')) {
                     'options' => [$modelsInsumos[$i]->unidade => ['Selected' => true]]]);
 
                 ?>
-                <input class="btn btn-danger" onclick="removeins(<?= $i ?>)" type='button' value="Remover Insumo"></div>
+                <input class="btn btn-danger" onclick="removeins(<?= $i ?>)" type='button' value="Remover Insumo"
+                       title="Remover insumo desse Produto" ></div>
             </br>
             <?php
         }
@@ -262,12 +263,14 @@ if ($action == 'create' || ($modelProduto->isInsumo && $action == 'update')) {
 ?>
     <?= $form->field($modelProduto, 'imageFile')->fileInput(['class' => 'form-control']) ?>
     <div class="form-group">
-        <?= Html::submitButton($action == 'create' ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton($action == 'create' ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => 'btn btn-success',
+            'title'=>$modelProduto->isNewRecord ? 'Clique para cadastrar um novo Produto':
+                'Clique para salvar os dados do Produto']) ?>
         <?php
         if (!$modelProduto->isInsumo) {
             ?>
             <input class="btn btn-primary" type='button' id='btnaddinsumo' value="Adicionar mais insumos"
-                   title="Adicionar mais um insumo a esse produto">
+                   title="Adicionar mais um insumo a esse Produto">
             <?php
         }
         ?>
@@ -339,7 +342,7 @@ if ($action == 'create' || ($modelProduto->isInsumo && $action == 'update')) {
                 '<div class="form-group field-insumos-unidade required"><label class="control-label" for="insumos-unidade\'+i+\'">Unidade' .
                 '</label><select id="insumos-unidade\'+i+\'" class="form-control" name="Insumo[unidade][]"><option value="">Selecione a unidade' .
                 '</option><option value="kg">Kg</option><option value="l">Litros</option><option value="unidade">Unidade</option></select>' .
-                '<div class="help-block"></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Insumo">' .
+                '<div class="help-block"></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Insumo"    title="Remover insumo desse Produto">>' .
                 '</div></div></div>\');'
                 . '$("[name=\'Insumo[idprodutoInsumo][]\']").select2();i = i+1;'
                 . '})');

@@ -15,9 +15,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Alterar', ['update', 'id' => $modelMesa->idMesa], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Alterar', ['update', 'id' => $modelMesa->idMesa], ['class' => 'btn btn-primary',
+            'title'=>'Clique para ir para a tela de alteração dos dados da Mesa']) ?>
         <?= Html::a('Excluir', ['delete', 'id' => $modelMesa->idMesa], [
             'class' => 'btn btn-danger',
+            'title' => 'Clique para apagar essa Mesa',
             'data' => [
                 'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                 'method' => 'post',

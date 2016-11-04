@@ -5,11 +5,15 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $modelContasareceber app\models\Contasareceber */
 
+$descricao = isset($modelContasareceber->conta->descricao)?
+	$modelContasareceber->conta->descricao:
+	"Conta sem descrição";
+
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
 	'modelClass' => 'Conta a receber ',
-	]) . $modelContasareceber->conta->descricao;
+	]) . $descricao;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Conta a receber'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $modelContasareceber->conta->descricao, 'url' => ['view', 'id' => $modelContasareceber->idconta]];
+$this->params['breadcrumbs'][] = ['label' => $descricao, 'url' => ['view', 'id' => $modelContasareceber->idconta]];
 $this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 ?>
 <div class="contasareceber-update">

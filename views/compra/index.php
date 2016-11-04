@@ -17,8 +17,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create {model}', ['model' => 'Compra']), ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a(Yii::t('app', 'Orçamento de Compra de Insumos', ['model' => 'OrcamentoCompra']), ['/orcamentocompra/orcamentocomprainsumos'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create {model}', ['model' => 'Compra']), ['create'], ['class' => 'btn btn-success',
+            'title'=>'Clique aqui para cadastrar uma nova Compra']) ?>
+
+        <?= Html::a(Yii::t('app', 'Orçamento de Compra de Insumos', ['model' => 'OrcamentoCompra']),
+            ['/orcamentocompra/orcamentocomprainsumos'], ['class' => 'btn btn-success',
+                'title'=>'Clique aqui para gerar um orçamento de uma Compra']) ?>
     </p>
 
     <div class="table-responsive">

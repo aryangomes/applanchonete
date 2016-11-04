@@ -37,13 +37,16 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
     <p>
-        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $modelCaixa->idcaixa], ['class' => 'btn btn-primary btn-block']) ?>
+        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $modelCaixa->idcaixa],
+            ['class' => 'btn btn-primary btn-block',
+            'title'=>'Clique para alterar os valores do Caixa']) ?>
         <?= Html::a(Yii::t('yii', 'Fechar Caixar'), ['fechar', 'id' => $modelCaixa->idcaixa], [
             'class' => 'btn btn-danger btn-block',
             'data' => [
                 'confirm' => Yii::t('yii', 'Tem certeza que quer fechar o caixa?'),
                 'method' => 'post',
             ],
+            'title'=>'Clique aqui fechar o Caixa'
         ]) ?>
     </p>
 </div>

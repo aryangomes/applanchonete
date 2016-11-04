@@ -195,7 +195,8 @@ if (isset($mensagem) && !empty($mensagem)) {
             if ($modelPedido->situacaopedido->titulo != 'Concluído') {
                 echo Html::submitButton($modelPedido->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'),
                     ['class' => $modelPedido->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
-                        'title' => 'Clique para cadastrar o pedido']);
+                        'title'=>$modelPedido->isNewRecord ? 'Clique para cadastrar um novo Pedido':
+                            'Clique para salvar os dados do Pedido']);
             }
         } else {
             echo Html::submitButton($modelPedido->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $modelPedido->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
@@ -206,12 +207,12 @@ if (isset($mensagem) && !empty($mensagem)) {
             if ($modelPedido->situacaopedido->titulo != 'Concluído') {
                 ?>
                 <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar Item do Pedido"
-                       title="Adicionar mais um item ao pedido">
+                       title="Adicionar mais um item ao Pedido">
             <?php }
         } else {
             ?>
             <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar Item do Pedido"
-                   title="Adicionar mais um item ao pedido">
+                   title="Adicionar mais um item ao Pedido">
 
             <?php
         }

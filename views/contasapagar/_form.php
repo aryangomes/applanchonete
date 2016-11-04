@@ -33,7 +33,10 @@ use kartik\datecontrol\DateControl;
 		]);?>
 
 		<div class="form-group">
-			<?= Html::submitButton($modelContasapagar->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $modelContasapagar->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+			<?= Html::submitButton($modelContasapagar->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'),
+				['class' => $modelContasapagar->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+					'title'=>$modelContasapagar->isNewRecord ? 'Clique para cadastrar uma nova Conta a Pagar':
+						'Clique para salvar os dados da Conta A Pagar']) ?>
 		</div>
 
 		<?php ActiveForm::end(); ?>

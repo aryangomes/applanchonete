@@ -17,7 +17,10 @@ use yii\widgets\ActiveForm;
 
 
     <div class="form-group">
-        <?= Html::submitButton($modelMesa->isNewRecord ? 'Cadastrar' : 'Alterar', ['class' => $modelMesa->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($modelMesa->isNewRecord ? 'Cadastrar' : 'Alterar',
+            ['class' => $modelMesa->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+                'title'=>$modelMesa->isNewRecord ? 'Clique para cadastrar uma nova Mesa':
+                    'Clique para salvar os dados da Mesa']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -6,7 +6,9 @@ use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PedidoSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $dataProvider yii\data\ActiveDataProvider
+ * @var $situacaoDoPedido int
+ * @var $situacaopedido array*/
 
 $this->title = Yii::t('app', 'Pedidos');
 $this->params['breadcrumbs'][] = $this->title;
@@ -18,7 +20,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create {model}', ['model' => 'Pedido']), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create {model}', ['model' => 'Pedido']), ['create'], ['class' => 'btn btn-success',
+            'title'=>'Clique aqui para cadastrar um novo Pedido']) ?>
     </p>
     <div class="form-group">
         <?= Html::label('Situação do Pedido') ?>

@@ -67,10 +67,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $form->field($modelRelatorio, 'usuario_id')->hiddenInput(['value' => Yii::$app->user->getId()])->label(false); ?>
 
         <div class="form-group">
-            <?= Html::submitButton($modelRelatorio->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $modelRelatorio->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?= Html::submitButton($modelRelatorio->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'),
+                ['class' => $modelRelatorio->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+                    'title'=>'Clique para ir para a tela de alteração dos dados de Relatório']) ?>
             <?=
             Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $modelRelatorio->idrelatorio], [
                 'class' => 'btn btn-danger',
+                'title' => 'Clique para apagar esse relatório',
                 'data' => [
                     'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                     'method' => 'post',

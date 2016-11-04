@@ -17,7 +17,8 @@ $this->params['breadcrumbs'][] = 'Insumos';
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create {model}', ['model' => 'Insumo']), ['produto/create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create {model}', ['model' => 'Insumo']), ['produto/create'], ['class' => 'btn btn-success',
+            'title'=>'Clique aqui para cadastrar um novo Insumo']) ?>
     </p>
     <div class="table-responsive">
         <?= GridView::widget([

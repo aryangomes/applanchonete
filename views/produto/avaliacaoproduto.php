@@ -63,7 +63,8 @@ $this->params['breadcrumbs'][] = $this->title;
           </div>
       <?= $form->field($modelProduto, 'groupbyavaliacao')->dropDownList(['DAY'=>'Dia','MONTH'=>'Mês','YEAR'=>'Ano']); ?>
       <div class="form-group">
-        <?= Html::submitButton('Gerar gráfico <i class="fa fa-line-chart"></i>', ['class' =>  'btn btn-primary btn-block']) ?>
+        <?= Html::submitButton('Gerar gráfico <i class="fa fa-line-chart"></i>', ['class' =>  'btn btn-primary btn-block',
+            'title' => 'Clique para gerar gráfico da avaliação do Prouto Venda']) ?>
       </div>
       <?php ActiveForm::end(); ?>
 

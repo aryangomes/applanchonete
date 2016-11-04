@@ -50,7 +50,10 @@ use kartik\datecontrol\DateControl;
     <?= $form->field($modelRelatorio, 'usuario_id' )->hiddenInput(['value'=>Yii::$app->user->getId()])->label(false); ?>
 
     <div class="form-group">
-        <?= Html::submitButton($modelRelatorio->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $modelRelatorio->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($modelRelatorio->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'),
+            ['class' => $modelRelatorio->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+                'title'=>$modelRelatorio->isNewRecord ? 'Clique para cadastrar um novo Relatório':
+                    'Clique para salvar os dados do Relatório']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

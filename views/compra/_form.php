@@ -205,7 +205,8 @@ use kartik\money\MaskMoney;
         <?= Html::submitButton($modelCompra->isNewRecord ? Yii::t('yii', 'Cadastrar a Compra')
             : Yii::t('yii', 'Atualizar a Compra'),
             ['class' => $modelCompra->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
-                'title' => 'Clique aqui para cadastrar a compra']) ?>
+                'title'=>$modelCompra->isNewRecord ? 'Clique para cadastrar uma nova Compra':
+                    'Clique para salvar os dados da Compra']) ?>
 
         <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar mais um Produto"
                title="Clique aqui para adicionar mais de um produto nesta compra"/>

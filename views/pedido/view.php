@@ -20,17 +20,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
             echo ($modelPedido->situacaopedido->idSituacaoPedido == 1) ? Html::a(Yii::t('yii', 'Update'),
                 ['update',  'id' => $modelPedido->idPedido,
-                  ], ['class' => 'btn btn-primary']) : '' ?>
+                  ], ['class' => 'btn btn-primary',
+                    'title'=>'Clique para ir para a tela de alteração dos dados do Pedido']) : '' ?>
             <?php
 
-          /*  echo ($modelPedido->situacaopedido->idSituacaoPedido == 1) ? Html::a(Yii::t('app', 'Delete'),
-                ['delete', 'id' => $modelPedido->idPedido], [
-                    'class' => 'btn btn-danger',
-                    'data' => [
-                        'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                        'method' => 'post',
-                    ],
-                ]) : ''*/ ?>
+         ?>
 
             <!--   ---------------------------   BEGIN Finalizar Pedido  ---------------------------  -->
             <?php
@@ -41,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'toggleButton' => ($modelPedido->situacaopedido->idSituacaoPedido == 1) ?
                     ['label' => 'Finalizar Pedido',
                         'class' => 'btn btn-warning',
+                        'title'=>'Clique para finalizar o Pedido',
                         'disabled' => isset($modelPedido->datadevolucao) ? true : false] : false,
             ]);
             ?>

@@ -27,7 +27,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
 //            'idtipocustofixo',
-            'tipocustofixo',
+
+
+            [
+                'attribute' => 'tipocustofixo',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return Html::a($model->tipocustofixo,['view','id' => $model->idtipocustofixo]);
+                },
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

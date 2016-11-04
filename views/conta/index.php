@@ -18,7 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create {model}', ['model' => 'Conta']), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create {model}', ['model' => 'Conta']), ['create'], ['class' => 'btn btn-success',
+            'title'=>'Clique aqui para cadastrar uma nova Conta']) ?>
     </p>
     <?php Pjax::begin(); ?>
     <div class="table-responsive">

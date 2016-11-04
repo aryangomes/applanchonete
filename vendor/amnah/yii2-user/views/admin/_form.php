@@ -61,7 +61,10 @@ $role = $module->model("Role");
         ?>
 
         <div class="form-group">
-            <?= Html::submitButton($user->isNewRecord ? Yii::t('user', 'Create') : Yii::t('user', 'Update'), ['class' => $user->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?= Html::submitButton($user->isNewRecord ? Yii::t('user', 'Create') : Yii::t('user', 'Update'),
+                ['class' => $user->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+                    'title'=>$user->isNewRecord ? 'Clique para cadastrar um novo Usuário':
+                        'Clique para salvar os dados do Usuário']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

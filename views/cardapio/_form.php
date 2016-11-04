@@ -145,8 +145,12 @@ use yii\bootstrap\Modal;
         $this->registerJsFile(\Yii::getAlias('@web') . "/js/cardapio_form.js", ['depends' => [\yii\web\JqueryAsset::className()]]);
         ?>
         <div class="form-group">
-            <?= Html::submitButton($modelCardapio->isNewRecord ? 'Criar' : 'Alterar', ['class' => $modelCardapio->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?= Html::submitButton($modelCardapio->isNewRecord ? 'Criar' : 'Alterar',
+                ['class' => $modelCardapio->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+                    'title'=>$modelCardapio->isNewRecord ? 'Clique para cadastrar um novo Cardápio':
+                        'Clique para salvar os dados do Cardápio']) ?>
             <?= Html::Button('Adicionar mais um Item Cardápio', ['class' => 'btn btn-primary',
+                'title'=>'Clique para adicionar mais um Item Cardápio a esse Cardápio',
                     'id' => 'btAddItem']
             ) ?>
 

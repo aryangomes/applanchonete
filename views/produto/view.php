@@ -18,9 +18,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $modelProduto->idProduto], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $modelProduto->idProduto], ['class' => 'btn btn-primary',
+            'title'=>'Clique para ir para a tela de alteração dos dados do Produto']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $modelProduto->idProduto], [
             'class' => 'btn btn-danger',
+            'title' => 'Clique para apagar esse Produto',
             'data' => [
                 'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
@@ -30,7 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php
         echo (!$modelProduto->isInsumo) ?
             Html::a(Yii::t('app', 'Alterar valor de venda'), ['definirvalorprodutovenda', 'idProduto' => $modelProduto->idProduto],
-                ['class' => 'btn btn-success']) : '' ?>
+                ['class' => 'btn btn-success',
+                    'title' => 'Clique para alterar o valor do Prouto Venda',]) : '' ?>
     </p>
 
     <?= DetailView::widget([
@@ -110,7 +113,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr>
                     <td><?= Html::a($insumo['produtoInsumo']->nome, Url::toRoute(['view',
                             'idprodutoVenda' => $produtoVenda->idProduto,
-                            'id' => $insumo->idprodutoInsumo]))
+                            'id' => $insumo->idprodutoInsumo,
+                        ]))
                         ?></td>
                     <td><?php
                         echo
@@ -136,7 +140,8 @@ $this->params['breadcrumbs'][] = $this->title;
     if (!$modelProduto->isInsumo) {
         echo Html::a('Avaliar produto <i class="fa fa-line-chart"></i>',
             Url::toRoute(['produto/avaliacaoproduto', 'idproduto' => $modelProduto->idProduto]),
-            ['class' => 'btn btn-primary btn-block']);
+            ['class' => 'btn btn-primary btn-block',
+                'title' => 'Clique para avaliar o Prouto Venda']);
     }
     ?>
 </div>

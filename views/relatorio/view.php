@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $modelRelatorio app\models\Relatorio */
 
-$this->title = 'Relatório '.$modelRelatorio->idrelatorio;
+$this->title = 'Relatório ' . $modelRelatorio->idrelatorio;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Relatorios'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -15,19 +15,21 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $modelRelatorio->idrelatorio], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $modelRelatorio->idrelatorio], ['class' => 'btn btn-primary',
+            'title' => 'Clique para ir para a tela de alteração dos dados de Relatório']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $modelRelatorio->idrelatorio], [
             'class' => 'btn btn-danger',
             'data' => [
-            'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-            'method' => 'post',
+                'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                'method' => 'post',
+                'title' => 'Clique para excluir o Relatório'
             ],
-            ]) ?>
-        </p>
+        ]) ?>
+    </p>
 
-        <?= DetailView::widget([
-            'model' => $modelRelatorio,
-            'attributes' => [
+    <?= DetailView::widget([
+        'model' => $modelRelatorio,
+        'attributes' => [
             'idrelatorio',
             'nome',
             'datageracao',
@@ -35,8 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'inicio_intervalo',
             'fim_intervalo',
             'usuario_id',
-            ],
-            ]) ?>
+        ],
+    ]) ?>
 
-        </div>
+</div>
 

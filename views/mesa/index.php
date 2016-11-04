@@ -10,51 +10,51 @@ use yii\grid\GridView;
 $this->title = 'Mesas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="mesa-index">
+    <div class="mesa-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+        <h1><?= Html::encode($this->title) ?></h1>
+        <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Cadastrar   Mesa', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-    <div class="table-responsive">
-        <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
-
-
-                [
-                    'attribute' => 'numeroDaMesa',
-                    'format' => 'raw',
-                    'label'=>'Situação do Pedido',
-                    'value' => function ($modelMesa) {
-
-                        return Html::a($modelMesa->numeroDaMesa , ['view',
-                            'id' => $modelMesa->idMesa]);
-                    }
-                ],
+        <p>
+            <?= Html::a('Cadastrar   Mesa', ['create'], ['class' => 'btn btn-success'
+                , 'title' => 'Clique aqui para cadastrar uma nova Mesa']) ?>
+        </p>
+        <div class="table-responsive">
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
 
 
-                [
-                    'attribute' => 'alerta',
-                    'value' => function ($modelMesa) {
-                        return $modelMesa->alerta ? 'Ligado' : 'Desligado';
-                    }
+                    [
+                        'attribute' => 'numeroDaMesa',
+                        'format' => 'raw',
+                        'value' => function ($modelMesa) {
 
-                ],
+                            return Html::a('Número da Mesa: '.$modelMesa->numeroDaMesa, ['view',
+                                'id' => $modelMesa->idMesa]);
+                        }
+                    ],
+
+
+                    [
+                        'attribute' => 'alerta',
+                        'value' => function ($modelMesa) {
+                            return $modelMesa->alerta ? 'Ligado' : 'Desligado';
+                        }
+
+                    ],
 
 //            'qrcode',
-                // 'chave',
-                // 'cont',
+                    // 'chave',
+                    // 'cont',
 
-                ['class' => 'yii\grid\ActionColumn'],
-            ],
-        ]); ?>
+                    ['class' => 'yii\grid\ActionColumn'],
+                ],
+            ]); ?>
+        </div>
     </div>
-</div>
 
 
 <?php

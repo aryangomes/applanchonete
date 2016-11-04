@@ -32,7 +32,8 @@ $this->title = 'Lista de produtos de venda por insumo';
     ]); ?>
     </br>
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary btn-block']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary btn-block',
+            'title' => 'Clique para listar os produtos do Insumo selecionado',]) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

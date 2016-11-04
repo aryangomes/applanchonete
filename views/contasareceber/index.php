@@ -33,7 +33,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'raw',
                     'value' => function ($modelContasareceber) {
 
-                        return Html::a($modelContasareceber->conta->descricao, ['view', 'id' => $modelContasareceber->idconta]);
+                        return Html::a(isset($modelContasareceber->conta->descricao)?
+                            $modelContasareceber->conta->descricao:
+                            "Conta sem descrição", ['view', 'id' => $modelContasareceber->idconta]);
                     }
                 ],
 

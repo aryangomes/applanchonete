@@ -82,7 +82,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="form-group">
             <?= Html::submitButton(Yii::t('app', 'Salvar valor'),
-                ['class' => $modelProduto->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                ['class' => $modelProduto->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+                    'title' => 'Clique para salvar o valor do Produto Venda']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

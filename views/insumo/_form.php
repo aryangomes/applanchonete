@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use kartik\widgets\Select2;
 use yii\helpers\Url;
 /* @var $this yii\web\View */
-/* @var $model app\models\Insumos */
+/* @var $model app\models\Insumo */
 /* @var $form yii\widgets\ActiveForm */
 $action = Yii::$app->controller->action->id;
 
@@ -77,7 +77,7 @@ switch ($action) {
 				['prompt'=>'Selecione a unidade']); 
 
 				?>	
-				<input class="btn btn-danger" onclick="removeins(0)" type='button' value="Remover Insumo">
+				<input class="btn btn-danger" onclick="removeins(0)" type='button' value="Remover Insumo" >
 				<hr>
 				<div class="table-responsive" id="input-dinamico">
 					<?php
@@ -105,7 +105,10 @@ switch ($action) {
 ?>			
 </div>
 <div class="form-group">
-	<?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+	<?= Html::submitButton($model->isNewRecord ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'),
+		['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+			'title'=>$model->isNewRecord ? 'Clique para cadastrar um novo Insumo':
+				'Clique para salvar os dados do Insumo']) ?>
 	<?php if (isset($action) && $action == 'cadastrarprodutovenda') {
 		?><input class="btn btn-primary" type='button' id='btnadd' value="Adicionar mais insumos">
 		<?php } ?>

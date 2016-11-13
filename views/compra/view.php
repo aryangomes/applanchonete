@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <td></td>
             <td></td>
             <td></td>
-            <td><?= 'R$ ' . $modelCompra->conta->valor ?></td>
+            <td><?= isset( $modelCompra->conta->valor) ? 'R$ ' . $modelCompra->conta->valor: null?></td>
         </tr>
         </tbody>
     </table>

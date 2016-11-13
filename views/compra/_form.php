@@ -41,7 +41,7 @@ use kartik\money\MaskMoney;
                 <div class="col-md-6">
 
                     <?=
-                    $form->field($compraProduto, 'idProduto[]')->widget(Select2::classname(), [
+                    $form->field($compraProduto, 'idProduto[]')->widget(Select2::className(), [
                         'data' => $produtos,
                         'options' => ['placeholder' => 'Selecione o produto',
                             'onChange' => 'mudarFoto(this)'],
@@ -74,14 +74,17 @@ use kartik\money\MaskMoney;
                 ]
             ]);
 
-
+            //Guarda as options do item de compra
             $options = array();
             $opt = "<option value=\"\">Selecione um produto</option>";
             array_push($options, $opt);
-            foreach ($produtos as $k => $v) {
+            foreach ($produtos as $k => $v){
+
                 $opt = "<option value=\"" . $k . "\">" . $v . "</option>";
                 array_push($options, $opt);
+
             }
+            //Recebe um string com os <options> do select criado
             $o = implode("", $options);
 
             $this->registerJs('var i = 1; $("#btnadprodutocompra").on("click",function(){'

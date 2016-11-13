@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
                [
                    'attribute'=> 'conta.valor',
                    'value'=>function($modelCompra){
-                        return 'R$ ' . $modelCompra->conta->valor;
+                        return isset( $modelCompra->conta->valor) ? 'R$ ' . $modelCompra->conta->valor: null;
                    }
                ],
                 ['class' => 'yii\grid\ActionColumn'],

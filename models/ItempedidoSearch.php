@@ -163,9 +163,8 @@ class ItempedidoSearch extends Itempedido
 
                 ['between', 'dataHora', $dataInicio, $dataFinal]
             )
-            ->where(['idSituacaoAtual' => 2])
+            ->andFilterWhere(['idSituacaoAtual' => 2])
             ->all();
-
 
         foreach ($pedidosConcluidos as $pedConc) {
             //Guarda a data do pedido

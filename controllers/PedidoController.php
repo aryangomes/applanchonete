@@ -136,13 +136,16 @@ class PedidoController extends Controller
         $mesa = ArrayHelper::map(Mesa::find()
             ->all(), 'idMesa', 'numeroDaMesa');
 
+        //Atribuindo valor padrão para o total pedido
+        $modelPedido->totalPedido = 0;
+
         if ($modelPedido->load(Yii::$app->request->post())) {
             //Carrega demais modelos
 
 
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
-            try {
+//            try {
                 //Tenta salvar um registro de Pedido:
                 if ($modelPedido->save() &&
                     ($modelPedido->cadastrarNovaHistoricoSituacaoPedido(intval($modelPedido->idPedido),
@@ -203,10 +206,10 @@ class PedidoController extends Controller
                 } else {
                     $mensagem = "Não foi possível salvar os dados do Pedido";
                 }
-            } catch (\Exception $exception) {
+          /*  } catch (\Exception $exception) {
                 $transaction->rollBack();
                 $mensagem = "Ocorreu uma falha inesperada ao tentar salvar o Pedido";
-            }
+            }*/
         }
 //        } else {
         $modelPedido->idSituacaoAtual = Pedido::EM_ANDAMENTO;

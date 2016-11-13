@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <? /*= $form->field($model, 'nome')->textInput(['maxlength' => true]) */ ?>
+
 
         <?= $form->field($modelRelatorio, 'datageracao')->hiddenInput(['value' => date('Y-m-d')])->label(false); ?>
 

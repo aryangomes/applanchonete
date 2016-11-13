@@ -37,7 +37,7 @@ use kartik\datecontrol\DateControl;
         'disabled'=>$modelConta->isNewRecord ? false: true]) ?>
 
 
-    <? echo $modelConta->isNewRecord ? '':  $form->field($modelConta, 'tipoConta')->hiddenInput(
+    <?= $modelConta->isNewRecord ? '':  $form->field($modelConta, 'tipoConta')->hiddenInput(
        )->label(false) ?>
 
     <?= $form->field($modelConta, 'situacaoPagamento')->dropDownList(
@@ -84,7 +84,7 @@ use kartik\datecontrol\DateControl;
     <?php
     $this->registerJsFile(\Yii::getAlias("@web") . '/js/conta_form.js',
     ['depends' => [\yii\web\JqueryAsset::className()]]);
-   
+
 
     ?>
 
@@ -105,6 +105,6 @@ if(isset($mensagem) && !empty($mensagem))
 {
     ?>
     <script type="text/javascript">alert('<?= $mensagem; ?>');</script>
-    <?
+    <?php
 }
 ?>

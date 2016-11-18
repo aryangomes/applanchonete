@@ -67,19 +67,6 @@ $('#btCadastrarNovoProduto').click(function () {
 
 });
 
-$('#btnadprodutocompra').click(function () {
-    $.get('../produto/get-produto', function (data) {
-        console.log(data);
-        var data = $.parseJSON(data);
-        var $el = $(".compra-form select");
-        $el.empty(); // remove old options
-        $.each(data, function (key, value) {
-            $el.append($("<option></option>")
-                .attr("value", value).text(key));
-        });
-
-    });
-});
 
 function mudarFoto(element) {
 
@@ -115,4 +102,7 @@ function mudarFoto(element) {
 
     });
 }
+
+
+
 

@@ -342,7 +342,7 @@ if ($action == 'create' || ($modelProduto->isInsumo && $action == 'update')) {
                 '<div class="form-group field-insumos-unidade required"><label class="control-label" for="insumos-unidade\'+i+\'">Unidade' .
                 '</label><select id="insumos-unidade\'+i+\'" class="form-control" name="Insumo[unidade][]"><option value="">Selecione a unidade' .
                 '</option><option value="kg">Kg</option><option value="l">Litros</option><option value="unidade">Unidade</option></select>' .
-                '<div class="help-block"></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Insumo"    title="Remover insumo desse Produto">>' .
+                '<div class="help-block"></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Insumo"    title="Remover insumo desse Produto">' .
                 '</div></div></div>\');'
                 . '$("[name=\'Insumo[idprodutoInsumo][]\']").select2();i = i+1;'
                 . '})');

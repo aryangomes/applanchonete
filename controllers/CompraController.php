@@ -117,12 +117,22 @@ class CompraController extends Controller
 
         $novoProduto = new Produto();
 
+        //Setando valor padrão para a compra
+        $modelCompra->valor = 0;
+
+        //Setando tipo de conta padrão para a compra
+        $modelCompra->tipoConta = 'contasapagar';
+
+        //Setando situação de pagamento padrão para a compra
+        $modelCompra->situacaoPagamento = 1;
+
         //Setando o fuso horário
         date_default_timezone_set('America/Sao_Paulo');
 
         if ((Yii::$app->request->post())) {
 
             $conta->tipoConta = 'contasapagar';
+
             $conta->descricao = 'Compra de ' . date('d/m/Y', strtotime(Yii::$app->request->post()['Compra']['dataCompra']));
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
@@ -134,16 +144,24 @@ class CompraController extends Controller
                     $itensInseridos = true;
 
                     $modelCompra->idconta = $conta->idconta;
+
                     $modelCompra->dataCompra = Yii::$app->request->post()['Compra']['dataCompra'];
+
                     if ($modelCompra->save(false)) {
                         $compraprodutos = Yii::$app->request->post()['Compraproduto'];
+
                         $valorescompraprodutos = Yii::$app->request->post()['compraproduto-valorcompra-disp'];
+
 
                         for ($i = 0; $i < count($compraprodutos['idProduto']); $i++) {
                             $cp = new Compraproduto();
+
                             $cp->idCompra = $modelCompra->idconta;
+
                             $cp->idProduto = $compraprodutos['idProduto'][$i];
+
                             $cp->quantidade = $compraprodutos['quantidade'][$i];
+
 
                             if ($i <= 0) {
                                 $cp->valorCompra = $compraprodutos['valorCompra'][0];

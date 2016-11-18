@@ -196,7 +196,7 @@ if (count($loja) > 0) {
                             ?>
                             <li>
                                 <a href="<?= Url::toRoute(['/produto/view', 'id' => $p->idProduto]) ?>"> <?= $p->nome ?> </a>
-                            </li>\
+                            </li>
                             <li class="divider"></li>
                             <?php
                         }

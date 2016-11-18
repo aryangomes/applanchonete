@@ -44,7 +44,9 @@ use kartik\money\MaskMoney;
                     $form->field($compraProduto, 'idProduto[]')->widget(Select2::className(), [
                         'data' => $produtos,
                         'options' => ['placeholder' => 'Selecione o produto',
-                            'onChange' => 'mudarFoto(this)'],
+                            'onChange' => 'mudarFoto(this)',
+
+                        ],
                         'pluginOptions' => [
                             'allowClear' => true,
                         ],
@@ -76,20 +78,26 @@ use kartik\money\MaskMoney;
 
             //Guarda as options do item de compra
             $options = array();
-            $opt = "<option value=\"\">Selecione um produto</option>";
-            array_push($options, $opt);
+
+            $optHtml = "<option value=\"\">Selecione um produto</option>";
+
+            array_push($options, $optHtml);
+
             foreach ($produtos as $k => $v){
 
-                $opt = "<option value=\"" . $k . "\">" . $v . "</option>";
-                array_push($options, $opt);
+                $optHtml = "<option value=\"" . $k . "\">" . $v . "</option>";
+                array_push($options, $optHtml);
 
             }
             //Recebe um string com os <options> do select criado
-            $o = implode("", $options);
+            $optionsDinamico = implode("", $options);
 
             $this->registerJs('var i = 1; $("#btnadprodutocompra").on("click",function(){'
-                . '$("#input-dinamico").append(\'<div class="divborda" id="inputinsumo\'+i+\'" ><div class="form-group field-insumos-idprodutoinsumo required"><div class="row"><div class="col-md-6"><label class="control-label" for="insumos-idprodutoinsumo">Produto</label><select onChange="mudarFoto(this)" id="compraproduto-idproduto" class="form-control" name="Compraproduto[idProduto][]" >' . $o . '</select><div class="help-block"></div></div><div class="col-md-6">Imagem<img width="200" src="" class="img-responsive"></div></div></div><div class="form-group field-insumos-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Compraproduto[quantidade][]" value="1" min="0" step="1"><div class="help-block"></div></div><div class="form-group field-compraproduto-valorcompra required has-success"><label class="control-label" for="compraproduto-valorcompra\'+i+\'">Valor da Compra(R$)</label><input type="number" min="0" step="0.01" value="0" id="compraproduto-valorcompra-disp" class="form-control" name="compraproduto-valorcompra-disp[]"><input type="hidden" id="compraproduto-valorcompra\'+i+\'" name="Compraproduto[valorCompra][]" data-krajee-maskmoney="maskMoney_17eeef61" value="0"><div class="help-block"></div></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Produto"></div><hr></div>\');'
-                . '$("[name=\'Compraproduto[idProduto][]\']").select2();/*$("[name=\'compraproduto-valorcompra-disp[]\']").maskMoney({prefix:\'R$: \'})*/;i = i+1;'
+                . '$("#input-dinamico").append(\'<div class="divborda" id="inputinsumo\'+i+\'" ><div class="form-group field-insumos-idprodutoinsumo required"><div class="row"><div class="col-md-6"><label class="control-label" for="insumos-idprodutoinsumo">Produto</label><select onChange="mudarFoto(this)" id="compraproduto-idproduto" class="form-control" name="Compraproduto[idProduto][]" >' . $optionsDinamico . '</select><div class="help-block"></div></div><div class="col-md-6">Imagem<img width="200" src="" class="img-responsive"></div></div></div><div class="form-group field-insumos-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Compraproduto[quantidade][]" value="1" min="0" step="1"><div class="help-block"></div></div><div class="form-group field-compraproduto-valorcompra required has-success"><label class="control-label" for="compraproduto-valorcompra\'+i+\'">Valor da Compra(R$)</label><input type="number" min="0" step="0.01" title="Digite o valor ou aperte as teclas para cima ou para abaixo para ajustar o valor" value="0" id="compraproduto-valorcompra-disp" class="form-control" name="compraproduto-valorcompra-disp[]"><input type="hidden" id="compraproduto-valorcompra\'+i+\'" name="Compraproduto[valorCompra][]" data-krajee-maskmoney="maskMoney_17eeef61" value="0"><div class="help-block"></div></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Produto"></div><hr></div>\');'
+                . '$("[name=\'Compraproduto[idProduto][]\']").select2();i = i+1;'
+                . '$("span[class=\'select2 select2-container select2-container--default select2-container--focus\']")'
+                . '.addClass("select2 select2-container select2-container--krajee select2-container--focus")'
+                . '.removeClass("select2 select2-container select2-container--default select2-container--focus");'
                 . '})');
 
             ?>
@@ -109,18 +117,28 @@ use kartik\money\MaskMoney;
             'language' => 'pt',
         ]);
 
+        //Guarda as options do item de compra
         $options = array();
-        $opt = "<option value=\"\">Selecione um produto</option>";
-        array_push($options, $opt);
-        foreach ($produtos as $k => $v) {
-            $opt = "<option value=\"" . $k . "\">" . $v . "</option>";
-            array_push($options, $opt);
+
+        $optHtml = "<option value=\"\">Selecione um produto</option>";
+
+        array_push($options, $optHtml);
+
+        foreach ($produtos as $k => $v){
+
+            $optHtml = "<option value=\"" . $k . "\">" . $v . "</option>";
+            array_push($options, $optHtml);
+
         }
-        $o = implode("", $options);
+        //Recebe um string com os <options> do select criado
+        $optionsDinamico = implode("", $options);
 
         $this->registerJs('var i = ' . count($produtosDaCompras) . '; $("#btnadprodutocompra").on("click",function(){'
-            . '$("#input-dinamico").append(\'<div class="divborda" id="inputinsumo\'+i+\'" ><div class="form-group field-insumos-idprodutoinsumo required"><div class="row"><div class="col-md-6"><label class="control-label" for="insumos-idprodutoinsumo">Produto</label><select onChange="mudarFoto(this)" id="compraproduto-idproduto" class="form-control" name="Compraproduto[idProduto][]" >' . $o . '</select><div class="help-block"></div></div><div class="col-md-6">Imagem<img width="200" src="" class="img-responsive"></div></div></div><div class="form-group field-insumos-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Compraproduto[quantidade][]" value="1" min="0" step="1"><div class="help-block"></div></div><div class="form-group field-compraproduto-valorcompra required has-success"><label class="control-label" for="compraproduto-valorcompra\'+i+\'">Valor da Compra(R$)</label><input type="number" min="0" step="0.01" value="0" id="compraproduto-valorcompra-disp" class="form-control" name="compraproduto-valorcompra-disp[]"><input type="hidden" id="compraproduto-valorcompra\'+i+\'" name="Compraproduto[valorCompra][]" data-krajee-maskmoney="maskMoney_17eeef61" value="0"><div class="help-block"></div></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Produto"></div><hr></div>\');'
-            . '$("[name=\'Compraproduto[idProduto][]\']").select2();/*$("[name=\'compraproduto-valorcompra-disp[]\']").maskMoney({prefix:\'R$: \'})*/;i = i+1;'
+            . '$("#input-dinamico").append(\'<div class="divborda" id="inputinsumo\'+i+\'" ><div class="form-group field-insumos-idprodutoinsumo required"><div class="row"><div class="col-md-6"><label class="control-label" for="insumos-idprodutoinsumo">Produto</label><select onChange="mudarFoto(this)" id="compraproduto-idproduto" class="form-control" name="Compraproduto[idProduto][]" >' . $optionsDinamico . '</select><div class="help-block"></div></div><div class="col-md-6">Imagem<img width="200" src="" class="img-responsive"></div></div></div><div class="form-group field-insumos-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Compraproduto[quantidade][]" value="1" min="0" step="1"><div class="help-block"></div></div><div class="form-group field-compraproduto-valorcompra required has-success"><label class="control-label" for="compraproduto-valorcompra\'+i+\'">Valor da Compra(R$)</label><input type="number" min="0" step="0.01" value="0" id="compraproduto-valorcompra-disp" class="form-control" name="compraproduto-valorcompra-disp[]"><input type="hidden" id="compraproduto-valorcompra\'+i+\'" name="Compraproduto[valorCompra][]" data-krajee-maskmoney="maskMoney_17eeef61" value="0"><div class="help-block"></div></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Produto"></div><hr></div>\');'
+            . '$("[name=\'Compraproduto[idProduto][]\']").select2();i = i+1;'
+            . '$("span[class=\'select2 select2-container select2-container--default select2-container--focus\']")'
+            . '.addClass("select2 select2-container select2-container--krajee select2-container--focus")'
+            . '.removeClass("select2 select2-container select2-container--default select2-container--focus");'
             . '})');
 
         for ($i = 0; $i < count($produtosDaCompras); $i++) {

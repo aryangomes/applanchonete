@@ -89,20 +89,25 @@ class Itempedido extends \yii\db\ActiveRecord
     {
 
 
-        Insumo::atualizaQtdNoEstoqueDelete($this->idProduto, $this->quantidade);
+        if (Insumo::atualizaQtdNoEstoqueDelete($this->idProduto, $this->quantidade)) {
+            $this->delete();
+        }
 
-        $this->delete();
     }
 
     /**
      * Verifica a quantidade no estoque antes de efetuar um
      * pedido
      * @params $idProduto int, $qtdProdutoPedido int
-     * @return bool
+     * @return array
      */
     public function verificaQtdEstProdutoPedido($idProduto, $qtdProdutoPedido)
     {
+        //Receba o produto
         $produto = Produto::findOne($idProduto);
+
+        //Recebe o insumo que está com o estoque com quantidade mínima
+        $insumoFaltando = [];
 
         if ($produto != null & $qtdProdutoPedido > 0) {
 
@@ -110,7 +115,6 @@ class Itempedido extends \yii\db\ActiveRecord
 
             if (count($insumosProduto) > 0) {
 
-                $verificaQuantidade = true;
 
                 foreach ($insumosProduto as $inspro) {
 
@@ -119,26 +123,19 @@ class Itempedido extends \yii\db\ActiveRecord
                     if ($insumo != null) {
 
                         if (($insumo->quantidadeEstoque - ($inspro->quantidade * $qtdProdutoPedido)) <
-                            $insumo->quantidadeMinima
-                        ) {
-                            $verificaQuantidade = false;
+                            $insumo->quantidadeMinima) {
+
+                            array_push($insumoFaltando,$insumo);
                         }
                     }
 
                 }
 
-                if ($verificaQuantidade) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
+
             }
 
-        } else {
-            return false;
         }
+        return $insumoFaltando;
     }
 
 }

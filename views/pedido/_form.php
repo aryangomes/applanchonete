@@ -12,6 +12,7 @@ use yii\bootstrap\Modal;
 /* @var $itemPedido \app\models\Itempedido */
 /* @var $produtosVenda array */
 /* @var $situacaopedido array */
+/* @var $mesa array */
 ?>
 
 <?php
@@ -20,16 +21,11 @@ if (isset($mensagem) && !empty($mensagem)) {
 
     ?>
 
-    <?= \kartik\alert\Alert::widget([
-        'options' => [
-            'class' => 'alert-danger',
-        ],
-        'body' => $mensagem,
-    ]);
-
-    ?>
+    <div class="alert alert-danger">
+        <?= $mensagem ?>
+    </div>
     <?php
-//    header('refresh:0');
+
 }
 ?>
 

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Compraproduto;
 use Yii;
 use app\models\Produto;
 use app\models\ProdutoSearch;
@@ -68,11 +69,14 @@ class ProdutoController extends Controller
                     'cadastrar-novo-produto' => 'produto',
                     'get-produto' => 'produto',
                     'get-produtos' => 'produto',
+                    'get-compra-produto' => 'produto',
 
                 ],
             ],
         ];
     }
+
+    public $mensagem;
 
     /**
      * Lists all Produto models.
@@ -86,6 +90,7 @@ class ProdutoController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'mensagem' => $this->mensagem,
         ]);
     }
 
@@ -313,6 +318,10 @@ class ProdutoController extends Controller
             }
         }
 
+        $modelProduto->quantidadeEstoque = 0;
+
+        $modelProduto->quantidadeMinima = 0;
+
         return $this->render('create', [
             'modelProduto' => $modelProduto,
             'categorias' => $categorias,
@@ -427,9 +436,7 @@ class ProdutoController extends Controller
 
         }
 
-        $modelProduto->quantidadeEstoque = 0;
 
-        $modelProduto->quantidadeMinima = 0;
 
         if (!$modelProduto->isInsumo) {
             return $this->render('update', [
@@ -461,7 +468,7 @@ class ProdutoController extends Controller
     public function actionDelete($id)
     {
         //Guarda a mensagem
-        $mensagem = "";
+        $this->mensagem = "";
 
         $transaction = \Yii::$app->db->beginTransaction();
         try {
@@ -471,19 +478,11 @@ class ProdutoController extends Controller
 
         } catch (\Exception $exception) {
             $transaction->rollBack();
-            $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
+            $this->mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
         }
 
-        $searchModel = new ProdutoSearch();
 
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'mensagem' => $mensagem
-
-        ]);
+        return $this->redirect('index');
     }
 
 
@@ -670,13 +669,32 @@ class ProdutoController extends Controller
             $novoProduto->isInsumo = 1;
 
             if ($novoProduto->save()) {
-                echo Json::encode(true);
+                echo Json::encode($novoProduto);
             } else {
                 echo Json::encode(false);
             }
         } else {
             echo Json::encode(false);
         }
+
+
+    }
+
+
+    /**
+     * Busca e verifica se um produto está em alguma compra registrada
+     * @param $idProduto
+     */
+    public function actionGetCompraProduto($idProduto)
+    {
+        $compraProduto = Compraproduto::find()->where(['idProduto'=>$idProduto])->one();
+
+        if($compraProduto != null){
+            echo Json::encode(true);
+        }else{
+            echo Json::encode(false);
+        }
+
 
 
     }

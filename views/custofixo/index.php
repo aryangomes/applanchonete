@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'raw',
                     'value' => function ($modelCustofixo) {
 
-                        return Html::a('Consumo: '.$modelCustofixo->consumo, ['view', 'id' => $modelCustofixo->idconta]);
+                        return Html::a('Consumo: '.$modelCustofixo->consumo, ['conta/view', 'id' => $modelCustofixo->idconta]);
                     }
                 ],
                 [
@@ -47,7 +47,22 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 ],
 
-                ['class' => 'yii\grid\ActionColumn'],
+                ['class' => 'yii\grid\ActionColumn',
+
+                    'template' => '{view} {update} {delete}',
+                    'buttons' => [
+                        'view' => function ($url, $model) {
+                            return Html::a('<span class="glyphicon glyphicon-glyphicon glyphicon-eye-open"></span>',
+                                \yii\helpers\Url::to(['conta/view', 'id' => $model->idconta])
+                            );
+                        },
+                        'update' => function ($url, $model) {
+                            return Html::a('<span class="glyphicon glyphicon-glyphicon glyphicon-pencil"></span>',
+                                \yii\helpers\Url::to(['conta/update', 'id' => $model->idconta])
+                            );
+                        },
+                    ],
+                ],
             ],
         ]); ?>
         <?php Pjax::end(); ?>

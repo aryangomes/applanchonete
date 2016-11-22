@@ -11,49 +11,64 @@ use yii\widgets\Pjax;
 $this->title = Yii::t('app', 'Contas a pagar');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="contasapagar-index">
+    <div class="contasapagar-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+        <h1><?= Html::encode($this->title) ?></h1>
+        <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?php // Html::a(Yii::t('app', 'Create {model}',['model'=>'Contas a pagar']), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-    <?php Pjax::begin(); ?>
-    <div class="table-responsive">
-        <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
+        <p>
+            <?php // Html::a(Yii::t('app', 'Create {model}',['model'=>'Contas a pagar']), ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+        <?php Pjax::begin(); ?>
+        <div class="table-responsive">
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
 
-                // 'idconta',
+                    // 'idconta',
 
 
-                [
-                    'attribute' => 'conta',
-                    'format' => 'raw',
-                    'value' => function ($modelContasapagar) {
+                    [
+                        'attribute' => 'conta',
+                        'format' => 'raw',
+                        'value' => function ($modelContasapagar) {
 
-                        return Html::a($modelContasapagar->conta->descricao, ['view', 'id' => $modelContasapagar->idconta]);
-                    }
+                            return Html::a($modelContasapagar->conta->descricao, ['conta/view', 'id' => $modelContasapagar->idconta]);
+                        }
+                    ],
+
+                    ['attribute' => 'dataVencimento',
+                        'format' => 'text',
+                        'value' => function ($modelContasapagar) {
+                            return isset($modelContasapagar->dataVencimento) ?
+                                date('d/m/Y', strtotime($modelContasapagar->dataVencimento)) : null;
+                        }
+                    ],
+
+
+                    ['class' => 'yii\grid\ActionColumn',
+
+                        'template' => '{view} {update} {delete}',
+                        'buttons' => [
+                            'view' => function ($url, $model) {
+                                return Html::a('<span class="glyphicon glyphicon-glyphicon glyphicon-eye-open"></span>',
+                                    \yii\helpers\Url::to(['conta/view', 'id' => $model->idconta])
+                                );
+                            },
+                            'update' => function ($url, $model) {
+                                return Html::a('<span class="glyphicon glyphicon-glyphicon glyphicon-pencil"></span>',
+                                    \yii\helpers\Url::to(['conta/update', 'id' => $model->idconta])
+                                );
+                            },
+                        ],
+                    ],
                 ],
-
-                ['attribute' => 'dataVencimento',
-                    'format' => 'text',
-                    'value' => function ($modelContasapagar) {
-                        return isset($modelContasapagar->dataVencimento) ?
-                        date('d/m/Y',strtotime($modelContasapagar->dataVencimento)) : null;
-                    }
-                ],
-
-
-                ['class' => 'yii\grid\ActionColumn' ],
-            ],
-        ]); ?>
-        <?php Pjax::end(); ?>
+            ]); ?>
+            <?php Pjax::end(); ?>
+        </div>
     </div>
-</div>
 
 
 <?php

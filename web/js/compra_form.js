@@ -36,17 +36,21 @@ $('#btCadastrarNovoProduto').click(function () {
             // var data = $.parseJSON(data);
             console.log(data);
             if (data != 'false') {
-                $.get('../produto/get-produto', function (data) {
+                var data = $.parseJSON(data);
+                var $el = $(".compra-form select");
+                $el.append($("<option></option>")
+                    .attr("value", data.idProduto).text(data.nome));
+
+               /* $.get('../produto/get-produto', function (data) {
                     console.log(data);
-                    var data = $.parseJSON(data);
-                    var $el = $(".compra-form select");
-                    $el.empty(); // remove old options
+
+                  /*  $el.empty(); // remove old options
                     $.each(data, function (key, value) {
                         $el.append($("<option></option>")
                             .attr("value", value).text(key));
                     });
 
-                });
+                });*/
                 alert('Novo produto cadastrado com sucesso. Agora você pode fechar essa janela.');
                 $('#produto-nome').val('');
 

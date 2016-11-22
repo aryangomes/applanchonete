@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         return Html::a(isset($modelContasareceber->conta->descricao)?
                             $modelContasareceber->conta->descricao:
-                            "Conta sem descrição", ['view', 'id' => $modelContasareceber->idconta]);
+                            "Conta sem descrição", ['conta/view', 'id' => $modelContasareceber->idconta]);
                     }
                 ],
 
@@ -48,7 +48,22 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 ],
 
-                ['class' => 'yii\grid\ActionColumn'],
+                ['class' => 'yii\grid\ActionColumn',
+
+                    'template' => '{view} {update} {delete}',
+                    'buttons' => [
+                        'view' => function ($url, $model) {
+                            return Html::a('<span class="glyphicon glyphicon-glyphicon glyphicon-eye-open"></span>',
+                                \yii\helpers\Url::to(['conta/view', 'id' => $model->idconta])
+                            );
+                        },
+                        'update' => function ($url, $model) {
+                            return Html::a('<span class="glyphicon glyphicon-glyphicon glyphicon-pencil"></span>',
+                                \yii\helpers\Url::to(['conta/update', 'id' => $model->idconta])
+                            );
+                        },
+                    ],
+                ],
             ],
         ]); ?>
         <?php Pjax::end(); ?>

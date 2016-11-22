@@ -216,8 +216,12 @@ class Produto extends \yii\db\ActiveRecord
 
             $produtoCompra = ($searchModel->searchProdutosCompra($insumo->idprodutoInsumo));
 
-            $precosugerido +=
-                (($produtoCompra->valorCompra * $insumo->quantidade) / $produtoCompra->quantidade);
+            if($insumo != null && $produtoCompra != null ){
+                $precosugerido +=
+                    (($produtoCompra->valorCompra * $insumo->quantidade) / $produtoCompra->quantidade);
+            }
+
+
 
         }
 

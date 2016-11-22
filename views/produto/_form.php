@@ -17,8 +17,8 @@ use kartik\widgets\Select2;
 /* @var $modelsInsumos app\models\Insumo[] */
 /* @var $insumos yii\helpers\ArrayHelper de app\models\Produto */
 /* @var $categorias yii\helpers\ArrayHelper de app\models\Categoria */
-/* var $modelProdutoVenda app\models\Produto */
-/* var $modelInsumo app\models\Insumo */
+/* @var $modelProdutoVenda app\models\Produto */
+/* @var $modelInsumo app\models\Insumo */
 
 //Pega a ação do controlador
 $action = Yii::$app->controller->action->id;
@@ -62,6 +62,8 @@ if ($action == 'create' || ($modelProduto->isInsumo && $action == 'update')) {
             'min' => '0',
             'step' => '0.01',
             'value' => isset($modelProduto->quantidadeMinima) ? $modelProduto->quantidadeMinima : 0]);
+
+
         ?>
 
         <?=
@@ -106,6 +108,7 @@ if ($action == 'create' || ($modelProduto->isInsumo && $action == 'update')) {
 
                             'data' => $insumos,
                             'options' => ['placeholder' => 'Selecione o insumo',
+                                'onChange' => 'verificaCompraProduto(this)',
                             ],
                             'pluginOptions' => [
                                 'allowClear' => true,
@@ -233,7 +236,7 @@ if ($action == 'create' || ($modelProduto->isInsumo && $action == 'update')) {
                 <?php
                 echo "</br>";
                 echo $form->field($modelsInsumos[$i], 'quantidade[]')->textInput(['type' => 'number',
-                    'value' => 0, 'min' => 0, 'step' => '0.1', 'id' => 'quantidade' . $i, 'value' => ($modelsInsumos[$i]->quantidade)]);
+                   'min' => 0, 'step' => '0.1', 'id' => 'quantidade' . $i, 'value' => ($modelsInsumos[$i]->quantidade)]);
 
                 echo $form->field($modelsInsumos[$i], 'unidade[]')->dropDownList(
                     ['kg' => 'Kg', 'l' => 'Litros', 'unidade' => 'Unidade'], ['prompt' => 'Selecione a unidade',
@@ -314,6 +317,9 @@ if ($action == 'create' || ($modelProduto->isInsumo && $action == 'update')) {
             }
         });
 
+
+
+
         <?php
         if (isset($insumos)) {
             /**
@@ -335,7 +341,7 @@ if ($action == 'create' || ($modelProduto->isInsumo && $action == 'update')) {
             $this->registerJs('var i = 1; $("#btnaddinsumo").on("click",function(){'
                 . '$("#input-dinamico").append(\'<div id="inputinsumo\'+i+\'" >' .
                 '<div class="divborda"><div class="form-group field-insumos-idprodutoinsumo required"><label class="control-label" for="insumos-idprodutoinsumo">' .
-                'Insumo</label><select id="insumos-idprodutoinsumo" class="form-control" name="Insumo[idprodutoInsumo][]" >'
+                'Insumo</label><select id="insumos-idprodutoinsumo" class="form-control" name="Insumo[idprodutoInsumo][]" onChange="verificaCompraProduto(this)" >'
                 . $arrayOptions . '</select><div class="help-block"></div></div><div class="form-group field-insumos-quantidade required">' .
                 '<label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" ' .
                 'class="form-control" name="Insumo[quantidade][]" value="0" min="0" step="0.1"><div class="help-block"></div></div>' .
@@ -360,6 +366,10 @@ if ($action == 'create' || ($modelProduto->isInsumo && $action == 'update')) {
 
 
     </script>
+
+<?php
+$this->registerJsFile(\Yii::getAlias("@web") . '/js/produto_form.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+?>
 
 <?php
 

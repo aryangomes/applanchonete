@@ -22,7 +22,7 @@ $formatter = \Yii::$app->formatter;
 $caixa = new Caixa();
 
 //Pega a instaância do caixa aberto
-$caixa = $caixa->getCaixaAberto(Yii::$app->user->getId());
+$caixa = $caixa->getCaixaAberto();
 
 //Rechpera o nome da loja
 $loja = Loja::find()->where(['user_id' => Yii::$app->user->getId()])->one();

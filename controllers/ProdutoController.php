@@ -6,6 +6,7 @@ use app\models\Compraproduto;
 use Yii;
 use app\models\Produto;
 use app\models\ProdutoSearch;
+use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -70,6 +71,7 @@ class ProdutoController extends Controller
                     'get-produto' => 'produto',
                     'get-produtos' => 'produto',
                     'get-compra-produto' => 'produto',
+                    'produto-list'=>'produto'
 
                 ],
             ],
@@ -697,6 +699,25 @@ class ProdutoController extends Controller
 
 
 
+    }
+
+
+    public function actionProdutoList($q = null, $idProduto = null) {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '']];
+        if (!is_null($q)) {
+            $query = new Query();
+            $query->select('idProduto AS id, nome AS text')
+                ->from('produto')
+                ->where(['like', 'nome', $q])
+                ->limit(20);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        } elseif ($idProduto > 0) {
+            $out['results'] = ['id' => $idProduto, 'text' => Produto::findOne($idProduto)->nome];
+        }
+        return $out;
     }
 
 

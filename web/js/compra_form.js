@@ -37,7 +37,7 @@ $('#btCadastrarNovoProduto').click(function () {
             console.log(data);
             if (data != 'false') {
                 var data = $.parseJSON(data);
-                var $el = $(".compra-form select");
+                var $el = $(".compra-create select");
                 $el.append($("<option></option>")
                     .attr("value", data.idProduto).text(data.nome));
 
@@ -106,7 +106,4 @@ function mudarFoto(element) {
 
     });
 }
-
-
-
 

@@ -26,6 +26,9 @@ class Pedido extends \yii\db\ActiveRecord
 
     const CANCELADO = 3;
 
+    const EXCLUIDO = 4;
+
+
     /**
      * @inheritdoc
      */

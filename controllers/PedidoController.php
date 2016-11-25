@@ -299,7 +299,7 @@ class PedidoController extends Controller
                         $itemPedido = Itempedido::findOne(['idPedido' => $id,
                             'idProduto' => $itensPedido[$i]->idProduto]);
 
-                        if ($itemPedido != null) {
+                        if ($itemPedido != null || $modelPedido->idSituacaoAtual == Pedido::CANCELADO) {
 
                             $itemPedido->removerItemPedido();
 
@@ -307,6 +307,7 @@ class PedidoController extends Controller
                     }
 
                     for ($i = 0; $i < count($itemPedidoPost['idProduto']); $i++) {
+                        var_dump($i);
                         $itemPedido = new Itempedido();
 
                         $itemPedido->idProduto = $itemPedidoPost['idProduto'][$i];
@@ -323,14 +324,9 @@ class PedidoController extends Controller
                         //Tenta salvar os itens do Pedido:
 
 
-                        //Verifica a quantidade em estoque de insumos
-                        $verificaEstoque = $itemPedido->verificaQtdEstProdutoPedido($itemPedido->idProduto,
-                            $itemPedido->quantidade);
-
-                        if (count($verificaEstoque) <= 0) {
-
-                            if ($itemPedido->save()) {
-                                Insumo::atualizaQtdNoEstoqueInsert(
+                        if($modelPedido->idSituacaoAtual == Pedido::CANCELADO){
+                         /*   if ($itemPedido->save()) {
+                                Insumo::atualizaQtdNoEstoqueDelete(
                                     $itemPedido->idProduto, $itemPedido->quantidade);
 
                             } else {
@@ -338,25 +334,44 @@ class PedidoController extends Controller
                                 $transaction->rollBack(); //desfaz alterações no BD
                                 $itensInseridos = false;
                                 break; //encerra o laço for
-                            }
-                        } else {
-                            $insumosFaltando = "";
-                            foreach ($verificaEstoque as $i => $insumo){
+                            }*/
+                        }else {
 
-                                $insumosFaltando .= $insumo->nome;
+                            //Verifica a quantidade em estoque de insumos
+                            $verificaEstoque = $itemPedido->verificaQtdEstProdutoPedido($itemPedido->idProduto,
+                                $itemPedido->quantidade);
 
-                                if($i < count(($verificaEstoque))-1){
+                            if (count($verificaEstoque) <= 0) {
 
-                                    $insumosFaltando .=", ";
+                                if ($itemPedido->save()) {
+                                    Insumo::atualizaQtdNoEstoqueInsert(
+                                        $itemPedido->idProduto, $itemPedido->quantidade);
+
+                                } else {
+                                    $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
+                                    $transaction->rollBack(); //desfaz alterações no BD
+                                    $itensInseridos = false;
+                                    break; //encerra o laço for
                                 }
-                            }
+                            } else {
+                                $insumosFaltando = "";
+                                foreach ($verificaEstoque as $i => $insumo) {
 
-                            $mensagem = "<b>Pedido não foi alterado com sucesso! </b>Quantidade dos insumos(".
-                                $insumosFaltando.")
+                                    $insumosFaltando .= $insumo->nome;
+
+                                    if ($i < count(($verificaEstoque)) - 1) {
+
+                                        $insumosFaltando .= ", ";
+                                    }
+                                }
+
+                                $mensagem = "<b>Pedido não foi alterado com sucesso! </b>Quantidade dos insumos(" .
+                                    $insumosFaltando . ")
                               ficarão abaixo da quantidade mínima de insumos em estoque.";
-                            $transaction->rollBack(); //desfaz alterações no BD
-                            $itensInseridos = false;
-                            break; //encerra o laço for
+                                $transaction->rollBack(); //desfaz alterações no BD
+                                $itensInseridos = false;
+                                break; //encerra o laço for
+                            }
                         }
                     }
 

@@ -105,28 +105,34 @@ class Insumo extends \yii\db\ActiveRecord
     {
         $insumos = Insumo::find()->where(['idProdutoVenda' => $idProdVnd])->all();
 
-        $produto = new Produto();
 
         $itensDeletados = true;
 
         foreach ($insumos as $key => $ins) {
+
             $qtdInsumo = $ins->quantidade * $qtdProdVnd;
 
-            $produto= Produto::find()->where(['idProduto' => $ins->idprodutoInsumo])->one();
+            $produto = Produto::find()->where(['idProduto' => $ins->idprodutoInsumo])->one();
 
-                $produto->quantidadeEstoque += $qtdInsumo;
+            var_dump( $produto->quantidadeEstoque);
 
-                if(!$produto->save()){
-                    $itensDeletados = false;
+            var_dump($qtdInsumo);
 
-                }else {
+            echo "\n";
 
-                }
+            $produto->quantidadeEstoque += $qtdInsumo;
 
+            if (!$produto->save()) {
+                $itensDeletados = false;
 
+            } else {
+
+            }
 
         }
-        if($itensDeletados){
+
+        echo "-\n";
+        if ($itensDeletados) {
             return true;
         }
         return false;

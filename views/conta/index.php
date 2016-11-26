@@ -50,6 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 ['attribute' => 'situacaoPagamento',
                     'format' => 'text',
+                    'filter'=>['0'=>'Não paga','1'=>'Paga'],
                     'value' => function ($modelConta) {
                         return $modelConta->situacaoPagamento ? 'Paga' : 'Não paga';
                     }

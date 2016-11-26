@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     [
                         'attribute' => 'alerta',
+                        'filter'=>['0'=>'Desligado','1'=>'Ligado'],
                         'value' => function ($modelMesa) {
                             return $modelMesa->alerta ? 'Ligado' : 'Desligado';
                         }

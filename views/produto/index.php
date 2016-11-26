@@ -51,6 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'isInsumo',
                         'format' => 'text',
+                        'filter'=>['0'=>'Não','1'=>'Sim'],
                         'value' => function ($modelProduto) {
 
                             return $modelProduto->isInsumo ? 'Sim' : 'Não';

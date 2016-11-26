@@ -40,6 +40,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 [
                     'attribute' =>'tipo',
+                    'filter'=>[
+
+                        'Contasareceber' => 'Contas a Receber',
+                        'Pagamento' => 'Pagamento',
+                        'Pedido' => 'Pedidos',
+                        'Itempedido' => 'Item(ns) Pedido',
+                        'Lucro' => 'Lucro',
+                    ],
 
                     'value' => function ($modelRelatorio) {
 

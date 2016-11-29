@@ -18,7 +18,7 @@ use Yii;
 class Compraproduto extends \yii\db\ActiveRecord
 {
 
-
+    public $valorAlterado;
     /**
      * @inheritdoc
      */
@@ -54,7 +54,7 @@ class Compraproduto extends \yii\db\ActiveRecord
 
    
 
- public function getConta()
+    public function getConta()
     {
         return $this->hasOne(Conta::className(), ['idconta' => 'idCompra']);
     }
@@ -62,6 +62,22 @@ class Compraproduto extends \yii\db\ActiveRecord
     public function getProduto()
     {
         return $this->hasOne(Produto::className(), ['idProduto' => 'idProduto']);
+    }
+
+    public function comparaPrecoProduto($objCompraProduto){
+
+        $precoAntigo = Yii::$app->db->createCommand('SELECT valorCompra FROM compraproduto
+            WHERE idProduto = :id ORDER BY idCompra DESC LIMIT 1', ['id' => $objCompraProduto['idProduto']])->queryOne();
+
+        $precoAntigoFloat = (float) $precoAntigo['valorCompra'];
+        $novoPrecoFloat = (float)$objCompraProduto['valorCompra'];
+
+
+        if ($precoAntigoFloat == $novoPrecoFloat) {
+            return false;
+        } else{
+            return true;
+        }
     }
 }
 

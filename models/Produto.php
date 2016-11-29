@@ -284,4 +284,17 @@ class Produto extends \yii\db\ActiveRecord
         }
     }
 
+    public function getListaInsumos($id){
+        $produtos = Yii::$app->db->createCommand('SELECT idprodutoVenda FROM insumo
+            WHERE idprodutoInsumo = :id ', ['id' => $id])->queryAll();
+
+       /* $resultados = [];
+
+        foreach($produtos as $resultado){
+            array_push($resultados, $resultado['idprodutoVenda']);
+        }
+        */
+        return $produtos;
+    }
+
 }

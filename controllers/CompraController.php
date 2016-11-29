@@ -58,9 +58,11 @@ class CompraController extends Controller
     {
         $compraProdutos = Compraproduto::find()->where(['idCompra' => $id])
             ->all();
+
         return $this->render('view', [
             'modelCompra' => $this->findModel($id),
             'compraProdutos' => $compraProdutos,
+            'produtosValorAlterado' => $_GET['produtosValorAlterado']
         ]);
     }
 
@@ -74,6 +76,7 @@ class CompraController extends Controller
         $modelCompra = new Compra();
 
         $mensagem = ""; //Informa ao usuário mensagens de erro na view
+        $produtosValorAlterado = [];
 
         $conta = new Conta();
 
@@ -91,13 +94,35 @@ class CompraController extends Controller
 
         $novoProduto = new Produto();
 
+        $arrayFinal= [];
+        $arrayIds= [];
+
         //Setando o fuso horário
-        date_default_timezone_set('America/Sao_Paulo');
+        date_default_timezone_set('America/Recife');
 
         if ((Yii::$app->request->post())) {
 
             $conta->tipoConta = 'contasapagar';
             $conta->descricao = 'Compra de '. date('d/m/Y',strtotime(Yii::$app->request->post()['Compra']['dataCompra']));
+
+  $compraprodutos = Yii::$app->request->post()['Compraproduto'];
+                        $valorescompraprodutos = Yii::$app->request->post()['compraproduto-valorcompra-disp'];
+
+
+            for ($i = 0; $i < count($compraprodutos['idProduto']); $i++) {
+                            $cp = new Compraproduto();
+                            $cp->idCompra = $modelCompra->idconta;
+                            $cp->idProduto = $compraprodutos['idProduto'][$i];
+                            $cp->quantidade = $compraprodutos['quantidade'][$i];
+
+
+                            if ($i <= 0) {
+                                $cp->valorCompra = $compraprodutos['valorCompra'][0];
+                            } else {
+                                $cp->valorCompra = (($valorescompraprodutos[$i - 1]));
+                            }
+            }
+                                    
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
             try {
@@ -107,11 +132,16 @@ class CompraController extends Controller
 
                     $itensInseridos = true;
 
+                    $arrayIdsProdutoVenda = [];
+
+                    $indice = 0;
+
                     $modelCompra->idconta = $conta->idconta;
                     $modelCompra->dataCompra = Yii::$app->request->post()['Compra']['dataCompra'];
                     if ($modelCompra->save(false)) {
                         $compraprodutos = Yii::$app->request->post()['Compraproduto'];
                         $valorescompraprodutos = Yii::$app->request->post()['compraproduto-valorcompra-disp'];
+
 
                         for ($i = 0; $i < count($compraprodutos['idProduto']); $i++) {
                             $cp = new Compraproduto();
@@ -119,10 +149,36 @@ class CompraController extends Controller
                             $cp->idProduto = $compraprodutos['idProduto'][$i];
                             $cp->quantidade = $compraprodutos['quantidade'][$i];
 
+
                             if ($i <= 0) {
                                 $cp->valorCompra = $compraprodutos['valorCompra'][0];
                             } else {
                                 $cp->valorCompra = (($valorescompraprodutos[$i - 1]));
+                            }
+
+                            if($cp->comparaPrecoProduto($cp)){
+                               
+                                $lp = $novoProduto->getListaInsumos($cp->idProduto);
+                    
+                               foreach ($lp as $key) {
+
+                                    $produto = Yii::$app->db->createCommand('SELECT idProduto, nome FROM produto WHERE idProduto = :id ', ['id' => $key['idprodutoVenda']])->queryOne();
+
+                                        array_push($produtosValorAlterado, $produto);  
+                                }
+                            }
+
+                            for($i = 0; $i < count($produtosValorAlterado); $i++) {
+                                array_push($arrayIds, $produtosValorAlterado[$i]['idProduto']);
+                            }
+
+                            $arrayIds = array_unique($arrayIds);
+
+                            foreach ($arrayIds as $id) { 
+                                $produto = Yii::$app->db->createCommand('SELECT idProduto, nome FROM produto WHERE idProduto = :id ', ['id' => $id])->queryOne();
+
+                                array_push($arrayFinal, $produto);
+
                             }
 
                             if (!$cp->save(false)) {
@@ -135,6 +191,7 @@ class CompraController extends Controller
                             }
 
                         }
+                                
 
                         $modelCompra->valor = $valorTotalDaCompra;
 
@@ -151,11 +208,17 @@ class CompraController extends Controller
                             }
                         }
 
-
-
                         if ($itensInseridos) {
                             $transaction->commit();
-                            return $this->redirect(['view', 'id' => $modelCompra->idconta]);
+                            
+                            $compraProdutos = Compraproduto::find()->where(['idCompra' => $modelCompra->idconta])->all();
+                            
+
+                            return $this->render('view', [
+                                'modelCompra' => $this->findModel($modelCompra->idconta),
+                                'compraProdutos' => $compraProdutos,
+                                'produtosValorAlterado' => $arrayFinal
+                            ]);
                         }
 
                     } else {
@@ -213,6 +276,10 @@ class CompraController extends Controller
         //Recebe o valor total da compra
         $valorTotalDaCompra = 0;
 
+        $novoProduto = new Produto();
+        $produtosValorAlterado = [];
+        $arrayFinal= [];
+        $arrayIds= [];
 
 
         if (Yii::$app->request->post()) {
@@ -241,7 +308,30 @@ class CompraController extends Controller
                         $cp->valorCompra = (Yii::$app->request->post()
                         ['compraproduto-valorcompra-disp'][$i]);
 
+                         if($cp->comparaPrecoProduto($cp)){
+                               
+                                $lp = $novoProduto->getListaInsumos($cp->idProduto);
+                    
+                               foreach ($lp as $key) {
 
+                                    $produto = Yii::$app->db->createCommand('SELECT idProduto, nome FROM produto WHERE idProduto = :id ', ['id' => $key['idprodutoVenda']])->queryOne();
+
+                                        array_push($produtosValorAlterado, $produto);  
+                                }
+                            }
+
+                            for($i = 0; $i < count($produtosValorAlterado); $i++) {
+                                array_push($arrayIds, $produtosValorAlterado[$i]['idProduto']);
+                            }
+
+                            $arrayIds = array_unique($arrayIds);
+
+                            foreach ($arrayIds as $id) { 
+                                $produto = Yii::$app->db->createCommand('SELECT idProduto, nome FROM produto WHERE idProduto = :id ', ['id' => $id])->queryOne();
+
+                                array_push($arrayFinal, $produto);
+
+                            }
 
                     if (!$cp->save(false)) {
                         $mensagem = "Não foi possível salvar os dados de algum";
@@ -276,7 +366,9 @@ class CompraController extends Controller
 
                 if ($itensInseridos) {
                     $transaction->commit();
-                    return $this->redirect(['view', 'id' => $modelCompra->idconta]);
+                    return $this->redirect(['view', 
+                        'id' => $modelCompra->idconta,
+                        'produtosValorAlterado' => $arrayFinal]);
                 }
 
             } catch (\Exception $exception) {

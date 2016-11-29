@@ -14,12 +14,15 @@ use app\models\Loja;
 use app\models\Caixa;
 use yii\helpers\Url;
 use app\models\Produto;
+use app\models\Compraproduto;
 
 AppAsset::register($this);
 
 $formatter = \Yii::$app->formatter;
 
 $caixa = new Caixa();
+$Compraproduto = new Compraproduto();
+
 
 //Pega a instaância do caixa aberto
 $caixa = $caixa->getCaixaAberto(Yii::$app->user->getId());
@@ -176,6 +179,14 @@ if (count($loja) > 0) {
                             <?php
                         }
                     }
+
+                    if($Compraproduto->valorAlterado == true)
+                    {
+                         echo "<li><a><b>Há produtos com o valor alterado.</b></a></li>";
+                  
+                         echo "<li class='divider'></li>";
+                     }
+
                     }
                     else
                     {

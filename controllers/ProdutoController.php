@@ -255,6 +255,7 @@ class ProdutoController extends Controller
             try {
                 //Tenta salvar um registro :
 
+                $modelProduto = $valorCompra;
                 if ($modelProduto->save()) {
 
                     $itensInseridos = true;

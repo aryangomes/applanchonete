@@ -1,16 +1,16 @@
 <?php
 use kartik\datecontrol\Module;
 return [
-'adminEmail' => 'admin@example.com',
-'maskMoneyOptions' => [
-'prefix' => 'R$ ',
-'suffix' => '',
-'affixesStay' => true,
-'thousands' => '.',
-'decimal' => ',',
-'precision' => 2, 
-'allowZero' => false,
-'allowNegative' => false,
+	'adminEmail' => 'admin@example.com',
+	'maskMoneyOptions' => [
+	'prefix' => 'R$ ',
+	'suffix' => '',
+	'affixesStay' => true,
+	'thousands' => '.',
+	'decimal' => ',',
+	'precision' => 2, 
+	'allowZero' => false,
+	'allowNegative' => false,
 ],
  // format settings for displaying each date attribute (ICU format example)
 'dateControlDisplay' => [

@@ -126,13 +126,19 @@ class ItempedidoSearch extends Itempedido
             foreach ($pedidosConcluidos as $pedConc) {
 
                 //Guarda a data do Pedido Concluido
-                $dataPedidoConcluido = date('Y-m-d', strtotime($pedConc['pagamento']['contasareceber']->dataHora));
 
-                if ($dataPedidoConcluido == $dataPedConc) {
-                    $auxValorLucro += floatval(number_format(($caixa->calculaValorLucroPedido($pedConc->idPedido))
-                        , 2));
+                if(isset($pedConc['pagamento']['contasareceber']->dataHora )){
 
+                    $dataPedidoConcluido = date('Y-m-d', strtotime($pedConc['pagamento']['contasareceber']->dataHora));
+
+                    if ($dataPedidoConcluido == $dataPedConc) {
+                        $auxValorLucro += floatval(number_format(($caixa->calculaValorLucroPedido($pedConc->idPedido))
+                            , 2));
+
+                    }
                 }
+
+
 
             }
 

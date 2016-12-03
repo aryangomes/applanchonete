@@ -62,9 +62,7 @@ $config = [
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
         ],
-        'errorHandler' => [
-            'errorAction' => 'site/error',
-        ],
+
         'i18n' => [
             'translations' => [
                 'app*' => [

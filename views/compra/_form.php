@@ -81,14 +81,26 @@ use yii\web\JsExpression;
 
             ?>
 
+
+
+            <div class="form-group field-compraproduto-valorcompra required has-success">
+                <label class="control-label" for="compraproduto-valorcompra">Valor da Compra(R$)</label>
+                <input type="number" min="0" step="0.01" title="Digite o valor ou aperte as teclas para cima ou para abaixo para ajustar o valor" value="0" id="compraproduto-valorcompra-disp"
+                       class="form-control" name="compraproduto-valorcompra-disp[]">
+                <input type="hidden" id="compraproduto-valorcompra"
+                       name="Compraproduto[valorCompra][]" data-krajee-maskmoney="maskMoney_17eeef61" value="0">
+                <div class="help-block"></div>
+
+                </div>
+
             <?=
-            $form->field($compraProduto, 'valorCompra[]')->widget(MaskMoney::classname(), [
+            /*$form->field($compraProduto, 'valorCompra[]')->widget(MaskMoney::classname(), [
                 'pluginOptions' => [
                     'prefix' => 'R$ ',
 
                     'allowNegative' => false,
                 ]
-            ]);
+            ]);*/
 
 
 

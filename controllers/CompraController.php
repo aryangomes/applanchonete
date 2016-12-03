@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\AccessFilter;
 use app\models\Categoria;
+use app\models\Contasapagar;
 use Yii;
 use app\models\Compra;
 use app\models\CompraSearch;
@@ -105,7 +106,8 @@ class CompraController extends Controller
 
         $compraProduto = new Compraproduto();
 
-        $produtos = ArrayHelper::map(Produto::find()->orderBy('nome ASC')->all(),
+        $produtos = ArrayHelper::map(Produto::find()->
+        where(['isInsumo'=>1])->orderBy('nome ASC')->all(),
             'idProduto', 'nome');
 
         //Recebe o valor total da compra
@@ -134,20 +136,29 @@ class CompraController extends Controller
             $conta->tipoConta = 'contasapagar';
 
             $conta->descricao = 'Compra de ' . date('d/m/Y', strtotime(Yii::$app->request->post()['Compra']['dataCompra']));
+
+
+
+
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
             try {
                 //Tenta salvar um registro :
 
-                if ($conta->save(false)) {
+                if ($conta->save(false) ) {
 
                     $itensInseridos = true;
+
+                    $modelContasAPagar = new Contasapagar();
+
+                    $modelContasAPagar->idconta = $conta->idconta;
 
                     $modelCompra->idconta = $conta->idconta;
 
                     $modelCompra->dataCompra = Yii::$app->request->post()['Compra']['dataCompra'];
 
-                    if ($modelCompra->save(false)) {
+
+                    if ( $modelContasAPagar->save(false) && $modelCompra->save()) {
                         $compraprodutos = Yii::$app->request->post()['Compraproduto'];
 
                         $valorescompraprodutos = Yii::$app->request->post()['compraproduto-valorcompra-disp'];
@@ -162,12 +173,12 @@ class CompraController extends Controller
 
                             $cp->quantidade = $compraprodutos['quantidade'][$i];
 
-
-                            if ($i <= 0) {
+                            $cp->valorCompra = $valorescompraprodutos[$i];
+                           /* if ($i <= 0) {
                                 $cp->valorCompra = $compraprodutos['valorCompra'][0];
                             } else {
                                 $cp->valorCompra = (($valorescompraprodutos[$i - 1]));
-                            }
+                            }*/
 
                             if (!$cp->save(false)) {
                                 $mensagem = "Não foi possível salvar os dados";
@@ -246,7 +257,8 @@ class CompraController extends Controller
 
         $compraProduto = new Compraproduto();
 
-        $produtos = ArrayHelper::map(Produto::find()->all(),
+        $produtos = ArrayHelper::map(Produto::find()->
+        where(['isInsumo'=>1])->orderBy('nome ASC')->all(),
             'idProduto', 'nome');
 
         $produtosDaCompras =

@@ -2,6 +2,8 @@
  * Created by aryan on 14/09/16.
  */
 
+
+
 $('#btCadastrarNovoProduto').click(function () {
 
     var nomeProduto = $('#produto-nome').val();

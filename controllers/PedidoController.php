@@ -118,6 +118,7 @@ class PedidoController extends Controller
     {
         //Carrega demais modelos
         $modelPedido = new Pedido();
+
         $itemPedido = new Itempedido();
 
         $mensagem = ""; //Informa ao usuário mensagens de erro na view
@@ -138,6 +139,9 @@ class PedidoController extends Controller
 
         //Atribuindo valor padrão para o total pedido
         $modelPedido->totalPedido = 0;
+
+        //Guarda o valor somado total dos itens pedido
+        $totalDoPedido = 0;
 
         if ($modelPedido->load(Yii::$app->request->post())) {
             //Carrega demais modelos
@@ -165,11 +169,14 @@ class PedidoController extends Controller
                     $itemPedido->quantidade = $itemPedidoPost['quantidade'][$i];
 
                     $produtoVenda = Produto::find()->where(['idProduto' => $itemPedido->idProduto])->one();
+
                     $itemPedido->total = floatval(
                         number_format(
                             $produtoVenda->valorVenda * $itemPedido->quantidade, 2));
 
                     $itemPedido->idPedido = $modelPedido->idPedido;
+
+                    $totalDoPedido += $itemPedido->total;
 
                     //Verifica a quantidade em estoque de insumos
                     $verificaEstoque = $itemPedido->verificaQtdEstProdutoPedido($itemPedido->idProduto,
@@ -207,8 +214,11 @@ class PedidoController extends Controller
                         break; //encerra o laço for
                     }
                 }
+
+                $modelPedido->totalPedido = $totalDoPedido;
+
                 //Testa se todos os itens foram inseridos (ou tudo ou nada):
-                if ($itensInseridos) {
+                if ($itensInseridos && $modelPedido->save()) {
                     $transaction->commit();
 
                     return $this->redirect(['view', 'id' => $modelPedido->idPedido,]);
@@ -216,7 +226,7 @@ class PedidoController extends Controller
             } else {
                 $mensagem = "Não foi possível salvar os dados do Pedido";
             }
-            /*  } catch (\Exception $exception) {
+             /*} catch (\Exception $exception) {
                   $transaction->rollBack();
                   $mensagem = "Ocorreu uma falha inesperada ao tentar salvar o Pedido";
               }*/
@@ -513,6 +523,10 @@ class PedidoController extends Controller
         if ($formaPagamento != null && $idPedido != null) {
             $pagamento = Pagamento::find()->where(['idPedido' => $idPedido])->one();
             if ($pagamento != null) {
+
+                $pedido = $this->findModel($idPedido);
+
+
                 $pagamento->formapagamento_idTipoPagamento = $formaPagamento;
 
                 //Inicia a transação:
@@ -522,14 +536,12 @@ class PedidoController extends Controller
                     $itensInseridos = true;
 
                     if ($pagamento->save()) {
-                        $pedido = $this->findModel($idPedido);
+
                         if ($pedido != null) {
                             $situacaoPedido = Pedido::CONCLUIDO;
 
                             $pedido->idSituacaoAtual = $situacaoPedido;
 
-
-//                            if ($pedido->save() && $pedido->mudarHistoricoSituacaoPedido(intval($pedido->idSituacaoAtual))) {
                             if ($pedido->save() &&
                                 ($pedido->cadastrarNovaHistoricoSituacaoPedido(intval($pedido->idPedido),
                                     intval($pedido->idSituacaoAtual),

@@ -80,9 +80,10 @@ class Caixa extends \yii\db\ActiveRecord {
      */
     public function calculaValorLucroPedido($idPedido)
     {
-       $itensPedido = Itempedido::findAll($idPedido);
+       $itensPedido = Itempedido::find()->where(['idPedido'=>$idPedido])->all();
 
         $lucroTotal= 0;
+
 
         if(count($itensPedido) > 0){
             foreach ($itensPedido as $ip){
@@ -97,6 +98,7 @@ class Caixa extends \yii\db\ActiveRecord {
                     $precoCustoProduto = $produto->calculoPrecoProduto($produto->idProduto);
 
                     $diferenca = ($valorProduto * $quantidade) - ($precoCustoProduto * $quantidade);
+
 
                     $lucroTotal += $diferenca;
 

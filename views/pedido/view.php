@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]) ?>
                     <span class="input-group-btn">
                         <?=
-                        Html::Button("Finalizar Pedido", ['class' => 'btn btn-success',
+                        Html::button("Finalizar Pedido", ['class' => 'btn btn-success',
                             'id' => 'btFinalizarPedido'])
                         ?>
                     </span>

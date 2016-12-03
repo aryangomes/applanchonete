@@ -710,6 +710,7 @@ class ProdutoController extends Controller
             $query->select('idProduto AS id, nome AS text')
                 ->from('produto')
                 ->where(['like', 'nome', $q])
+                ->andWhere(['isInsumo'=>1])
                 ->limit(20);
             $command = $query->createCommand();
             $data = $command->queryAll();

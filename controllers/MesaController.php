@@ -65,20 +65,16 @@ class MesaController extends Controller
      */
     public function actionIndex()
     {
-        if (Yii::$app->user->can("index-mesa") ||
-            Yii::$app->user->can("mesa")
-        ) {
 
-            $searchModel = new MesaSearch();
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-            return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-            ]);
-        } else {
-            throw new ForbiddenHttpException("Acesso negado!");
-        }
+        $searchModel = new MesaSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+
     }
 
     /**
@@ -88,16 +84,12 @@ class MesaController extends Controller
      */
     public function actionView($id)
     {
-        if (Yii::$app->user->can("view-mesa") ||
-            Yii::$app->user->can("mesa")
-        ) {
 
-            return $this->render('view', [
-                'modelMesa' => $this->findModel($id),
-            ]);
-        } else {
-            throw new ForbiddenHttpException("Acesso negado!");
-        }
+
+        return $this->render('view', [
+            'modelMesa' => $this->findModel($id),
+        ]);
+
     }
 
     /**
@@ -107,26 +99,22 @@ class MesaController extends Controller
      */
     public function actionCreate()
     {
-        if (Yii::$app->user->can("create-mesa") ||
-            Yii::$app->user->can("mesa")
-        ) {
-
-            $modelMesa = new Mesa();
-
-            if ($modelMesa->load(Yii::$app->request->post()) && $modelMesa->save()) {
-
-                return $this->redirect(['view', 'id' => $modelMesa->idMesa]);
-
-            } else {
 
 
-                return $this->render('create', [
-                    'modelMesa' => $modelMesa,
-                ]);
-            }
+        $modelMesa = new Mesa();
+
+        if ($modelMesa->load(Yii::$app->request->post()) && $modelMesa->save()) {
+
+            return $this->redirect(['view', 'id' => $modelMesa->idMesa]);
+
         } else {
-            throw new ForbiddenHttpException("Acesso negado!");
+
+
+            return $this->render('create', [
+                'modelMesa' => $modelMesa,
+            ]);
         }
+
     }
 
     /**
@@ -137,22 +125,18 @@ class MesaController extends Controller
      */
     public function actionUpdate($id)
     {
-        if (Yii::$app->user->can("update-mesa") ||
-            Yii::$app->user->can("mesa")
-        ) {
 
-            $modelMesa = $this->findModel($id);
 
-            if ($modelMesa->load(Yii::$app->request->post()) && $modelMesa->save()) {
-                return $this->redirect(['view', 'id' => $modelMesa->idMesa]);
-            } else {
-                return $this->render('update', [
-                    'modelMesa' => $modelMesa,
-                ]);
-            }
+        $modelMesa = $this->findModel($id);
+
+        if ($modelMesa->load(Yii::$app->request->post()) && $modelMesa->save()) {
+            return $this->redirect(['view', 'id' => $modelMesa->idMesa]);
         } else {
-            throw new ForbiddenHttpException("Acesso negado!");
+            return $this->render('update', [
+                'modelMesa' => $modelMesa,
+            ]);
         }
+
     }
 
     /**
@@ -163,37 +147,34 @@ class MesaController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::$app->user->can("delete-mesa") ||
-            Yii::$app->user->can("mesa")
-        ) {
 
-            //Guarda a mensagem
-            $mensagem = "";
 
-            $transaction = \Yii::$app->db->beginTransaction();
-            try {
-                if ($this->findModel($id)->delete()) {
-                    $transaction->commit();
-                }
+        //Guarda a mensagem
+        $mensagem = "";
 
-            } catch (\Exception $exception) {
-                $transaction->rollBack();
-                $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
+        $transaction = \Yii::$app->db->beginTransaction();
+
+        try {
+            if ($this->findModel($id)->delete()) {
+                $transaction->commit();
             }
 
-            $searchModel = new MesaSearch();
-
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-            return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-                'mensagem' => $mensagem
-
-            ]);
-        } else {
-            throw new ForbiddenHttpException("Acesso negado!");
+        } catch (\Exception $exception) {
+            $transaction->rollBack();
+            $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
         }
+
+        $searchModel = new MesaSearch();
+
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'mensagem' => $mensagem
+
+        ]);
+
     }
 
     /**

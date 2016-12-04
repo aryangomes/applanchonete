@@ -114,12 +114,6 @@ class Insumo extends \yii\db\ActiveRecord
 
             $produto = Produto::find()->where(['idProduto' => $ins->idprodutoInsumo])->one();
 
-            var_dump( $produto->quantidadeEstoque);
-
-            var_dump($qtdInsumo);
-
-            echo "\n";
-
             $produto->quantidadeEstoque += $qtdInsumo;
 
             if (!$produto->save()) {
@@ -131,7 +125,7 @@ class Insumo extends \yii\db\ActiveRecord
 
         }
 
-        echo "-\n";
+
         if ($itensDeletados) {
             return true;
         }

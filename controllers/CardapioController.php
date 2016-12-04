@@ -56,7 +56,6 @@ class CardapioController extends Controller
                     ],
 
 
-
                     'index' => 'index-cardapio',
                     'update' => 'update-cardapio',
                     'delete' => 'delete-cardapio',
@@ -108,7 +107,9 @@ class CardapioController extends Controller
 
 
         foreach ($itensCardapio as $ic) {
+            //Array para guardar os nomes dos insumos do Produto Venda
             $aux = [];
+
             $produtoVenda = Produto::findOne($ic->idProduto);
 
             if ($produtoVenda != null) {
@@ -123,7 +124,6 @@ class CardapioController extends Controller
             }
 
         }
-
 
         return $this->render('view', [
             'modelCardapio' => $this->findModel($id),
@@ -164,19 +164,27 @@ class CardapioController extends Controller
                     $itensCardapio = Yii::$app->request->post()['Itemcardapio'];
 
                     for ($i = 0; $i < count($itensCardapio['idProduto']); $i++) {
+
                         $itemCardapio = new Itemcardapio();
+
                         $itemCardapio->idCardapio = $modelCardapio->idCardapio;
+
                         $itemCardapio->idProduto = $itensCardapio['idProduto'][$i];
+
                         $itemCardapio->ordem = $itensCardapio['ordem'][$i];
-                        var_dump($itensCardapio['idProduto'][$i]);
+
+
                         if (!$itemCardapio->save()) {
                             $itensInseridos = false;
                         }
                     }
 
                     if ($itensInseridos) {
+
                         $transaction->commit();
+
                         return $this->redirect(['view', 'id' => $modelCardapio->idCardapio]);
+
                     } else {
                         $mensagem = "Não foi possível salvar os dados";
                         $transaction->rollBack(); //desfaz alterações no BD
@@ -215,15 +223,16 @@ class CardapioController extends Controller
     {
 
         $modelCardapio = $this->findModel($id);
+
         $modelItemCardapio = new Itemcardapio();
 
         $mensagem = "";
 
-//            $itensCardapio = Itemcardapio::findAll(['idCardapio' => $id]);
         $itensCardapio = Itemcardapio::find()
             ->where(['idCardapio' => $id])
             ->orderBy('ordem ASC')
             ->all();
+
         $produtos = ArrayHelper::map(Produto::find()->
         where(['isInsumo' => 0])->all(), 'idProduto', 'nome');
 
@@ -244,9 +253,13 @@ class CardapioController extends Controller
                         $itensCardapio = Yii::$app->request->post()['Itemcardapio'];
 
                         for ($i = 0; $i < count($itensCardapio['idProduto']); $i++) {
+
                             $itemCardapio = new Itemcardapio();
+
                             $itemCardapio->idCardapio = $modelCardapio->idCardapio;
+
                             $itemCardapio->idProduto = $itensCardapio['idProduto'][$i];
+
                             $itemCardapio->ordem = $itensCardapio['ordem'][$i];
 
                             if (!$itemCardapio->save()) {
@@ -256,6 +269,7 @@ class CardapioController extends Controller
 
                         if ($itensInseridos) {
                             $transaction->commit();
+
                             return $this->redirect(['view', 'id' => $modelCardapio->idCardapio]);
                         } else {
                             $mensagem = "Não foi possível salvar os dados";
@@ -354,5 +368,6 @@ class CardapioController extends Controller
                 return Json::encode(false);
             }
         }
+        throw new NotFoundHttpException('Passe o id do Produto.');
     }
 }

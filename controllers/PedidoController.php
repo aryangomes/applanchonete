@@ -149,87 +149,89 @@ class PedidoController extends Controller
 
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
-//            try {
-            //Tenta salvar um registro de Pedido:
-            if ($modelPedido->save() &&
-                ($modelPedido->cadastrarNovaHistoricoSituacaoPedido(intval($modelPedido->idPedido),
-                    intval($modelPedido->idSituacaoAtual),
-                    Yii::$app->getUser()->id))
-            ) {
-                //Carrega os dados dos itens do Pedido:
-                $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
+            try {
+                //Tenta salvar um registro de Pedido:
+                if ($modelPedido->save() &&
+                    ($modelPedido->cadastrarNovaHistoricoSituacaoPedido(intval($modelPedido->idPedido),
+                        intval($modelPedido->idSituacaoAtual),
+                        Yii::$app->getUser()->id))
+                ) {
+                    //Carrega os dados dos itens do Pedido:
+                    $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
 
-                $itensInseridos = true;
+                    $itensInseridos = true;
 
-                for ($i = 0; $i < count($itemPedidoPost['idProduto']); $i++) {
-                    $itemPedido = new Itempedido();
+                    for ($i = 0; $i < count($itemPedidoPost['idProduto']); $i++) {
+                        $itemPedido = new Itempedido();
 
-                    $itemPedido->idProduto = $itemPedidoPost['idProduto'][$i];
+                        $itemPedido->idProduto = $itemPedidoPost['idProduto'][$i];
 
-                    $itemPedido->quantidade = $itemPedidoPost['quantidade'][$i];
+                        $itemPedido->quantidade = $itemPedidoPost['quantidade'][$i];
 
-                    $produtoVenda = Produto::find()->where(['idProduto' => $itemPedido->idProduto])->one();
+                        $produtoVenda = Produto::find()->where(['idProduto' => $itemPedido->idProduto])->one();
 
-                    $itemPedido->total = floatval(
-                        number_format(
-                            $produtoVenda->valorVenda * $itemPedido->quantidade, 2));
+                        $itemPedido->total = floatval(
+                            number_format(
+                                $produtoVenda->valorVenda * $itemPedido->quantidade, 2));
 
-                    $itemPedido->idPedido = $modelPedido->idPedido;
+                        $itemPedido->idPedido = $modelPedido->idPedido;
 
-                    $totalDoPedido += $itemPedido->total;
+                        $totalDoPedido += $itemPedido->total;
 
-                    //Verifica a quantidade em estoque de insumos
-                    $verificaEstoque = $itemPedido->verificaQtdEstProdutoPedido($itemPedido->idProduto,
-                        $itemPedido->quantidade);
+                        //Verifica a quantidade em estoque de insumos
+                        $verificaEstoque = $itemPedido->verificaQtdEstProdutoPedido($itemPedido->idProduto,
+                            $itemPedido->quantidade);
 
-                    if (count($verificaEstoque) <= 0) {
+                        if (count($verificaEstoque) <= 0) {
 
-                        if ($itemPedido->save()) {
-                            Insumo::atualizaQtdNoEstoqueInsert(
-                                $itemPedido->idProduto, $itemPedido->quantidade);
+                            if ($itemPedido->save()) {
+                                Insumo::atualizaQtdNoEstoqueInsert(
+                                    $itemPedido->idProduto, $itemPedido->quantidade);
 
+                            } else {
+                                $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
+                                $transaction->rollBack(); //desfaz alterações no BD
+                                $itensInseridos = false;
+                                break; //encerra o laço for
+                            }
                         } else {
-                            $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
+                            $insumosFaltando = "";
+                            foreach ($verificaEstoque as $i => $insumo) {
+
+                                $insumosFaltando .= $insumo->nome;
+
+                                if ($i < count(($verificaEstoque)) - 1) {
+
+                                    $insumosFaltando .= ", ";
+                                }
+                            }
+
+                            $mensagem = "<b>Pedido não foi alterado com sucesso! </b>Quantidade dos insumos(" .
+                                $insumosFaltando . ")
+                              ficarão abaixo da quantidade mínima de insumos em estoque.";
+
                             $transaction->rollBack(); //desfaz alterações no BD
+
                             $itensInseridos = false;
                             break; //encerra o laço for
                         }
-                    } else {
-                        $insumosFaltando = "";
-                        foreach ($verificaEstoque as $i => $insumo){
-
-                            $insumosFaltando .= $insumo->nome;
-
-                            if($i < count(($verificaEstoque))-1){
-
-                                $insumosFaltando .=", ";
-                            }
-                        }
-
-                        $mensagem = "<b>Pedido não foi alterado com sucesso! </b>Quantidade dos insumos(".
-                            $insumosFaltando.")
-                              ficarão abaixo da quantidade mínima de insumos em estoque.";
-                        $transaction->rollBack(); //desfaz alterações no BD
-                        $itensInseridos = false;
-                        break; //encerra o laço for
                     }
+
+                    $modelPedido->totalPedido = $totalDoPedido;
+
+                    //Testa se todos os itens foram inseridos (ou tudo ou nada):
+                    if ($itensInseridos && $modelPedido->save()) {
+                        $transaction->commit();
+
+                        return $this->redirect(['view', 'id' => $modelPedido->idPedido,]);
+                    }
+                } else {
+                    $mensagem = "Não foi possível salvar os dados do Pedido";
                 }
-
-                $modelPedido->totalPedido = $totalDoPedido;
-
-                //Testa se todos os itens foram inseridos (ou tudo ou nada):
-                if ($itensInseridos && $modelPedido->save()) {
-                    $transaction->commit();
-
-                    return $this->redirect(['view', 'id' => $modelPedido->idPedido,]);
-                }
-            } else {
-                $mensagem = "Não foi possível salvar os dados do Pedido";
+            } catch (\Exception $exception) {
+                $transaction->rollBack();
+                $mensagem = "Ocorreu uma falha inesperada ao tentar salvar o Pedido";
             }
-             /*} catch (\Exception $exception) {
-                  $transaction->rollBack();
-                  $mensagem = "Ocorreu uma falha inesperada ao tentar salvar o Pedido";
-              }*/
         }
 //        } else {
         $modelPedido->idSituacaoAtual = Pedido::EM_ANDAMENTO;
@@ -317,7 +319,7 @@ class PedidoController extends Controller
                     }
 
                     for ($i = 0; $i < count($itemPedidoPost['idProduto']); $i++) {
-                        var_dump($i);
+
                         $itemPedido = new Itempedido();
 
                         $itemPedido->idProduto = $itemPedidoPost['idProduto'][$i];
@@ -334,18 +336,8 @@ class PedidoController extends Controller
                         //Tenta salvar os itens do Pedido:
 
 
-                        if($modelPedido->idSituacaoAtual == Pedido::CANCELADO){
-                         /*   if ($itemPedido->save()) {
-                                Insumo::atualizaQtdNoEstoqueDelete(
-                                    $itemPedido->idProduto, $itemPedido->quantidade);
+                        if ($modelPedido->idSituacaoAtual != Pedido::CANCELADO) {
 
-                            } else {
-                                $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
-                                $transaction->rollBack(); //desfaz alterações no BD
-                                $itensInseridos = false;
-                                break; //encerra o laço for
-                            }*/
-                        }else {
 
                             //Verifica a quantidade em estoque de insumos
                             $verificaEstoque = $itemPedido->verificaQtdEstProdutoPedido($itemPedido->idProduto,
@@ -439,7 +431,7 @@ class PedidoController extends Controller
                 $mensagem = "Ocorreu uma falha inesperada ao tentar salvar o Pedido";
             }
         }
-//        } else {
+
 
         return $this->render('update', [
             'modelPedido' => $modelPedido,

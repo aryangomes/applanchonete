@@ -71,7 +71,7 @@ class ProdutoController extends Controller
                     'get-produto' => 'produto',
                     'get-produtos' => 'produto',
                     'get-compra-produto' => 'produto',
-                    'produto-list'=>'produto'
+                    'produto-list' => 'produto'
 
                 ],
             ],
@@ -115,7 +115,9 @@ class ProdutoController extends Controller
     public function actionView($id)
     {
         $searchModel = new ProdutoSearch();
+
         $modelProduto = $this->findModel($id);
+
         if ($modelProduto->isInsumo) {
             return $this->render('view', [
                 'modelProduto' => $modelProduto,
@@ -126,6 +128,7 @@ class ProdutoController extends Controller
             $listadeinsumos = $searchModel->searchInsumos($id);
 
             $insumos = array();
+
             $produtoVenda = $this->findModel($id);
 
 
@@ -138,7 +141,6 @@ class ProdutoController extends Controller
                     $insumo);
 
             }
-
 
             return $this->render('view', [
                 'modelProduto' => $modelProduto,
@@ -167,7 +169,9 @@ class ProdutoController extends Controller
             $listadeinsumos = $searchModel->searchInsumos(Yii::$app->request->post());
 
             $insumos = array();
+
             $modelProduto = $this->findModel(Yii::$app->request->post()['produtovenda']);
+
             foreach ($listadeinsumos as $insumo) {
                 array_push($insumos,
                     $modelProduto::findOne($insumo->idprodutoInsumo));
@@ -272,6 +276,8 @@ class ProdutoController extends Controller
                     $itensInseridos = true;
 
                     if (!Yii::$app->request->post()['Produto']['isInsumo']) {
+
+                        //Recebe os insumos do Produto Venda
                         $aux = Yii::$app->request->post()['Insumo'];
 
                         $numeroDeInsumo = count($aux['idprodutoInsumo']);
@@ -381,8 +387,11 @@ class ProdutoController extends Controller
 
                 if (!$modelProduto->isInsumo) {
                     if (isset(Yii::$app->request->post()['produto-valorvenda-disp'])) {
+
                         $modelProduto->valorVenda = Yii::$app->request->post()['Produto']['valorVenda'];
+
                         $modelProduto->idCategoria = Yii::$app->request->post()['Produto']['idCategoria'];
+
                         $modelProduto->save();
                     }
                     $aux = Yii::$app->request->post()['Insumo'];
@@ -393,6 +402,7 @@ class ProdutoController extends Controller
                         "DELETE FROM insumo WHERE idprodutoVenda = :idprodutoVenda", [
                         ':idprodutoVenda' => $id,
                     ])->execute();
+
                     for ($i = 0; $i < $numeroDeInsumo; $i++) {
 
                         if (($aux['idprodutoInsumo'][$i]) > 0) {
@@ -413,15 +423,21 @@ class ProdutoController extends Controller
                     }
                     $modelProduto->valorVenda = $modelProduto->calculoPrecoProduto($modelProduto->idProduto);
                     if (!$modelProduto->save()) {
+
                         $mensagem = "Não foi possível salvar os dados";
+
                         $transaction->rollBack(); //desfaz alterações no BD
+
                         $itensInseridos = false;
                     }
                 } else {
                     $modelProduto->load(Yii::$app->request->post());
                     if (!$modelProduto->save()) {
+
                         $mensagem = "Não foi possível salvar os dados";
+
                         $transaction->rollBack(); //desfaz alterações no BD
+
                         $itensInseridos = false;
                     }
                 }
@@ -437,7 +453,6 @@ class ProdutoController extends Controller
 
 
         }
-
 
 
         if (!$modelProduto->isInsumo) {
@@ -627,10 +642,14 @@ class ProdutoController extends Controller
             ->where(['like', 'nome', $busca])->all();
 
         if ($buscaProdutos != null) {
+
             $produtos = [];
+
             foreach ($buscaProdutos as $p) {
+
                 array_push($produtos, $p);
             }
+
             echo Json::encode($produtos);
         } else {
             echo Json::encode(null);
@@ -646,6 +665,7 @@ class ProdutoController extends Controller
     {
         $produtos = ArrayHelper::map(Produto::find()->all(),
             'nome', 'idProduto');
+
         echo Json::encode($produtos);
 
 
@@ -689,20 +709,25 @@ class ProdutoController extends Controller
      */
     public function actionGetCompraProduto($idProduto)
     {
-        $compraProduto = Compraproduto::find()->where(['idProduto'=>$idProduto])->one();
+        $compraProduto = Compraproduto::find()->where(['idProduto' => $idProduto])->one();
 
-        if($compraProduto != null){
+        if ($compraProduto != null) {
             echo Json::encode(true);
-        }else{
+        } else {
             echo Json::encode(false);
         }
 
 
-
     }
 
-
-    public function actionProdutoList($q = null, $idProduto = null) {
+    /**
+     * Retorna um array de json de produtos que contem o no nome o texto digitado na busca
+     * @param null $q
+     * @param null $idProduto
+     * @return array
+     */
+    public function actionProdutoList($q = null, $idProduto = null)
+    {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $out = ['results' => ['id' => '', 'text' => '']];
         if (!is_null($q)) {
@@ -710,7 +735,7 @@ class ProdutoController extends Controller
             $query->select('idProduto AS id, nome AS text')
                 ->from('produto')
                 ->where(['like', 'nome', $q])
-                ->andWhere(['isInsumo'=>1])
+                ->andWhere(['isInsumo' => 1])
                 ->limit(20);
             $command = $query->createCommand();
             $data = $command->queryAll();

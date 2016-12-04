@@ -115,7 +115,7 @@ if (isset($modelRelatorio->idrelatorio) && count($valoresContasAReceber) > 0) {
                 'categories' => ['Data']
             ],
             'yAxis' => [
-                'title' => ['text' => 'Valor']
+                'title' => ['text' => 'Valor(R$)']
             ],
             'credits' => false,
             'series' => $valoresContasAReceber

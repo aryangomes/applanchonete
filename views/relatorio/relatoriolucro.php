@@ -113,7 +113,7 @@ if (isset($modelRelatorio->idrelatorio) && count($lucros) > 0) {
                 'categories' => ['Data']
             ],
             'yAxis' => [
-                'title' => ['text' => 'Valor']
+                'title' => ['text' => 'Valor(R$)']
             ],
             'credits' => false,
             'series' => $lucros

@@ -65,6 +65,7 @@ class ContaController extends Controller
     public function actionIndex()
     {
         $searchModel = new ContaSearch();
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -208,7 +209,7 @@ class ContaController extends Controller
 
         $modelContasareceber->dataHora = date('Y-m-d H:i:s');
 
-        $modelContaapagar->dataVencimento= date('Y-m-d');
+        $modelContaapagar->dataVencimento = date('Y-m-d');
 
         return $this->render('create', [
             'modelConta' => $modelConta,

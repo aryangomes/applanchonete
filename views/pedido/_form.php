@@ -72,7 +72,7 @@ if (isset($mensagem) && !empty($mensagem)) {
                 </div>
             </div>
             <?=
-            $form->field($itemPedido, 'quantidade[]')->textInput(['type' => 'number', 'value' => 1, 'min' => 0]);
+            $form->field($itemPedido, 'quantidade[]')->textInput(['type' => 'number', 'value' => 1, 'min' => 1]);
             ?>
 
         </div>
@@ -148,7 +148,7 @@ if (isset($mensagem) && !empty($mensagem)) {
                 <?php
                 echo "</br>";
 
-                echo $form->field($itemPedido[$i], 'quantidade[]')->textInput(['type' => 'number', 'value' => $itemPedido[$i]->quantidade, 'min' => 0]);
+                echo $form->field($itemPedido[$i], 'quantidade[]')->textInput(['type' => 'number', 'value' => $itemPedido[$i]->quantidade, 'min' => 1]);
                 ?>
                 <input class="btn btn-danger" onclick="removeins(<?= $i ?>)" type='button' value="Remover Item Pedido"
                        title='Remover item do pedido'>
@@ -175,7 +175,7 @@ if (isset($mensagem) && !empty($mensagem)) {
     $o = implode("", $options);
 
     $this->registerJs('var i = 1; $("#btnadprodutocompra").on("click",function(){'
-        . '$("#input-dinamico").append(\'<div class="divborda" id="inputinsumo\'+i+\'" ><div class="form-group field-itempedido-idprodutoinsumo required"><div class="row"><div class="col-md-6"><div class="form-group field-itempedido-idproduto required has-success"><label class="control-label" for="itempedido-idprodutoinsumo">Produto</label><select onChange="mudarFoto(this)" id="itempedido-idproduto" class="form-control" name="Itempedido[idProduto][]" >' . $o . '</select><div class="help-block"></div></div></div><div class="col-md-6">Imagem<img width="200" src="" class="img-responsive"></div></div><div class="form-group field-itempedido-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Itempedido[quantidade][]" value="1" min="0" step="1"><div class="help-block"></div></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Item Pedido"></div><hr></div>\');'
+        . '$("#input-dinamico").append(\'<div class="divborda" id="inputinsumo\'+i+\'" ><div class="form-group field-itempedido-idprodutoinsumo required"><div class="row"><div class="col-md-6"><div class="form-group field-itempedido-idproduto required has-success"><label class="control-label" for="itempedido-idprodutoinsumo">Produto</label><select onChange="mudarFoto(this)" id="itempedido-idproduto" class="form-control" name="Itempedido[idProduto][]" >' . $o . '</select><div class="help-block"></div></div></div><div class="col-md-6">Imagem<img width="200" src="" class="img-responsive"></div></div><div class="form-group field-itempedido-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Itempedido[quantidade][]" value="1" min="1" step="1"><div class="help-block"></div></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Item Pedido"></div><hr></div>\');'
         . '$("[name=\'Itempedido[idProduto][]\']").select2();i = i+1;'
         . '$("span[class=\'select2 select2-container select2-container--default select2-container--focus\']")'
         . '.addClass("select2 select2-container select2-container--krajee select2-container--focus")'

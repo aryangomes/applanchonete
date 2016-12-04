@@ -111,13 +111,20 @@ class CaixaController extends Controller
         $caixas = Caixa::find()->all();
 
         $modelCaixa = new Caixa();
+
         $modelCaixa->dataabertura = date('Y-m-d');
+
         if ($modelCaixa->load(Yii::$app->request->post()) && $modelCaixa->save()) {
+
             return $this->redirect(['view', 'id' => $modelCaixa->idcaixa]);
+
         } else {
             $modelCaixa->valorapurado = 0;
+
             $modelCaixa->valoremcaixa = 0;
+
             $modelCaixa->valorlucro = 0;
+
             return $this->render('create', [
                 'modelCaixa' => $modelCaixa,
             ]);
@@ -138,11 +145,14 @@ class CaixaController extends Controller
 
         $ultimocaixa = Caixa::find()->where(['datafechamento' => null])
             ->orderBy('idcaixa DESC')->all();
+
         //SELECT ID FROM tabela ORDER BY ID DESC LIMIT 1
         if (!empty($ultimocaixa)) {
             if ($modelCaixa->load(Yii::$app->request->post()) && $modelCaixa->save()) {
                 return $this->redirect(['view', 'id' => $modelCaixa->idcaixa]);
+
             } else {
+
                 return $this->render('update', [
                     'modelCaixa' => $modelCaixa,
                 ]);
@@ -164,7 +174,6 @@ class CaixaController extends Controller
      */
     public function actionDelete($id)
     {
-
 
         $this->findModel($id)->delete();
 

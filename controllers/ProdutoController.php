@@ -684,15 +684,22 @@ class ProdutoController extends Controller
 
         if ($nome != null && $categoria != null && $estoqueMinimo != null) {
             $novoProduto = new Produto();
+
             $novoProduto->nome = $nome;
+
             $novoProduto->idCategoria = $categoria;
+
             $novoProduto->quantidadeMinima = $estoqueMinimo;
+
             $novoProduto->quantidadeEstoque = 0;
+
             $novoProduto->isInsumo = 1;
 
             if ($novoProduto->save()) {
+
                 echo Json::encode($novoProduto);
             } else {
+
                 echo Json::encode(false);
             }
         } else {
@@ -713,7 +720,9 @@ class ProdutoController extends Controller
 
         if ($compraProduto != null) {
             echo Json::encode(true);
+
         } else {
+
             echo Json::encode(false);
         }
 
@@ -729,7 +738,9 @@ class ProdutoController extends Controller
     public function actionProdutoList($q = null, $idProduto = null)
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
         $out = ['results' => ['id' => '', 'text' => '']];
+
         if (!is_null($q)) {
             $query = new Query();
             $query->select('idProduto AS id, nome AS text')

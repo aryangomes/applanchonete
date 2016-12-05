@@ -106,9 +106,12 @@ class AdminController extends Controller
         // AuthAssigment
 
         $permissoes = AuthItem::getListToDropDownList();
+
         $permissoesUser = null;
+
         // set up new user/profile objects
         $user = $this->module->model("User", ["scenario" => "register"]);
+
         $profile = $this->module->model("Profile");
 
         $mensagem = ""; //Informa ao usuário mensagens de erro na view
@@ -138,8 +141,11 @@ class AdminController extends Controller
 
                 // validate for normal request
                 if ($user->validate() && $profile->validate()) {
+
                     $itensInseridos = true;
+
                     // perform registration
+
                     $role = $this->module->model("Role");
 
                     if (!$user->setRegisterAttributes($role::ROLE_USER, $user::STATUS_ACTIVE)->save()) {
@@ -159,9 +165,10 @@ class AdminController extends Controller
                     $idUser = $user->id;
 
                     if (isset($post['AuthAssignment']['item_name']) &&
+
                         !(empty($post['AuthAssignment']['item_name']))
                     ) {
-                        // var_dump($post['User']['role_id']);
+                        //Guarda as permissões escolhidas
                         $roles = $post['AuthAssignment']['item_name'];
 
                         foreach ($roles as $role) {
@@ -170,7 +177,6 @@ class AdminController extends Controller
                         }
 
                     }
-
 
                     if ($itensInseridos) {
                         $transaction->commit();

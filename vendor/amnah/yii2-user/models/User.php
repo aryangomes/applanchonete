@@ -355,17 +355,12 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Salva as permissões no banco
      * @param $role
      * @param $userId
      */
     public function setPermissoes($role, $userId)
     {
-        /*  $auth_assignment = new AuthAssignment();
-          $auth_assignment->item_name = 'create-fornecedor';
-          $auth_assignment->user_id = $userId;
-          $auth_assignment->save();*/
-        $authItem = new AuthItem();
-
 
         Yii::$app->db->createCommand(
             "INSERT INTO auth_assignment
@@ -376,14 +371,13 @@ class User extends ActiveRecord implements IdentityInterface
         ])->execute();
     }
 
+    /**
+     * Altera e salva as permissões no banco
+     * @param $role
+     * @param $userId
+     */
     public function alterarPermissoes($role, $userId)
     {
-        /*  $auth_assignment = new AuthAssignment();
-          $auth_assignment->item_name = 'create-fornecedor';
-          $auth_assignment->user_id = $userId;
-          $auth_assignment->save();*/
-        $authItem = new AuthItem();
-
 
         Yii::$app->db->createCommand(
             "INSERT INTO auth_assignment
@@ -565,7 +559,7 @@ class User extends ActiveRecord implements IdentityInterface
                     $prettyName = str_replace($constPrefix, "", $constantName);
                     $prettyName = Inflector::humanize(strtolower($prettyName));
 
-                    $dropdown[$constantValue] = Yii::t('app',$prettyName);
+                    $dropdown[$constantValue] = Yii::t('app', $prettyName);
                 }
             }
         }
@@ -574,20 +568,23 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Retorna permissões cadastradas
      * @return null|string
      */
     public function getPermissoes()
     {
         if (is_null($this->cachePermissoes)) {
+
             $obj = AuthAssignment::find()->where(['user_id' => $this->id])
                 ->all();
+
             if (!is_null($obj)) {
                 if (count($obj) > 0) {
-
 
                     $authitem = new AuthItem();
 
                     $this->cachePermissoes = $obj;
+
                     $aux = array();
                     foreach ($obj as $p) {
                         array_push($aux,
@@ -599,9 +596,9 @@ class User extends ActiveRecord implements IdentityInterface
                 } else {
                     return "Não há permissões cadastradas";
                 }
-                //return $obj;
 
             } else return null;
+
         } else return $this->cachePermissoes;
 
     }

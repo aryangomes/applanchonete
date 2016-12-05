@@ -21,10 +21,10 @@ class Conta extends \yii\db\ActiveRecord
 {
 
     public static $tiposDeConta = [
-        'custofixo'=>'Custo Fixo',
-        'contasareceber'=>'Contas A Receber',
-        'contasapagar'=>'Contas A Pagar',
-        ];
+        'custofixo' => 'Custo Fixo',
+        'contasareceber' => 'Contas A Receber',
+        'contasapagar' => 'Contas A Pagar',
+    ];
 
     /**
      * @inheritdoc
@@ -42,7 +42,7 @@ class Conta extends \yii\db\ActiveRecord
         return [
             [['valor'], 'number'],
             [['descricao'], 'string'],
-            [['tipoConta','valor','situacaoPagamento'], 'required'],
+            [['tipoConta', 'valor', 'situacaoPagamento'], 'required'],
             [['situacaoPagamento'], 'integer'],
             [['tipoConta'], 'string', 'max' => 100],
         ];
@@ -79,7 +79,6 @@ class Conta extends \yii\db\ActiveRecord
     }
 
 
-
     public function getContaapagar($idconta)
     {
         return Contasapagar::findOne($idconta);
@@ -98,8 +97,7 @@ class Conta extends \yii\db\ActiveRecord
         return Contasareceber::findOne($idconta);
     }
 
-    
-    
+
     /**
      * @param $idconta
      * @return Custofixo
@@ -118,6 +116,7 @@ class Conta extends \yii\db\ActiveRecord
     {
         $tiposConta = ['contasapagar' => 'Conta a pagar', 'contasareceber' => 'Conta a receber',
             'custofixo' => 'Custo Fixo'];
+
         return $tiposConta[$this->tipoConta];
     }
 }

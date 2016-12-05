@@ -83,13 +83,13 @@ class Itempedido extends \yii\db\ActiveRecord
     }
 
     /**
-     *
+     * Atualiza a quantidade de estoque do Produto
      */
     public function removerItemPedido()
     {
 
-
         if (Insumo::atualizaQtdNoEstoqueDelete($this->idProduto, $this->quantidade)) {
+
             $this->delete();
         }
 
@@ -130,7 +130,6 @@ class Itempedido extends \yii\db\ActiveRecord
                     }
 
                 }
-
 
             }
 

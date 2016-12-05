@@ -72,13 +72,14 @@ class Relatorio extends \yii\db\ActiveRecord
      */
     public static function formatarDataDiaMesAno($data) {
         $dataFormatada = null;
+
         if($data !=null){
+
             $dataFormatada = date('d/m/Y',  strtotime($data));
         }
         
         return $dataFormatada;
     }
-
 
     /**
      * Retorna o tipo de relatório

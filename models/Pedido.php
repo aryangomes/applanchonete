@@ -130,15 +130,19 @@ class Pedido extends \yii\db\ActiveRecord
     public function getItensPedido()
     {
         $itensPedido = Itempedido::findAll($this->idPedido);
-        $results = [];
+
         $aux = [];
 
-
         if (count($itensPedido) > 0) {
+            //Guarda os nomes e quantidades dos itens pedido
             $aux = [];
+
             foreach ($itensPedido as $ip) {
+
                 $produto = Produto::findOne($ip->idProduto);
+
                 if ($produto != null) {
+
                     array_push($aux, [$produto->nome, $ip->quantidade]);
                 }
 
@@ -158,19 +162,25 @@ class Pedido extends \yii\db\ActiveRecord
     public function mudarHistoricoSituacaoPedido($novaSituacao, $idUsuario)
     {
         $historicoPedido = Historicosituacao::findOne([$this->idPedido, $this->idSituacaoAtual,$idUsuario]);
+
         if ($historicoPedido != null) {
 
             $historicoPedido = new Historicosituacao();
+
             $historicoPedido->idPedido = $this->idPedido;
+
             $historicoPedido->idSituacaoPedido = $novaSituacao;
+
             $historicoPedido->user_id = $idUsuario;
 
             date_default_timezone_set('America/Sao_Paulo');
 
             $historicoPedido->dataHora = date('Y-m-d H:i');
+
             if ($historicoPedido->save()) {
 
                 return true;
+
             } else {
 
                 return false;

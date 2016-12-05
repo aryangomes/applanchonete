@@ -75,6 +75,7 @@ class Caixa extends \yii\db\ActiveRecord {
     }
 
     /**
+     * Calcula o lucro do Pedido
      * @param $idPedido
      * @return float
      */
@@ -83,7 +84,6 @@ class Caixa extends \yii\db\ActiveRecord {
        $itensPedido = Itempedido::find()->where(['idPedido'=>$idPedido])->all();
 
         $lucroTotal= 0;
-
 
         if(count($itensPedido) > 0){
             foreach ($itensPedido as $ip){
@@ -105,7 +105,6 @@ class Caixa extends \yii\db\ActiveRecord {
                 }
             }
         }
-
 
         return number_format($lucroTotal,2);
     }

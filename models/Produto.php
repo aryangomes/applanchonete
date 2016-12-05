@@ -204,6 +204,7 @@ class Produto extends \yii\db\ActiveRecord
         }
 
         if (($arrayTipoCustoFixoZero) != null) {
+
             Yii::$app->session->setFlash('custofixozerados', "<div class=\"alert alert-warning\">
                Não foram calculados os custos fixos de " . implode(",", $arrayTipoCustoFixoZero) . " pois não
                 há registro(s) dele(s) no mês anterior
@@ -217,11 +218,10 @@ class Produto extends \yii\db\ActiveRecord
             $produtoCompra = ($searchModel->searchProdutosCompra($insumo->idprodutoInsumo));
 
             if($insumo != null && $produtoCompra != null ){
+
                 $precosugerido +=
                     (($produtoCompra->valorCompra * $insumo->quantidade) / $produtoCompra->quantidade);
             }
-
-
 
         }
 
@@ -265,10 +265,13 @@ class Produto extends \yii\db\ActiveRecord
     public function verificaQtdEstProdutoPedido($qtdProdutoPedido)
     {
         $produto = Produto::findOne($this->idProduto);
+
         if ($produto != null & $qtdProdutoPedido > 0) {
+
             if (($produto->quantidadeEstoque - $qtdProdutoPedido) >
                 $produto->quantidadeMinima
             ) {
+
                 return true;
             } else {
                 return false;

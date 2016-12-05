@@ -23,6 +23,11 @@ class OrcamentoCompra extends Model
 		];
 	}
 
+    /**
+     * Pega os preços de Produtos
+     * @param $ids
+     * @return array
+     */
 	public function pegarPrecoProdutos($ids){
 		$arrayPrecos = array();
 

@@ -123,8 +123,8 @@ class CompraController extends Controller
 
         $novoProduto = new Produto();
 
-        $arrayFinal= [];
-        $arrayIds= [];
+        $arrayFinal = [];
+        $arrayIds = [];
         //Setando valor padrão para a compra
         $modelCompra->valor = 0;
 
@@ -143,27 +143,14 @@ class CompraController extends Controller
 
             $conta->descricao = 'Compra de ' . date('d/m/Y', strtotime(Yii::$app->request->post()['Compra']['dataCompra']));
 
+            $conta->descricao = 'Compra de ' . date('d/m/Y', strtotime(Yii::$app->request->post()['Compra']['dataCompra']));
 
-            $conta->descricao = 'Compra de '. date('d/m/Y',strtotime(Yii::$app->request->post()['Compra']['dataCompra']));
+            $compraprodutos = Yii::$app->request->post()['Compraproduto'];
 
-  $compraprodutos = Yii::$app->request->post()['Compraproduto'];
-                        $valorescompraprodutos = Yii::$app->request->post()['compraproduto-valorcompra-disp'];
-
-
-            for ($i = 0; $i < count($compraprodutos['idProduto']); $i++) {
-                            $cp = new Compraproduto();
-                            $cp->idCompra = $modelCompra->idconta;
-                            $cp->idProduto = $compraprodutos['idProduto'][$i];
-                            $cp->quantidade = $compraprodutos['quantidade'][$i];
+            $valorescompraprodutos = Yii::$app->request->post()['compraproduto-valorcompra-disp'];
 
 
-                            if ($i <= 0) {
-                                $cp->valorCompra = $compraprodutos['valorCompra'][0];
-                            } else {
-                                $cp->valorCompra = (($valorescompraprodutos[$i - 1]));
-                            }
-            }
-                                    
+
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
             try {
@@ -193,6 +180,7 @@ class CompraController extends Controller
 
 
                         for ($i = 0; $i < count($compraprodutos['idProduto']); $i++) {
+
                             $cp = new Compraproduto();
 
                             $cp->idCompra = $modelCompra->idconta;
@@ -202,37 +190,26 @@ class CompraController extends Controller
                             $cp->quantidade = $compraprodutos['quantidade'][$i];
 
                             $cp->valorCompra = $valorescompraprodutos[$i];
-                            /* if ($i <= 0) {
-                                 $cp->valorCompra = $compraprodutos['valorCompra'][0];
-                             } else {
-                                 $cp->valorCompra = (($valorescompraprodutos[$i - 1]));
-                             }*/
 
-                            if ($i <= 0) {
-                                $cp->valorCompra = $compraprodutos['valorCompra'][0];
-                            } else {
-                                $cp->valorCompra = (($valorescompraprodutos[$i - 1]));
-                            }
+                            if ($cp->comparaPrecoProduto($cp)) {
 
-                            if($cp->comparaPrecoProduto($cp)){
-                               
                                 $lp = $novoProduto->getListaInsumos($cp->idProduto);
-                    
-                               foreach ($lp as $key) {
+
+                                foreach ($lp as $key) {
 
                                     $produto = Yii::$app->db->createCommand('SELECT idProduto, nome FROM produto WHERE idProduto = :id ', ['id' => $key['idprodutoVenda']])->queryOne();
 
-                                        array_push($produtosValorAlterado, $produto);  
+                                    array_push($produtosValorAlterado, $produto);
                                 }
                             }
 
-                            for($i = 0; $i < count($produtosValorAlterado); $i++) {
-                                array_push($arrayIds, $produtosValorAlterado[$i]['idProduto']);
+                            for ($j = 0; $j < count($produtosValorAlterado); $j++) {
+                                array_push($arrayIds, $produtosValorAlterado[$j]['idProduto']);
                             }
 
                             $arrayIds = array_unique($arrayIds);
 
-                            foreach ($arrayIds as $id) { 
+                            foreach ($arrayIds as $id) {
                                 $produto = Yii::$app->db->createCommand('SELECT idProduto, nome FROM produto WHERE idProduto = :id ', ['id' => $id])->queryOne();
 
                                 array_push($arrayFinal, $produto);
@@ -249,7 +226,6 @@ class CompraController extends Controller
                             }
 
                         }
-                                
 
                         $modelCompra->valor = $valorTotalDaCompra;
 
@@ -275,9 +251,9 @@ class CompraController extends Controller
 
                         if ($itensInseridos) {
                             $transaction->commit();
-                            
+
                             $compraProdutos = Compraproduto::find()->where(['idCompra' => $modelCompra->idconta])->all();
-                            
+
 
                             return $this->render('view', [
                                 'modelCompra' => $this->findModel($modelCompra->idconta),
@@ -298,6 +274,7 @@ class CompraController extends Controller
                 }
             } catch (\Exception $exception) {
                 $transaction->rollBack();
+
                 $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
             }
 
@@ -344,8 +321,9 @@ class CompraController extends Controller
 
         $novoProduto = new Produto();
         $produtosValorAlterado = [];
-        $arrayFinal= [];
-        $arrayIds= [];
+
+        $arrayFinal = [];
+        $arrayIds = [];
 
         if (Yii::$app->request->post()) {
 
@@ -353,7 +331,7 @@ class CompraController extends Controller
 
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
-            try {
+//            try {
 
                 $compraProdutoAux = (Yii::$app->request->post()['Compraproduto']);
 
@@ -375,30 +353,30 @@ class CompraController extends Controller
                     $cp->valorCompra = (Yii::$app->request->post()
                     ['compraproduto-valorcompra-disp'][$i]);
 
-                         if($cp->comparaPrecoProduto($cp)){
-                               
-                                $lp = $novoProduto->getListaInsumos($cp->idProduto);
-                    
-                               foreach ($lp as $key) {
+                    if ($cp->comparaPrecoProduto($cp)) {
 
-                                    $produto = Yii::$app->db->createCommand('SELECT idProduto, nome FROM produto WHERE idProduto = :id ', ['id' => $key['idprodutoVenda']])->queryOne();
+                        $lp = $novoProduto->getListaInsumos($cp->idProduto);
 
-                                        array_push($produtosValorAlterado, $produto);  
-                                }
-                            }
+                        foreach ($lp as $key) {
 
-                            for($i = 0; $i < count($produtosValorAlterado); $i++) {
-                                array_push($arrayIds, $produtosValorAlterado[$i]['idProduto']);
-                            }
+                            $produto = Yii::$app->db->createCommand('SELECT idProduto, nome FROM produto WHERE idProduto = :id ', ['id' => $key['idprodutoVenda']])->queryOne();
 
-                            $arrayIds = array_unique($arrayIds);
+                            array_push($produtosValorAlterado, $produto);
+                        }
+                    }
 
-                            foreach ($arrayIds as $id) { 
-                                $produto = Yii::$app->db->createCommand('SELECT idProduto, nome FROM produto WHERE idProduto = :id ', ['id' => $id])->queryOne();
+                    for ($j = 0; $j < count($produtosValorAlterado); $j++) {
+                        array_push($arrayIds, $produtosValorAlterado[$j]['idProduto']);
+                    }
 
-                                array_push($arrayFinal, $produto);
+                    $arrayIds = array_unique($arrayIds);
 
-                            }
+                    foreach ($arrayIds as $id) {
+                        $produto = Yii::$app->db->createCommand('SELECT idProduto, nome FROM produto WHERE idProduto = :id ', ['id' => $id])->queryOne();
+
+                        array_push($arrayFinal, $produto);
+
+                    }
 
                     if (!$cp->save(false)) {
                         $mensagem = "Não foi possível salvar os dados de algum";
@@ -437,15 +415,15 @@ class CompraController extends Controller
 
                 if ($itensInseridos) {
                     $transaction->commit();
-                    return $this->redirect(['view', 
+                    return $this->redirect(['view',
                         'id' => $modelCompra->idconta,
                         'produtosValorAlterado' => $arrayFinal]);
                 }
 
-            } catch (\Exception $exception) {
+            /*} catch (\Exception $exception) {
                 $transaction->rollBack();
                 $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
-            }
+            }*/
         }
 
         return $this->render('update', [

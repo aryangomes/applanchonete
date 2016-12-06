@@ -68,14 +68,12 @@ class OrcamentocompraController extends Controller
 
             //Array que irá armazenar a lista de produtos vindos do banco que o usuário quer o orçamento
             $resultados = array();
-<<<<<<<
 
-=======
             $mensagem = "";
             $produtoSemPreco = false;
             
             //Varivel que irá guardar o valor total do orçamento
->>>>>>>
+
             $valororcamento = 0;
 
             //laço que irá percorrer todos os insumos selecionados pelo usuário e irá buscar

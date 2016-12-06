@@ -82,15 +82,6 @@ $config = [
         // refer settings section for all configuration options
         ],
     ],
-    'modules' => [
-        'datecontrol' => [
-            'class' => '\kartik\datecontrol\Module',
-        ],
-        'user' => [
-            'class' => 'amnah\yii2\user\Module',
-        // set custom module properties here ...
-        ],
-    ],
     'params' => $params,
 ];
 

@@ -2,8 +2,8 @@
 
 namespace app\models;
 
-use yii\base\Model;
 use Yii;
+use yii\base\Model;
 use yii\web\Controller;
 
 class OrcamentoCompra extends Model
@@ -11,11 +11,6 @@ class OrcamentoCompra extends Model
 	public $listaInsumos;
 	public $valorTotalCompra;
 
-	//public function rules(){
-	//	return [
-	//		['listaInsumos', 'requered'],
-	//	];
-	//}
 
 	public function attributesLabels(){
 		return [
@@ -30,8 +25,7 @@ class OrcamentoCompra extends Model
      */
 	public function pegarPrecoProdutos($ids){
 		$arrayPrecos = array();
-
-		//$listaIds = implode(",", $ids);
+                
     	$precos =  Yii::$app->db->createCommand('SELECT idProduto, valorCompra FROM compraproduto')->queryAll();
 
     	$total_ids = count($ids); 

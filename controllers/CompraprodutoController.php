@@ -90,6 +90,10 @@ class CompraprodutoController extends Controller
         $model = new Compraproduto();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            $novoPreco= Yii::$app->request->post()['Compraproduto']['valorCompra'];
+            $model->comparaPrecoProduto($novoPreco);
+
             return $this->redirect(['view', 'idCompra' => $model->idCompra, 'idProduto' => $model->idProduto]);
         } else {
             return $this->render('create', [

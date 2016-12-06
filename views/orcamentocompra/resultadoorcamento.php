@@ -14,12 +14,36 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php $form = ActiveForm::begin(); ?>
     <h1><?= Html::encode($this->title) ?></h1>
 
-<?php 
-	//$valorTotalFloat = floatval ($valorTotal)
-?>
 <div class="form-group">
-  <?= "Previsão Gastos: " . $valorTotal;
-?>
+	<h2>Orçamento para compra de produtos</h2>
+  	<p>Esse orçamento usa como base quanto cada produto custava na última compra.</p>            
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Produto</th>
+        <th>Preço</th>
+      </tr>
+    </thead>
+    
+    <?php 
+    	$valorTotalFloat = floatval ($valorTotal);
+    	foreach ($listaCompleta as $key => $lista) {
+    ?>
+    
+    <tbody>
+      <tr>
+        <td><?= $lista[0]['nome']?></td>
+        <td><?= "R$ " . $lista[0]['valorCompra']?></td>
+      </tr>
+    </tbody>
+    <?php } ?>
+    <tbody>
+      <tr class="bg-info">
+        <td><b>Previsão de Gastos: </td>
+        <td><b><?= "R$ " . $valorTotal?></b></td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <?php ActiveForm::end(); ?>

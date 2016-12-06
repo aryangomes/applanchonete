@@ -122,6 +122,7 @@ class PedidoController extends Controller
         $itemPedido = new Itempedido();
 
         $mensagem = ""; //Informa ao usuário mensagens de erro na view
+        $totalPedidoPagamento = "";
 
         $situacaopedido = ArrayHelper::map(
             Situacaopedido::find()->all()
@@ -156,10 +157,15 @@ class PedidoController extends Controller
                         intval($modelPedido->idSituacaoAtual),
                         Yii::$app->getUser()->id))
                 ) {
+                    //alterei
+
+
+
                     //Carrega os dados dos itens do Pedido:
                     $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
 
                     $itensInseridos = true;
+
 
                     for ($i = 0; $i < count($itemPedidoPost['idProduto']); $i++) {
                         $itemPedido = new Itempedido();
@@ -174,6 +180,7 @@ class PedidoController extends Controller
                             number_format(
                                 $produtoVenda->valorVenda * $itemPedido->quantidade, 2));
 
+                        $totalPedidoPagamento += $itemPedido->total;
                         $itemPedido->idPedido = $modelPedido->idPedido;
 
                         $totalDoPedido += $itemPedido->total;
@@ -188,12 +195,8 @@ class PedidoController extends Controller
                                 Insumo::atualizaQtdNoEstoqueInsert(
                                     $itemPedido->idProduto, $itemPedido->quantidade);
 
-                            } else {
-                                $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
-                                $transaction->rollBack(); //desfaz alterações no BD
-                                $itensInseridos = false;
-                                break; //encerra o laço for
                             }
+                        
                         } else {
                             $insumosFaltando = "";
                             foreach ($verificaEstoque as $i => $insumo) {
@@ -216,9 +219,28 @@ class PedidoController extends Controller
                             break; //encerra o laço for
                         }
                     }
-
-                    $modelPedido->totalPedido = $totalDoPedido;
-
+                    //alterirei aqui
+                    if($modelPedido->idSituacaoAtual == Pedido::CONCLUIDO){
+                        
+                        $caixa = new Caixa();
+                            $caixa = $caixa->getCaixaAberto(Yii::$app->user->getId());
+                            
+                            if ($caixa != null) {
+                                $caixa = Caixa::findOne($caixa->idcaixa);
+                                $caixa->valoremcaixa += $totalPedidoPagamento;
+                                $caixa->valorapurado += $totalPedidoPagamento;
+                                $caixa->valorlucro += number_format($caixa->calculaValorLucroPedido($modelPedido->idPedido), 2);
+                            
+                                if (!$caixa->save()) {
+                                    $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
+                                    $transaction->rollBack(); //desfaz alterações no BD
+                                    $itensInseridos = false;
+                                    echo Json::encode(false);
+                                }
+                        }
+                        //print_r($itemPedido);
+                        //return $this->actionFinalizarPedido($formaPagamento, $idPedido);
+                    }
                     //Testa se todos os itens foram inseridos (ou tudo ou nada):
                     if ($itensInseridos && $modelPedido->save()) {
                         $transaction->commit();
@@ -317,7 +339,7 @@ class PedidoController extends Controller
 
                         }
                     }
-
+                    //AQUI
                     for ($i = 0; $i < count($itemPedidoPost['idProduto']); $i++) {
 
                         $itemPedido = new Itempedido();

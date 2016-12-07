@@ -266,9 +266,10 @@ if ($action == 'create' || ($modelProduto->isInsumo && $action == 'update')) {
 ?>
     <?= $form->field($modelProduto, 'imageFile')->fileInput(['class' => 'form-control']) ?>
     <div class="form-group">
-        <?= Html::submitButton($action == 'create' ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => 'btn btn-success',
+        <?= Html::Button($action == 'create' ? Yii::t('yii', 'Create') : Yii::t('yii', 'Update'), ['class' => 'btn btn-success',
             'title'=>$modelProduto->isNewRecord ? 'Clique para cadastrar um novo Produto':
-                'Clique para salvar os dados do Produto']) ?>
+                'Clique para salvar os dados do Produto' ,
+        'id'=>'btSalvarProduto']) ?>
         <?php
         if (!$modelProduto->isInsumo) {
             ?>

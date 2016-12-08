@@ -14,6 +14,8 @@ use Yii;
  */
 class Categoria extends \yii\db\ActiveRecord
 {
+    const SEM_CATEGORIA = 1;
+
     /**
      * @inheritdoc
      */

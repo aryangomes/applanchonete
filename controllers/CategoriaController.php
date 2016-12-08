@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Produto;
 use Yii;
 use app\models\Categoria;
 use app\models\CategoriaSearch;
@@ -128,6 +129,25 @@ class CategoriaController extends Controller
 
         $transaction = \Yii::$app->db->beginTransaction();
         try {
+
+            //Verifica se a categoria a ser deletada não é
+            //a padrão(SEM CATEGORIA)
+            if($id != Categoria::SEM_CATEGORIA){
+
+                $produtosDaCategoria = Produto::find()->
+                where(['idCategoria'=>$id])->all();
+
+                if(count($produtosDaCategoria) > 0 ){
+
+                    foreach ($produtosDaCategoria as $prod){
+                        //Muda a categoria do produto para "Sem categoria"
+                        $prod->idCategoria = Categoria::SEM_CATEGORIA;
+                        $prod->save();
+                    }
+                }
+            }
+
+
             if ($this->findModel($id)->delete()) {
                 $transaction->commit();
             }

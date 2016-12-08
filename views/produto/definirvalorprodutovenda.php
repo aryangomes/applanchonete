@@ -96,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $(document).ready(function () {
         var valorantigo = parseFloat($("#valorantigo-disp").val());
         $("#w1-source").change(function () {
-            console.log('valorantigo '+valorantigo);
+           
             var porcentagem = parseFloat($("#w1-source").val());
 
             porcentagem /= 100.0;
@@ -108,7 +108,22 @@ $this->params['breadcrumbs'][] = $this->title;
             $("#valornovo-disp").val(parseFloat(novoValor).toFixed(2));
 
             $("#valornovo-disp").maskMoney('mask');
-        })
+        });
+
+        $("#w1").keyup(function () {
+
+            var porcentagem = parseFloat($("#w1").val());
+
+            porcentagem /= 100.0;
+
+
+            var novoValor = parseFloat((valorantigo + (valorantigo * porcentagem)));
+            $("#diferencavalor-disp").val((valorantigo * porcentagem).toFixed(2));
+            $("#diferencavalor-disp").maskMoney('mask');
+            $("#valornovo-disp").val(parseFloat(novoValor).toFixed(2));
+
+            $("#valornovo-disp").maskMoney('mask');
+        });
 
     });
 

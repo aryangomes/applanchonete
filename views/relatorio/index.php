@@ -36,7 +36,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Html::a('Visualizar relatório', ['relatorio' . strtolower($modelRelatorio->tipo), 'id' => $modelRelatorio->idrelatorio]);
                     },
                 ],
-                'datageracao:date',
+                [
+
+                    'attribute' => 'datageracao',
+
+                    'value' => function ($modelRelatorio) {
+                        return isset($modelRelatorio->datageracao) ?
+                            Yii::$app->formatter->asDate($modelRelatorio->datageracao, 'dd/M/Y à\s HH:m'):null;
+                    },
+                ],
 
                 [
                     'attribute' =>'tipo',
@@ -54,8 +62,26 @@ $this->params['breadcrumbs'][] = $this->title;
                         return $modelRelatorio->getTipoRelatorio();
                     }
                 ],
-                'inicio_intervalo:date',
-                'fim_intervalo:date',
+
+                [
+
+                    'attribute' => 'inicio_intervalo',
+
+                    'value' => function ($modelRelatorio) {
+                        return isset($modelRelatorio->inicio_intervalo) ?
+                            Yii::$app->formatter->asDate($modelRelatorio->inicio_intervalo, 'dd/M/Y'):null;
+                    },
+                ],
+
+                [
+
+                    'attribute' => 'fim_intervalo',
+
+                    'value' => function ($modelRelatorio) {
+                        return isset($modelRelatorio->fim_intervalo) ?
+                            Yii::$app->formatter->asDate($modelRelatorio->fim_intervalo, 'dd/M/Y'):null;
+                    },
+                ],
                 // 'usuario_id',
 
                 ['class' => 'yii\grid\ActionColumn',

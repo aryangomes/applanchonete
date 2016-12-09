@@ -33,7 +33,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $modelCardapio,
         'attributes' => [
 
-            'data:date',
+            [
+
+                'attribute' => 'data',
+
+                'value' => isset($modelCardapio->data) ?
+                        Yii::$app->formatter->asDate($modelCardapio->data, 'dd/M/Y'):null
+            ],
             'titulo',
         ],
     ]) ?>

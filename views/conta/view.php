@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'idconta',
             [
                 'attribute' => 'valor',
-                'value' => 'R$ ' . $modelConta->valor,
+                'value' => 'R$ ' . number_format($modelConta->valor,2),
             ],
 
             'descricao:ntext',
@@ -62,14 +62,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
             ['attribute' => 'contasapagar.dataVencimento',
-                'value' => ($modelConta->tipoConta == 'contasapagar') ? $modelConta->contasapagar->dataVencimento : '',
-                'format' => 'date',
+                'value' => ($modelConta->tipoConta == 'contasapagar') ?
+                    Yii::$app->formatter->asDate($modelConta->contasapagar->dataVencimento, 'dd/M/Y') : '',
+
                 'visible' => ($modelConta->tipoConta == 'contasapagar') ? true : false,
 
             ],
             ['attribute' => 'custofixo.dataVencimento',
-                    'value' => ($modelConta->tipoConta == 'custofixo') ? $modelConta->contasapagar->dataVencimento : '',
-                'format' => 'date',
+                    'value' => ($modelConta->tipoConta == 'custofixo') ?
+                        Yii::$app->formatter->asDate($modelConta->contasapagar->dataVencimento, 'dd/M/Y'): '',
+
                 'visible' => ($modelConta->tipoConta == 'custofixo') ? true : false,
 
             ],

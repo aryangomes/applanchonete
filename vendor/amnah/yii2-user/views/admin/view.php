@@ -51,7 +51,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => $user->status ? 'Ativo' : 'Não ativo',
             ],
 
+            [
 
+                'attribute' => 'created_at',
+
+                'value' =>isset($user->created_at) ?
+                        Yii::$app->formatter->asDate($user->created_at, 'dd/M/Y à\s H:i:s'):null
+            ],
+
+            [
+
+                'attribute' => 'updated_at',
+
+                'value' =>isset($user->updated_at) ?
+                    Yii::$app->formatter->asDate($user->updated_at, 'dd/M/Y à\s H:i:s'):null
+            ],
 
 //            'password',
 //            'auth_key',

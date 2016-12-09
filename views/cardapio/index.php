@@ -38,7 +38,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Html::a($modelCardapio->titulo, ['view', 'id' => $modelCardapio->idCardapio]);
                     }
                 ],
-                'data:date',
+                [
+
+                    'attribute' => 'data',
+
+                    'value' => function ($modelCardapio) {
+                        return isset($modelCardapio->data) ?
+                            Yii::$app->formatter->asDate($modelCardapio->data, 'dd/M/Y'):null;
+                    },
+                ],
                 ['class' => 'yii\grid\ActionColumn'],
             ],
         ]); ?>

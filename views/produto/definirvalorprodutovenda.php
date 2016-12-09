@@ -96,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $(document).ready(function () {
         var valorantigo = parseFloat($("#valorantigo-disp").val());
         $("#w1-source").change(function () {
-           
+
             var porcentagem = parseFloat($("#w1-source").val());
 
             porcentagem /= 100.0;

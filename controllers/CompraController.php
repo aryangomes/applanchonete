@@ -87,10 +87,16 @@ class CompraController extends Controller
         $compraProdutos = Compraproduto::find()->where(['idCompra' => $id])
             ->all();
 
+        $produtosValorAlterado = null;
+        if(isset($_GET['produtosValorAlterado']) &&
+        !empty($_GET['produtosValorAlterado'])){
+            $produtosValorAlterado = $_GET['produtosValorAlterado'];
+        }
+
         return $this->render('view', [
             'modelCompra' => $this->findModel($id),
             'compraProdutos' => $compraProdutos,
-            'produtosValorAlterado' => $_GET['produtosValorAlterado']
+            'produtosValorAlterado' => $produtosValorAlterado,
         ]);
     }
 

@@ -11,7 +11,7 @@ use yii\widgets\Pjax;
  * @var $situacaopedido array*/
 
 $this->title = Yii::t('app', 'Pedidos');
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pedidos'), 'url' => ['index']];
 //date_default_timezone_set('America/Sao_Paulo');
 ?>
 <div class="pedido-index">

@@ -10,7 +10,8 @@ use yii\grid\GridView;
 
 
 $this->title = Yii::t('app', 'Relatorios');
-$this->params['breadcrumbs'][] = $this->title;
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Relatorios'), 'url' => ['index']];
 ?>
 <div class="relatorio-index">
 

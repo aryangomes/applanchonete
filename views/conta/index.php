@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 /* @var $modelConta \app\models\Conta */
 
 $this->title = Yii::t('app', 'Contas');
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Contas'), 'url' => ['index']];
 ?>
 <div class="conta-index">
 

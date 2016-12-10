@@ -18,7 +18,7 @@ $user = $module->model("User");
 $role = $module->model("Role");
 
 $this->title = Yii::t('user', 'Users');
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('user', 'Users'), 'url' => ['index']];
 ?>
 <div class="user-index">
 

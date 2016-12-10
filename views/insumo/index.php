@@ -9,7 +9,7 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Create {model}', ['model' => 'Insumo']);
-$this->params['breadcrumbs'][] = 'Insumos';
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Insumos'), 'url' => ['index']];
 ?>
 <div class="insumos-index">
 

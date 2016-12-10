@@ -18,11 +18,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php  if (!empty($produtosValorAlterado)) { ?>
     <div class="alert alert-warning">
         <strong>Aviso!</strong> Alguns produtos de venda tiveram alteração no preço do insumo.
-        <?php 
+        <?php
+        if(isset($produtosValorAlterado) && !empty($produtosValorAlterado)){
             foreach ($produtosValorAlterado as $prod) {
                 echo "<br />";
                 echo Html::a($prod['nome'], ['produto/view', 'id' => $prod['idProduto']], ['class' => 'profile-link', 'target' => '_blank']);
-            } 
+            }
+        }
         ?>
     </div>
     <?php  } ?>

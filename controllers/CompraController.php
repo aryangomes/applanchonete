@@ -341,10 +341,16 @@ class CompraController extends Controller
 
                 $compraProdutoAux = (Yii::$app->request->post()['Compraproduto']);
 
-                Yii::$app->db->createCommand(
-                    "DELETE FROM compraproduto WHERE idCompra = :idCompra", [
-                    ':idCompra' => $id,
-                ])->execute();
+                $compraProdutos = Compraproduto::find()->where(['idCompra'=>$id])->all();
+
+            if(count($compraProdutos) > 0){
+                foreach ($compraProdutos as $cp){
+                    $cp->delete();
+                }
+            }
+
+
+               
                 for ($i = 0; $i < count($compraProdutoAux['idProduto']); $i++) {
 
 
@@ -377,8 +383,8 @@ class CompraController extends Controller
 
                     $arrayIds = array_unique($arrayIds);
 
-                    foreach ($arrayIds as $id) {
-                        $produto = Yii::$app->db->createCommand('SELECT idProduto, nome FROM produto WHERE idProduto = :id ', ['id' => $id])->queryOne();
+                    foreach ($arrayIds as $idProduto) {
+                        $produto = Yii::$app->db->createCommand('SELECT idProduto, nome FROM produto WHERE idProduto = :id ', ['id' => $idProduto])->queryOne();
 
                         array_push($arrayFinal, $produto);
 

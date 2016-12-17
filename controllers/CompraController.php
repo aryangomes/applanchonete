@@ -213,14 +213,7 @@ class CompraController extends Controller
                                 array_push($arrayIds, $produtosValorAlterado[$j]['idProduto']);
                             }
 
-                            $arrayIds = array_unique($arrayIds);
 
-                            foreach ($arrayIds as $id) {
-                                $produto = Yii::$app->db->createCommand('SELECT idProduto, nome FROM produto WHERE idProduto = :id ', ['id' => $id])->queryOne();
-
-                                array_push($arrayFinal, $produto);
-
-                            }
 
                             if (!$cp->save(false)) {
                                 $mensagem = "Não foi possível salvar os dados";
@@ -230,6 +223,15 @@ class CompraController extends Controller
                             } else {
                                 $valorTotalDaCompra += floatval($cp->valorCompra);
                             }
+
+                        }
+
+                        $arrayIds = array_unique($arrayIds);
+
+                        foreach ($arrayIds as $id) {
+                            $produto = Yii::$app->db->createCommand('SELECT idProduto, nome FROM produto WHERE idProduto = :id ', ['id' => $id])->queryOne();
+
+                            array_push($arrayFinal, $produto);
 
                         }
 
@@ -381,14 +383,7 @@ class CompraController extends Controller
                         array_push($arrayIds, $produtosValorAlterado[$j]['idProduto']);
                     }
 
-                    $arrayIds = array_unique($arrayIds);
 
-                    foreach ($arrayIds as $idProduto) {
-                        $produto = Yii::$app->db->createCommand('SELECT idProduto, nome FROM produto WHERE idProduto = :id ', ['id' => $idProduto])->queryOne();
-
-                        array_push($arrayFinal, $produto);
-
-                    }
 
                     if (!$cp->save(false)) {
                         $mensagem = "Não foi possível salvar os dados de algum";
@@ -402,6 +397,15 @@ class CompraController extends Controller
                     }
 
                 }
+
+            $arrayIds = array_unique($arrayIds);
+
+            foreach ($arrayIds as $idProduto) {
+                $produto = Yii::$app->db->createCommand('SELECT idProduto, nome FROM produto WHERE idProduto = :id ', ['id' => $idProduto])->queryOne();
+
+                array_push($arrayFinal, $produto);
+
+            }
 
                 $modelCompra->valor = $valorTotalDaCompra;
 

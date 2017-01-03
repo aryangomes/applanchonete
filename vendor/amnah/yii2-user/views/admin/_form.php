@@ -45,13 +45,21 @@ $role = $module->model("Role");
             'options'=>[
                 'id'=>'permissoes',
                 'prompt'=>'Selecione a(s) permissão(ões)',
+
+            ],
+            'toggleAllSettings' => [
+                'selectLabel' => '<i class="glyphicon glyphicon-ok-circle"></i> Selecionar todos',
+                'unselectLabel' => '<i class="glyphicon glyphicon-remove-circle"></i> Desmarcar todos',
+                'selectOptions' => ['class' => 'text-success'],
+                'unselectOptions' => ['class' => 'text-danger'],
             ],
             'pluginOptions' => [
 
-//                'allowClear' => true,
+                'allowClear' => true,
                 'multiple' => true,
 
             ],
+
         ]); ?>
 
 

@@ -140,7 +140,6 @@ if (count($loja) > 0) {
             <!--      Dropdown Acesso Rápido      -->
 
 
-
             <!--      Dropdown Usuário      -->
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
@@ -161,17 +160,17 @@ if (count($loja) > 0) {
             <!--      Dropdown Usuário      -->
 
             <!--      Dropdown Notificações      -->
-    <?php
-    if (Yii::$app->user->can("caixa") || Yii::$app->user->can("despesa")) {
-    ?>
+            <?php
+            if (Yii::$app->user->can("caixa") || Yii::$app->user->can("despesa")) {
+            ?>
             <li class="dropdown">
 
 
             </li>
             <li class="dropdown">
-        <?php
-        if (Yii::$app->user->can("caixa")) {
-        ?>
+                <?php
+                if (Yii::$app->user->can("caixa")) {
+                ?>
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
             <?php
@@ -205,12 +204,11 @@ if (count($loja) > 0) {
                         }
                     }
 
-                    if($Compraproduto->valorAlterado == true)
-                    {
-                         echo "<li><a><b>Há produtos com o valor alterado.</b></a></li>";
-                  
-                         echo "<li class='divider'></li>";
-                     }
+                    if ($Compraproduto->valorAlterado == true) {
+                        echo "<li><a><b>Há produtos com o valor alterado.</b></a></li>";
+
+                        echo "<li class='divider'></li>";
+                    }
 
                     }
                     else
@@ -223,10 +221,10 @@ if (count($loja) > 0) {
                         <li>
                             &nbsp; Não há alertas
                         </li>
-                     <?php
-            }
-        }
-    }
+                        <?php
+                        }
+                        }
+                        }
                         ?>
 
                     </ul>
@@ -462,6 +460,58 @@ if (count($loja) > 0) {
                             <?php
                         }
                         ?>
+
+                        <li>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#outros"><i
+                                    class="fa fa-ellipsis-h"></i> Outros <i
+                                    class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="outros" class="collapse">
+                                <?php
+                                if (Yii::$app->user->can("pedido") || Yii::$app->user->can("admin")) {
+                                    ?>
+                                    <li>
+                                        <?= Html::a('<i class="fa fa-caret-right"></i> Situações do Pedido', ['/situacaopedido/index']) ?>
+
+                                    </li>
+                                    <?php
+                                }
+
+                                if (Yii::$app->user->can("historicosituacao") || Yii::$app->user->can("admin")) {
+                                    ?>
+                                    <li>
+                                        <?= Html::a('<i class="fa fa-caret-right"></i> Histórico de Situações do Pedido', ['/historicosituacao/index']) ?>
+
+                                    </li>
+                                    <?php
+                                }
+                                ?>
+
+                                <?php
+                                if (Yii::$app->user->can("tipocustofixo") || Yii::$app->user->can("custofixo") || Yii::$app->user->can("admin")) {
+                                    ?>
+                                    <li>
+                                        <?= Html::a('<i class="fa fa-caret-right"></i> Tipos de Custo Fixos ', ['/tipocustofixo/index']) ?>
+
+                                    </li>
+                                    <?php
+                                }
+                                ?>
+
+                                <?php
+                                if (Yii::$app->user->can("formapagamento") || Yii::$app->user->can("pagamento") || Yii::$app->user->can("admin")) {
+                                    ?>
+                                    <li>
+                                        <?= Html::a('<i class="fa fa-caret-right"></i> Formas de Pagamento ', ['/formapagamento/index']) ?>
+
+                                    </li>
+                                    <?php
+                                }
+                                ?>
+
+
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
 

@@ -26,21 +26,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
 
-            'titulo',
+            [
+                'attribute' => 'titulo',
+                'format'=>'raw',
+                'value' => function ($modelFormapagamento) {
+                    return Html::a($modelFormapagamento->titulo, ['view' ,
+                        'id' => $modelFormapagamento->idTipoPagamento]);
+                },
+            ],
+
             'descricao:ntext',
 
             ['class' => 'yii\grid\ActionColumn',
-                'template' => '{view}',
-                'header' => 'Ação',
-                'buttons' => [
-                    'view' => function ($url, $modelFormapagamento) {
-                        return Html::a('Clique aqui para visualizar detalhes do pedido <i class="fa fa-search-plus"></i>',
-                            \yii\helpers\Url::toRoute(['view', 'id' => $modelFormapagamento->idTipoPagamento]),
-                            [
-                                'title' => Yii::t('app', 'Clique aqui para visualizar detalhes do pedido'),
-                            ]);
-                    }
-                ],
 
             ],
         ],

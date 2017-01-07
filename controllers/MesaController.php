@@ -21,22 +21,12 @@ class MesaController extends Controller
     public function behaviors()
     {
         return [
-//            'access' => [
-//        'class' => AccessControl::classname(),
-//        'only'=> ['create','update','view','delete','index'],
-//        'rules'=> [
-//        ['allow'=>true,
-//        'roles' => ['mesa','index-mesa'],
-//        ],
-//        ]
-//        ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
                 ],
             ],
-//            ],
             'autorizacao' => [
                 'class' => AccessFilter::className(),
                 'actions' => [

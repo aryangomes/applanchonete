@@ -30,7 +30,7 @@ use yii\bootstrap\Modal;
             'language' => 'pt',
         ]); ?>
 
-        <?= $form->field($modelCardapio, 'titulo')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($modelCardapio, 'titulo')->textInput(['maxlength' => true,'placeholder'=>"Digite o título do Cardápio"]) ?>
 
 
         <?php
@@ -51,7 +51,8 @@ use yii\bootstrap\Modal;
                             <img width="200" src="" class="img-responsive">
                         </div>
                     </div>
-                    <?= $form->field($modelItemCardapio, 'ordem[]')->textInput(['type' => 'number', 'step' => 1, 'min' => 0]) ?>
+                    <?= $form->field($modelItemCardapio, 'ordem[]')->textInput(['type' => 'number', 'step' => 1, 'min' => 0,
+                        'placeholder'=>"Digite a ordem que o Produto Venda será mostrado na lista",]) ?>
 
                     <input type="button" id="btRemoverItemCardapio"
                            value="Remover"
@@ -85,6 +86,7 @@ use yii\bootstrap\Modal;
                         </div>
                     </div>
                     <?= $form->field($itensCardapio[0], 'ordem[]')->textInput(['type' => 'number', 'step' => 1, 'min' => 0,
+                        'placeholder'=>"Digite a ordem que o Produto Venda será mostrado na lista",
                         'value' => $itensCardapio[0]->ordem]) ?>
                     <input type="button" id="btRemoverItemCardapio"
                            value="Remover"
@@ -117,6 +119,7 @@ use yii\bootstrap\Modal;
                         </div>
                     </div>
                     <?= $form->field($itensCardapio[$i], 'ordem[]')->textInput(['type' => 'number', 'step' => 1, 'min' => 0,
+                        'placeholder'=>"Digite a ordem que o Produto Venda será mostrado na lista",
                         'value' => $itensCardapio[$i]->ordem]) ?>
 
                     <input type="button"

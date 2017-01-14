@@ -1,0 +1,7 @@
+#ignore vendor
+vendor/
+
+#ignore testes
+tests/
+
+

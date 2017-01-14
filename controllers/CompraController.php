@@ -187,6 +187,7 @@ class CompraController extends Controller
 
                         for ($i = 0; $i < count($compraprodutos['idProduto']); $i++) {
 
+
                             $cp = new Compraproduto();
 
                             $cp->idCompra = $modelCompra->idconta;
@@ -196,6 +197,12 @@ class CompraController extends Controller
                             $cp->quantidade = $compraprodutos['quantidade'][$i];
 
                             $cp->valorCompra = $valorescompraprodutos[$i];
+
+                            $produto = Produto::findOne($cp->idProduto);
+
+                            $produto->quantidadeEstoque += $cp->quantidade;
+
+                            $produto->save();
 
                             if ($cp->comparaPrecoProduto($cp)) {
 
@@ -347,6 +354,13 @@ class CompraController extends Controller
 
             if(count($compraProdutos) > 0){
                 foreach ($compraProdutos as $cp){
+
+                    $produto = Produto::findOne($cp->idProduto);
+
+                    $produto->quantidadeEstoque -= $cp->quantidade;
+
+                    $produto->save();
+
                     $cp->delete();
                 }
             }
@@ -366,6 +380,12 @@ class CompraController extends Controller
 
                     $cp->valorCompra = (Yii::$app->request->post()
                     ['compraproduto-valorcompra-disp'][$i]);
+
+                    $produto = Produto::findOne($cp->idProduto);
+
+                    $produto->quantidadeEstoque += $cp->quantidade;
+
+                    $produto->save();
 
                     if ($cp->comparaPrecoProduto($cp)) {
 

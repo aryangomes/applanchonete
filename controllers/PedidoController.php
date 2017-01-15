@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\models\Caixa;
+use app\models\Conta;
+use app\models\Contasareceber;
 use app\models\Historicosituacao;
 use app\models\Mesa;
 use Yii;
@@ -116,6 +118,9 @@ class PedidoController extends Controller
      */
     public function actionCreate()
     {
+
+        date_default_timezone_set('America/Recife');
+
         //Carrega demais modelos
         $modelPedido = new Pedido();
 
@@ -160,7 +165,6 @@ class PedidoController extends Controller
                     //alterei
 
 
-
                     //Carrega os dados dos itens do Pedido:
                     $itemPedidoPost = (Yii::$app->request->post()['Itempedido']);
 
@@ -196,7 +200,7 @@ class PedidoController extends Controller
                                     $itemPedido->idProduto, $itemPedido->quantidade);
 
                             }
-                        
+
                         } else {
                             $insumosFaltando = "";
                             foreach ($verificaEstoque as $i => $insumo) {
@@ -219,30 +223,59 @@ class PedidoController extends Controller
                             break; //encerra o laço for
                         }
                     }
-                    //alterirei aqui
-                    if($modelPedido->idSituacaoAtual == Pedido::CONCLUIDO){
-                        
+
+                    $modelPedido->totalPedido = $totalDoPedido;
+
+                    if ($modelPedido->idSituacaoAtual == Pedido::CONCLUIDO) {
+
                         $caixa = new Caixa();
-                            $caixa = $caixa->getCaixaAberto(Yii::$app->user->getId());
-                            
-                            if ($caixa != null) {
-                                $caixa = Caixa::findOne($caixa->idcaixa);
-                                $caixa->valoremcaixa += $totalPedidoPagamento;
-                                $caixa->valorapurado += $totalPedidoPagamento;
-                                $caixa->valorlucro += number_format($caixa->calculaValorLucroPedido($modelPedido->idPedido), 2);
-                            
-                                if (!$caixa->save()) {
-                                    $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
-                                    $transaction->rollBack(); //desfaz alterações no BD
-                                    $itensInseridos = false;
-                                    echo Json::encode(false);
-                                }
+                        $caixa = $caixa->getCaixaAberto(Yii::$app->user->getId());
+
+                        if ($caixa != null) {
+                            $caixa = Caixa::findOne($caixa->idcaixa);
+                            $caixa->valoremcaixa += $totalPedidoPagamento;
+                            $caixa->valorapurado += $totalPedidoPagamento;
+                            $caixa->valorlucro += number_format($caixa->calculaValorLucroPedido($modelPedido->idPedido), 2);
+
+                            if (!$caixa->save()) {
+                                $mensagem = "Não foi possível salvar os dados de algum item do Pedido";
+                                $transaction->rollBack(); //desfaz alterações no BD
+                                $itensInseridos = false;
+                                echo Json::encode(false);
+                            }
                         }
-                        //print_r($itemPedido);
-                        //return $this->actionFinalizarPedido($formaPagamento, $idPedido);
+
                     }
                     //Testa se todos os itens foram inseridos (ou tudo ou nada):
                     if ($itensInseridos && $modelPedido->save()) {
+
+                        $conta = new Conta();
+
+                        $conta->valor = $modelPedido->totalPedido;
+
+                        $conta->descricao = 'Pedido  de ' .   Yii::$app->formatter->asDate(date('Y-m-d H:i'),
+                                'dd/M/Y à\s HH:m');
+
+                        $conta->tipoConta = 'contasareceber';
+
+                        $conta->save(false);
+
+                        $contaAReceber = new Contasareceber();
+
+                        $contaAReceber->idconta = $conta->idconta;
+
+                        $contaAReceber->dataHora = date('Y-m-d');
+
+                        $contaAReceber->save(false);
+
+                        $pagamento = new Pagamento();
+
+                        $pagamento->idPedido = $modelPedido->idPedido;
+
+                        $pagamento->idConta = $contaAReceber->idconta;
+
+                        $pagamento->save(false);
+
                         $transaction->commit();
 
                         return $this->redirect(['view', 'id' => $modelPedido->idPedido,]);
@@ -255,7 +288,7 @@ class PedidoController extends Controller
                 $mensagem = "Ocorreu uma falha inesperada ao tentar salvar o Pedido";
             }
         }
-//        } else {
+
         $modelPedido->idSituacaoAtual = Pedido::EM_ANDAMENTO;
 
         return $this->render('create', [
@@ -309,6 +342,8 @@ class PedidoController extends Controller
         $mesa = ArrayHelper::map(Mesa::find()
             ->all(), 'idMesa', 'numeroDaMesa');
 
+        $totalDoPedido = 0;
+
         if ($modelPedido->load(Yii::$app->request->post()) &&
             (count($itensPedido) > 0)
         ) {
@@ -339,7 +374,7 @@ class PedidoController extends Controller
 
                         }
                     }
-                    //AQUI
+
                     for ($i = 0; $i < count($itemPedidoPost['idProduto']); $i++) {
 
                         $itemPedido = new Itempedido();
@@ -354,9 +389,9 @@ class PedidoController extends Controller
                             number_format(
                                 $produtoVenda->valorVenda * $itemPedido->quantidade, 2));
 
-                        $itemPedido->idPedido = $modelPedido->idPedido;
-                        //Tenta salvar os itens do Pedido:
+                        $totalDoPedido += $itemPedido->total;
 
+                        $itemPedido->idPedido = $modelPedido->idPedido;
 
                         if ($modelPedido->idSituacaoAtual != Pedido::CANCELADO) {
 
@@ -399,6 +434,10 @@ class PedidoController extends Controller
                         }
                     }
 
+
+                    $modelPedido->totalPedido = $totalDoPedido;
+
+
                     if ($antigaSituacao != $modelPedido->idSituacaoAtual ||
                         $historicoSituacao->user_id != Yii::$app->getUser()->id
                     ) {
@@ -423,8 +462,22 @@ class PedidoController extends Controller
 
                             $caixa->valorlucro += number_format($caixa->calculaValorLucroPedido($modelPedido->idPedido), 2);
 
+                            $conta = Pedido::find()
+                                ->joinWith('pagamento')
+                                ->joinWith('pagamento.contasareceber')
+                                ->joinWith('pagamento.contasareceber.conta')
+                                ->where(['pedido.idPedido'=>$modelPedido->idPedido])
+                                ->one()['pagamento']['contasareceber']['conta'];
+
+
+                            $conta->situacaoPagamento =1 ;
+
+                            $conta->save(false);
+
                             if (!$caixa->save()) {
+
                                 $mensagem = "Não foi possível salvar os dados  do Pedido";
+
                                 $transaction->rollBack(); //desfaz alterações no BD
                                 $itensInseridos = false;
 
@@ -439,7 +492,16 @@ class PedidoController extends Controller
                     }
 
                     //Testa se todos os itens foram inseridos (ou tudo ou nada):
-                    if ($itensInseridos) {
+                    if ($itensInseridos && $modelPedido->save()) {
+
+                        $pagamento = Pagamento::find()
+                            ->where(['idPedido' => $modelPedido->idPedido])->one();
+
+                        $conta = Conta::find()->where(['idconta' => $pagamento->idConta])->one();
+
+                        $conta->valor = $modelPedido->totalPedido;
+
+                        $conta->save(false);
 
                         $transaction->commit();
 
@@ -535,11 +597,12 @@ class PedidoController extends Controller
     {
 
         if ($formaPagamento != null && $idPedido != null) {
+
             $pagamento = Pagamento::find()->where(['idPedido' => $idPedido])->one();
+
             if ($pagamento != null) {
 
                 $pedido = $this->findModel($idPedido);
-
 
                 $pagamento->formapagamento_idTipoPagamento = $formaPagamento;
 
@@ -566,6 +629,7 @@ class PedidoController extends Controller
                                 $caixa = $caixa->getCaixaAberto();
 
                                 if ($caixa != null) {
+
                                     $caixa = Caixa::findOne($caixa->idcaixa);
 
                                     $caixa->valoremcaixa += $pedido->totalPedido;
@@ -573,6 +637,19 @@ class PedidoController extends Controller
                                     $caixa->valorapurado += $pedido->totalPedido;
 
                                     $caixa->valorlucro += number_format($caixa->calculaValorLucroPedido($pedido->idPedido), 2);
+
+
+                                    $conta = Pedido::find()
+                                        ->joinWith('pagamento')
+                                        ->joinWith('pagamento.contasareceber')
+                                        ->joinWith('pagamento.contasareceber.conta')
+                                        ->where(['pedido.idPedido'=>$pedido->idPedido])
+                                        ->one()['pagamento']['contasareceber']['conta'];
+
+
+                                    $conta->situacaoPagamento =1 ;
+
+                                    $conta->save(false);
 
                                     if (!$caixa->save()) {
                                         $mensagem = "Não foi possível salvar os dados de algum item do Pedido";

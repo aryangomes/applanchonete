@@ -11,6 +11,7 @@ use Yii;
 use app\models\Relatorio;
 use app\models\RelatorioSearch;
 use yii\web\Controller;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\filters\AccessControl;
@@ -121,6 +122,7 @@ class RelatorioController extends Controller
     public function actionView($id)
     {
         $modelRelatorio = $this->findModel($id);
+
 
         return $this->render('view', [
             'modelRelatorio' => $modelRelatorio,
@@ -260,6 +262,11 @@ class RelatorioController extends Controller
 
             $modelRelatorio = $this->findModel($id);
 
+            if(($modelRelatorio->usuario_id != Yii::$app->user->getId()) &&
+                !(Yii::$app->user->can('admin'))){
+                throw new HttpException(403, 'Acesso negado.');
+            }
+
             return $this->render('relatoriocontasareceber', [
                 'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
@@ -300,6 +307,11 @@ class RelatorioController extends Controller
             $searchPagamento = new PagamentoSearch();
 
             $modelRelatorio = $this->findModel($id);
+
+            if(($modelRelatorio->usuario_id != Yii::$app->user->getId()) &&
+                !(Yii::$app->user->can('admin'))){
+                throw new HttpException(403, 'Acesso negado.');
+            }
 
             return $this->render('relatoriopagamento', [
                 'modelRelatorio' => $modelRelatorio,
@@ -345,6 +357,12 @@ class RelatorioController extends Controller
 
             $modelRelatorio = $this->findModel($id);
 
+
+            if(($modelRelatorio->usuario_id != Yii::$app->user->getId()) &&
+                !(Yii::$app->user->can('admin'))){
+                throw new HttpException(403, 'Acesso negado.');
+            }
+
             return $this->render('relatoriopedido', [
                 'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
@@ -384,6 +402,11 @@ class RelatorioController extends Controller
 
             $modelRelatorio = $this->findModel($id);
 
+            if(($modelRelatorio->usuario_id != Yii::$app->user->getId()) &&
+                !(Yii::$app->user->can('admin'))){
+                throw new HttpException(403, 'Acesso negado.');
+            }
+
             return $this->render('relatorioitempedido', [
                 'modelRelatorio' => $modelRelatorio,
                 'tiposRelatorio' => $this->tiposRelatorio,
@@ -408,12 +431,14 @@ class RelatorioController extends Controller
 
             $modelRelatorio = $this->findModel($id);
 
+
             if ($modelRelatorio->load(Yii::$app->request->post()) && $modelRelatorio->save()) {
                 return $this->redirect(['relatoriolucro', 'id' => $modelRelatorio->idrelatorio]);
             }
         } else {
 
             if ($id == null) {
+
                 return $this->render('relatoriolucro', [
                     'modelRelatorio' => $modelRelatorio,
                     'tiposRelatorio' => $this->tiposRelatorio
@@ -423,6 +448,11 @@ class RelatorioController extends Controller
             $searchItemPedido = new ItempedidoSearch();
 
             $modelRelatorio = $this->findModel($id);
+
+            if(($modelRelatorio->usuario_id != Yii::$app->user->getId()) &&
+                !(Yii::$app->user->can('admin'))){
+                throw new HttpException(403, 'Acesso negado.');
+            }
 
 
             return $this->render('relatoriolucro', [

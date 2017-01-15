@@ -18,8 +18,8 @@ class RelatorioSearch extends Relatorio
     public function rules()
     {
         return [
-        [['idrelatorio', 'usuario_id'], 'integer'],
-        [['nome', 'datageracao', 'tipo', 'inicio_intervalo', 'fim_intervalo'], 'safe'],
+            [['idrelatorio', 'usuario_id'], 'integer'],
+            [['nome', 'datageracao', 'tipo', 'inicio_intervalo', 'fim_intervalo'], 'safe'],
         ];
     }
 
@@ -41,15 +41,15 @@ class RelatorioSearch extends Relatorio
      */
     public function search($params)
     {
-        $query = Relatorio::find();
+        $query = Relatorio::find()->joinWith('usuario');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
                 'pageSize' => 10,
             ],
-            'sort'=> ['defaultOrder' => ['idrelatorio'=>SORT_DESC]],
-            ]);
+            'sort' => ['defaultOrder' => ['idrelatorio' => SORT_DESC]],
+        ]);
 
         $this->load($params);
 
@@ -59,16 +59,22 @@ class RelatorioSearch extends Relatorio
             return $dataProvider;
         }
 
-        $query->andFilterWhere([
-            'idrelatorio' => $this->idrelatorio,
-            'datageracao' => $this->datageracao,
-            'inicio_intervalo' => $this->inicio_intervalo,
-            'fim_intervalo' => $this->fim_intervalo,
-            'usuario_id' => Yii::$app->user->getId(),
+        if (!\Yii::$app->user->can('admin')) {
+
+            $query->andFilterWhere([
+                'idrelatorio' => $this->idrelatorio,
+                'datageracao' => $this->datageracao,
+                'inicio_intervalo' => $this->inicio_intervalo,
+                'fim_intervalo' => $this->fim_intervalo,
+                'usuario_id' => Yii::$app->user->getId(),
+
+
             ]);
 
-        $query->andFilterWhere(['like', 'nome', $this->nome])
-        ->andFilterWhere(['like', 'tipo', $this->tipo]);
+            $query->andFilterWhere(['like', 'nome', $this->nome])
+                ->andFilterWhere(['like', 'tipo', $this->tipo]);
+        }
+
 
         return $dataProvider;
     }

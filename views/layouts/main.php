@@ -269,7 +269,7 @@ if (count($loja) > 0) {
                         if (Yii::$app->user->can("index-relatorio") || Yii::$app->user->can("relatorio")) {
                             ?>
                             <li>
-                                <?= Html::a('<i class="fa fa-fw fa-desktop"></i> Relatório', ['/relatorio/index']) ?>
+                                <?= Html::a('<i class="fa fa-fw fa-desktop"></i> Relatórios', ['/relatorio/index']) ?>
 
                             </li>
 
@@ -290,7 +290,7 @@ if (count($loja) > 0) {
                         if (Yii::$app->user->can("index-cardapio") || Yii::$app->user->can("cardapio")) {
                             ?>
                             <li>
-                                <?= Html::a('<i class="fa fa fa-list"></i> Cardápio', ['/cardapio/index']) ?>
+                                <?= Html::a('<i class="fa fa fa-list"></i> Cardápios', ['/cardapio/index']) ?>
 
                             </li>
                             <?php
@@ -389,7 +389,7 @@ if (count($loja) > 0) {
                         if (Yii::$app->user->can("index-mesa") || Yii::$app->user->can("mesa")) {
                             ?>
                             <li>
-                                <?= Html::a('<i class="fa fa-table"></i> Mesa', ['/mesa/index']) ?>
+                                <?= Html::a('<i class="fa fa-table"></i> Mesas', ['/mesa/index']) ?>
 
                             </li>
                             <?php

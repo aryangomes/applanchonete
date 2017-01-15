@@ -130,6 +130,7 @@ class CompraController extends Controller
         $novoProduto = new Produto();
 
         $arrayFinal = [];
+
         $arrayIds = [];
         //Setando valor padrão para a compra
         $modelCompra->valor = 0;
@@ -149,7 +150,7 @@ class CompraController extends Controller
 
             $conta->descricao = 'Compra de ' . date('d/m/Y', strtotime(Yii::$app->request->post()['Compra']['dataCompra']));
 
-            $conta->descricao = 'Compra de ' . date('d/m/Y', strtotime(Yii::$app->request->post()['Compra']['dataCompra']));
+            $conta->situacaoPagamento = 1;
 
             $compraprodutos = Yii::$app->request->post()['Compraproduto'];
 
@@ -346,7 +347,7 @@ class CompraController extends Controller
 
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
-//            try {
+            try {
 
                 $compraProdutoAux = (Yii::$app->request->post()['Compraproduto']);
 
@@ -456,10 +457,10 @@ class CompraController extends Controller
                         'produtosValorAlterado' => $arrayFinal]);
                 }
 
-            /*} catch (\Exception $exception) {
+            } catch (\Exception $exception) {
                 $transaction->rollBack();
                 $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
-            }*/
+            }
         }
 
         return $this->render('update', [

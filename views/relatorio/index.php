@@ -83,7 +83,16 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Relatorios'), 'url' 
                             Yii::$app->formatter->asDate($modelRelatorio->fim_intervalo, 'dd/M/Y'):null;
                     },
                 ],
-                // 'usuario_id',
+                [
+                    'attribute'=>'usuario.username',
+                    'label'=>'Gerado por',
+                    'value'=>function ($modelRelatorio) {
+                        return (!empty($modelRelatorio->usuario->profile->full_name) &&
+                            isset($modelRelatorio->usuario->profile->full_name)) ?
+                            $modelRelatorio->usuario->profile->full_name:$modelRelatorio->usuario->username;
+                    },
+                ],
+
 
                 ['class' => 'yii\grid\ActionColumn',
                     'template' => '{delete}', ],

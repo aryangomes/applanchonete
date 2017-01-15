@@ -6,10 +6,12 @@ use kartik\datecontrol\DateControl;
 use kartik\widgets\Select2;
 use kartik\money\MaskMoney;
 use yii\web\JsExpression;
+
 /* @var $this yii\web\View */
 /* @var $modelCompra app\models\Compra */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $compraProduto \app\models\Compraproduto */
+/* @var $produtosDaCompras array */
 /* @var $produtos array */
 ?>
 
@@ -52,7 +54,7 @@ use yii\web\JsExpression;
 
                             'language' => [
                                 'errorLoading' => new JsExpression("function () { return 'Aguardando por resultados...'; }"),
-                                'noResults'=>new JsExpression("function () { return 'Nenhum resultado encontrado...'; }"),
+                                'noResults' => new JsExpression("function () { return 'Nenhum resultado encontrado...'; }"),
                             ],
                             'ajax' => [
                                 'url' => yii\helpers\Url::to(['produto/produto-list']),
@@ -82,28 +84,19 @@ use yii\web\JsExpression;
             ?>
 
 
-
             <div class="form-group field-compraproduto-valorcompra required has-success">
                 <label class="control-label" for="compraproduto-valorcompra">Valor da Compra(R$)</label>
-                <input type="number" min="0" step="0.01" title="Digite o valor ou aperte as teclas para cima ou para abaixo para ajustar o valor" value="0" id="compraproduto-valorcompra-disp"
+                <input type="number" min="0" step="0.01"
+                       title="Digite o valor ou aperte as teclas para cima ou para abaixo para ajustar o valor"
+                       value="0" id="compraproduto-valorcompra-disp"
                        class="form-control" name="compraproduto-valorcompra-disp[]">
                 <input type="hidden" id="compraproduto-valorcompra"
                        name="Compraproduto[valorCompra][]" data-krajee-maskmoney="maskMoney_17eeef61" value="0">
                 <div class="help-block"></div>
 
-                </div>
+            </div>
 
             <?=
-            /*$form->field($compraProduto, 'valorCompra[]')->widget(MaskMoney::classname(), [
-                'pluginOptions' => [
-                    'prefix' => 'R$ ',
-
-                    'allowNegative' => false,
-                ]
-            ]);*/
-
-
-
 
             $this->registerJs('var i = 1; $("#btnadprodutocompra").on("click",function(){'
                 . '$("#input-dinamico").append(\'<div class="divborda" id="inputinsumo\'+i+\'" ><div class="form-group field-insumos-idprodutoinsumo required"><div class="row"><div class="col-md-6"><label class="control-label" for="insumos-idprodutoinsumo">Produto</label><select onChange="mudarFoto(this)" id="compraproduto-idproduto" class="form-control js-data-example-ajax" name="Compraproduto[idProduto][]" ></select><div class="help-block"></div></div><div class="col-md-6">Imagem<img width="200" src="" class="img-responsive"></div></div></div><div class="form-group field-insumos-quantidade required"><label class="control-label" for="quantidade\'+i+\'">Quantidade</label><input type="number" id="quantidade\'+i+\'" class="form-control" name="Compraproduto[quantidade][]" value="1" min="0" step="1"><div class="help-block"></div></div><div class="form-group field-compraproduto-valorcompra required has-success"><label class="control-label" for="compraproduto-valorcompra\'+i+\'">Valor da Compra(R$)</label><input type="number" min="0" step="0.01" title="Digite o valor ou aperte as teclas para cima ou para abaixo para ajustar o valor" value="0" id="compraproduto-valorcompra-disp" class="form-control" name="compraproduto-valorcompra-disp[]"><input type="hidden" id="compraproduto-valorcompra\'+i+\'" name="Compraproduto[valorCompra][]" data-krajee-maskmoney="maskMoney_17eeef61" value="0"><div class="help-block"></div></div><input class="btn btn-danger" onclick="removeins(\'+i+\')" type="button" value="Remover Produto"></div><hr></div>\');'
@@ -112,7 +105,7 @@ use yii\web\JsExpression;
                 . '.addClass("select2 select2-container select2-container--krajee select2-container--focus")'
                 . '.removeClass("select2 select2-container select2-container--default select2-container--focus");'
                 . '$("[name=\'Compraproduto[idProduto][]\']").select2({ajax: {url: "../produto/produto-list", dataType: \'json\',delay: 250, data: function (params) {return { q: params.term, page: params.page}; }, results: function (data) { return {  results: $.map(data, function (item) { return { text: item.nome, id: item.idProduto } }) };}}, escapeMarkup: function (markup) { return markup; }, minimumInputLength: 1,  templateResult:function (produto) { return produto.text; }, templateSelection: function (produto) { return produto.text; }});
-})');
+                })');
 
             ?>
         </div>
@@ -138,7 +131,7 @@ use yii\web\JsExpression;
 
         array_push($options, $optHtml);
 
-        foreach ($produtos as $k => $v){
+        foreach ($produtos as $k => $v) {
 
             $optHtml = "<option value=\"" . $k . "\">" . $v . "</option>";
             array_push($options, $optHtml);
@@ -158,8 +151,6 @@ use yii\web\JsExpression;
         for ($i = 0; $i < count($produtosDaCompras); $i++) {
 
             ?>
-
-
             <div class="form-group field-insumos-idprodutoinsumo required divborda" id="<?= 'inputinsumo' . $i ?>">
                 <div>
                     <div class="row">
@@ -240,7 +231,7 @@ use yii\web\JsExpression;
         <?= Html::submitButton($modelCompra->isNewRecord ? Yii::t('yii', 'Cadastrar a Compra')
             : Yii::t('yii', 'Atualizar a Compra'),
             ['class' => $modelCompra->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
-                'title'=>$modelCompra->isNewRecord ? 'Clique para cadastrar uma nova Compra':
+                'title' => $modelCompra->isNewRecord ? 'Clique para cadastrar uma nova Compra' :
                     'Clique para salvar os dados da Compra']) ?>
 
         <input class="btn btn-primary" type='button' id='btnadprodutocompra' value="Adicionar mais um Produto"

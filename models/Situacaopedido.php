@@ -44,7 +44,7 @@ class Situacaopedido extends \yii\db\ActiveRecord
     {
         return [
         'idSituacaoPedido' => 'Situação Pedido',
-        'titulo' => 'Título',
+        'titulo' => 'Situação Pedido',
         'descricao' => 'Descrição',
         ];
     }

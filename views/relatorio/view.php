@@ -36,7 +36,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'tipo',
             'inicio_intervalo',
             'fim_intervalo',
-            'usuario_id',
+            [
+                'attribute'=>'usuario.username',
+                'label'=>'Gerado por',
+                'value'=> (!empty($modelRelatorio->usuario->profile->full_name) &&
+                        isset($modelRelatorio->usuario->profile->full_name)) ?
+                        $modelRelatorio->usuario->profile->full_name:$modelRelatorio->usuario->username,
+
+            ],
         ],
     ]) ?>
 

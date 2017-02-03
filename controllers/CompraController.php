@@ -130,6 +130,7 @@ class CompraController extends Controller
         $novoProduto = new Produto();
 
         $arrayFinal = [];
+
         $arrayIds = [];
         //Setando valor padrão para a compra
         $modelCompra->valor = 0;
@@ -149,7 +150,7 @@ class CompraController extends Controller
 
             $conta->descricao = 'Compra de ' . date('d/m/Y', strtotime(Yii::$app->request->post()['Compra']['dataCompra']));
 
-            $conta->descricao = 'Compra de ' . date('d/m/Y', strtotime(Yii::$app->request->post()['Compra']['dataCompra']));
+            $conta->situacaoPagamento = 1;
 
             $compraprodutos = Yii::$app->request->post()['Compraproduto'];
 
@@ -187,6 +188,7 @@ class CompraController extends Controller
 
                         for ($i = 0; $i < count($compraprodutos['idProduto']); $i++) {
 
+
                             $cp = new Compraproduto();
 
                             $cp->idCompra = $modelCompra->idconta;
@@ -196,6 +198,12 @@ class CompraController extends Controller
                             $cp->quantidade = $compraprodutos['quantidade'][$i];
 
                             $cp->valorCompra = $valorescompraprodutos[$i];
+
+                            $produto = Produto::findOne($cp->idProduto);
+
+                            $produto->quantidadeEstoque += $cp->quantidade;
+
+                            $produto->save();
 
                             if ($cp->comparaPrecoProduto($cp)) {
 
@@ -339,7 +347,7 @@ class CompraController extends Controller
 
             //Inicia a transação:
             $transaction = \Yii::$app->db->beginTransaction();
-//            try {
+            try {
 
                 $compraProdutoAux = (Yii::$app->request->post()['Compraproduto']);
 
@@ -347,6 +355,13 @@ class CompraController extends Controller
 
             if(count($compraProdutos) > 0){
                 foreach ($compraProdutos as $cp){
+
+                    $produto = Produto::findOne($cp->idProduto);
+
+                    $produto->quantidadeEstoque -= $cp->quantidade;
+
+                    $produto->save();
+
                     $cp->delete();
                 }
             }
@@ -366,6 +381,12 @@ class CompraController extends Controller
 
                     $cp->valorCompra = (Yii::$app->request->post()
                     ['compraproduto-valorcompra-disp'][$i]);
+
+                    $produto = Produto::findOne($cp->idProduto);
+
+                    $produto->quantidadeEstoque += $cp->quantidade;
+
+                    $produto->save();
 
                     if ($cp->comparaPrecoProduto($cp)) {
 
@@ -436,10 +457,10 @@ class CompraController extends Controller
                         'produtosValorAlterado' => $arrayFinal]);
                 }
 
-            /*} catch (\Exception $exception) {
+            } catch (\Exception $exception) {
                 $transaction->rollBack();
                 $mensagem = "Ocorreu uma falha inesperada ao tentar salvar ";
-            }*/
+            }
         }
 
         return $this->render('update', [

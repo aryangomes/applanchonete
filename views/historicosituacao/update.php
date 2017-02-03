@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Historicosituacao */
 
 $this->title = 'Update Historicosituacao: ' . ' ' . $model->idPedido;
-$this->params['breadcrumbs'][] = ['label' => 'Historicosituacaos', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Histórico de Situações do Pedido', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->idPedido, 'url' => ['view', 'idPedido' => $model->idPedido, 'idSituacaoPedido' => $model->idSituacaoPedido]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

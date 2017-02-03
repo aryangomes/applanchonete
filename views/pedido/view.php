@@ -10,6 +10,7 @@ use yii\bootstrap\Modal;
 $this->title = 'Pedido: ' . $modelPedido->idPedido . ' | Situação Atual: ' . $modelPedido->situacaopedido->titulo;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pedidos'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+$modelPedido->getItensPedido($modelPedido->idPedido);
 ?>
     <div class="pedido-view">
 

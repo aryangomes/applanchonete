@@ -63,7 +63,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
             ['attribute' => 'contasapagar.dataVencimento',
                 'value' => ($modelConta->tipoConta == 'contasapagar') ?
-                    Yii::$app->formatter->asDate($modelConta->contasapagar->dataVencimento, 'dd/M/Y') : '',
+                    (isset($modelConta->contasapagar->dataVencimento) ?
+                        Yii::$app->formatter->asDate($modelConta->contasapagar->dataVencimento, 'dd/M/Y'):null ): '',
 
                 'visible' => ($modelConta->tipoConta == 'contasapagar') ? true : false,
 

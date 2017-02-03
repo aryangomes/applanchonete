@@ -13,6 +13,8 @@ use yii\widgets\Pjax;
 $this->title = Yii::t('app', 'Pedidos');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pedidos'), 'url' => ['index']];
 //date_default_timezone_set('America/Sao_Paulo');
+
+
 ?>
 <div class="pedido-index">
 
@@ -82,8 +84,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pedidos'), 'url' => 
 
                         return
                             ($modelPedido->getDataHoraPedido() != null) ?
-                                date("d/m/Y H:i",
-                                    strtotime($modelPedido->getDataHoraPedido())) : null;
+                                Yii::$app->formatter->asDate($modelPedido->getDataHoraPedido(), 'dd/M/Y à\s HH:m') : null;
                     }
                 ],
                 [

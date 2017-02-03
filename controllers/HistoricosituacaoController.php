@@ -83,26 +83,7 @@ class HistoricosituacaoController extends Controller
 
     }
 
-    /**
-     * Creates a new Historicosituacao model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
 
-
-            $model = new Historicosituacao();
-
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'idPedido' => $model->idPedido, 'idSituacaoPedido' => $model->idSituacaoPedido]);
-            } else {
-                return $this->render('create', [
-                    'model' => $model,
-                ]);
-            }
-
-    }
 
     /**
      * Updates an existing Historicosituacao model.

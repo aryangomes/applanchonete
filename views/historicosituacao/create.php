@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Historicosituacao */
 
 $this->title = 'Create Historicosituacao';
-$this->params['breadcrumbs'][] = ['label' => 'Historicosituacaos', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Histórico de Situações do Pedido', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="historicosituacao-create">

@@ -101,4 +101,6 @@ return [
 'Password has been reset' => 'A senha foi reiniciada',
 //    'Login link sent - Please check your email' => '',
 //    'Registration link sent - Please check your email' => '',
+'Current password incorrect'=>'Senha incorreta',
+
 ];

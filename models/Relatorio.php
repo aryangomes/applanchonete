@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use amnah\yii2\user\models\User;
 use Yii;
 
 /**
@@ -62,7 +63,7 @@ class Relatorio extends \yii\db\ActiveRecord
      */
     public function getUsuario()
     {
-        return $this->hasOne(Usuario::className(), ['id' => 'usuario_id']);
+        return $this->hasOne(User::className(), ['id' => 'usuario_id']);
     }
     
     /**

@@ -47,9 +47,9 @@ class Historicosituacao extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idPedido' => 'Id Pedido',
-            'idSituacaoPedido' => 'Id Situacao Pedido',
-            'dataHora' => 'Data Hora',
+            'idPedido' => 'Pedido',
+            'idSituacaoPedido' => 'Situação Pedido',
+            'dataHora' => 'Data e Hora',
             'user_id' => Yii::t('app', 'Usuário'),
         ];
     }

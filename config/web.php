@@ -70,14 +70,14 @@ $config = [
                 ],
             ],
         ],
-        
+
         // setup Krajee Pdf component
         'pdf' => [
             'class' => Pdf::classname(),
             'format' => Pdf::FORMAT_A4,
             'orientation' => Pdf::ORIENT_PORTRAIT,
             'destination' => Pdf::DEST_BROWSER,
-        // refer settings section for all configuration options
+            // refer settings section for all configuration options
         ],
     ],
     'modules' => [
@@ -86,7 +86,7 @@ $config = [
         ],
         'user' => [
             'class' => 'amnah\yii2\user\Module',
-        // set custom module properties here ...
+            // set custom module properties here ...
         ],
     ],
     'params' => $params,
@@ -94,7 +94,7 @@ $config = [
 
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
-  //  $config['bootstrap'][] = 'debug';
+    //  $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
     ];

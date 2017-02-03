@@ -58,7 +58,7 @@ class Pedido extends \yii\db\ActiveRecord
     {
         return [
             'idPedido' => Yii::t('app', 'Id Pedido'),
-            'totalPedido' => Yii::t('app', 'Total Pedido'),
+            'totalPedido' => Yii::t('app', 'Total do Pedido'),
             'idSituacaoAtual' => Yii::t('app', 'Situação Atual'),
             'idMesa' => Yii::t('app', 'Mesa'),
         ];
@@ -129,9 +129,9 @@ class Pedido extends \yii\db\ActiveRecord
      */
     public function getItensPedido()
     {
-        $itensPedido = Itempedido::findAll($this->idPedido);
+        $itensPedido = Itempedido::find()->where(['idPedido'=>$this->idPedido])->all();
 
-        $aux = [];
+
 
         if (count($itensPedido) > 0) {
             //Guarda os nomes e quantidades dos itens pedido

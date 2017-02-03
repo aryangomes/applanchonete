@@ -44,7 +44,7 @@ class Cardapio extends \yii\db\ActiveRecord
         return [
             'idCardapio' => 'Id Cardapio',
             'data' => 'Data',
-            'titulo' => 'Titulo',
+            'titulo' => 'Título',
         ];
     }
 

@@ -18,9 +18,6 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Custos Fixos'), 'url
 
     <p>
 
-        <?= Html::a(Yii::t('app', 'Create {model}', ['model' => 'Tipo de Custo Fixo']), ['tipocustofixo/create'],
-            ['class' => 'btn btn-success',
-                'title'=>'Clique aqui para cadastrar um novo Tipo de Custo Fixo']) ?>
 
     </p>
     <?php Pjax::begin(); ?>

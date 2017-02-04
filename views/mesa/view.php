@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $modelMesa app\models\Mesa */
 
-$this->title = 'Mesa: ' . $modelMesa->idMesa;
+$this->title = 'Mesa: ' . $modelMesa->numeroDaMesa;
 $this->params['breadcrumbs'][] = ['label' => 'Mesas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -30,8 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $modelMesa,
         'attributes' => [
-            'idMesa',
-//            'numeroDaMesa',
+             'numeroDaMesa',
 
             [
                 'attribute' => 'alerta',

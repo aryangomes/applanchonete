@@ -1,5 +1,7 @@
 # Sistema de Gerência de Lanchonete
 
+![SGL](https://raw.githubusercontent.com/aryangomes/sistemagerencialanchonete/master/web/sgl.png?raw=true)
+
 ## Resumo
 O presente projeto visa a produção técnica referente ao desenvolvimento de um sistema que irá auxiliar os gestores de lanchonetes da cidade de Currais Novos na sua tomada de decisão no que diz respeito aos aspectos organizacionais, táticos e operacionais, objetivando assim um aumento de produtividade e competitividade das mesmas.
 
